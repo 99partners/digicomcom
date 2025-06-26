@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Globe, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import logo from "./assets/99digicom.png"; // ✅ Make sure this path is correct relative to this file
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,7 +23,6 @@ const Header = () => {
 
   const isActive = (href) => pathname === href;
 
-  // Close dropdown when clicked outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -33,19 +33,19 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Hide header on login page
   if (pathname === "/login") return null;
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-        {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2 group">
-          <Globe className="h-8 w-8 text-green-600" />
-          <span className="text-2xl font-bold text-gray-900 group-hover:text-green-700">
-            99digicom
-          </span>
-        </Link>
+      <div className="max-w-7xl mx-auto px-3 flex items-center justify-between h-16">
+        {/* ✅ LOGO */}
+        <Link to="/" className="flex items-center space-x-0 group">
+  <img src={logo} alt="99digicom Logo" className="h-12 w-auto object-contain" />
+  <span className="text-xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-blue-800">
+    Digicom
+  </span>
+</Link>
+
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-2">
@@ -87,7 +87,6 @@ const Header = () => {
               >
                 Partner Login
               </Link>
-             
               <div className="border-t my-2" />
               <Link
                 to="/login"
@@ -105,11 +104,7 @@ const Header = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="lg:hidden p-2 text-gray-600 hover:text-green-700"
         >
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
@@ -131,7 +126,7 @@ const Header = () => {
             </Link>
           ))}
 
-          {/* Join Us - Mobile */}
+          {/* Mobile Join Us */}
           <div className="mt-4 border-t pt-4">
             <div className="text-sm font-semibold text-gray-600 uppercase mb-2">
               Join Us
@@ -145,7 +140,6 @@ const Header = () => {
               >
                 Partner Login
               </Link>
-          
             </div>
             <div className="mt-3">
               <div className="text-xs text-green-600 uppercase mb-1">Customer</div>
@@ -156,7 +150,6 @@ const Header = () => {
               >
                 Customer Login
               </Link>
-              
             </div>
           </div>
         </div>
