@@ -40,12 +40,15 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-3 flex items-center justify-between h-16">
         {/* ✅ LOGO */}
         <Link to="/" className="flex items-center space-x-0 group">
-  <img src={logo} alt="99digicom Logo" className="h-12 w-auto object-contain" />
-  <span className="text-xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-blue-800">
-    Digicom
-  </span>
-</Link>
-
+          <img
+            src={logo}
+            alt="99digicom Logo"
+            className="h-20 w-auto object-contain"
+          />
+          <span className="text-2xl font-bold bg-gradient-to-r from-blue-800 to-blue-500 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-blue-800">
+            Digicom
+          </span>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-2">
@@ -104,7 +107,11 @@ const Header = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="lg:hidden p-2 text-gray-600 hover:text-green-700"
         >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {isMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
         </button>
       </div>
 
@@ -132,7 +139,9 @@ const Header = () => {
               Join Us
             </div>
             <div>
-              <div className="text-xs text-green-600 uppercase mb-1">Partner</div>
+              <div className="text-xs text-green-600 uppercase mb-1">
+                Partner
+              </div>
               <Link
                 to="/login"
                 onClick={() => setIsMenuOpen(false)}
@@ -142,7 +151,9 @@ const Header = () => {
               </Link>
             </div>
             <div className="mt-3">
-              <div className="text-xs text-green-600 uppercase mb-1">Customer</div>
+              <div className="text-xs text-green-600 uppercase mb-1">
+                Customer
+              </div>
               <Link
                 to="/login"
                 onClick={() => setIsMenuOpen(false)}
