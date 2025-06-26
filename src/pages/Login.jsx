@@ -121,7 +121,7 @@ const Login = () => {
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome</h2>
               <p className="text-gray-600">
-                Sign in to your account or create a new one to get started
+                Login to your account or create a new one to get started
               </p>
             </div>
 
@@ -137,7 +137,7 @@ const Login = () => {
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
-                  Sign In
+                  Login
                 </button>
                 <button
                   onClick={() => setActiveTab('signup')}
@@ -213,10 +213,10 @@ const Login = () => {
                     {isLoading ? (
                       <div className="flex items-center justify-center">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Signing in...
+                        loging in...
                       </div>
                     ) : (
-                      'Sign In'
+                      'Login'
                     )}
                   </button>
                 </form>
