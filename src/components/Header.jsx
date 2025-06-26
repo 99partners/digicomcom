@@ -18,7 +18,7 @@ const Header = () => {
     { name: 'Contact Us', href: '/contact' },
   ];
 
-  const isActive = (href: string) => location.pathname === href;
+  const isActive = (href) => location.pathname === href;
 
   // Don't show header on login page
   if (location.pathname === '/login') {

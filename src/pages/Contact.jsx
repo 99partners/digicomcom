@@ -16,18 +16,16 @@ const Contact = () => {
     message: ''
   });
 
-  const handlePartnerSubmit = (e: React.FormEvent) => {
+  const handlePartnerSubmit = (e) => {
     e.preventDefault();
     console.log('Partner inquiry:', partnerForm);
-    // Handle form submission
     alert('Thank you for your interest! We\'ll get back to you within 24 hours.');
     setPartnerForm({ name: '', email: '', businessName: '', message: '' });
   };
 
-  const handleSupportSubmit = (e: React.FormEvent) => {
+  const handleSupportSubmit = (e) => {
     e.preventDefault();
     console.log('Support request:', supportForm);
-    // Handle form submission
     alert('Your support request has been submitted. We\'ll respond soon!');
     setSupportForm({ name: '', email: '', subject: '', message: '' });
   };

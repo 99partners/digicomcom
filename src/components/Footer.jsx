@@ -6,7 +6,7 @@ const Footer = () => {
   const [email, setEmail] = useState('');
   const location = useLocation();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     // Handle newsletter signup
     console.log('Newsletter signup:', email);

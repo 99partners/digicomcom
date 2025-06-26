@@ -20,22 +20,20 @@ const Login = () => {
     agreeToTerms: false
   });
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate login process
     setTimeout(() => {
       setIsLoading(false);
       alert('Login Successful! Welcome back to 99digicom!');
     }, 2000);
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate signup process
     setTimeout(() => {
       setIsLoading(false);
       alert('Account Created! Welcome to 99digicom! Please verify your email.');

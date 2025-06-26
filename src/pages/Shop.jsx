@@ -106,7 +106,7 @@ const Shop = () => {
     }
   ];
 
-  const renderStars = (rating: number) => {
+  const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
       <Star
         key={i}
@@ -115,7 +115,7 @@ const Shop = () => {
     ));
   };
 
-  const ProductCard = ({ product, showBadge = false }: { product: any, showBadge?: boolean }) => (
+  const ProductCard = ({ product, showBadge = false }) => (
     <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group overflow-hidden">
       <div className="relative">
         <img
