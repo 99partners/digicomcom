@@ -15,6 +15,7 @@ import FAQs from './pages/Faqs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
+import CoBranding from './pages/CoBranding';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
+            <Route path="/co-branding" element={<CoBranding />} />
           </Routes>
         </main>
         <Footer />

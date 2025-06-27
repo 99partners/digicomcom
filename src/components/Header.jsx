@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useRef } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Menu, X, ChevronDown, Search } from "lucide-react"
@@ -48,28 +50,23 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-3 flex items-center justify-between h-16 min-w-0">
+      <div className="max-w-8xl mx-auto px-3 flex items-center justify-between h-16 min-w-0">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2 group">
-        <img
+          <img src={logo || "/placeholder.svg"} alt="Digicom Logo" className="h-16 w-auto object-contain" />
 
-            src={logo}
-            alt="Digicom Logo"
-            className="h-16 w-auto object-contain"
-            />
-          
           <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
             Digicom
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-1 flex-shrink-0">
+        <nav className="hidden lg:flex items-center space-x-1 flex-shrink-0 relative z-10">
           {navigation.map((item) => (
             <Link
               key={item.name}
               to={item.href}
-              className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+              className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
                 isActive(item.href)
                   ? "text-green-700 bg-green-100"
                   : "text-gray-600 hover:text-green-700 hover:bg-green-50"
@@ -84,7 +81,7 @@ const Header = () => {
         <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
           {/* Search Bar */}
           <div
-            className="relative"
+            className="relative z-20"
             onMouseEnter={() => setIsSearchExpanded(true)}
             onMouseLeave={() => setIsSearchExpanded(false)}
           >
@@ -93,15 +90,15 @@ const Header = () => {
                 <div
                   className={`flex items-center transition-all duration-300 ease-in-out ${
                     isSearchExpanded ? "w-64" : "w-10"
-                  } h-10 bg-gray-50 hover:bg-gray-100 rounded-full border border-gray-200 hover:border-green-500`}
+                  } h-10 bg-white hover:bg-gray-50 rounded-full border border-gray-200 hover:border-green-500 shadow-sm relative z-20`}
                 >
-                  <Search className="absolute left-3 h-4 w-4 text-gray-400 z-10" />
+                  <Search className="absolute left-3 h-4 w-4 text-gray-400 z-30" />
                   <input
                     type="text"
                     placeholder="Search..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className={`transition-all duration-300 ease-in-out border-0 bg-transparent focus:ring-0 focus:border-0 pl-10 pr-4 py-2 rounded-full ${
+                    className={`transition-all duration-300 ease-in-out border-0 bg-transparent focus:ring-0 focus:border-0 focus:outline-none pl-10 pr-4 py-2 rounded-full text-sm ${
                       isSearchExpanded ? "opacity-100 w-full" : "opacity-0 w-0"
                     }`}
                     style={{
@@ -115,7 +112,7 @@ const Header = () => {
           </div>
 
           {/* Join Us Dropdown */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative z-30" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium"
