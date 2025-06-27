@@ -12,6 +12,9 @@ import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import FAQs from './pages/Faqs';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService'; 
+import CookiePolicy from './pages/CookiePolicy';
 
 function App() {
   return (
@@ -30,7 +33,9 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/faqs" element={<FAQs />} />
-            {/* Add more routes as needed */}
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="/termsofservice" element={<TermsOfService />} />
+            <Route path="/cookiepolicy" element={<CookiePolicy />} />
           </Routes>
         </main>
         <Footer />

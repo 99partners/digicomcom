@@ -131,15 +131,13 @@ const Footer = () => {
     setEmail('');
   };
 
-  if (location.pathname === '/login') {
-    return null;
-  }
+  if (location.pathname === '/login') return null;
 
   const helpLinks = [
-    { name: 'Privacy Policy', path: '/privacy-policy' },
-    { name: 'Terms of Service', path: '/terms-of-service' },
-    { name: 'Cookie Policy', path: '/cookie-policy' },
-    { name: 'FAQs', path: '/faqs' } 
+    { name: 'Privacy Policy', path: '/privacypolicy' },
+    { name: 'Terms of Service', path: '/termsofservice' },
+    { name: 'Cookie Policy', path: '/cookiepolicy' },
+    { name: 'FAQs', path: '/faqs' }
   ];
 
   return (
@@ -214,9 +212,9 @@ const Footer = () => {
             <ul className="space-y-2">
               {helpLinks.map((link, i) => (
                 <li key={i}>
-                  <a href={link.path} className="text-gray-300 hover:text-white transition-colors">
+                  <Link to={link.path} className="text-gray-300 hover:text-white transition-colors">
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
