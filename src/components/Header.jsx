@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { Link, useLocation } from "react-router-dom"
-import { Menu, X, ChevronDown, Search } from "lucide-react"
-import logo from "./assets/99digicom.png"
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, ChevronDown, Search } from "lucide-react";
+import logo from "./assets/99digicom.png";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false)
-  const dropdownRef = useRef(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const location = useLocation()
-  const pathname = location.pathname
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -25,35 +25,39 @@ const Header = () => {
     { name: "Careers", href: "/careers" },
     { name: "Contact Us", href: "/contact" },
     { name: "Co-Branding", href: "/co-branding" },
-  ]
+  ];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false)
+        setIsDropdownOpen(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const isActive = (href) => pathname === href
+  const isActive = (href) => pathname === href;
 
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchQuery.trim()) {
-      console.log("Searching for:", searchQuery)
+      console.log("Searching for:", searchQuery);
     }
-  }
+  };
 
-  if (pathname === "/login") return null
+  if (pathname === "/login") return null;
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100">
       <div className="max-w-8xl mx-auto px-3 flex items-center justify-between h-16 min-w-0">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2 group">
-          <img src={logo || "/placeholder.svg"} alt="Digicom Logo" className="h-16 w-auto object-contain" />
+          <img
+            src={logo || "/placeholder.svg"}
+            alt="Digicom Logo"
+            className="h-16 w-auto object-contain"
+          />
 
           <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
             Digicom
@@ -103,7 +107,9 @@ const Header = () => {
                     }`}
                     style={{
                       width: isSearchExpanded ? "100%" : "0",
-                      padding: isSearchExpanded ? "0.5rem 1rem 0.5rem 2.5rem" : "0",
+                      padding: isSearchExpanded
+                        ? "0.5rem 1rem 0.5rem 2.5rem"
+                        : "0",
                     }}
                   />
                 </div>
@@ -119,7 +125,9 @@ const Header = () => {
             >
               <span>Join Us</span>
               <ChevronDown
-                className={`h-4 w-4 transform transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
+                className={`h-4 w-4 transform transition-transform duration-200 ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
 
@@ -131,7 +139,9 @@ const Header = () => {
                   className="block px-4 py-3 hover:bg-green-50 text-sm text-gray-700 hover:text-green-700 transition-colors border-b border-gray-100 last:border-b-0"
                 >
                   <div className="font-medium">Partner Login</div>
-                  <div className="text-xs text-gray-500 mt-1">Access partner dashboard</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Access partner dashboard
+                  </div>
                 </Link>
                 <Link
                   to="/login?type=customer"
@@ -139,7 +149,9 @@ const Header = () => {
                   className="block px-4 py-3 hover:bg-green-50 text-sm text-gray-700 hover:text-green-700 transition-colors"
                 >
                   <div className="font-medium">Customer Login</div>
-                  <div className="text-xs text-gray-500 mt-1">Access your account</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Access your account
+                  </div>
                 </Link>
               </div>
             )}
@@ -147,8 +159,15 @@ const Header = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-gray-600 hover:text-green-700">
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="lg:hidden p-2 text-gray-600 hover:text-green-700"
+        >
+          {isMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
         </button>
       </div>
 
@@ -186,9 +205,13 @@ const Header = () => {
           ))}
 
           <div className="mt-4 border-t pt-4">
-            <div className="text-sm font-semibold text-gray-600 uppercase mb-2">Join Us</div>
+            <div className="text-sm font-semibold text-gray-600 uppercase mb-2">
+              Join Us
+            </div>
             <div>
-              <div className="text-xs text-green-600 uppercase mb-1">Partner</div>
+              <div className="text-xs text-green-600 uppercase mb-1">
+                Partner
+              </div>
               <Link
                 to="/login?type=partner"
                 onClick={() => setIsMenuOpen(false)}
@@ -198,7 +221,9 @@ const Header = () => {
               </Link>
             </div>
             <div>
-              <div className="text-xs text-green-600 uppercase mb-1">Customer</div>
+              <div className="text-xs text-green-600 uppercase mb-1">
+                Customer
+              </div>
               <Link
                 to="/login?type=customer"
                 onClick={() => setIsMenuOpen(false)}
@@ -211,7 +236,7 @@ const Header = () => {
         </div>
       )}
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

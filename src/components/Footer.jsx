@@ -115,29 +115,28 @@
 
 // export default Footer;
 
-
-
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Globe, Twitter, Linkedin, Instagram, Mail } from 'lucide-react';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Globe, Twitter, Linkedin, Instagram, Mail } from "lucide-react";
+import logo from "./assets/99digicom.png"; // Adjust the path as necessary
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const location = useLocation();
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
-    console.log('Newsletter signup:', email);
-    setEmail('');
+    console.log("Newsletter signup:", email);
+    setEmail("");
   };
 
-  if (location.pathname === '/login') return null;
+  if (location.pathname === "/login") return null;
 
   const helpLinks = [
-    { name: 'Privacy Policy', path: '/privacypolicy' },
-    { name: 'Terms of Service', path: '/termsofservice' },
-    { name: 'Cookie Policy', path: '/cookiepolicy' },
-    { name: 'FAQs', path: '/faqs' }
+    { name: "Privacy Policy", path: "/privacypolicy" },
+    { name: "Terms of Service", path: "/termsofservice" },
+    { name: "Cookie Policy", path: "/cookiepolicy" },
+    { name: "FAQs", path: "/faqs" },
   ];
 
   return (
@@ -146,8 +145,13 @@ const Footer = () => {
         {/* Newsletter */}
         <div className="mb-12 text-center">
           <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
-          <p className="text-gray-300 mb-6">Get the latest on digital commerce trends and exclusive offers.</p>
-          <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto flex">
+          <p className="text-gray-300 mb-6">
+            Get the latest on digital commerce trends and exclusive offers.
+          </p>
+          <form
+            onSubmit={handleNewsletterSubmit}
+            className="max-w-md mx-auto flex"
+          >
             <input
               type="email"
               placeholder="Enter your email"
@@ -167,21 +171,39 @@ const Footer = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           <div>
-            <Link to="/" className="flex items-center space-x-2 mb-4">
-              <Globe className="h-8 w-8 text-blue-400" />
-              <span className="text-xl font-bold">99digicom.com</span>
+            <Link to="/" className="flex items-center space-x-2 group">
+              <img
+                src={logo || "/placeholder.svg"}
+                alt="Digicom Logo"
+                className="h-16 w-auto object-contain"
+              />
+
+              <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
+                Digicom
+              </span>
             </Link>
+
             <p className="text-gray-300 mb-4">
-              Empowering businesses in the digital commerce era with innovative solutions and strategic partnerships.
+              Empowering businesses in the digital commerce era with innovative
+              solutions and strategic partnerships.
             </p>
             <div className="flex space-x-4">
-              <a href="https://twitter.com/99digicom" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="https://twitter.com/99digicom"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="https://linkedin.com/company/99digicom" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="https://linkedin.com/company/99digicom"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="https://instagram.com/99digicom" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="https://instagram.com/99digicom"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Instagram className="h-5 w-5" />
               </a>
             </div>
@@ -190,20 +212,76 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">About Us</Link></li>
-              <li><Link to="/services" className="text-gray-300 hover:text-white transition-colors">Services</Link></li>
-              <li><Link to="/partners" className="text-gray-300 hover:text-white transition-colors">Partners</Link></li>
+              <li>
+                <Link
+                  to="/"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/about"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/services"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/partners"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Partners
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-lg font-semibold mb-4">More</h4>
             <ul className="space-y-2">
-              <li><Link to="/shop" className="text-gray-300 hover:text-white transition-colors">Shop</Link></li>
-              <li><Link to="/resources" className="text-gray-300 hover:text-white transition-colors">Resources</Link></li>
-              <li><Link to="/careers" className="text-gray-300 hover:text-white transition-colors">Careers</Link></li>
-              <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
+              <li>
+                <Link
+                  to="/shop"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Shop
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/resources"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Resources
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/careers"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -212,7 +290,10 @@ const Footer = () => {
             <ul className="space-y-2">
               {helpLinks.map((link, i) => (
                 <li key={i}>
-                  <Link to={link.path} className="text-gray-300 hover:text-white transition-colors">
+                  <Link
+                    to={link.path}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
                     {link.name}
                   </Link>
                 </li>
@@ -225,7 +306,10 @@ const Footer = () => {
             <div className="space-y-2 text-gray-300">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:support@99digicom.com" className="hover:text-white transition-colors">
+                <a
+                  href="mailto:support@99digicom.com"
+                  className="hover:text-white transition-colors"
+                >
                   support@99digicom.com
                 </a>
               </div>
@@ -236,7 +320,9 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>© {new Date().getFullYear()} 99digicom.com. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} 99digicom.com. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
