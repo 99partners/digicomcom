@@ -11,6 +11,7 @@ import Resources from './pages/Resources';
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
+import FAQs from './pages/Faqs';
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
             <Route path="/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/faqs" element={<FAQs />} />
+            {/* Add more routes as needed */}
           </Routes>
         </main>
         <Footer />
