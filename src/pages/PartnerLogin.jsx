@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft, Mail, Lock, User, Building, Phone, Globe, Briefcase, Users } from "lucide-react"
+import logo from "../components/assets/99digicom.png"
 
 const PartnerLogin = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -85,11 +86,8 @@ const PartnerLogin = () => {
 
             {/* 99digicom Logo */}
             <div className="flex items-center justify-center mb-8">
-              <div className="w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-2xl">
-                <div className="text-center text-white">
-                  <div className="text-3xl font-bold">99</div>
-                  <div className="text-sm font-medium">digicom</div>
-                </div>
+              <div className="w-32 h-32  rounded-2xl flex items-center justify-center shadow-2xl p-4">
+                <img src={logo || "/placeholder.svg"} alt="99digicom Logo" className="w-full h-full object-contain" />
               </div>
             </div>
 

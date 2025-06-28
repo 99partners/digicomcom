@@ -78,41 +78,33 @@ const Home = () => {
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
-          <div className="text-center">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
-              Empowering Businesses in the <span className="text-lime-300">Digital Commerce Era</span>
-            </h1>
-            <p className="text-xl lg:text-2xl mb-8 text-emerald-100 max-w-4xl mx-auto">
-              Scale your business with seamless ONDC integration, strategic co-branding, and powerful digital marketing
-              solutions.
-            </p>
-            <p className="text-lg mb-12 text-emerald-200 max-w-3xl mx-auto">
-              Join a thriving ecosystem of businesses leveraging our tools to succeed in digital commerce.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/partners"
-                className="inline-flex items-center px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                Become a Partner
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                to="/shop"
-                className="inline-flex items-center px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-emerald-600 font-semibold rounded-lg transition-all duration-300"
-              >
-                Explore Products
-              </Link>
-            </div>
+     <section className="relative z-10 text-black overflow-hidden bg-transparent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 text-center">
+          <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+            Empowering Businesses in the <br />
+            <span className="bg-gradient-to-r from-green-700 to-green-400 text-transparent bg-clip-text animate-gradient">
+              Digital Commerce Era
+            </span>
+          </h1>
+          <p className="text-xl lg:text-2xl mb-8 text-balck-100 max-w-4xl mx-auto">
+            Scale your business with seamless ONDC integration.
+          </p>
+          <div className="flex justify-center">
+            <Link
+              to="/partners"
+              className="inline-flex items-center px-10 py-4 bg-white hover:bg-green-50 text-emerald-700 font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              Join Ecosystem
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
           </div>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
+       
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-20 left-0 w-96 h-96 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
+      
 
       {/* Key Features */}
       <section className="py-20 bg-green-50">
