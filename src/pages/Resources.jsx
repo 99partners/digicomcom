@@ -1,469 +1,124 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import { BookOpen, Download, HelpCircle, TrendingUp, ArrowRight, FileText, Video, Calendar } from 'lucide-react';
-
-// const Resources = () => {
-//   const articles = [
-//     {
-//       title: 'How ONDC is Revolutionizing Digital Commerce',
-//       excerpt: 'Discover how the Open Network for Digital Commerce is transforming the e-commerce landscape in India.',
-//       image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400',
-//       category: 'Industry Insights',
-//       readTime: '8 min read',
-//       date: 'Dec 15, 2024'
-//     },
-//     {
-//       title: 'Top 5 Co-Branding Strategies for 2025',
-//       excerpt: 'Learn the most effective co-branding strategies that will drive growth and visibility for your business.',
-//       image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400',
-//       category: 'Marketing',
-//       readTime: '6 min read',
-//       date: 'Dec 12, 2024'
-//     },
-//     {
-//       title: 'Maximizing ROI with Digital Marketing',
-//       excerpt: 'Proven techniques and strategies to maximize your return on investment in digital marketing campaigns.',
-//       image: 'https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400',
-//       category: 'Digital Marketing',
-//       readTime: '10 min read',
-//       date: 'Dec 10, 2024'
-//     }
-//   ];
-
-//   const guides = [
-//     {
-//       title: 'How to List Your Products on 99digicom.com',
-//       description: 'Complete step-by-step guide to getting your products listed and optimized on our platform.',
-//       icon: FileText,
-//       type: 'PDF Guide',
-//       pages: '24 pages'
-//     },
-//     {
-//       title: 'Setting Up Your ONDC Storefront',
-//       description: 'Comprehensive tutorial on setting up and optimizing your ONDC-enabled online store.',
-//       icon: Video,
-//       type: 'Video Tutorial',
-//       duration: '45 min'
-//     },
-//     {
-//       title: 'Optimizing Logistics for Fast Delivery',
-//       description: 'Best practices for streamlining your logistics and ensuring customer satisfaction.',
-//       icon: Download,
-//       type: 'Checklist',
-//       items: '15 items'
-//     }
-//   ];
-
-//   const faqs = [
-//     {
-//       question: 'How do I join ONDC through 99digicom.com?',
-//       answer: 'Follow our simple 4-step onboarding process: Submit application, review & approval, setup & training, then go live. Our team will guide you through each step.'
-//     },
-//     {
-//       question: 'What are the costs of partnering with 99digicom.com?',
-//       answer: 'We have transparent pricing: ₹10,000 one-time setup fee and ₹2,999 monthly subscription. Optional add-ons include digital marketing (₹5,000/month) and logistics support (₹3,000/month).'
-//     },
-//     {
-//       question: 'Can I cancel my subscription anytime?',
-//       answer: 'Yes, you can cancel your subscription at any time with no penalties or hidden fees. We believe in flexible partnerships that work for your business.'
-//     },
-//     {
-//       question: 'What kind of support do you provide?',
-//       answer: 'We offer 24/7 technical support, dedicated account managers, comprehensive training resources, and regular performance analytics to ensure your success.'
-//     },
-//     {
-//       question: 'How long does ONDC integration take?',
-//       answer: 'Typically, ONDC integration takes 7-14 business days after approval. This includes setup, testing, and going live on the network.'
-//     },
-//     {
-//       question: 'Do you provide marketing support?',
-//       answer: 'Yes, we offer comprehensive digital marketing services including SEO, social media marketing, and targeted advertising campaigns as optional add-ons.'
-//     }
-//   ];
-
-//   const caseStudies = [
-//     {
-//       title: "CraftHaven's 200% Sales Growth",
-//       description: 'How a small handcraft business scaled their operations using ONDC integration and strategic partnerships.',
-//       metrics: ['200% sales increase', '5x customer base growth', '150% profit margin improvement'],
-//       image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400'
-//     },
-//     {
-//       title: "EcoWear's Co-Branding Success",
-//       description: 'The strategy behind EcoWear\'s successful co-branding partnership that expanded their market reach.',
-//       metrics: ['50,000 new customers', '300% brand visibility', '₹10M revenue in 6 months'],
-//       image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400'
-//     },
-//     {
-//       title: "PureOrganics' Marketing Transformation",
-//       description: 'How digital marketing strategies tripled website traffic and conversion rates for PureOrganics.',
-//       metrics: ['300% traffic increase', '85% conversion boost', '250% social media growth'],
-//       image: 'https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400'
-//     }
-//   ];
-
-//   return (
-//     <div className="pt-16">
-//       {/* Hero Section */}
-//       <section className="py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-//           <h1 className="text-4xl lg:text-5xl font-bold mb-6">Resource Center</h1>
-//           <p className="text-xl max-w-3xl mx-auto">
-//             Everything you need to succeed in digital commerce - guides, insights, and expert knowledge at your fingertips.
-//           </p>
-//         </div>
-//       </section>
-
-//       {/* Blogs & Articles */}
-//       <section className="py-20 bg-white">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-gray-900 mb-4">Insights & Trends</h2>
-//             <p className="text-xl text-gray-600">Stay ahead with the latest in digital commerce and business growth strategies.</p>
-//           </div>
-          
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-//             {articles.map((article, index) => (
-//               <article key={index} className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
-//                 <div className="relative">
-//                   <img 
-//                     src={article.image} 
-//                     alt={article.title}
-//                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-//                   />
-//                   <div className="absolute top-4 left-4">
-//                     <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-//                       {article.category}
-//                     </span>
-//                   </div>
-//                 </div>
-//                 <div className="p-6">
-//                   <div className="flex items-center text-sm text-gray-500 mb-3">
-//                     <Calendar className="h-4 w-4 mr-1" />
-//                     <span>{article.date}</span>
-//                     <span className="mx-2">•</span>
-//                     <span>{article.readTime}</span>
-//                   </div>
-//                   <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-//                     {article.title}
-//                   </h3>
-//                   <p className="text-gray-600 mb-4">{article.excerpt}</p>
-//                   <Link 
-//                     to="#" 
-//                     className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors"
-//                   >
-//                     Read More
-//                     <ArrowRight className="ml-1 h-4 w-4" />
-//                   </Link>
-//                 </div>
-//               </article>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Guides & Tutorials */}
-//       <section className="py-20 bg-gray-50">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-gray-900 mb-4">Learn with Us</h2>
-//             <p className="text-xl text-gray-600">Comprehensive guides and tutorials to help you master digital commerce.</p>
-//           </div>
-          
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-//             {guides.map((guide, index) => {
-//               const IconComponent = guide.icon;
-//               return (
-//                 <div key={index} className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group">
-//                   <div className="flex items-center mb-4">
-//                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
-//                       <IconComponent className="h-6 w-6 text-blue-600" />
-//                     </div>
-//                     <div>
-//                       <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">
-//                         {guide.type}
-//                       </span>
-//                     </div>
-//                   </div>
-//                   <h3 className="text-lg font-semibold text-gray-900 mb-3">{guide.title}</h3>
-//                   <p className="text-gray-600 mb-4">{guide.description}</p>
-//                   <div className="flex items-center justify-between">
-//                     <span className="text-sm text-gray-500">
-//                       {guide.pages || guide.duration || guide.items}
-//                     </span>
-//                     <button className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-//                       <Download className="h-4 w-4 mr-2" />
-//                       Download
-//                     </button>
-//                   </div>
-//                 </div>
-//               );
-//             })}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* FAQs */}
-//       <section className="py-20 bg-white">
-//         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-//             <p className="text-xl text-gray-600">Get answers to common questions about our platform and services.</p>
-//           </div>
-          
-//           <div className="space-y-4">
-//             {faqs.map((faq, index) => (
-//               <details key={index} className="bg-gray-50 rounded-lg p-6 group">
-//                 <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-lg">
-//                   <span>{faq.question}</span>
-//                   <HelpCircle className="h-5 w-5 text-blue-600 group-open:rotate-180 transition-transform" />
-//                 </summary>
-//                 <div className="mt-4 text-gray-600 leading-relaxed">
-//                   {faq.answer}
-//                 </div>
-//               </details>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Case Studies */}
-//       <section className="py-20 bg-gray-50">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-gray-900 mb-4">Real Results</h2>
-//             <p className="text-xl text-gray-600">Success stories from businesses that transformed with 99digicom.com.</p>
-//           </div>
-          
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-//             {caseStudies.map((study, index) => (
-//               <div key={index} className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
-//                 <img 
-//                   src={study.image} 
-//                   alt={study.title}
-//                   className="w-full h-48 object-cover"
-//                 />
-//                 <div className="p-6">
-//                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{study.title}</h3>
-//                   <p className="text-gray-600 mb-4">{study.description}</p>
-//                   <div className="space-y-2 mb-4">
-//                     {study.metrics.map((metric, metricIndex) => (
-//                       <div key={metricIndex} className="flex items-center">
-//                         <TrendingUp className="h-4 w-4 text-green-500 mr-2" />
-//                         <span className="text-sm font-medium text-gray-900">{metric}</span>
-//                       </div>
-//                     ))}
-//                   </div>
-//                   <Link 
-//                     to="#" 
-//                     className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors"
-//                   >
-//                     Read Full Case Study
-//                     <ArrowRight className="ml-1 h-4 w-4" />
-//                   </Link>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* CTA Section */}
-//       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-//           <h2 className="text-4xl font-bold mb-6">Still Have Questions?</h2>
-//           <p className="text-xl mb-8 max-w-2xl mx-auto">
-//             Our team of experts is here to help you navigate your digital commerce journey.
-//           </p>
-//           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-//             <Link
-//               to="/contact"
-//               className="inline-flex items-center px-8 py-4 bg-white text-blue-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors shadow-lg"
-//             >
-//               Contact Support
-//               <ArrowRight className="ml-2 h-5 w-5" />
-//             </Link>
-//             <Link
-//               to="/partners"
-//               className="inline-flex items-center px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold rounded-lg transition-all duration-300"
-//             >
-//               Become a Partner
-//             </Link>
-//           </div>
-//         </div>
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default Resources;
-
-
-
-
-"use client"
-
-import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Star, ShoppingCart, Filter, Search } from "lucide-react"
+import { Download, HelpCircle, TrendingUp, ArrowRight, FileText, Video, Calendar } from "lucide-react"
 
-const Shop = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [searchQuery, setSearchQuery] = useState("")
-
-  const featuredProducts = [
+const Resources = () => {
+  const articles = [
     {
-      id: 1,
-      title: "ONDC Starter Kit",
-      description: "Tools for seamless ONDC onboarding, including APIs and compliance guides.",
-      price: "₹4,999/month",
-      originalPrice: "₹6,999/month",
-      image: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.8,
-      reviews: 127,
-      category: "digital",
-      badge: "Most Popular",
+      title: "How ONDC is Revolutionizing Digital Commerce",
+      excerpt: "Discover how the Open Network for Digital Commerce is transforming the e-commerce landscape in India.",
+      image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400",
+      category: "Industry Insights",
+      readTime: "8 min read",
+      date: "Dec 15, 2024",
     },
     {
-      id: 2,
-      title: "Co-Branding Suite",
-      description: "Custom templates and analytics for impactful brand partnerships.",
-      price: "₹7,999/month",
-      originalPrice: "₹9,999/month",
+      title: "Top 5 Co-Branding Strategies for 2025",
+      excerpt:
+        "Learn the most effective co-branding strategies that will drive growth and visibility for your business.",
       image: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.9,
-      reviews: 89,
-      category: "digital",
-      badge: "Featured",
+      category: "Marketing",
+      readTime: "6 min read",
+      date: "Dec 12, 2024",
     },
     {
-      id: 3,
-      title: "Digital Marketing Pro",
-      description: "SEO, social media, and ads tailored to your business goals.",
-      price: "₹9,999/month",
-      originalPrice: "₹12,999/month",
+      title: "Maximizing ROI with Digital Marketing",
+      excerpt: "Proven techniques and strategies to maximize your return on investment in digital marketing campaigns.",
       image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.7,
-      reviews: 203,
-      category: "digital",
-      badge: "Best Value",
+      category: "Digital Marketing",
+      readTime: "10 min read",
+      date: "Dec 10, 2024",
     },
   ]
 
-  const categories = [
-    { id: "all", name: "All Products", count: 24 },
-    { id: "organic", name: "Organic", count: 8 },
-    { id: "spiritual", name: "Spiritual", count: 6 },
-    { id: "handmade", name: "Handmade", count: 10 },
-  ]
-
-  const newArrivals = [
+  const guides = [
     {
-      id: 4,
-      title: "Organic Cotton Tote",
-      price: "₹999",
-      image: "https://images.pexels.com/photos/1131777/pexels-photo-1131777.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.6,
-      category: "organic",
+      title: "How to List Your Products on 99digicom.com",
+      description: "Complete step-by-step guide to getting your products listed and optimized on our platform.",
+      icon: FileText,
+      type: "PDF Guide",
+      pages: "24 pages",
     },
     {
-      id: 5,
-      title: "Handmade Incense Set",
-      price: "₹499",
-      image: "https://images.pexels.com/photos/6794825/pexels-photo-6794825.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.8,
-      category: "spiritual",
+      title: "Setting Up Your ONDC Storefront",
+      description: "Comprehensive tutorial on setting up and optimizing your ONDC-enabled online store.",
+      icon: Video,
+      type: "Video Tutorial",
+      duration: "45 min",
     },
     {
-      id: 6,
-      title: "Spiritual Wall Art",
-      price: "₹1,999",
-      image: "https://images.pexels.com/photos/3008128/pexels-photo-3008128.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.5,
-      category: "spiritual",
+      title: "Optimizing Logistics for Fast Delivery",
+      description: "Best practices for streamlining your logistics and ensuring customer satisfaction.",
+      icon: Download,
+      type: "Checklist",
+      items: "15 items",
     },
   ]
 
-  const bestSellers = [
+  const faqs = [
     {
-      id: 1,
-      title: "ONDC Starter Kit",
-      price: "₹4,999/month",
-      image: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.8,
-      category: "digital",
+      question: "How do I join ONDC through 99digicom.com?",
+      answer:
+        "Follow our simple 4-step onboarding process: Submit application, review & approval, setup & training, then go live. Our team will guide you through each step.",
     },
     {
-      id: 7,
-      title: "Organic Skincare Bundle",
-      price: "₹2,499",
-      image: "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.9,
-      category: "organic",
+      question: "What are the costs of partnering with 99digicom.com?",
+      answer:
+        "We have transparent pricing: ₹10,000 one-time setup fee and ₹2,999 monthly subscription. Optional add-ons include digital marketing (₹5,000/month) and logistics support (₹3,000/month).",
     },
     {
-      id: 8,
-      title: "Handmade Jewelry Set",
-      price: "₹1,499",
-      image: "https://images.pexels.com/photos/1472443/pexels-photo-1472443.jpeg?auto=compress&cs=tinysrgb&w=400",
-      rating: 4.7,
-      category: "handmade",
+      question: "Can I cancel my subscription anytime?",
+      answer:
+        "Yes, you can cancel your subscription at any time with no penalties or hidden fees. We believe in flexible partnerships that work for your business.",
+    },
+    {
+      question: "What kind of support do you provide?",
+      answer:
+        "We offer 24/7 technical support, dedicated account managers, comprehensive training resources, and regular performance analytics to ensure your success.",
+    },
+    {
+      question: "How long does ONDC integration take?",
+      answer:
+        "Typically, ONDC integration takes 7-14 business days after approval. This includes setup, testing, and going live on the network.",
+    },
+    {
+      question: "Do you provide marketing support?",
+      answer:
+        "Yes, we offer comprehensive digital marketing services including SEO, social media marketing, and targeted advertising campaigns as optional add-ons.",
     },
   ]
 
-  const renderStars = (rating) => {
-    return [...Array(5)].map((_, i) => (
-      <Star key={i} className={`h-4 w-4 ${i < Math.floor(rating) ? "text-amber-400 fill-current" : "text-gray-300"}`} />
-    ))
-  }
-
-  const ProductCard = ({ product, showBadge = false }) => (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group overflow-hidden border border-emerald-100">
-      <div className="relative">
-        <img
-          src={product.image || "/placeholder.svg"}
-          alt={product.title}
-          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-        {showBadge && product.badge && (
-          <div className="absolute top-3 left-3 bg-emerald-500 text-white px-2 py-1 rounded text-xs font-semibold">
-            {product.badge}
-          </div>
-        )}
-        <div className="absolute inset-0 bg-emerald-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-      </div>
-      <div className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{product.title}</h3>
-        {product.description && <p className="text-gray-600 text-sm mb-3">{product.description}</p>}
-        <div className="flex items-center mb-3">
-          <div className="flex items-center">{renderStars(product.rating)}</div>
-          {product.reviews && <span className="ml-2 text-sm text-gray-500">({product.reviews})</span>}
-        </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="text-xl font-bold text-emerald-600">{product.price}</span>
-            {product.originalPrice && (
-              <span className="ml-2 text-sm text-gray-500 line-through">{product.originalPrice}</span>
-            )}
-          </div>
-          <button className="flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+  const caseStudies = [
+    {
+      title: "CraftHaven's 200% Sales Growth",
+      description:
+        "How a small handcraft business scaled their operations using ONDC integration and strategic partnerships.",
+      metrics: ["200% sales increase", "5x customer base growth", "150% profit margin improvement"],
+      image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400",
+    },
+    {
+      title: "EcoWear's Co-Branding Success",
+      description: "The strategy behind EcoWear's successful co-branding partnership that expanded their market reach.",
+      metrics: ["50,000 new customers", "300% brand visibility", "₹10M revenue in 6 months"],
+      image: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400",
+    },
+    {
+      title: "PureOrganics' Marketing Transformation",
+      description: "How digital marketing strategies tripled website traffic and conversion rates for PureOrganics.",
+      metrics: ["300% traffic increase", "85% conversion boost", "250% social media growth"],
+      image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400",
+    },
+  ]
 
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="py-12 bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
+      <section className="py-16 bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4">Shop Our Products</h1>
-          <p className="text-xl max-w-2xl mx-auto">
-            Discover tools and products that power your digital commerce success
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6">Resource Center</h1>
+          <p className="text-xl max-w-3xl mx-auto">
+            Everything you need to succeed in digital commerce - guides, insights, and expert knowledge at your
+            fingertips.
           </p>
         </div>
         {/* Decorative elements */}
@@ -471,105 +126,136 @@ const Shop = () => {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
 
-      {/* Search and Filter */}
-      <section className="py-8 bg-green-50">
+      {/* Blogs & Articles */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Filter className="h-5 w-5 text-emerald-600" />
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                      selectedCategory === category.id
-                        ? "bg-emerald-600 text-white"
-                        : "bg-white text-gray-700 hover:bg-emerald-50 border border-emerald-200"
-                    }`}
-                  >
-                    {category.name} ({category.count})
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent w-64 transition-all"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
-            <p className="text-lg text-gray-600">Our most popular digital commerce solutions</p>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Insights & Trends</h2>
+            <p className="text-xl text-gray-600">
+              Stay ahead with the latest in digital commerce and business growth strategies.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} showBadge={true} />
+            {articles.map((article, index) => (
+              <article
+                key={index}
+                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group border border-emerald-100"
+              >
+                <div className="relative">
+                  <img
+                    src={article.image || "/placeholder.svg"}
+                    alt={article.title}
+                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      {article.category}
+                    </span>
+                  </div>
+                  <div className="absolute inset-0 bg-emerald-600 opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center text-sm text-gray-500 mb-3">
+                    <Calendar className="h-4 w-4 mr-1 text-emerald-500" />
+                    <span>{article.date}</span>
+                    <span className="mx-2">•</span>
+                    <span>{article.readTime}</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-emerald-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">{article.excerpt}</p>
+                  <Link
+                    to="#"
+                    className="inline-flex items-center text-emerald-600 hover:text-emerald-800 font-medium transition-colors"
+                  >
+                    Read More
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="py-16 bg-green-50">
+      {/* Guides & Tutorials */}
+      <section className="py-20 bg-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
-            <p className="text-lg text-gray-600">Find products that match your business needs</p>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Learn with Us</h2>
+            <p className="text-xl text-gray-600">
+              Comprehensive guides and tutorials to help you master digital commerce.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Organic",
-                description: "Eco-friendly products for sustainable businesses",
-                image:
-                  "https://images.pexels.com/photos/1337825/pexels-photo-1337825.jpeg?auto=compress&cs=tinysrgb&w=400",
-                count: "8 products",
-              },
-              {
-                name: "Spiritual",
-                description: "Artisanal spiritual items and wellness products",
-                image:
-                  "https://images.pexels.com/photos/3008128/pexels-photo-3008128.jpeg?auto=compress&cs=tinysrgb&w=400",
-                count: "6 products",
-              },
-              {
-                name: "Handmade",
-                description: "Unique, handcrafted goods from local artisans",
-                image:
-                  "https://images.pexels.com/photos/1472443/pexels-photo-1472443.jpeg?auto=compress&cs=tinysrgb&w=400",
-                count: "10 products",
-              },
-            ].map((category, index) => (
-              <div key={index} className="relative group cursor-pointer">
-                <div className="aspect-w-1 aspect-h-1 rounded-xl overflow-hidden border border-emerald-200">
-                  <img
-                    src={category.image || "/placeholder.svg"}
-                    alt={category.name}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-emerald-900 bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white">
-                      <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                      <p className="text-sm mb-3">{category.description}</p>
-                      <span className="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        {category.count}
+            {guides.map((guide, index) => {
+              const IconComponent = guide.icon
+              return (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group border border-emerald-100"
+                >
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-emerald-200 transition-colors">
+                      <IconComponent className="h-6 w-6 text-emerald-600" />
+                    </div>
+                    <div>
+                      <span className="bg-teal-100 text-teal-800 px-2 py-1 rounded text-xs font-semibold">
+                        {guide.type}
                       </span>
                     </div>
                   </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">{guide.title}</h3>
+                  <p className="text-gray-600 mb-4">{guide.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">{guide.pages || guide.duration || guide.items}</span>
+                    <button className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies */}
+      <section className="py-20 bg-green-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Real Results</h2>
+            <p className="text-xl text-gray-600">
+              Success stories from businesses that transformed with 99digicom.com.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {caseStudies.map((study, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-emerald-100"
+              >
+                <img src={study.image || "/placeholder.svg"} alt={study.title} className="w-full h-48 object-cover" />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{study.title}</h3>
+                  <p className="text-gray-600 mb-4">{study.description}</p>
+                  <div className="space-y-2 mb-4">
+                    {study.metrics.map((metric, metricIndex) => (
+                      <div key={metricIndex} className="flex items-center">
+                        <TrendingUp className="h-4 w-4 text-emerald-500 mr-2" />
+                        <span className="text-sm font-medium text-gray-900">{metric}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Link
+                    to="#"
+                    className="inline-flex items-center text-emerald-600 hover:text-emerald-800 font-medium transition-colors"
+                  >
+                    Read Full Case Study
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
                 </div>
               </div>
             ))}
@@ -577,50 +263,29 @@ const Shop = () => {
         </div>
       </section>
 
-      {/* New Arrivals */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">New Arrivals</h2>
-            <p className="text-lg text-gray-600">Latest additions to our product collection</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {newArrivals.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Best Sellers */}
-      <section className="py-16 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Best Sellers</h2>
-            <p className="text-lg text-gray-600">Top-rated products chosen by our customers</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {bestSellers.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r  from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Need Help Choosing?</h2>
+          <h2 className="text-4xl font-bold mb-6">Still Have Questions?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Our team is here to help you find the perfect products for your business needs.
+            Our team of experts is here to help you navigate your digital commerce journey.
           </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center px-8 py-4 bg-white text-emerald-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors shadow-lg"
-          >
-            Contact Our Experts
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/contact"
+              className="inline-flex items-center px-8 py-4 bg-white text-emerald-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors shadow-lg"
+            >
+              Contact Support
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+            <Link
+              to="/partners"
+              className="inline-flex items-center px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-emerald-600 font-semibold rounded-lg transition-all duration-300"
+            >
+              Become a Partner
+            </Link>
+          </div>
         </div>
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
@@ -630,4 +295,4 @@ const Shop = () => {
   )
 }
 
-export default Shop
+export default Resources
