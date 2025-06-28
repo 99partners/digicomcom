@@ -10,7 +10,8 @@ import Shop from './pages/Shop';
 import Resources from './pages/Resources';
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
-import Login from './pages/Login';
+import CustomerLogin from './pages/CutomerLogin';
+import PartnerLogin from './pages/PartnerLogin';
 import FAQs from './pages/Faqs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
@@ -32,7 +33,8 @@ function App() {
             <Route path="/resources" element={<Resources />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/customerlogin" element={<CustomerLogin />} />
+            <Route path="/partnerlogin" element={<PartnerLogin />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
