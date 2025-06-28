@@ -696,7 +696,7 @@ export default function CoBrandingPage() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-16 px-4 bg-gradient-to-r from-green-600 to-green-700 text-white">
+      <section className="py-16 px-4 bg-gradient-to-r from-green-600 via-green-700 to-green-800 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Collaborate Smarter?</h2>
           <p className="text-xl mb-8 opacity-90">

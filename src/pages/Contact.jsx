@@ -1,81 +1,87 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Users, CheckCircle } from 'lucide-react';
+"use client"
+
+import { useState } from "react"
+import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Users, CheckCircle } from "lucide-react"
 
 const Contact = () => {
   const [partnerForm, setPartnerForm] = useState({
-    name: '',
-    email: '',
-    businessName: '',
-    message: ''
-  });
+    name: "",
+    email: "",
+    businessName: "",
+    message: "",
+  })
 
   const [supportForm, setSupportForm] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  })
 
   const handlePartnerSubmit = (e) => {
-    e.preventDefault();
-    console.log('Partner inquiry:', partnerForm);
-    alert('Thank you for your interest! We\'ll get back to you within 24 hours.');
-    setPartnerForm({ name: '', email: '', businessName: '', message: '' });
-  };
+    e.preventDefault()
+    console.log("Partner inquiry:", partnerForm)
+    alert("Thank you for your interest! We'll get back to you within 24 hours.")
+    setPartnerForm({ name: "", email: "", businessName: "", message: "" })
+  }
 
   const handleSupportSubmit = (e) => {
-    e.preventDefault();
-    console.log('Support request:', supportForm);
-    alert('Your support request has been submitted. We\'ll respond soon!');
-    setSupportForm({ name: '', email: '', subject: '', message: '' });
-  };
+    e.preventDefault()
+    console.log("Support request:", supportForm)
+    alert("Your support request has been submitted. We'll respond soon!")
+    setSupportForm({ name: "", email: "", subject: "", message: "" })
+  }
 
   const offices = [
     {
-      city: 'Mumbai',
-      address: '123 Digital Hub, Andheri East, Mumbai, India',
-      phone: '+91 123 456 7890',
-      email: 'mumbai@99digicom.com'
+      city: "Mumbai",
+      address: "123 Digital Hub, Andheri East, Mumbai, India",
+      phone: "+91 123 456 7890",
+      email: "mumbai@99digicom.com",
     },
     {
-      city: 'Bengaluru',
-      address: '456 Tech Park, Whitefield, Bengaluru, India',
-      phone: '+91 987 654 3210',
-      email: 'bengaluru@99digicom.com'
-    }
-  ];
+      city: "Bengaluru",
+      address: "456 Tech Park, Whitefield, Bengaluru, India",
+      phone: "+91 987 654 3210",
+      email: "bengaluru@99digicom.com",
+    },
+  ]
 
   const contactMethods = [
     {
       icon: Mail,
-      title: 'Email Support',
-      value: 'support@99digicom.com',
-      description: 'For general inquiries and support'
+      title: "Email Support",
+      value: "support@99digicom.com",
+      description: "For general inquiries and support",
     },
     {
       icon: Phone,
-      title: 'Phone Support',
-      value: '+91 123 456 7890',
-      description: 'Monday to Friday, 9 AM - 6 PM IST'
+      title: "Phone Support",
+      value: "+91 123 456 7890",
+      description: "Monday to Friday, 9 AM - 6 PM IST",
     },
     {
       icon: MessageCircle,
-      title: 'Live Chat',
-      value: 'Available 9 AM–6 PM IST',
-      description: 'Instant support via our website'
-    }
-  ];
+      title: "Live Chat",
+      value: "Available 9 AM–6 PM IST",
+      description: "Instant support via our website",
+    },
+  ]
 
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-16 bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold mb-6">Get in Touch</h1>
           <p className="text-xl max-w-3xl mx-auto">
             Ready to transform your business? Have questions about our services? We're here to help you succeed.
           </p>
         </div>
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
 
       {/* Contact Methods */}
@@ -83,36 +89,38 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {contactMethods.map((method, index) => {
-              const IconComponent = method.icon;
+              const IconComponent = method.icon
               return (
-                <div key={index} className="text-center p-6 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors group">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
-                    <IconComponent className="h-8 w-8 text-blue-600" />
+                <div
+                  key={index}
+                  className="text-center p-6 bg-green-50 rounded-xl hover:bg-emerald-50 transition-colors group border border-emerald-100"
+                >
+                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-200 transition-colors">
+                    <IconComponent className="h-8 w-8 text-emerald-600" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{method.title}</h3>
-                  <p className="text-xl font-bold text-blue-600 mb-2">{method.value}</p>
+                  <p className="text-xl font-bold text-emerald-600 mb-2">{method.value}</p>
                   <p className="text-gray-600">{method.description}</p>
                 </div>
-              );
+              )
             })}
           </div>
         </div>
       </section>
 
       {/* Forms Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Partner Inquiry Form */}
-            <div className="bg-white p-8 rounded-xl shadow-lg">
+            <div className="bg-white p-8 rounded-xl shadow-lg border-t-4 border-emerald-500">
               <div className="flex items-center mb-6">
-                <Users className="h-8 w-8 text-blue-600 mr-3" />
+                <Users className="h-8 w-8 text-emerald-600 mr-3" />
                 <h2 className="text-2xl font-bold text-gray-900">Partner with Us</h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Ready to join our ecosystem? Fill out the form, and we'll get back to you within 24 hours.
               </p>
-              
               <form onSubmit={handlePartnerSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="partner-name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -124,11 +132,10 @@ const Contact = () => {
                     required
                     value={partnerForm.name}
                     onChange={(e) => setPartnerForm({ ...partnerForm, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     placeholder="Enter your full name"
                   />
                 </div>
-                
                 <div>
                   <label htmlFor="partner-email" className="block text-sm font-medium text-gray-700 mb-2">
                     Email Address *
@@ -139,11 +146,10 @@ const Contact = () => {
                     required
                     value={partnerForm.email}
                     onChange={(e) => setPartnerForm({ ...partnerForm, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     placeholder="Enter your email address"
                   />
                 </div>
-                
                 <div>
                   <label htmlFor="business-name" className="block text-sm font-medium text-gray-700 mb-2">
                     Business Name *
@@ -154,11 +160,10 @@ const Contact = () => {
                     required
                     value={partnerForm.businessName}
                     onChange={(e) => setPartnerForm({ ...partnerForm, businessName: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     placeholder="Enter your business name"
                   />
                 </div>
-                
                 <div>
                   <label htmlFor="partner-message" className="block text-sm font-medium text-gray-700 mb-2">
                     Message
@@ -168,14 +173,13 @@ const Contact = () => {
                     rows={4}
                     value={partnerForm.message}
                     onChange={(e) => setPartnerForm({ ...partnerForm, message: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     placeholder="Tell us about your business and partnership goals"
                   />
                 </div>
-                
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="w-full inline-flex items-center justify-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   <Send className="h-5 w-5 mr-2" />
                   Submit Inquiry
@@ -184,15 +188,14 @@ const Contact = () => {
             </div>
 
             {/* Customer Support Form */}
-            <div className="bg-white p-8 rounded-xl shadow-lg">
+            <div className="bg-white p-8 rounded-xl shadow-lg border-t-4 border-teal-500">
               <div className="flex items-center mb-6">
-                <MessageCircle className="h-8 w-8 text-green-600 mr-3" />
+                <MessageCircle className="h-8 w-8 text-teal-600 mr-3" />
                 <h2 className="text-2xl font-bold text-gray-900">Need Help?</h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Have questions or need support? Our team is here to assist you with any inquiries.
               </p>
-              
               <form onSubmit={handleSupportSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="support-name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -204,11 +207,10 @@ const Contact = () => {
                     required
                     value={supportForm.name}
                     onChange={(e) => setSupportForm({ ...supportForm, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                     placeholder="Enter your full name"
                   />
                 </div>
-                
                 <div>
                   <label htmlFor="support-email" className="block text-sm font-medium text-gray-700 mb-2">
                     Email Address *
@@ -219,11 +221,10 @@ const Contact = () => {
                     required
                     value={supportForm.email}
                     onChange={(e) => setSupportForm({ ...supportForm, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                     placeholder="Enter your email address"
                   />
                 </div>
-                
                 <div>
                   <label htmlFor="support-subject" className="block text-sm font-medium text-gray-700 mb-2">
                     Subject *
@@ -233,7 +234,7 @@ const Contact = () => {
                     required
                     value={supportForm.subject}
                     onChange={(e) => setSupportForm({ ...supportForm, subject: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   >
                     <option value="">Select a subject</option>
                     <option value="Technical Support">Technical Support</option>
@@ -243,7 +244,6 @@ const Contact = () => {
                     <option value="Other">Other</option>
                   </select>
                 </div>
-                
                 <div>
                   <label htmlFor="support-message" className="block text-sm font-medium text-gray-700 mb-2">
                     Message *
@@ -254,14 +254,13 @@ const Contact = () => {
                     required
                     value={supportForm.message}
                     onChange={(e) => setSupportForm({ ...supportForm, message: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                     placeholder="Describe your question or issue in detail"
                   />
                 </div>
-                
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="w-full inline-flex items-center justify-center px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   <Send className="h-5 w-5 mr-2" />
                   Send Message
@@ -279,32 +278,36 @@ const Contact = () => {
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Visit Our Offices</h2>
             <p className="text-xl text-gray-600">Meet our team in person at our office locations across India.</p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {offices.map((office, index) => (
-              <div key={index} className="bg-gray-50 p-8 rounded-xl hover:bg-blue-50 transition-colors group">
+              <div
+                key={index}
+                className="bg-green-50 p-8 rounded-xl hover:bg-emerald-50 transition-colors group border border-emerald-100"
+              >
                 <div className="flex items-center mb-4">
-                  <MapPin className="h-6 w-6 text-blue-600 mr-2" />
+                  <MapPin className="h-6 w-6 text-emerald-600 mr-2" />
                   <h3 className="text-xl font-bold text-gray-900">{office.city} Office</h3>
                 </div>
-                
                 <div className="space-y-3">
                   <p className="text-gray-600">{office.address}</p>
-                  
                   <div className="flex items-center">
                     <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                    <a href={`tel:${office.phone}`} className="text-blue-600 hover:text-blue-800 transition-colors">
+                    <a
+                      href={`tel:${office.phone}`}
+                      className="text-emerald-600 hover:text-emerald-800 transition-colors"
+                    >
                       {office.phone}
                     </a>
                   </div>
-                  
                   <div className="flex items-center">
                     <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                    <a href={`mailto:${office.email}`} className="text-blue-600 hover:text-blue-800 transition-colors">
+                    <a
+                      href={`mailto:${office.email}`}
+                      className="text-emerald-600 hover:text-emerald-800 transition-colors"
+                    >
                       {office.email}
                     </a>
                   </div>
-                  
                   <div className="flex items-center">
                     <Clock className="h-4 w-4 text-gray-400 mr-2" />
                     <span className="text-gray-600">Monday - Friday, 9:00 AM - 6:00 PM</span>
@@ -317,8 +320,9 @@ const Contact = () => {
       </section>
 
       {/* Response Time Promise */}
-      <section className="py-16 bg-gradient-to-r from-green-500 to-blue-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-16 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center mb-6">
             <CheckCircle className="h-12 w-12 mr-4" />
             <h2 className="text-3xl font-bold">Our Response Promise</h2>
@@ -327,23 +331,26 @@ const Contact = () => {
             We're committed to providing exceptional support and quick responses to all inquiries.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-            <div>
+            <div className="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
               <div className="text-3xl font-bold mb-2">24 Hours</div>
               <div className="text-lg">Partner Inquiries</div>
             </div>
-            <div>
+            <div className="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
               <div className="text-3xl font-bold mb-2">2 Hours</div>
               <div className="text-lg">Support Requests</div>
             </div>
-            <div>
+            <div className="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
               <div className="text-3xl font-bold mb-2">Instant</div>
               <div className="text-lg">Live Chat Support</div>
             </div>
           </div>
         </div>
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

@@ -460,14 +460,16 @@ const CustomerLogin = () => {
             </Link>
 
             {/* 99digicom Logo */}
-            <div className="flex items-center justify-center mb-8">
+            {/* <div className="flex items-center justify-center mb-8">
               <div className="w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-2xl">
                 <div className="text-center text-white">
                   <div className="text-3xl font-bold">99</div>
                   <div className="text-sm font-medium">digicom</div>
                 </div>
               </div>
-            </div>
+            </div> */}
+
+            
 
             <h1 className="text-4xl font-bold text-gray-900 text-center">
               Welcome to{" "}
