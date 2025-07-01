@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext, useState } from "react"
-import { User, Mail, Lock, ArrowLeft } from "lucide-react"
+import { User, Mail, Phone, Lock, ArrowLeft } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { toast } from "react-toastify"
@@ -11,11 +11,21 @@ const PartnerLogin = () => {
   const [state, setState] = useState("Sign Up")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
   const backendUrl = "http://localhost:5050"
+
+  const handlePhoneChange = (e) => {
+      const input = e.target.value
+      if (/^\d{0,10}$/.test(input)) {
+        setPhoneNumber(input)
+      } else {
+        toast.error('Please enter only digits (0-9) up to 10 characters')
+      }
+    }
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -24,7 +34,7 @@ const PartnerLogin = () => {
     try {
       axios.defaults.withCredentials = true
       const url = backendUrl + (state === "Sign Up" ? "/api/auth/register" : "/api/auth/login")
-      const payload = state === "Sign Up" ? { name, email, password } : { email, password }
+      const payload = state === "Sign Up" ? { name, email, phoneNumber, password } : { email, password }
 
       const { data } = await axios.post(url, payload)
 
@@ -139,6 +149,18 @@ const PartnerLogin = () => {
                   placeholder="Email address"
                   required
                 />
+              </div>
+
+              <div className="flex items-center gap-3 w-full px-5 py-3 rounded-full bg-slate-800 border border-slate-700 hover:border-green-500/50 transition-colors group">
+                <Phone className="h-5 w-5 text-green-400 group-hover:text-green-300 transition-colors" />
+                <input
+                onChange={handlePhoneChange}
+                value={phoneNumber}
+                className='bg-transparent outline-none'
+                type="tel"
+                placeholder='Phone Number'
+                required
+              />
               </div>
 
               <div className="flex items-center gap-3 w-full px-5 py-3 rounded-full bg-slate-800 border border-slate-700 hover:border-green-500/50 transition-colors group">
