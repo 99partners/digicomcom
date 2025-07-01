@@ -62,7 +62,7 @@ function App() {
             <Route 
               path="/partner" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute key="partner-route">
                   <Partner />
                 </ProtectedRoute>
               } 
