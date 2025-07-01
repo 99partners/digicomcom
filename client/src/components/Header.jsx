@@ -1,15 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react" // Added useEffect and useRef
 import { Link, useLocation } from "react-router-dom"
-import { Menu, X, Search, ChevronDown } from "lucide-react" // Added ChevronDown
+import { Menu, X, Search, ChevronDown } from "lucide-react"
 import logo from "../assets/99digicom.png"
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isSearchExpanded, setIsSearchExpanded] = useState(false)
-  const [isServicesOpen, setIsServicesOpen] = useState(false) // State for Services dropdown
+  const [isServicesOpen, setIsServicesOpen] = useState(false)
   const location = useLocation()
   const pathname = location.pathname
 
@@ -35,6 +35,30 @@ const Header = () => {
     }
   }
 
+  // Ref to track the dropdown element
+  const servicesDropdownRef = useRef(null)
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target)) {
+        setIsServicesOpen(false)
+      }
+    }
+
+    // Add event listener when dropdown is open
+    if (isServicesOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isServicesOpen])
+
   if (pathname === "/customerlogin" || pathname === "/partnerlogin") return null
 
   return (
@@ -53,7 +77,7 @@ const Header = () => {
           {navigation.map((item) => (
             <div key={item.name} className="relative">
               {item.dropdown ? (
-                <div className="relative">
+                <div className="relative" ref={servicesDropdownRef}> {/* Attach ref to the dropdown container */}
                   <button
                     onClick={() => setIsServicesOpen(!isServicesOpen)}
                     className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 flex items-center ${
@@ -71,7 +95,7 @@ const Header = () => {
                         <Link
                           key={subItem.name}
                           to={subItem.href}
-                          onClick={() => setIsServicesOpen(false)}
+                          onClick={() => setIsServicesOpen(false)} // Close dropdown on sub-item click
                           className={`block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 ${
                             isActive(subItem.href) ? "bg-green-100 text-green-700" : ""
                           }`}
@@ -86,6 +110,7 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
+                  onClick={() => setIsServicesOpen(false)} // Close dropdown on other link clicks
                   className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
                     isActive(item.href)
                       ? "text-green-700 bg-green-100"
@@ -215,7 +240,10 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setIsMenuOpen(false)
+                    setIsServicesOpen(false)
+                  }} // Close dropdown on other link clicks
                   className={`block px-4 py-2 rounded-lg text-base ${
                     isActive(item.href)
                       ? "text-green-700 bg-green-100"
