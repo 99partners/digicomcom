@@ -50,8 +50,19 @@ export const register = async (req, res)=>{
         }
         await transporter.sendMail(mailOptions)
 
-        return res.json({success:true, })
+        // Return user data and token
+        const userData = {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            phoneNumber: user.phoneNumber
+        };
 
+        return res.json({
+            success: true,
+            token,
+            user: userData
+        });
 
     } catch(err) {
         res.json({success:false, messsage: err.message})
@@ -90,7 +101,19 @@ export const login = async(req, res)=>{
             maxAge: 1*24*60*60*1000
         });
 
-        return res.json({success:true, })
+        // Return user data and token
+        const userData = {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            phoneNumber: user.phoneNumber
+        };
+
+        return res.json({
+            success: true,
+            token,
+            user: userData
+        });
 
     } catch(err) {
         res.json({success:false, messsage: err.message}) 

@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { toast } from "react-toastify"
 import logo from "../assets/99digicom.png"
+import { useAuth } from "../context/AuthContext"
 
 const PartnerLogin = () => {
   const [state, setState] = useState("Sign Up")
@@ -16,6 +17,7 @@ const PartnerLogin = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
+  const { handleLogin } = useAuth()
   const backendUrl = "http://localhost:5050"
 
   const handlePhoneChange = (e) => {
@@ -39,8 +41,10 @@ const PartnerLogin = () => {
       const { data } = await axios.post(url, payload)
 
       if (data.success) {
+        // Store the token and user data for persistent login
+        handleLogin(data.token, data.user)
         toast.success(state === "Sign Up" ? "Account created successfully!" : "Login successful!")
-        navigate("/")
+        navigate("/partner")
       } else {
         toast.error(data.message)
       }
