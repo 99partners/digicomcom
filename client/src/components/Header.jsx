@@ -2,20 +2,24 @@
 
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { Menu, X, Search } from "lucide-react"
+import { Menu, X, Search, ChevronDown } from "lucide-react" // Added ChevronDown
 import logo from "../assets/99digicom.png"
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isSearchExpanded, setIsSearchExpanded] = useState(false)
+  const [isServicesOpen, setIsServicesOpen] = useState(false) // State for Services dropdown
   const location = useLocation()
   const pathname = location.pathname
 
   const navigation = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/about" },
-    { name: "Services", href: "/services" },
+    { name: "Services", href: "/services", dropdown: [
+      { name: "Co-Branding Solutions", href: "/services/co-branding" },
+      { name: "Platform Enablement & AMS", href: "/services/platform-ams" }
+    ] },
     { name: "Product Partners", href: "/partners" },
     { name: "Resources", href: "/resources" },
     { name: "Careers", href: "/careers" },
@@ -47,17 +51,51 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-1 flex-shrink-0 relative z-10">
           {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
-                isActive(item.href)
-                  ? "text-green-700 bg-green-100"
-                  : "text-gray-600 hover:text-green-700 hover:bg-green-50"
-              }`}
-            >
-              {item.name}
-            </Link>
+            <div key={item.name} className="relative">
+              {item.dropdown ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsServicesOpen(!isServicesOpen)}
+                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 flex items-center ${
+                      isActive(item.href) || isServicesOpen
+                        ? "text-green-700 bg-green-100"
+                        : "text-gray-600 hover:text-green-700 hover:bg-green-50"
+                    }`}
+                  >
+                    {item.name}
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                  </button>
+                  {isServicesOpen && (
+                    <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                      {item.dropdown.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.href}
+                          onClick={() => setIsServicesOpen(false)}
+                          className={`block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 ${
+                            isActive(subItem.href) ? "bg-green-100 text-green-700" : ""
+                          }`}
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
+                    isActive(item.href)
+                      ? "text-green-700 bg-green-100"
+                      : "text-gray-600 hover:text-green-700 hover:bg-green-50"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )}
+            </div>
           ))}
         </nav>
 
@@ -137,18 +175,57 @@ const Header = () => {
           </div>
 
           {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              onClick={() => setIsMenuOpen(false)}
-              className={`block px-4 py-2 rounded-lg text-base ${
-                isActive(item.href)
-                  ? "text-green-700 bg-green-100"
-                  : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-              }`}
-            >
-              {item.name}
-            </Link>
+            <div key={item.name}>
+              {item.dropdown ? (
+                <div>
+                  <button
+                    onClick={() => setIsServicesOpen(!isServicesOpen)}
+                    className={`w-full text-left px-4 py-2 rounded-lg text-base flex items-center ${
+                      isActive(item.href) || isServicesOpen
+                        ? "text-green-700 bg-green-100"
+                        : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                    }`}
+                  >
+                    {item.name}
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                  </button>
+                  {isServicesOpen && (
+                    <div className="ml-4 mt-2 space-y-1">
+                      {item.dropdown.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.href}
+                          onClick={() => {
+                            setIsMenuOpen(false)
+                            setIsServicesOpen(false)
+                          }}
+                          className={`block px-4 py-2 rounded-lg text-sm ${
+                            isActive(subItem.href)
+                              ? "text-green-700 bg-green-100"
+                              : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                          }`}
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-4 py-2 rounded-lg text-base ${
+                    isActive(item.href)
+                      ? "text-green-700 bg-green-100"
+                      : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )}
+            </div>
           ))}
 
           {/* Shop Button for Mobile */}

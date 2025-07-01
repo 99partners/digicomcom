@@ -91,7 +91,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-200 to-indigo-700">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800">
       <img
         onClick={() => navigate('/')}
         src={assets.logo}
@@ -119,7 +119,7 @@ const ResetPassword = () => {
             />
           </div>
 
-          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full mt-3">
+          <button className="w-full py-2.5 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white rounded-full mt-3">
             Submit
           </button>
         </form>
@@ -150,7 +150,7 @@ const ResetPassword = () => {
               ))}
           </div>
 
-          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full">
+          <button className="w-full py-2.5 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white rounded-full">
             Submit
           </button>
         </form>
@@ -176,7 +176,7 @@ const ResetPassword = () => {
             />
           </div>
 
-          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full mt-3">
+          <button className="w-full py-2.5 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white rounded-full mt-3">
             Submit
           </button>
         </form>
