@@ -288,18 +288,19 @@ const Partner = () => {
         );
 
       case 'settings':
+        const currentPlan = subscriptionPlans.find(p => p.id === selectedPlan);
         return (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium mb-4">Profile Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 max-w-md">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input
                       type="text"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
                       value={user?.name || ''}
                       readOnly
                     />
@@ -308,32 +309,51 @@ const Partner = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <input
                       type="email"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
                       value={user?.email || ''}
                       readOnly
                     />
                   </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium mb-4">Security</h3>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                  Change Password
-                </button>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium mb-4">Notifications</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input type="checkbox" className="form-checkbox h-4 w-4 text-blue-600" />
-                    <span className="ml-2">Email notifications</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input type="checkbox" className="form-checkbox h-4 w-4 text-blue-600" />
-                    <span className="ml-2">SMS notifications</span>
-                  </label>
+                  <div className="pt-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Current Plan</label>
+                    {currentPlan ? (
+                      <div className="border border-green-200 rounded-lg p-4 bg-green-50">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center">
+                            <Crown className="h-5 w-5 text-green-500 mr-2" />
+                            <span className="font-medium text-gray-900">{currentPlan.name}</span>
+                          </div>
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Active
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600">
+                            ₹{currentPlan.price}/month
+                          </span>
+                          <span className="text-green-600 font-medium">
+                            Save {currentPlan.savePercent}%
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div className="flex items-center text-gray-500">
+                          <Crown className="h-5 w-5 mr-2" />
+                          <span>No active plan</span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setShowPlans(true);
+                            setActiveSection(null);
+                          }}
+                          className="mt-2 text-sm text-green-600 hover:text-green-700 font-medium"
+                        >
+                          Choose a plan →
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -361,9 +381,9 @@ const Partner = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Left Sidebar - Navigation */}
-      <div className="w-64 bg-white shadow-lg">
-        <div className="p-4 border-b">
-          <h2 className="text-xl font-bold text-gray-800">Partner Portal</h2>
+      <div className="w-64 bg-[#1a1c23] shadow-lg">
+        <div className="p-4 border-b border-gray-700">
+          <h2 className="text-xl font-bold text-white">99 Digicom Partner</h2>
         </div>
         <nav className="p-4">
           <ul className="space-y-2">
@@ -374,13 +394,17 @@ const Partner = () => {
                     setActiveSection(item.id);
                     setShowPlans(false);
                   }}
-                  className={`w-full flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                  className={`w-full flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-200 ${
                     activeSection === item.id && !showPlans
-                      ? 'bg-green-50 text-green-700'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                      : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                   }`}
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className={`h-5 w-5 ${
+                    activeSection === item.id && !showPlans
+                      ? 'text-white'
+                      : 'text-gray-400 group-hover:text-white'
+                  }`} />
                   <span>{item.label}</span>
                 </button>
               </li>
@@ -390,16 +414,16 @@ const Partner = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8">
-        <div className="mb-8">
-          <div className="flex justify-between items-start">
+      <div className="flex-1 p-6">
+        <div className="mb-4">
+          <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-xl font-bold text-gray-900">
                 {showPlans ? 'Subscription Plans' : menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
               </h1>
-              <p className="text-gray-600">Welcome back, {user?.name}!</p>
+              <p className="text-sm text-gray-600">Welcome back, {user?.name}!</p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               <button
                 onClick={() => {
                   setShowPlans(!showPlans);
@@ -407,27 +431,29 @@ const Partner = () => {
                     setActiveSection(null);
                   }
                 }}
-                className={`inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium transition-colors ${
+                className={`inline-flex items-center px-3 py-1.5 border rounded-md text-sm font-medium transition-all duration-200 ${
                   showPlans
-                    ? 'border-green-500 bg-green-50 text-green-700'
+                    ? 'border-green-500 bg-green-500 text-white'
                     : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                <Crown className={`h-4 w-4 mr-2 ${showPlans ? 'text-green-500' : 'text-gray-400'}`} />
+                <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
                 {selectedPlan ? subscriptionPlans.find(p => p.id === selectedPlan)?.name : 'Plans'}
               </button>
               <button
                 onClick={onLogout}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                className="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-all duration-200"
               >
-                <LogOut className="h-4 w-4 mr-2" />
+                <LogOut className="h-4 w-4 mr-1.5" />
                 Logout
               </button>
             </div>
           </div>
         </div>
 
-        {renderDashboardContent()}
+        <div>
+          {renderDashboardContent()}
+        </div>
       </div>
     </div>
   );
