@@ -72,7 +72,7 @@ const handelInput = (e, index) => {
 
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-200 to-indigo-700'>
+    <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800'>
       
        <img onClick={()=>navigate('/')} src={assets.logo} className='absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer'/>
 
@@ -90,7 +90,7 @@ const handelInput = (e, index) => {
               className='w-12 h-12 bg-[#333A5C] text-white text-center text-lg rounded-md'/>
             ))}
           </div>
-          <button className='w-full py-3  bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full'>Verify email</button>
+          <button className='w-full py-3  bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white rounded-full'>Verify email</button>
        </form>
     </div>
   )
