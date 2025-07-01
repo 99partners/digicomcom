@@ -43,7 +43,7 @@ const Partner = () => {
     {
       id: 'basic',
       name: 'Single',
-      price: '₹999',
+      price: '999',
       originalPrice: '₹4,499',
       savePercent: '78',
       icon: Star,
@@ -61,7 +61,7 @@ const Partner = () => {
     {
       id: 'pro',
       name: 'Premium',
-      price: '₹2,499',
+      price: '2,499',
       originalPrice: '₹10,999',
       savePercent: '77',
       icon: Star,
@@ -79,7 +79,7 @@ const Partner = () => {
     {
       id: 'enterprise',
       name: 'Business',
-      price: '₹4,999',
+      price: '4,999',
       originalPrice: '₹14,999',
       savePercent: '67',
       icon: Crown,
