@@ -76,16 +76,6 @@ export default function CoBrandingPage() {
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Unlock powerful growth opportunities through strategic brand collaborations and co-marketing campaigns.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
-              Apply for Co-Branding
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </button>
-            <button className="inline-flex items-center px-6 py-3 border-2 border-green-600 text-green-600 hover:bg-green-50 font-medium rounded-lg transition-colors">
-              Talk to a Brand Strategist
-              <Phone className="ml-2 h-5 w-5" />
-            </button>
-          </div>
         </div>
       </section>
 
@@ -677,41 +667,6 @@ export default function CoBrandingPage() {
             </form>
           </div>
 
-          <div className="mt-8 text-center">
-            <p className="text-gray-600 mb-4">
-              Our team reviews all applications within 2-4 business days and will contact you for the next steps.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="inline-flex items-center px-6 py-3 border-2 border-green-600 text-green-600 hover:bg-green-50 font-medium rounded-lg transition-colors">
-                <Mail className="mr-2 h-4 w-4" />
-                Need Help? Talk to Us
-              </button>
-              <button className="inline-flex items-center px-6 py-3 border-2 border-green-600 text-green-600 hover:bg-green-50 font-medium rounded-lg transition-colors">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Get a Custom Quote
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer CTA */}
-      <section className="py-16 px-4 bg-gradient-to-r from-green-600 via-green-700 to-green-800 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Collaborate Smarter?</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Explore how our co-branding solution can help you unlock new growth.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="inline-flex items-center px-6 py-3 bg-white text-green-600 hover:bg-gray-100 font-medium rounded-lg transition-colors">
-              Apply for Co-Branding
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </button>
-            <button className="inline-flex items-center px-6 py-3 border-2 border-white text-white hover:bg-white hover:text-green-600 font-medium rounded-lg transition-colors">
-              Book a Discovery Call
-              <Phone className="ml-2 h-5 w-5" />
-            </button>
-          </div>
         </div>
       </section>
     </div>

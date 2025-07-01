@@ -17,6 +17,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
 import CoBranding from './pages/CoBranding';
+import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword'
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,8 +37,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
-             <Route path="/services/co-branding" element={<CoBranding />} />
-            {/* <Route path="/services/platform-ams" element={<PlatformEnablementAMS />} /> */}
+            <Route path="/services/co-branding" element={<CoBranding />} />
+            <Route path="/services/platform-ams" element={<PlatformEnablementAMS />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/resources" element={<Resources />} />
