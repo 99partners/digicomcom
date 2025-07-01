@@ -36,6 +36,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
+             <Route path="/services/co-branding" element={<CoBranding />} />
+            {/* <Route path="/services/platform-ams" element={<PlatformEnablementAMS />} /> */}
             <Route path="/partners" element={<Partners />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/resources" element={<Resources />} />
