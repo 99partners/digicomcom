@@ -6,7 +6,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const ResetPassword = () => {
-
   const { backendUrl } = useContext(AppContext);
   axios.defaults.withCredentials = true;
 
@@ -18,11 +17,11 @@ const ResetPassword = () => {
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
 
-  // const handleInput = (e, index) => {
-  //   if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
-  //     inputRefs.current[index + 1].focus();
-  //   }
-  // };
+  const handleInput = (e, index) => {
+    if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
 
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
@@ -44,7 +43,6 @@ const ResetPassword = () => {
   const onSubmitEmail = async (e) => {
     e.preventDefault();
     try {
-      
       const { data } = await axios.post(backendUrl + '/api/auth/send-reset-otp', { email });
       if (data.success) {
         toast.success(data.message);
@@ -69,26 +67,13 @@ const ResetPassword = () => {
     }
   };
 
-  const handleInput = (e, index) => {
-  if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
-    inputRefs.current[index + 1].focus();
-  }
-
-  // ✅ Update otp state after input
-  const currentOtp = inputRefs.current.map((input) => input?.value || '').join('');
-  setOtp(currentOtp);
-};
-
-
   const onSubmitNewPassword = async (e) => {
     e.preventDefault();
     if (!email || !otp || !newPassword) {
       toast.error('Email, OTP, and New Password are required.');
       return;
     }
-    try 
-    {
-      
+    try {
       const { data } = await axios.post(backendUrl + '/api/auth/reset-password', {
         email,
         otp,
