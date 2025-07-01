@@ -171,7 +171,7 @@
 //                       />
 //                     </div>
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
 //                       Password
@@ -189,7 +189,7 @@
 //                       />
 //                     </div>
 //                   </div>
-                  
+
 //                   <div className="flex items-center justify-between">
 //                     <label className="flex items-center space-x-2">
 //                       <input
@@ -204,7 +204,7 @@
 //                       Forgot password?
 //                     </a>
 //                   </div>
-                  
+
 //                   <button
 //                     type="submit"
 //                     disabled={isLoading}
@@ -256,7 +256,7 @@
 //                       />
 //                     </div>
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
 //                       Company Name
@@ -273,7 +273,7 @@
 //                       />
 //                     </div>
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
 //                       Phone Number
@@ -291,7 +291,7 @@
 //                       />
 //                     </div>
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="signupEmail" className="block text-sm font-medium text-gray-700 mb-2">
 //                       Email
@@ -309,7 +309,7 @@
 //                       />
 //                     </div>
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="signupPassword" className="block text-sm font-medium text-gray-700 mb-2">
 //                       Password
@@ -327,7 +327,7 @@
 //                       />
 //                     </div>
 //                   </div>
-                  
+
 //                   <div className="flex items-start space-x-2">
 //                     <input
 //                       type="checkbox"
@@ -347,7 +347,7 @@
 //                       </a>
 //                     </span>
 //                   </div>
-                  
+
 //                   <button
 //                     type="submit"
 //                     disabled={isLoading}
@@ -392,21 +392,29 @@
 
 // export default Login;
 
+"use client";
 
-"use client"
-
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { ArrowLeft, Mail, Lock, User, Phone, Globe, CheckCircle } from "lucide-react"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  ArrowLeft,
+  Mail,
+  Lock,
+  User,
+  Phone,
+  Globe,
+  CheckCircle,
+} from "lucide-react";
+import logo from "../assets/99digicom.png"; // Ensure this path matches your asset location
 
 const CustomerLogin = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState("login")
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
     rememberMe: false,
-  })
+  });
 
   const [signupForm, setSignupForm] = useState({
     firstName: "",
@@ -415,25 +423,25 @@ const CustomerLogin = () => {
     email: "",
     password: "",
     agreeToTerms: false,
-  })
+  });
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false)
-      alert("Login Successful! Welcome back to 99digicom!")
-    }, 2000)
-  }
+      setIsLoading(false);
+      alert("Login Successful! Welcome back to 99digicom!");
+    }, 2000);
+  };
 
   const handleSignup = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false)
-      alert("Account Created! Welcome to 99digicom! Please verify your email.")
-    }, 2000)
-  }
+      setIsLoading(false);
+      alert("Account Created! Welcome to 99digicom! Please verify your email.");
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex items-center justify-center p-4">
@@ -459,8 +467,8 @@ const CustomerLogin = () => {
               Back to Home
             </Link>
 
-            {/* 99digicom Logo */}
-            {/* <div className="flex items-center justify-center mb-8">
+            {/* 99digicom Logo
+            <div className="flex items-center justify-center mb-8">
               <div className="w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-2xl">
                 <div className="text-center text-white">
                   <div className="text-3xl font-bold">99</div>
@@ -468,18 +476,21 @@ const CustomerLogin = () => {
                 </div>
               </div>
             </div> */}
-
-            
+            {/* <img
+              src={logo} // Ensure this path matches your asset location
+              alt="99digicom Logo"
+              className="w-20 h-20 object-contain mb-6 mx-auto"
+            /> */}
 
             <h1 className="text-4xl font-bold text-gray-900 text-center">
               Welcome to{" "}
               <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                99digicom.com
+                99 Digicom
               </span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed text-center">
-              Your gateway to digital commerce success. Join thousands of customers already growing their business with
-              us.
+              Your gateway to digital commerce success. Join thousands of
+              customers already growing their business with us.
             </p>
           </div>
 
@@ -489,31 +500,45 @@ const CustomerLogin = () => {
               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors">
                 <Globe className="h-5 w-5 text-green-600" />
               </div>
-              <span className="text-gray-700 font-medium">ONDC Integration & Platform Enablement</span>
+              <span className="text-gray-700 font-medium">
+                ONDC Integration & Platform Enablement
+              </span>
             </div>
             <div className="flex items-center space-x-3 group">
               <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
                 <User className="h-5 w-5 text-emerald-600" />
               </div>
-              <span className="text-gray-700 font-medium">Customer-Centric Solutions</span>
+              <span className="text-gray-700 font-medium">
+                Customer-Centric Solutions
+              </span>
             </div>
             <div className="flex items-center space-x-3 group">
               <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center group-hover:bg-teal-200 transition-colors">
                 <CheckCircle className="h-5 w-5 text-teal-600" />
               </div>
-              <span className="text-gray-700 font-medium">Comprehensive Digital Services</span>
+              <span className="text-gray-700 font-medium">
+                Comprehensive Digital Services
+              </span>
             </div>
           </div>
 
           {/* Decorative Image */}
           <div className="relative">
-            <div className="w-full h-64 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="w-full h-64 bg-gradient-to-br from-green-700 to-emerald-600 rounded-2xl overflow-hidden shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 to-emerald-600/20"></div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <Globe className="h-16 w-16 mx-auto mb-4 opacity-90" />
-                  <p className="text-lg font-semibold">Digital Commerce Platform</p>
-                  <p className="text-sm opacity-90">Connecting customers worldwide</p>
+                  <img
+                    src={logo} // Ensure this path matches your asset location
+                    alt="99digicom Logo"
+                    className="w-20 h-20 object-contain mb-6 mx-auto"
+                  />
+                  <p className="text-lg font-semibold">
+                    Digital Commerce Platform
+                  </p>
+                  <p className="text-sm opacity-90">
+                    Connecting customers worldwide
+                  </p>
                 </div>
               </div>
               {/* Floating elements */}
@@ -537,8 +562,12 @@ const CustomerLogin = () => {
                   Back to Home
                 </Link>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Customer Portal</h2>
-              <p className="text-gray-600">Login to your account or create a new one to get started</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Customer Portal
+              </h2>
+              <p className="text-gray-600">
+                Login to your account or create a new one to get started
+              </p>
             </div>
 
             {/* Content */}
@@ -548,7 +577,9 @@ const CustomerLogin = () => {
                 <button
                   onClick={() => setActiveTab("login")}
                   className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all ${
-                    activeTab === "login" ? "bg-white text-green-600 shadow-sm" : "text-gray-600 hover:text-gray-900"
+                    activeTab === "login"
+                      ? "bg-white text-green-600 shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
                   Login
@@ -556,7 +587,9 @@ const CustomerLogin = () => {
                 <button
                   onClick={() => setActiveTab("signup")}
                   className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all ${
-                    activeTab === "signup" ? "bg-white text-green-600 shadow-sm" : "text-gray-600 hover:text-gray-900"
+                    activeTab === "signup"
+                      ? "bg-white text-green-600 shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
                   Sign Up
@@ -567,7 +600,10 @@ const CustomerLogin = () => {
               {activeTab === "login" && (
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Email
                     </label>
                     <div className="relative">
@@ -577,7 +613,9 @@ const CustomerLogin = () => {
                         type="email"
                         placeholder="Enter your email"
                         value={loginForm.email}
-                        onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                        onChange={(e) =>
+                          setLoginForm({ ...loginForm, email: e.target.value })
+                        }
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                         required
                       />
@@ -585,7 +623,10 @@ const CustomerLogin = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Password
                     </label>
                     <div className="relative">
@@ -595,7 +636,12 @@ const CustomerLogin = () => {
                         type="password"
                         placeholder="Enter your password"
                         value={loginForm.password}
-                        onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                        onChange={(e) =>
+                          setLoginForm({
+                            ...loginForm,
+                            password: e.target.value,
+                          })
+                        }
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                         required
                       />
@@ -607,12 +653,20 @@ const CustomerLogin = () => {
                       <input
                         type="checkbox"
                         checked={loginForm.rememberMe}
-                        onChange={(e) => setLoginForm({ ...loginForm, rememberMe: e.target.checked })}
+                        onChange={(e) =>
+                          setLoginForm({
+                            ...loginForm,
+                            rememberMe: e.target.checked,
+                          })
+                        }
                         className="rounded border-gray-300 text-green-600 focus:ring-green-500"
                       />
                       <span className="text-sm text-gray-600">Remember me</span>
                     </label>
-                    <a href="#" className="text-sm text-green-600 hover:text-green-700 transition-colors">
+                    <a
+                      href="#"
+                      className="text-sm text-green-600 hover:text-green-700 transition-colors"
+                    >
                       Forgot password?
                     </a>
                   </div>
@@ -639,7 +693,10 @@ const CustomerLogin = () => {
                 <form onSubmit={handleSignup} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label
+                        htmlFor="firstName"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
                         First Name
                       </label>
                       <div className="relative">
@@ -648,21 +705,34 @@ const CustomerLogin = () => {
                           id="firstName"
                           placeholder="First name"
                           value={signupForm.firstName}
-                          onChange={(e) => setSignupForm({ ...signupForm, firstName: e.target.value })}
+                          onChange={(e) =>
+                            setSignupForm({
+                              ...signupForm,
+                              firstName: e.target.value,
+                            })
+                          }
                           className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                           required
                         />
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label
+                        htmlFor="lastName"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
                         Last Name
                       </label>
                       <input
                         id="lastName"
                         placeholder="Last name"
                         value={signupForm.lastName}
-                        onChange={(e) => setSignupForm({ ...signupForm, lastName: e.target.value })}
+                        onChange={(e) =>
+                          setSignupForm({
+                            ...signupForm,
+                            lastName: e.target.value,
+                          })
+                        }
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                         required
                       />
@@ -670,7 +740,10 @@ const CustomerLogin = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Phone Number
                     </label>
                     <div className="relative">
@@ -680,7 +753,12 @@ const CustomerLogin = () => {
                         type="tel"
                         placeholder="+91 12345 67890"
                         value={signupForm.phone}
-                        onChange={(e) => setSignupForm({ ...signupForm, phone: e.target.value })}
+                        onChange={(e) =>
+                          setSignupForm({
+                            ...signupForm,
+                            phone: e.target.value,
+                          })
+                        }
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                         required
                       />
@@ -688,7 +766,10 @@ const CustomerLogin = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="signupEmail" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="signupEmail"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Email
                     </label>
                     <div className="relative">
@@ -698,7 +779,12 @@ const CustomerLogin = () => {
                         type="email"
                         placeholder="Enter your email"
                         value={signupForm.email}
-                        onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })}
+                        onChange={(e) =>
+                          setSignupForm({
+                            ...signupForm,
+                            email: e.target.value,
+                          })
+                        }
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                         required
                       />
@@ -706,7 +792,10 @@ const CustomerLogin = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="signupPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="signupPassword"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Password
                     </label>
                     <div className="relative">
@@ -716,7 +805,12 @@ const CustomerLogin = () => {
                         type="password"
                         placeholder="Create a password"
                         value={signupForm.password}
-                        onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
+                        onChange={(e) =>
+                          setSignupForm({
+                            ...signupForm,
+                            password: e.target.value,
+                          })
+                        }
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                         required
                       />
@@ -727,17 +821,28 @@ const CustomerLogin = () => {
                     <input
                       type="checkbox"
                       checked={signupForm.agreeToTerms}
-                      onChange={(e) => setSignupForm({ ...signupForm, agreeToTerms: e.target.checked })}
+                      onChange={(e) =>
+                        setSignupForm({
+                          ...signupForm,
+                          agreeToTerms: e.target.checked,
+                        })
+                      }
                       className="rounded border-gray-300 text-green-600 focus:ring-green-500 mt-1"
                       required
                     />
                     <span className="text-sm text-gray-600">
                       I agree to the{" "}
-                      <a href="#" className="text-green-600 hover:text-green-700 transition-colors">
+                      <a
+                        href="#"
+                        className="text-green-600 hover:text-green-700 transition-colors"
+                      >
                         Terms of Service
                       </a>{" "}
                       and{" "}
-                      <a href="#" className="text-green-600 hover:text-green-700 transition-colors">
+                      <a
+                        href="#"
+                        className="text-green-600 hover:text-green-700 transition-colors"
+                      >
                         Privacy Policy
                       </a>
                     </span>
@@ -767,13 +872,18 @@ const CustomerLogin = () => {
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">Need help?</span>
+                    <span className="px-2 bg-white text-gray-500">
+                      Need help?
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="text-center text-sm text-gray-600">
-                <Link to="/contact" className="text-green-600 hover:text-green-700 transition-colors">
+                <Link
+                  to="/contact"
+                  className="text-green-600 hover:text-green-700 transition-colors"
+                >
                   Contact Support
                 </Link>
               </div>
@@ -782,7 +892,7 @@ const CustomerLogin = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerLogin
+export default CustomerLogin;
