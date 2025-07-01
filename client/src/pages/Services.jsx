@@ -33,21 +33,21 @@ const Services = () => {
       image: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600",
       cta: "Explore Now",
     },
-    {
-      icon: Truck,
-      title: "Logistics & Fulfillment",
-      description:
-        "Streamline your supply chain with our end-to-end logistics solutions, including warehousing, shipping, and real-time tracking.",
-      features: [
-        "Multi-location warehousing",
-        "Same-day and next-day delivery",
-        "Real-time shipment tracking",
-        "Automated inventory management",
-        "Returns and exchange handling",
-      ],
-      image: "https://images.pexels.com/photos/4246120/pexels-photo-4246120.jpeg?auto=compress&cs=tinysrgb&w=600",
-      cta: "Learn More",
-    },
+    // {
+    //   icon: Truck,
+    //   title: "Logistics & Fulfillment",
+    //   description:
+    //     "Streamline your supply chain with our end-to-end logistics solutions, including warehousing, shipping, and real-time tracking.",
+    //   features: [
+    //     "Multi-location warehousing",
+    //     "Same-day and next-day delivery",
+    //     "Real-time shipment tracking",
+    //     "Automated inventory management",
+    //     "Returns and exchange handling",
+    //   ],
+    //   image: "https://images.pexels.com/photos/4246120/pexels-photo-4246120.jpeg?auto=compress&cs=tinysrgb&w=600",
+    //   cta: "Learn More",
+    // },
   ]
 
   return (
