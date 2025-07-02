@@ -8,9 +8,9 @@ export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
     axios.defaults.withCredentials = true;
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5050";
     if (!import.meta.env.VITE_BACKEND_URL) {
-        console.warn("⚠️ Warning: VITE_BACKEND_URL is not defined in .env. Falling back to http://localhost:5000");
+        console.warn("⚠️ Warning: VITE_BACKEND_URL is not defined in .env. Falling back to http://localhost:5050");
     }
 
     const [isLogin, setIsLogin] = useState(false);
