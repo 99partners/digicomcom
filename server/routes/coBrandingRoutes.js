@@ -1,5 +1,6 @@
 import express from 'express';
 import CoBranding from '../models/CoBrandingModel.js';
+import adminAuth from '../middleware/adminAuth.js';
 
 const router = express.Router();
 
@@ -67,7 +68,7 @@ router.post('/submit', async (req, res) => {
 });
 
 // Get all co-branding applications (admin only)
-router.get('/applications', async (req, res) => {
+router.get('/applications', adminAuth, async (req, res) => {
     try {
         const applications = await CoBranding.find().sort({ submittedAt: -1 });
         res.status(200).json({
