@@ -176,8 +176,9 @@
 
 
 
+"use client"
 
-import { TimerIcon as Timeline, Target, Lightbulb, Handshake, Rocket, BarChart, Globe } from "lucide-react"
+import { Handshake, Target, Users, Calendar, Globe, BarChart, ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const About = () => {
@@ -196,7 +197,7 @@ const About = () => {
         "We believe growth is better when it's shared. Every seller, creator, and collaborator is treated as a long-term partner.",
     },
     {
-      icon: Rocket,
+      icon: Users,
       title: "Enable, Don't Just Offer",
       description:
         "We don't just give access — we enable success with services like onboarding, content creation, co-branding, and ads.",
@@ -244,14 +245,14 @@ const About = () => {
   ]
 
   return (
-    <div className="pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Hero Section */}
-      {/* <section className="py-20 bg-gradient-to-br from-emerald-600 to-teal-700 text-white"> */}
-              <section className="py-20 relative bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 text-white overflow-hidden">
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6">About 99digicom.com</h1>
-          <p className="text-xl lg:text-2xl max-w-3xl mx-auto">
+      <section className="pt-24 pb-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            About <span className="text-green-600">99digicom.com</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Empowering businesses to thrive in the digital commerce ecosystem through innovation, collaboration, and
             dedicated support.
           </p>
@@ -259,11 +260,11 @@ const About = () => {
       </section>
 
       {/* Our Story */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Journey</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Journey</h2>
               <p className="text-lg text-gray-600 mb-6">
                 Founded in 2020, 99digicom.com started with a vision to empower small and medium businesses in India's
                 digital commerce ecosystem. From enabling ONDC integration to fostering co-branding partnerships, we've
@@ -274,17 +275,17 @@ const About = () => {
                 digital age. We believe that every business, regardless of size, deserves access to powerful digital
                 commerce tools.
               </p>
-              <div className="bg-emerald-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-emerald-900 mb-3">Key Milestones</h3>
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">Key Milestones</h3>
                 <div className="space-y-4">
                   {milestones.map((milestone, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <div className="flex-shrink-0 w-16 h-8 bg-emerald-600 text-white rounded text-sm font-bold flex items-center justify-center">
+                      <div className="flex-shrink-0 w-16 h-8 bg-green-600 text-white rounded text-sm font-bold flex items-center justify-center">
                         {milestone.year}
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-900">{milestone.event}</h4>
-                        <p className="text-gray-600">{milestone.description}</p>
+                        <p className="text-gray-600 text-sm">{milestone.description}</p>
                       </div>
                     </div>
                   ))}
@@ -295,27 +296,25 @@ const About = () => {
               <img
                 src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt="Digital marketplace"
-                className="rounded-lg shadow-2xl"
+                className="rounded-lg shadow-lg"
               />
-              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-amber-500 rounded-full opacity-20"></div>
-              <div className="absolute -top-6 -right-6 w-32 h-32 bg-emerald-500 rounded-full opacity-20"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Mission & Vision</h2>
-            <p className="text-xl text-gray-600">Our Values and Goals</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Mission & Vision</h2>
+            <p className="text-lg text-gray-600">Our Values and Goals</p>
           </div>
           <div className="space-y-8">
             {/* Mission & Vision Overview */}
-            <div className="bg-white p-8 rounded-xl shadow-lg border-l-4 border-emerald-500">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                <Target className="h-8 w-8 text-emerald-600 mr-2" /> Mission & Vision
+            <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <Target className="h-8 w-8 text-green-600 mr-2" /> Mission & Vision
               </h3>
               <p className="text-lg text-gray-600">
                 Empowering Indian businesses to thrive in the digital commerce era.
@@ -323,9 +322,9 @@ const About = () => {
             </div>
 
             {/* Our Mission */}
-            <div className="bg-white p-8 rounded-xl shadow-lg border-l-4 border-emerald-500">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                <Target className="h-8 w-8 text-emerald-600 mr-2" /> Our Mission
+            <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <Target className="h-8 w-8 text-green-600 mr-2" /> Our Mission
               </h3>
               <p className="text-lg text-gray-600 mb-4">
                 At 99digicom, our mission is to democratize digital commerce by enabling brands of all sizes — from
@@ -339,9 +338,9 @@ const About = () => {
             </div>
 
             {/* Our Vision */}
-            <div className="bg-white p-8 rounded-xl shadow-lg border-l-4 border-teal-500">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                <Timeline className="h-8 w-8 text-teal-600 mr-2" /> Our Vision
+            <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <Calendar className="h-8 w-8 text-green-600 mr-2" /> Our Vision
               </h3>
               <ul className="list-disc list-inside text-lg text-gray-600 space-y-2">
                 <li>Every product brand in India — small or large — has equal access to digital marketplaces.</li>
@@ -355,20 +354,20 @@ const About = () => {
             </div>
 
             {/* Core Values */}
-            <div className="bg-white p-8 rounded-xl shadow-lg border-l-4 border-amber-500">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <Lightbulb className="h-8 w-8 text-amber-600 mr-2" /> Our Core Values
+            <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Users className="h-8 w-8 text-green-600 mr-2" /> Our Core Values
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {values.map((value, index) => {
                   const IconComponent = value.icon
                   return (
-                    <div key={index} className="text-center group">
-                      <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                        <IconComponent className="h-6 w-6 text-white" />
+                    <div key={index} className="flex items-start space-x-4 p-6 rounded-lg bg-green-50 hover:bg-green-100 transition-colors">
+                      <IconComponent className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900 mb-2">{value.title}</h4>
+                        <p className="text-gray-600 text-sm">{value.description}</p>
                       </div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">{value.title}</h4>
-                      <p className="text-gray-600 text-sm">{value.description}</p>
                     </div>
                   )
                 })}
@@ -376,9 +375,9 @@ const About = () => {
             </div>
 
             {/* Long-Term Goals */}
-            <div className="bg-white p-8 rounded-xl shadow-lg border-l-4 border-emerald-500">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                <Target className="h-8 w-8 text-emerald-600 mr-2" /> Our Long-Term Goals
+            <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <Target className="h-8 w-8 text-green-600 mr-2" /> Our Long-Term Goals
               </h3>
               <ul className="list-disc list-inside text-lg text-gray-600 space-y-2">
                 {goals.map((goal, index) => (
@@ -388,7 +387,7 @@ const About = () => {
             </div>
 
             {/* Closing Statement and Buttons */}
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center border-t-4 border-emerald-500">
+            <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 text-center">
               <p className="text-lg text-gray-600 mb-6">
                 At 99digicom, we're not just building a company — we're enabling a movement that transforms the way
                 India sells, scales, and collaborates.
@@ -396,15 +395,17 @@ const About = () => {
               <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <Link
                   to="/partner"
-                  className="inline-block px-6 py-3 bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-semibold rounded-lg shadow-md hover:from-emerald-700 hover:to-teal-800 transition-all transform hover:scale-105"
+                  className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
                 >
                   Become a Partner
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
                   to="/services"
-                  className="inline-block px-6 py-3 bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-semibold rounded-lg shadow-md hover:from-emerald-700 hover:to-teal-800 transition-all transform hover:scale-105"
+                  className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
                 >
                   Explore Our Services
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </div>
             </div>
@@ -413,11 +414,11 @@ const About = () => {
       </section>
 
       {/* Team */}
-      <section className="py-20 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Leadership</h2>
-            <p className="text-xl text-gray-600">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Leadership</h2>
+            <p className="text-lg text-gray-600">
               Our team is dedicated to driving your success with expertise and passion.
             </p>
           </div>
@@ -425,19 +426,19 @@ const About = () => {
             {team.map((member, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-emerald-100"
+                className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
               >
                 <div className="aspect-w-1 aspect-h-1">
                   <img
                     src={member.image || "/placeholder.svg"}
                     alt={member.name}
-                    className="w-full h-64 object-cover"
+                    className="w-full h-64 object-cover rounded-lg"
                   />
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
-                  <p className="text-emerald-600 font-semibold mb-3">{member.role}</p>
-                  <p className="text-gray-600">{member.bio}</p>
+                  <p className="text-green-600 font-semibold mb-3">{member.role}</p>
+                  <p className="text-gray-600 text-sm">{member.bio}</p>
                 </div>
               </div>
             ))}

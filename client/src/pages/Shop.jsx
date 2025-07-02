@@ -110,40 +110,39 @@ const Shop = () => {
 
   const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
-      <Star key={i} className={`h-4 w-4 ${i < Math.floor(rating) ? "text-amber-400 fill-current" : "text-gray-300"}`} />
+      <Star key={i} className={`h-4 w-4 ${i < Math.floor(rating) ? "text-green-600 fill-current" : "text-gray-300"}`} />
     ))
   }
 
   const ProductCard = ({ product, showBadge = false }) => (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group overflow-hidden border border-emerald-100">
+    <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
       <div className="relative">
         <img
           src={product.image || "/placeholder.svg"}
           alt={product.title}
-          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+          className="w-full h-48 object-cover rounded-lg"
         />
         {showBadge && product.badge && (
-          <div className="absolute top-3 left-3 bg-emerald-500 text-white px-2 py-1 rounded text-xs font-semibold">
+          <div className="absolute top-3 left-3 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">
             {product.badge}
           </div>
         )}
-        <div className="absolute inset-0 bg-emerald-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
       </div>
       <div className="p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">{product.title}</h3>
         {product.description && <p className="text-gray-600 text-sm mb-3">{product.description}</p>}
         <div className="flex items-center mb-3">
           <div className="flex items-center">{renderStars(product.rating)}</div>
-          {product.reviews && <span className="ml-2 text-sm text-gray-500">({product.reviews})</span>}
+          {product.reviews && <span className="ml-2 text-sm text-gray-600">({product.reviews})</span>}
         </div>
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-xl font-bold text-emerald-600">{product.price}</span>
+            <span className="text-xl font-bold text-green-600">{product.price}</span>
             {product.originalPrice && (
-              <span className="ml-2 text-sm text-gray-500 line-through">{product.originalPrice}</span>
+              <span className="ml-2 text-sm text-gray-600 line-through">{product.originalPrice}</span>
             )}
           </div>
-          <button className="flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">
+          <button className="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
             <ShoppingCart className="h-4 w-4 mr-2" />
             Add to Cart
           </button>
@@ -153,27 +152,23 @@ const Shop = () => {
   )
 
   return (
-    <div className="pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Hero Section */}
-      <section className="py-12 bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4">Shop Our Products</h1>
-          <p className="text-xl max-w-2xl mx-auto">
+      <section className="pt-24 pb-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">Shop Our Products</h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Discover tools and products that power your digital commerce success
           </p>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
 
       {/* Search and Filter */}
-      <section className="py-8 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Filter className="h-5 w-5 text-emerald-600" />
+              <Filter className="h-5 w-5 text-green-600" />
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => (
                   <button
@@ -181,8 +176,8 @@ const Shop = () => {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                       selectedCategory === category.id
-                        ? "bg-emerald-600 text-white"
-                        : "bg-white text-gray-700 hover:bg-emerald-50 border border-emerald-200"
+                        ? "bg-green-600 text-white"
+                        : "bg-white text-gray-700 hover:bg-green-100 border border-green-200"
                     }`}
                   >
                     {category.name} ({category.count})
@@ -192,18 +187,18 @@ const Shop = () => {
             </div>
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-600" />
                 <input
                   type="text"
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent w-64 transition-all"
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent w-64 transition-all"
                 />
               </div>
               <Link
                 to="/customerlogin"
-                className="px-4 py-2 text-sm font-semibold text-white bg-emerald-600 rounded-lg shadow-md hover:bg-emerald-700 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+                className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
               >
                 Customer Login
               </Link>
@@ -213,8 +208,8 @@ const Shop = () => {
       </section>
 
       {/* Featured Products */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
             <p className="text-lg text-gray-600">Our most popular digital commerce solutions</p>
@@ -228,8 +223,8 @@ const Shop = () => {
       </section>
 
       {/* Categories */}
-      <section className="py-16 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
             <p className="text-lg text-gray-600">Find products that match your business needs</p>
@@ -258,23 +253,20 @@ const Shop = () => {
                 count: "10 products",
               },
             ].map((category, index) => (
-              <div key={index} className="relative group cursor-pointer">
-                <div className="aspect-w-1 aspect-h-1 rounded-xl overflow-hidden border border-emerald-200">
+              <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                <div className="relative">
                   <img
                     src={category.image || "/placeholder.svg"}
                     alt={category.name}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-64 object-cover rounded-lg"
                   />
-                  <div className="absolute inset-0 bg-emerald-900 bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white">
-                      <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                      <p className="text-sm mb-3">{category.description}</p>
-                      <span className="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        {category.count}
-                      </span>
-                    </div>
-                  </div>
+                </div>
+                <div className="p-6 text-center">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{category.name}</h3>
+                  <p className="text-gray-600 text-sm mb-3">{category.description}</p>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {category.count}
+                  </span>
                 </div>
               </div>
             ))}
@@ -283,8 +275,8 @@ const Shop = () => {
       </section>
 
       {/* New Arrivals */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">New Arrivals</h2>
             <p className="text-lg text-gray-600">Latest additions to our product collection</p>
@@ -298,8 +290,8 @@ const Shop = () => {
       </section>
 
       {/* Best Sellers */}
-      <section className="py-16 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Best Sellers</h2>
             <p className="text-lg text-gray-600">Top-rated products chosen by our customers</p>
@@ -313,23 +305,19 @@ const Shop = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Need Help Choosing?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Need Help Choosing?</h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our team is here to help you find the perfect products for your business needs.
           </p>
           <Link
             to="/contact"
-            className="inline-flex items-center px-8 py-4 bg-white text-emerald-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors shadow-lg"
+            className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
           >
             Contact Our Experts
           </Link>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
     </div>
   )
