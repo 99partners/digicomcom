@@ -1,3 +1,5 @@
+"use client"
+
 import { Link } from "react-router-dom"
 import { MapPin, Clock, DollarSign, Users, Heart, Lightbulb, Award, Coffee, ArrowRight } from "lucide-react"
 
@@ -105,42 +107,38 @@ const Careers = () => {
   ]
 
   return (
-    <div className="pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6">Join Our Team</h1>
-          <p className="text-xl lg:text-2xl mb-8 max-w-3xl mx-auto">
+      <section className="pt-24 pb-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">Join Our Team</h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Build the future of digital commerce with a team that values innovation, collaboration, and growth.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="#positions"
-              className="inline-flex items-center px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
             >
               View Open Positions
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               to="#internships"
-              className="inline-flex items-center px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-emerald-600 font-semibold rounded-lg transition-all duration-300"
+              className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-medium rounded-lg transition-colors"
             >
               Explore Internships
             </Link>
           </div>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
 
       {/* Culture & Values */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Culture</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Culture</h2>
               <p className="text-lg text-gray-600 mb-6">
                 At 99digicom.com, we foster innovation, collaboration, and growth. We believe in creating a dynamic,
                 inclusive workplace where every team member can thrive and make a meaningful impact.
@@ -154,8 +152,8 @@ const Careers = () => {
                 <ul className="space-y-2">
                   {values.map((value, index) => (
                     <li key={index} className="flex items-start">
-                      <div className="w-2 h-2 bg-emerald-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span className="text-gray-600">{value}</span>
+                      <div className="w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span className="text-gray-600 text-sm">{value}</span>
                     </li>
                   ))}
                 </ul>
@@ -165,21 +163,19 @@ const Careers = () => {
               <img
                 src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt="Team collaboration"
-                className="rounded-lg shadow-2xl"
+                className="rounded-lg shadow-lg"
               />
-              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-amber-500 rounded-full opacity-20"></div>
-              <div className="absolute -top-6 -right-6 w-32 h-32 bg-emerald-500 rounded-full opacity-20"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Benefits */}
-      <section className="py-20 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Work With Us?</h2>
-            <p className="text-xl text-gray-600">
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Work With Us?</h2>
+            <p className="text-lg text-gray-600">
               We believe in taking care of our team with competitive benefits and a supportive environment.
             </p>
           </div>
@@ -189,13 +185,13 @@ const Careers = () => {
               return (
                 <div
                   key={index}
-                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border border-emerald-100"
+                  className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
                 >
-                  <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                    <IconComponent className="h-6 w-6 text-emerald-600" />
+                  <div className="w-12 h-12 bg-green-50 hover:bg-green-100 rounded-lg flex items-center justify-center mb-4 transition-colors">
+                    <IconComponent className="h-6 w-6 text-green-600" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
+                  <p className="text-gray-600 text-sm">{benefit.description}</p>
                 </div>
               )
             })}
@@ -204,11 +200,11 @@ const Careers = () => {
       </section>
 
       {/* Open Positions */}
-      <section id="positions" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Open Positions</h2>
-            <p className="text-xl text-gray-600">
+      <section id="positions" className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Open Positions</h2>
+            <p className="text-lg text-gray-600">
               Join our growing team and help shape the future of digital commerce.
             </p>
           </div>
@@ -216,37 +212,37 @@ const Careers = () => {
             {openPositions.map((position, index) => (
               <div
                 key={index}
-                className="bg-white border border-emerald-200 rounded-xl p-8 hover:shadow-lg transition-all duration-300 hover:border-emerald-300"
+                className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-2">
                     <div className="flex flex-wrap items-center gap-4 mb-4">
                       <h3 className="text-2xl font-bold text-gray-900">{position.title}</h3>
-                      <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-semibold">
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
                         {position.department}
                       </span>
                     </div>
                     <div className="flex flex-wrap items-center gap-4 mb-4 text-gray-600">
                       <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-1 text-emerald-500" />
+                        <MapPin className="h-4 w-4 text-green-600 mr-1" />
                         <span>{position.location}</span>
                       </div>
                       <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1 text-emerald-500" />
+                        <Clock className="h-4 w-4 text-green-600 mr-1" />
                         <span>{position.type}</span>
                       </div>
                       <div className="flex items-center">
-                        <DollarSign className="h-4 w-4 mr-1 text-emerald-500" />
+                        <DollarSign className="h-4 w-4 text-green-600 mr-1" />
                         <span>{position.salary}</span>
                       </div>
                     </div>
-                    <p className="text-gray-600 mb-4">{position.description}</p>
+                    <p className="text-gray-600 text-sm mb-4">{position.description}</p>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-2">Requirements:</h4>
                       <ul className="space-y-1">
                         {position.requirements.map((req, reqIndex) => (
                           <li key={reqIndex} className="flex items-start">
-                            <div className="w-2 h-2 bg-emerald-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                            <div className="w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                             <span className="text-gray-600 text-sm">{req}</span>
                           </li>
                         ))}
@@ -256,7 +252,7 @@ const Careers = () => {
                   <div className="lg:col-span-1 flex flex-col justify-center">
                     <Link
                       to="/contact"
-                      className="inline-flex items-center justify-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                      className="inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
                     >
                       Apply Now
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -270,11 +266,11 @@ const Careers = () => {
       </section>
 
       {/* Internships */}
-      <section id="internships" className="py-20 bg-green-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Internship Opportunities</h2>
-            <p className="text-xl text-gray-600">
+      <section id="internships" className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Internship Opportunities</h2>
+            <p className="text-lg text-gray-600">
               Start your career journey with hands-on experience and mentorship from industry experts.
             </p>
           </div>
@@ -282,28 +278,28 @@ const Careers = () => {
             {internships.map((internship, index) => (
               <div
                 key={index}
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-emerald-100"
+                className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-gray-900">{internship.title}</h3>
-                  <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold">
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
                     {internship.duration}
                   </span>
                 </div>
                 <div className="flex items-center gap-4 mb-4 text-gray-600">
                   <div className="flex items-center">
-                    <MapPin className="h-4 w-4 mr-1 text-emerald-500" />
+                    <MapPin className="h-4 w-4 text-green-600 mr-1" />
                     <span>{internship.location}</span>
                   </div>
                   <div className="flex items-center">
-                    <DollarSign className="h-4 w-4 mr-1 text-emerald-500" />
+                    <DollarSign className="h-4 w-4 text-green-600 mr-1" />
                     <span>{internship.stipend}</span>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-6">{internship.description}</p>
+                <p className="text-gray-600 text-sm mb-6">{internship.description}</p>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-all duration-300"
+                  className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
                 >
                   Apply for Internship
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -315,32 +311,28 @@ const Careers = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to Join Our Mission?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Ready to Join Our Mission?</h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
             Be part of a team that's revolutionizing digital commerce and empowering businesses across India.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/contact"
-              className="inline-flex items-center px-8 py-4 bg-white text-emerald-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors shadow-lg"
+              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
             >
               Get in Touch
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               to="/about"
-              className="inline-flex items-center px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-emerald-600 font-semibold rounded-lg transition-all duration-300"
+              className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-medium rounded-lg transition-colors"
             >
               Learn More About Us
             </Link>
           </div>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-300"></div>
       </section>
     </div>
   )
