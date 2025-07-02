@@ -1,8 +1,10 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   if (loading) {
     return (
@@ -13,7 +15,12 @@ export const ProtectedRoute = ({ children }) => {
   }
 
   if (!user) {
-    return <Navigate to="/partnerlogin" replace />;
+    return <Navigate to={isAdminRoute ? "/admin/login" : "/partnerlogin"} replace />;
+  }
+
+  // For admin routes, check if user has admin role
+  if (isAdminRoute && user.role !== 'admin') {
+    return <Navigate to="/admin/login" replace />;
   }
 
   return children;

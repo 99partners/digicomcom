@@ -23,6 +23,7 @@ app.use(cors({
 import AuthRouter from './routes/AuthRoutes.js'
 import UserRouter from './routes/UserRoutes.js'
 import newsletterRoutes from './routes/newsletterRoutes.js';
+import AdminRouter from './routes/AdminRoutes.js'
 
 
 
@@ -36,6 +37,7 @@ app.get('/', (req, res)=>{
 app.use('/api/auth',  AuthRouter);
 app.use('/api/user', UserRouter);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/admin", AdminRouter);
 
 
 app.listen(PORT,()=>{

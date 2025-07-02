@@ -10,9 +10,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Check for existing auth token in localStorage
     const token = localStorage.getItem('authToken');
-    if (token) {
-      // Set default axios auth header
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const adminToken = localStorage.getItem('adminToken');
+    
+    if (token || adminToken) {
       checkAuthStatus();
     } else {
       setLoading(false);
@@ -21,14 +21,29 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get('http://localhost:5050/api/user/profile', {
-        withCredentials: true
-      });
-      if (response.data.success) {
-        setUser(response.data.user);
-      } else {
-        // If token is invalid, clear it
-        handleLogout();
+      // Check admin auth first
+      const adminToken = localStorage.getItem('adminToken');
+      if (adminToken) {
+        const response = await axios.get('http://localhost:5050/api/admin/dashboard-stats', {
+          withCredentials: true
+        });
+        if (response.data.success) {
+          setUser({ role: 'admin' });
+          return;
+        }
+      }
+
+      // Check regular user auth
+      const userToken = localStorage.getItem('authToken');
+      if (userToken) {
+        const response = await axios.get('http://localhost:5050/api/user/profile', {
+          withCredentials: true
+        });
+        if (response.data.success) {
+          setUser(response.data.user);
+        } else {
+          handleLogout();
+        }
       }
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -38,14 +53,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleLogin = (token, userData) => {
-    localStorage.setItem('authToken', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  const handleLogin = (token, userData, isAdmin = false) => {
+    if (isAdmin) {
+      localStorage.setItem('adminToken', token);
+    } else {
+      localStorage.setItem('authToken', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
     setUser(userData);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('adminToken');
     delete axios.defaults.headers.common['Authorization'];
     setUser(null);
   };

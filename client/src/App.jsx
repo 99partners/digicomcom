@@ -22,6 +22,8 @@ import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './context/AuthContext';
@@ -31,7 +33,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
   
   // List of routes where we don't want to show header and footer
-  const noHeaderFooterRoutes = ['/partnerlogin', '/customerlogin', '/partner', '/reset-password', '/email-verify'];
+  const noHeaderFooterRoutes = ['/partnerlogin', '/customerlogin', '/partner', '/reset-password', '/email-verify', '/admin/login', '/admin'];
   
   const shouldShowHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
 
@@ -80,6 +82,17 @@ function App() {
             <Route path="/co-branding" element={<CoBranding />} />
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword/>} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute key="admin-route">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </Layout>
       </Router>
