@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets.js'
 import { toast } from 'react-toastify'
-import { AppContext } from '../context/AppContext.jsx'
+import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 
 const EmailVerify = () => {
@@ -12,11 +12,6 @@ const EmailVerify = () => {
   const {backendUrl, isLogin, userData, getUserData}  = useContext(AppContext)
 
 
-  // const handelInput = (e, index)=>{
-  //   if(e.target.value.length > 0 && index < inputRefs.current.length - 1){
-  //     inputRefs.current[index + 1].focus()
-  //   }
-  // }
 
 const handelInput = (e, index) => {
   if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
@@ -24,8 +19,8 @@ const handelInput = (e, index) => {
   }
 
   // ✅ Update otp state after input
-  const currentOtp = inputRefs.current.map((input) => input?.value || '').join('');
-  setOtp(currentOtp);
+//   const currentOtp = inputRefs.current.map((input) => input?.value || '').join('');
+//   setOtp(currentOtp);
 };
 
   const handelKeyDown = (e, index)=>{
@@ -55,7 +50,7 @@ const handelInput = (e, index) => {
 
       if(data.success){
         toast.success(data.message)
-        getUserData()
+        await getUserData()
         navigate('/')
       }else{
         toast.error(data.message)
