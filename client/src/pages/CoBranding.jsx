@@ -372,15 +372,12 @@ export default function CoBrandingPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Website / Online Store Link *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Website / Online Store Link (Optional)</label>
                     <input
                       type="url"
                       value={formData.website}
                       onChange={(e) => handleInputChange("website", e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      required
                     />
                   </div>
                   <div>
@@ -450,14 +447,13 @@ export default function CoBrandingPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Top 3 Selling Products *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Top 3 Selling Products (Optional)</label>
                     <textarea
                       value={formData.topProducts}
                       onChange={(e) => handleInputChange("topProducts", e.target.value)}
                       placeholder="List your top 3 selling products..."
                       rows={3}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      required
                     />
                   </div>
                 </div>
@@ -475,6 +471,7 @@ export default function CoBrandingPage() {
                     </label>
                     <div className="grid md:grid-cols-2 gap-3">
                       {[
+                        "Digicom",
                         "ONDC",
                         "Amazon",
                         "Flipkart",
@@ -565,22 +562,6 @@ export default function CoBrandingPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                         required
                       />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Preferred Collaboration Timeline *
-                      </label>
-                      <select
-                        value={formData.timeline}
-                        onChange={(e) => handleInputChange("timeline", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        required
-                      >
-                        <option value="">Select timeline</option>
-                        <option value="immediate">Immediate</option>
-                        <option value="30-days">Next 30 days</option>
-                        <option value="2-3-months">2–3 months from now</option>
-                      </select>
                     </div>
                   </div>
                 </div>
