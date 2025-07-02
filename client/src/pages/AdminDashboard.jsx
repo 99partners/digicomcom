@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle } from 'lucide-react';
+import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import AMSSubmissions from '../components/admin/AMSSubmissions';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
@@ -24,22 +25,33 @@ const AdminDashboard = () => {
                 axios.get('http://localhost:5050/api/admin/subscribers', { withCredentials: true })
             ]);
 
-            if (statsRes.data.success) {
-                setStats(statsRes.data.stats);
-            }
-            if (usersRes.data.success) {
-                setUsers(usersRes.data.users);
-            }
-            if (subscribersRes.data.success) {
-                setSubscribers(subscribersRes.data.subscribers);
-            }
-        } catch (error) {
-            if (error.response?.status === 401) {
-                navigate('/admin/login');
-            }
-            toast.error('Failed to fetch data');
-        } finally {
+            setStats(statsRes.data.stats);
+            setUsers(usersRes.data.users);
+            setSubscribers(subscribersRes.data.subscribers);
             setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            toast.error('Failed to fetch data');
+            setIsLoading(false);
+        }
+    };
+
+    const handleUnsubscribe = async (subscriberId) => {
+        try {
+            await axios.delete(`http://localhost:5050/api/newsletter/${subscriberId}`, {
+                withCredentials: true
+            });
+            toast.success('Subscriber removed successfully');
+            // Update the subscribers list
+            setSubscribers(subscribers.filter(sub => sub._id !== subscriberId));
+            // Update the stats
+            setStats(prev => ({
+                ...prev,
+                totalSubscribers: (prev.totalSubscribers || 0) - 1
+            }));
+        } catch (error) {
+            console.error('Error unsubscribing:', error);
+            toast.error('Failed to remove subscriber');
         }
     };
 
@@ -58,90 +70,68 @@ const AdminDashboard = () => {
 
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: Users },
-        { id: 'users', label: 'Users', icon: Users },
-        { id: 'subscribers', label: 'Subscribers', icon: Mail }
+        { id: 'users', label: 'Users', icon: UserCheck },
+        { id: 'newsletter', label: 'Newsletter', icon: Mail },
+        { id: 'ams', label: 'AMS Submissions', icon: FileText },
     ];
 
     const contentItems = [
-        { id: 'blog', label: 'Blog', icon: FileText },
-        { id: 'contact', label: 'Contact', icon: Phone },
-        { id: 'partner', label: 'Partner', icon: UserCheck }
+        { id: 'settings', label: 'Settings', icon: Settings },
     ];
 
     const renderContent = () => {
         switch (activeSection) {
-            case 'users':
+            case 'dashboard':
                 return (
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h2 className="text-xl font-semibold mb-6">Registered Users</h2>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {users.map((user) => (
-                                        <tr key={user._id}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {user.name}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {user.email}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {user.isAccountVerified ? (
-                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        <CheckCircle className="w-4 h-4 mr-1" />
-                                                        Verified
-                                                    </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                        <XCircle className="w-4 h-4 mr-1" />
-                                                        Pending
-                                                    </span>
-                                                )}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {new Date(user.createdAt).toLocaleDateString()}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-white rounded-lg shadow p-6">
+                            <h3 className="text-lg font-semibold mb-2">Total Users</h3>
+                            <p className="text-3xl font-bold text-green-600">{stats?.totalUsers || 0}</p>
+                        </div>
+                        <div className="bg-white rounded-lg shadow p-6">
+                            <h3 className="text-lg font-semibold mb-2">Newsletter Subscribers</h3>
+                            <p className="text-3xl font-bold text-green-600">{stats?.totalSubscribers || 0}</p>
+                        </div>
+                        <div className="bg-white rounded-lg shadow p-6">
+                            <h3 className="text-lg font-semibold mb-2">Active Users</h3>
+                            <p className="text-3xl font-bold text-green-600">{stats?.activeUsers || 0}</p>
                         </div>
                     </div>
                 );
 
-            case 'subscribers':
+            case 'users':
                 return (
-                    <div className="space-y-8">
-                        <div className="bg-blue-50/50 rounded-lg p-6 mb-8 border border-blue-100">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2">Total Subscribers</h3>
-                            <p className="text-3xl font-bold text-gray-900">{subscribers.length}</p>
-                        </div>
-
-                        <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-xl font-semibold mb-6">Newsletter Subscribers</h2>
+                    <div className="bg-white rounded-lg shadow overflow-hidden">
+                        <div className="p-6">
+                            <h2 className="text-xl font-semibold mb-4">User Management</h2>
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined Date</th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        {subscribers.map((subscriber) => (
-                                            <tr key={subscriber._id}>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    <div className="flex items-center">
-                                                        <Mail className="w-4 h-4 mr-2 text-gray-400" />
-                                                        {subscriber.email}
-                                                    </div>
+                                        {users.map((user) => (
+                                            <tr key={user._id}>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-500">{user.email}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                                        user.isAccountVerified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                                    }`}>
+                                                        {user.isAccountVerified ? 'Verified' : 'Not Verified'}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {new Date(user.createdAt).toLocaleDateString()}
                                                 </td>
                                             </tr>
                                         ))}
@@ -152,46 +142,59 @@ const AdminDashboard = () => {
                     </div>
                 );
 
-            case 'dashboard':
+            case 'newsletter':
                 return (
-                    <>
-                        <div className="mb-8">
-                            <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                                Welcome back! Here's the latest data from your admin panel.
-                            </h2>
+                    <div className="bg-white rounded-lg shadow overflow-hidden">
+                        <div className="p-6">
+                            <h2 className="text-xl font-semibold mb-4">Newsletter Subscribers</h2>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscribed Date</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {subscribers.map((subscriber) => (
+                                            <tr key={subscriber._id}>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900">{subscriber.email}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {new Date(subscriber.subscribedAt).toLocaleDateString()}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <button 
+                                                        className="text-red-600 hover:text-red-900"
+                                                        onClick={() => handleUnsubscribe(subscriber._id)}
+                                                    >
+                                                        Unsubscribe
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                    </div>
+                );
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                            <div className="bg-blue-50 rounded-lg p-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Total Users</h3>
-                                <p className="text-3xl font-bold text-gray-900">{stats?.totalUsers || 0}</p>
-                            </div>
+            case 'ams':
+                return <AMSSubmissions />;
 
-                            <div className="bg-yellow-50 rounded-lg p-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Total Subscribers</h3>
-                                <p className="text-3xl font-bold text-gray-900">{stats?.totalSubscribers || 0}</p>
-                            </div>
-
-                            <div className="bg-teal-50 rounded-lg p-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Total Blogs</h3>
-                                <p className="text-3xl font-bold text-gray-900">{stats?.totalBlogs || 0}</p>
-                            </div>
-
-                            <div className="bg-orange-50 rounded-lg p-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Total Partners</h3>
-                                <p className="text-3xl font-bold text-gray-900">{stats?.totalPartners || 0}</p>
-                            </div>
-                        </div>
-                    </>
+            case 'settings':
+                return (
+                    <div className="bg-white rounded-lg shadow p-6">
+                        <h2 className="text-xl font-semibold mb-4">Settings</h2>
+                        {/* Settings content */}
+                    </div>
                 );
 
             default:
-                return (
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h2 className="text-xl font-semibold">Coming Soon</h2>
-                        <p className="text-gray-600 mt-2">This section is under development.</p>
-                    </div>
-                );
+                return null;
         }
     };
 
@@ -204,74 +207,42 @@ const AdminDashboard = () => {
     }
 
     return (
-        <div className="flex h-screen bg-gray-50">
-            {/* Sidebar */}
-            <div className="w-64 bg-[#1a1c23] text-white">
-                <div className="p-4 border-b border-gray-700">
-                    <h1 className="text-xl font-bold">Admin Panel</h1>
-                </div>
-
-                <div className="p-4">
-                    <div className="mb-8">
-                        <h2 className="text-xs uppercase tracking-wide text-gray-400 mb-2">MAIN MENU</h2>
-                        <nav className="space-y-1">
-                            {menuItems.map((item) => (
-                                <button
-                                    key={item.id}
-                                    onClick={() => setActiveSection(item.id)}
-                                    className={`w-full flex items-center px-4 py-2 text-sm rounded-lg transition-colors ${
-                                        activeSection === item.id
-                                            ? 'bg-green-500 text-white'
-                                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                                    }`}
-                                >
-                                    <item.icon className="h-5 w-5 mr-3" />
-                                    {item.label}
-                                </button>
-                            ))}
-                        </nav>
+        <div className="min-h-screen bg-gray-100">
+            <div className="flex">
+                {/* Sidebar */}
+                <div className="w-64 bg-white shadow-lg min-h-screen">
+                    <div className="p-6">
+                        <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
                     </div>
-
-                    <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-400 mb-2">CONTENT MANAGEMENT</h2>
-                        <nav className="space-y-1">
-                            {contentItems.map((item) => (
-                                <button
-                                    key={item.id}
-                                    onClick={() => setActiveSection(item.id)}
-                                    className={`w-full flex items-center px-4 py-2 text-sm rounded-lg transition-colors ${
-                                        activeSection === item.id
-                                            ? 'bg-green-500 text-white'
-                                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                                    }`}
-                                >
-                                    <item.icon className="h-5 w-5 mr-3" />
-                                    {item.label}
-                                </button>
-                            ))}
-                        </nav>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="flex-1 overflow-auto">
-                <header className="bg-white shadow-sm">
-                    <div className="flex justify-between items-center px-8 py-4">
-                        <h1 className="text-2xl font-semibold text-gray-900">{activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}</h1>
+                    <nav className="mt-6">
+                        {menuItems.map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => setActiveSection(item.id)}
+                                className={`w-full flex items-center px-6 py-3 text-left ${
+                                    activeSection === item.id
+                                        ? 'bg-green-50 text-green-600'
+                                        : 'text-gray-500 hover:bg-gray-50'
+                                }`}
+                            >
+                                <item.icon className="w-5 h-5 mr-3" />
+                                {item.label}
+                            </button>
+                        ))}
                         <button
                             onClick={handleLogout}
-                            className="flex items-center px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                            className="w-full flex items-center px-6 py-3 text-left text-red-500 hover:bg-red-50"
                         >
-                            <LogOut className="h-4 w-4 mr-2" />
+                            <LogOut className="w-5 h-5 mr-3" />
                             Logout
                         </button>
-                    </div>
-                </header>
+                    </nav>
+                </div>
 
-                <main className="p-8">
+                {/* Main Content */}
+                <div className="flex-1 p-8">
                     {renderContent()}
-                </main>
+                </div>
             </div>
         </div>
     );

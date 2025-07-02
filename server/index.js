@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
   origin: "http://localhost:5173", // ✅ Your React frontend
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true, // Optional: if using cookies or sessions
 }));
@@ -24,9 +24,7 @@ import AuthRouter from './routes/AuthRoutes.js'
 import UserRouter from './routes/UserRoutes.js'
 import newsletterRoutes from './routes/newsletterRoutes.js';
 import AdminRouter from './routes/AdminRoutes.js'
-
-
-
+import platformAMSRoutes from './routes/platformAMSRoutes.js';
 
 //API's Endpoints...........
 app.get('/', (req, res)=>{
@@ -38,7 +36,7 @@ app.use('/api/auth',  AuthRouter);
 app.use('/api/user', UserRouter);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/admin", AdminRouter);
-
+app.use("/api/platform-ams", platformAMSRoutes);
 
 app.listen(PORT,()=>{
     console.log(`Server running on PORT : ${PORT}`)

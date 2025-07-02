@@ -61,10 +61,50 @@ export default function PlatformAMS() {
   });
   const [activeTab, setActiveTab] = useState("ondc");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission
+    
+    try {
+      const response = await fetch('http://localhost:5050/api/platform-ams/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Thank you for your submission! Our team will contact you shortly.');
+        // Reset form
+        setFormData({
+          businessName: "",
+          contactPerson: "",
+          email: "",
+          phone: "",
+          website: "",
+          businessType: "",
+          productCategories: [],
+          topProducts: "",
+          platforms: [],
+          currentSalesVolume: "",
+          targetSalesVolume: "",
+          servicesNeeded: [],
+          marketingGoals: [],
+          targetAudience: "",
+          timeline: "",
+          additionalNotes: "",
+          consent: false,
+        });
+      } else {
+        alert('Error submitting form: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      alert('Error submitting form. Please try again.');
+    }
   };
 
   const handleCheckboxChange = (field, value, checked) => {
