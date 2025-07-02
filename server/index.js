@@ -3,10 +3,6 @@ import cors from 'cors'
 import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import { connectDB } from './config/db.js'
-import AuthRouter from './routes/AuthRoutes.js'
-import UserRouter from './routes/UserRoutes.js'
-
-
 
 const app = express()
 const PORT = process.env.PORT || 5050
@@ -23,18 +19,23 @@ app.use(cors({
   credentials: true, // Optional: if using cookies or sessions
 }));
 
+//Routes
+import AuthRouter from './routes/AuthRoutes.js'
+import UserRouter from './routes/UserRoutes.js'
+import newsletterRoutes from './routes/newsletterRoutes.js';
+
+
+
 
 //API's Endpoints...........
-
 app.get('/', (req, res)=>{
     res.send(`<h1> API's is Working... </h1>`)
 })
-app.use('/api/auth',  AuthRouter)
-app.use('/api/user', UserRouter)
 
-
-
-
+//✅ Register Routes
+app.use('/api/auth',  AuthRouter);
+app.use('/api/user', UserRouter);
+app.use("/api/newsletter", newsletterRoutes);
 
 
 app.listen(PORT,()=>{
