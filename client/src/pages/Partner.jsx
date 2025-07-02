@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
+import { toast } from 'react-toastify';
 import { 
   LogOut, 
   Star, 
@@ -16,7 +17,10 @@ import {
   Bell,
   HelpCircle,
   BarChart,
-  Wallet
+  Wallet,
+  Mail,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
 
 const Partner = () => {
@@ -25,7 +29,7 @@ const Partner = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [activeSection, setActiveSection] = useState('dashboard');
   const [showPlans, setShowPlans] = useState(false);
-  const [isProfileLoading, setIsProfileLoading] = useState(false); // Added for OTP loading state
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
   const navigate = useNavigate();
   const { handleLogout, user } = useAuth();
   const { backendUrl } = useAppContext();
@@ -44,80 +48,95 @@ const Partner = () => {
 
   const subscriptionPlans = [
     {
-      id: 'basic',
+      id: 'single',
       name: 'Single',
-      price: '999',
-      originalPrice: '₹4,499',
-      savePercent: '78',
-      icon: Star,
-      color: 'text-green-500',
       description: 'A great solution for beginners',
+      price: '89.00',
+      originalPrice: '399.00',
+      savePercent: 78,
+      renewalPrice: '289.00',
       features: [
-        '1 website',
-        'Managed hosting for WordPress',
-        'Free 7-day Horizons trial',
-        '10 GB SSD storage',
-        'Basic API access',
-        'Standard support'
+        'Basic features',
+        'Up to 10 products',
+        'Basic analytics',
+        'Email support'
       ]
     },
     {
-      id: ' про',
+      id: 'premium',
       name: 'Premium',
-      price: '2,499',
-      originalPrice: '₹10,999',
-      savePercent: '77',
-      icon: Star,
-      color: 'text-green-500',
-      description: 'Everything you need to create your website',
+      description: 'Everything you need to create your website.',
+      price: '139.00',
+      originalPrice: '599.00',
+      savePercent: 77,
+      renewalPrice: '449.00',
       features: [
-        '25 websites',
-        'Managed hosting for WordPress',
-        'Free 7-day Horizons trial',
-        '25 GB SSD storage',
-        'Advanced API access',
-        'Priority support'
+        'All Single features',
+        'Up to 100 products',
+        'Advanced analytics',
+        'Priority support',
+        'Custom domain'
       ]
     },
     {
-      id: 'enterprise',
+      id: 'business',
       name: 'Business',
-      price: '4,999',
-      originalPrice: '₹14,999',
-      savePercent: '67',
-      icon: Crown,
-      color: 'text-green-500',
-      description: 'Level up with more power and enhanced features',
+      description: 'Level up with more power and enhanced features.',
+      price: '229.00',
+      originalPrice: '699.00',
+      savePercent: 67,
+      renewalPrice: '649.00',
       features: [
-        '50 websites',
-        'Managed hosting for WordPress',
-        'Free 7-day Horizons trial',
-        '50 GB NVMe storage',
-        'Full API access',
-        'Dedicated support team'
+        'All Premium features',
+        'Unlimited products',
+        'Advanced reporting',
+        '24/7 support',
+        'Multiple domains'
+      ]
+    },
+    {
+      id: 'cloud-startup',
+      name: 'Cloud Startup',
+      description: 'Enjoy optimised performance & guaranteed resources.',
+      price: '599.00',
+      originalPrice: '1,699.00',
+      savePercent: 65,
+      renewalPrice: '1,599.00',
+      features: [
+        'All Business features',
+        'Dedicated resources',
+        'Custom solutions',
+        'Enterprise support',
+        'SLA guarantee'
       ]
     }
   ];
 
-  useEffect(() => {
-    const fetchPartnerData = async () => {
-      try {
-        const response = await axios.get(backendUrl + '/api/user/data', {
-          withCredentials: true
-        });
-        
-        if (response.data.success) {
-          setPartnerData(response.data.user);
-        }
-      } catch (error) {
-        console.error('Error fetching partner data:', error);
-      } finally {
-        setIsLoading(false);
+  const fetchPartnerData = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/user/data`, { withCredentials: true });
+      if (response.data.success) {
+        setPartnerData(response.data.userData);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching partner data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchPartnerData();
   }, [backendUrl]);
+
+  useEffect(() => {
+    if (user) {
+      setPartnerData(prevData => ({
+        ...prevData,
+        ...user
+      }));
+    }
+  }, [user]);
 
   const onLogout = async () => {
     try {
@@ -135,12 +154,15 @@ const Partner = () => {
   const sendVerificationOpt = async () => {
     try {
       setIsProfileLoading(true);
-      const response = await axios.post('http://localhost:5050/api/auth/send-verify-otp', {}, { withCredentials: true });
+      const response = await axios.post(`${backendUrl}/api/auth/send-verify-otp`, {}, { withCredentials: true });
       if (response.data.success) {
+        toast.success('Verification OTP sent to your email');
         navigate('/email-verify');
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.error('Error sending verification OTP:', error);
+      toast.error(error.response?.data?.message || 'Error sending verification OTP');
     } finally {
       setIsProfileLoading(false);
     }
@@ -160,53 +182,54 @@ const Partner = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Pick your perfect plan</h2>
               <p className="text-gray-600">Choose the best plan for your business needs</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {subscriptionPlans.map((plan) => (
                 <div
                   key={plan.id}
-                  className={`relative bg-white rounded-lg border-2 transition-all cursor-pointer ${
+                  className={`relative bg-white rounded-lg border-2 transition-all ${
                     selectedPlan === plan.id
-                      ? 'border-green-500 shadow-lg'
-                      : 'border-gray-200 hover:border-green-300'
-                  }`}
-                  onClick={() => handleSubscribe(plan.id)}
+                      ? 'border-purple-500 shadow-lg'
+                      : 'border-gray-200 hover:border-purple-300'
+                  } ${plan.id === 'premium' ? 'relative' : ''}`}
                 >
-                  {selectedPlan === plan.id && (
-                    <div className="absolute -top-3 -right-3">
-                      <div className="bg-green-500 text-white p-1 rounded-full">
-                        <Check className="h-4 w-4" />
+                  {plan.id === 'premium' && (
+                    <div className="absolute -top-4 left-0 right-0">
+                      <div className="bg-purple-500 text-white text-sm font-medium py-1 px-4 rounded-full mx-auto w-max">
+                        MOST POPULAR
                       </div>
                     </div>
                   )}
                   <div className="p-6">
-                    <h4 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h4>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
                     <p className="text-gray-600 text-sm mb-4">{plan.description}</p>
-                    <div className="flex items-baseline mb-4">
-                      <span className="text-3xl font-bold text-gray-900">₹{plan.price}</span>
-                      <span className="text-gray-500 ml-2">/mo</span>
+                    
+                    <div className="mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
+                          SAVE {plan.savePercent}%
+                        </span>
+                        <span className="text-gray-500 text-sm line-through">₹{plan.originalPrice}</span>
+                      </div>
+                      <div className="flex items-baseline mt-2">
+                        <span className="text-4xl font-bold">₹{plan.price}</span>
+                        <span className="text-gray-600 ml-1">/mo</span>
+                      </div>
+                      <div className="text-purple-600 text-sm mt-1">+3 months free</div>
                     </div>
-                    <div className="flex items-center space-x-2 mb-4">
-                      <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                        SAVE {plan.savePercent}%
-                      </span>
-                      <span className="text-gray-500 text-sm line-through">{plan.originalPrice}/mo</span>
-                    </div>
+
                     <button
-                      className={`w-full py-2 px-4 rounded-md text-sm font-medium mb-4 ${
+                      onClick={() => handleSubscribe(plan.id)}
+                      className={`w-full py-3 rounded-lg text-center transition-colors mb-4 ${
                         selectedPlan === plan.id
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-green-500 text-white hover:bg-green-600'
+                          ? 'bg-purple-100 text-purple-700 border-2 border-purple-500'
+                          : 'bg-white text-purple-600 border-2 border-purple-500 hover:bg-purple-50'
                       }`}
                     >
-                      {selectedPlan === plan.id ? 'Current Plan' : 'Choose Plan'}
+                      Choose plan
                     </button>
-                    <div className="space-y-2">
-                      {plan.features.map((feature, index) => (
-                        <div key={index} className="flex items-center text-sm text-gray-600">
-                          <Check className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
+
+                    <div className="text-gray-500 text-sm text-center">
+                      Renews at ₹{plan.renewalPrice}/mo for a year. Cancel anytime
                     </div>
                   </div>
                 </div>
@@ -220,54 +243,57 @@ const Partner = () => {
     switch (activeSection) {
       case 'dashboard':
         return (
-          <div className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Total Revenue</h3>
-                <p className="text-3xl font-bold text-green-600">₹45,250</p>
-                <p className="text-sm text-gray-500 mt-2">+12.5% from last month</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Total Customers</h3>
-                <p className="text-3xl font-bold text-blue-600">156</p>
-                <p className="text-sm text-gray-500 mt-2">+8 new this month</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Success Rate</h3>
-                <p className="text-3xl font-bold text-purple-600">98.5%</p>
-                <p className="text-sm text-gray-500 mt-2">+2.3% from last month</p>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold mb-6">
+              {showPlans ? 'Subscription Plans' : menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
+            </h2>
+            
+            {/* Account Status Section */}
+            <div className="mb-8">
+              <h3 className="text-lg font-medium mb-4">Account Status</h3>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center">
+                    <Mail className="h-5 w-5 text-gray-400 mr-2" />
+                    <span className="text-sm text-gray-600">{user?.email}</span>
+                  </div>
+                  <div className="flex items-center">
+                    {partnerData?.isAccountVerified ? (
+                      <>
+                        <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                        <span className="text-sm text-green-600">Email Verified</span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="h-5 w-5 text-red-500 mr-2" />
+                        <span className="text-sm text-red-600">Email Not Verified</span>
+                        <button
+                          onClick={!isProfileLoading ? sendVerificationOpt : undefined}
+                          className="ml-4 px-4 py-1 text-sm bg-red-100 text-red-700 hover:bg-red-200 rounded-full transition-colors disabled:opacity-50"
+                          disabled={isProfileLoading}
+                        >
+                          {isProfileLoading ? 'Sending...' : 'Verify Now'}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Transactions</h3>
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center justify-between border-b pb-2">
-                      <div>
-                        <p className="font-medium">Transaction #{i}</p>
-                        <p className="text-sm text-gray-500">2 hours ago</p>
-                      </div>
-                      <p className="text-green-600 font-medium">+₹1,200</p>
-                    </div>
-                  ))}
-                </div>
+            {/* Rest of the dashboard content */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h4 className="font-medium mb-2">Total Orders</h4>
+                <p className="text-2xl font-bold">0</p>
               </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Activities</h3>
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center space-x-3 border-b pb-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <div>
-                        <p className="font-medium">New customer signed up</p>
-                        <p className="text-sm text-gray-500">3 hours ago</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h4 className="font-medium mb-2">Revenue</h4>
+                <p className="text-2xl font-bold">₹0</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h4 className="font-medium mb-2">Active Products</h4>
+                <p className="text-2xl font-bold">0</p>
               </div>
             </div>
           </div>
@@ -435,27 +461,23 @@ const Partner = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <div className="mb-4">
-          <div className="flex justify-between items-center">
+      <div className="flex-1 p-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-xl font-bold text-gray-900">
-                {showPlans ? 'Subscription Plans' : menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
+              <h1 className="text-2xl font-bold text-gray-900">
+                Welcome back, {user?.name}
               </h1>
-              <p className="text-sm text-gray-600">Welcome back, {user?.name}!</p>
             </div>
-            <div className="flex items-center space-x-3">
+
+            <div className="flex items-center space-x-4">
               <button
-                onClick={() => {
-                  setShowPlans(!showPlans);
-                  if (!showPlans) {
-                    setActiveSection(null);
-                  }
-                }}
-                className={`inline-flex items-center px-3 py-1.5 border rounded-md text-sm font-medium transition-all duration-200 ${
+                onClick={() => setShowPlans(!showPlans)}
+                className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
                   showPlans
-                    ? 'border-green-500 bg-green-500 text-white'
-                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                    ? 'bg-black text-white'
+                    : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
                 <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
@@ -487,10 +509,10 @@ const Partner = () => {
               </div>
             </div>
           </div>
-        </div>
 
-        <div>
-          {renderDashboardContent()}
+          <div>
+            {renderDashboardContent()}
+          </div>
         </div>
       </div>
     </div>

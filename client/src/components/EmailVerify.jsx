@@ -4,14 +4,15 @@ import { assets } from '../assets/assets.js'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useAppContext } from '../context/AppContext'
+import { useAuth } from '../context/AuthContext'
 
 const EmailVerify = () => {
   axios.defaults.withCredentials = true
   const inputRefs = React.useRef([])
   const navigate = useNavigate()
   
-  // ✅ Using only the correct custom context hook
-  const { backendUrl, isLogin, userData, getUserData } = useAppContext();
+  const { backendUrl } = useAppContext();
+  const { user, handleLogin } = useAuth();
 
   const handelInput = (e, index) => {
     if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
@@ -42,11 +43,20 @@ const EmailVerify = () => {
       const otp = otpArray.join('')
 
       const { data } = await axios.post(`${backendUrl}/api/auth/verify-account`, { otp })
-      console.log("Backend URL:", backendUrl)
 
       if (data.success) {
         toast.success(data.message)
-        await getUserData()
+        
+        // Get updated user data after verification
+        const userResponse = await axios.get(`${backendUrl}/api/user/data`, { withCredentials: true });
+        if (userResponse.data.success) {
+          handleLogin(localStorage.getItem('authToken'), {
+            ...user,
+            ...userResponse.data.userData,
+            isAccountVerified: true
+          });
+        }
+        
         navigate('/partner')
       } else {
         toast.error(data.message)
@@ -57,10 +67,10 @@ const EmailVerify = () => {
   }
 
   useEffect(() => {
-    if (isLogin && userData?.isAccountVerified) {
-      navigate('/')
+    if (user?.isAccountVerified) {
+      navigate('/partner')
     }
-  }, [isLogin, userData, navigate])
+  }, [user, navigate])
 
   return (
     <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800'>
