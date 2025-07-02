@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useAppContext } from '../context/AppContext';
 import { 
   LogOut, 
   Star, 
@@ -27,6 +28,7 @@ const Partner = () => {
   const [isProfileLoading, setIsProfileLoading] = useState(false); // Added for OTP loading state
   const navigate = useNavigate();
   const { handleLogout, user } = useAuth();
+  const { backendUrl } = useAppContext();
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -100,7 +102,7 @@ const Partner = () => {
   useEffect(() => {
     const fetchPartnerData = async () => {
       try {
-        const response = await axios.get('http://localhost:5050/api/user/profile', {
+        const response = await axios.get(backendUrl + '/api/user/data', {
           withCredentials: true
         });
         
@@ -115,7 +117,7 @@ const Partner = () => {
     };
 
     fetchPartnerData();
-  }, []);
+  }, [backendUrl]);
 
   const onLogout = async () => {
     try {

@@ -1,94 +1,43 @@
-// import { createContext, useEffect, useState } from "react";
-// import axios from 'axios'
-// import { toast } from "react-toastify";
 
-// export const AppContext = createContext()
-
-// export const AppContextProvider = (props) => {
-
-//     axios.defaults.withCredentials = true
-
-//     const backendUrl = import.meta.env.VITE_BACKEND_URL
-//     const [isLogin, setIsLogin] = useState(false)
-//     const [userData, setUserData] = useState(false)
-
-
-//     //+++++++++Create a fun that give the user data +++++++++
-//     const getUserData = async()=>{
-//         try {
-//             const {data} = await axios.get(backendUrl + '/api/user/data')
-//             data.success ? setUserData(data.userData) : toast.error(data.message)
-//         } catch (error) {
-//             toast.error(error.message)
-//         }
-//     }
-
-//     const getAuthStatus = async()=>{
-//         try {
-//             const {data} = await axios.get(backendUrl + '/api/auth/is-auth')
-//             if(data.success){
-//                 setIsLogin(true)
-//                 getUserData()
-//             }
-//         }catch(error) {
-//             toast.error(error.message)
-//         }
-//     }
-
-//     useEffect(()=>{
-//         getAuthStatus()
-//     }, [])
-//     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//     const value ={
-//         backendUrl, 
-//         isLogin, 
-//         setIsLogin, 
-//         userData,
-//         setUserData, 
-//         getUserData
-//     }
-
-//     return(
-//         <AppContext.Provider value={value}>
-//             {props.children}
-//         </AppContext.Provider>
-//     )
-// }
-
-
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
-export const AppContextProvider = (props) => {
+export const AppContextProvider = ({ children }) => {
     axios.defaults.withCredentials = true;
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    console.log("BACKEND URL FROM ENV =>", backendUrl); // ✅ Debug log
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+    if (!import.meta.env.VITE_BACKEND_URL) {
+        console.warn("⚠️ Warning: VITE_BACKEND_URL is not defined in .env. Falling back to http://localhost:5000");
+    }
 
     const [isLogin, setIsLogin] = useState(false);
-    const [userData, setUserData] = useState(false);
+    const [userData, setUserData] = useState(null);
 
     const getUserData = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/user/data');
-            data.success ? setUserData(data.userData) : toast.error(data.message);
+            const { data } = await axios.get(`${backendUrl}/api/user/data`);
+            if (data.success) {
+                setUserData(data.userData);
+            } else {
+                toast.error(data.message);
+            }
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response?.data?.message || error.message);
         }
     };
 
     const getAuthStatus = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/auth/is-auth');
+            const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`);
             if (data.success) {
                 setIsLogin(true);
                 getUserData();
             }
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response?.data?.message || error.message);
         }
     };
 
@@ -102,12 +51,15 @@ export const AppContextProvider = (props) => {
         setIsLogin,
         userData,
         setUserData,
-        getUserData
+        getUserData,
     };
 
     return (
         <AppContext.Provider value={value}>
-            {props.children}
+            {children}
         </AppContext.Provider>
     );
 };
+
+// ✅ Custom hook to consume context
+export const useAppContext = () => useContext(AppContext);
