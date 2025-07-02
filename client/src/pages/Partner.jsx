@@ -24,6 +24,7 @@ const Partner = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [activeSection, setActiveSection] = useState('dashboard');
   const [showPlans, setShowPlans] = useState(false);
+  const [isProfileLoading, setIsProfileLoading] = useState(false); // Added for OTP loading state
   const navigate = useNavigate();
   const { handleLogout, user } = useAuth();
 
@@ -59,7 +60,7 @@ const Partner = () => {
       ]
     },
     {
-      id: 'pro',
+      id: ' про',
       name: 'Premium',
       price: '2,499',
       originalPrice: '₹10,999',
@@ -116,14 +117,35 @@ const Partner = () => {
     fetchPartnerData();
   }, []);
 
-  const onLogout = () => {
-    handleLogout();
-    navigate('/partnerlogin');
+  const onLogout = async () => {
+    try {
+      const response = await axios.post('http://localhost:5050/api/auth/logout', {}, { withCredentials: true });
+      if (response.data.success) {
+        handleLogout();
+        setPartnerData(null);
+        navigate('/partnerlogin');
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  const sendVerificationOpt = async () => {
+    try {
+      setIsProfileLoading(true);
+      const response = await axios.post('http://localhost:5050/api/auth/send-verify-otp', {}, { withCredentials: true });
+      if (response.data.success) {
+        navigate('/email-verify');
+      }
+    } catch (error) {
+      console.error('Error sending verification OTP:', error);
+    } finally {
+      setIsProfileLoading(false);
+    }
   };
 
   const handleSubscribe = (planId) => {
     setSelectedPlan(planId);
-    // Here you would typically integrate with a payment gateway
     console.log(`Subscribing to ${planId} plan`);
   };
 
@@ -131,7 +153,6 @@ const Partner = () => {
     if (showPlans) {
       return (
         <div className="space-y-8">
-          {/* Plans Section */}
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Pick your perfect plan</h2>
@@ -198,7 +219,6 @@ const Partner = () => {
       case 'dashboard':
         return (
           <div className="space-y-8">
-            {/* Stats Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Total Revenue</h3>
@@ -217,7 +237,6 @@ const Partner = () => {
               </div>
             </div>
 
-            {/* Activity Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Transactions</h3>
@@ -440,13 +459,30 @@ const Partner = () => {
                 <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
                 {selectedPlan ? subscriptionPlans.find(p => p.id === selectedPlan)?.name : 'Plans'}
               </button>
-              <button
-                onClick={onLogout}
-                className="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-all duration-200"
-              >
-                <LogOut className="h-4 w-4 mr-1.5" />
-                Logout
-              </button>
+              {/* Profile Button from Navbar.jsx */}
+              <div className="relative group">
+                <div className="flex items-center justify-center rounded-full bg-black text-white w-8 h-8 cursor-pointer">
+                  {user?.name?.[0]?.toUpperCase() || 'U'}
+                </div>
+                <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black pt-10 rounded">
+                  <ul className="list-none m-0 p-2 bg-gray-100 text-sm">
+                    {!partnerData?.isAccountVerified && (
+                      <li
+                        onClick={!isProfileLoading ? sendVerificationOpt : undefined}
+                        className={`py-1 px-2 hover:bg-gray-200 cursor-pointer ${isProfileLoading ? 'opacity-50' : ''}`}
+                      >
+                        {isProfileLoading ? 'Sending OTP...' : 'Verify email'}
+                      </li>
+                    )}
+                    <li
+                      onClick={onLogout}
+                      className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10"
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -459,4 +495,4 @@ const Partner = () => {
   );
 };
 
-export default Partner; 
+export default Partner;
