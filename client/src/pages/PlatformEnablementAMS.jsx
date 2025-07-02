@@ -883,21 +883,7 @@ export default function PlatformAMS() {
                     <option value="10l-plus">₹10,00,000+</option>
                   </select>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Target Timeline *</label>
-                  <select
-                    value={formData.timeline}
-                    onChange={(e) => handleInputChange("timeline", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  >
-                    <option value="">Select timeline</option>
-                    <option value="immediate">Immediate (within 1 week)</option>
-                    <option value="1-month">Within 1 month</option>
-                    <option value="2-3-months">2–3 months</option>
-                    <option value="planning">Just exploring options</option>
-                  </select>
-                </div>
+              
               </div>
 
               <div>
