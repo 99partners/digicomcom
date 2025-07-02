@@ -41,10 +41,47 @@ export default function CoBrandingPage() {
     consent: false,
   })
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("Form submitted:", formData)
-    // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await fetch('/api/co-branding/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Thank you for your application! We will contact you soon.');
+            // Reset form
+            setFormData({
+                brandName: "",
+                website: "",
+                registeredName: "",
+                businessType: "",
+                productCategories: [],
+                topProducts: "",
+                platforms: [],
+                salesVolume: "",
+                marketingGoals: [],
+                targetAudience: "",
+                timeline: "",
+                instagram: "",
+                facebook: "",
+                youtube: "",
+                additionalNotes: "",
+                consent: false,
+            });
+        } else {
+            alert('Error submitting application. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error submitting application. Please try again.');
+    }
   }
 
   const handleCheckboxChange = (field, value, checked) => {
