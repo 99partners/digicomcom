@@ -1,4 +1,3 @@
-
 import { createContext, useEffect, useState, useContext } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
@@ -37,7 +36,10 @@ export const AppContextProvider = ({ children }) => {
                 getUserData();
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || error.message);
+            // Don't show error toast when checking auth status
+            console.log("Not authenticated");
+            setIsLogin(false);
+            setUserData(null);
         }
     };
 
