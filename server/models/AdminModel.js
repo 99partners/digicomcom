@@ -39,8 +39,8 @@ const createDefaultAdmin = async () => {
         const adminExists = await Admin.findOne({ username: 'admin' });
         if (!adminExists) {
             await Admin.create({
-                username: 'admin',
-                password: 'admin123'
+                username: '99admin',
+                password: '99Partnersin'
             });
             console.log('Default admin created');
         }

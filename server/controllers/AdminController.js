@@ -83,7 +83,7 @@ export const getDashboardStats = async (req, res) => {
 // Get All Users
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find({}, 'name email isAccountVerified createdAt')
+        const users = await User.find({}, 'name email phone isAccountVerified')
             .sort({ createdAt: -1 });
 
         res.json({
