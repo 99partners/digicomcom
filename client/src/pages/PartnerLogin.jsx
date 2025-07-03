@@ -12,7 +12,7 @@ const PartnerLogin = () => {
   const [state, setState] = useState("Sign Up")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -21,13 +21,13 @@ const PartnerLogin = () => {
   const backendUrl = "http://localhost:5050"
 
   const handlePhoneChange = (e) => {
-      const input = e.target.value
-      if (/^\d{0,10}$/.test(input)) {
-        setPhoneNumber(input)
-      } else {
-        toast.error('Please enter only digits (0-9) up to 10 characters')
-      }
+    const input = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (input.length <= 10) {
+      setPhone(input);
+    } else {
+      toast.error('Phone number should not exceed 10 digits');
     }
+  }
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -36,7 +36,7 @@ const PartnerLogin = () => {
     try {
       axios.defaults.withCredentials = true
       const url = backendUrl + (state === "Sign Up" ? "/api/auth/register" : "/api/auth/login")
-      const payload = state === "Sign Up" ? { name, email, phoneNumber, password } : { email, password }
+      const payload = state === "Sign Up" ? { name, email, phone, password } : { email, password }
 
       const { data } = await axios.post(url, payload)
 
@@ -49,7 +49,7 @@ const PartnerLogin = () => {
         toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message || "Something went wrong")
+      toast.error(error.response?.data?.message || error.message || "Something went wrong")
     } finally {
       setIsLoading(false)
     }
@@ -155,17 +155,21 @@ const PartnerLogin = () => {
                 />
               </div>
 
-              <div className="flex items-center gap-3 w-full px-5 py-3 rounded-full bg-slate-800 border border-slate-700 hover:border-green-500/50 transition-colors group">
-                <Phone className="h-5 w-5 text-green-400 group-hover:text-green-300 transition-colors" />
-                <input
-                onChange={handlePhoneChange}
-                value={phoneNumber}
-                className='bg-transparent outline-none'
-                type="tel"
-                placeholder='Phone Number'
-                required
-              />
-              </div>
+              {state === "Sign Up" && (
+                <div className="flex items-center gap-3 w-full px-5 py-3 rounded-full bg-slate-800 border border-slate-700 hover:border-green-500/50 transition-colors group">
+                  <Phone className="h-5 w-5 text-green-400 group-hover:text-green-300 transition-colors" />
+                  <input
+                    onChange={handlePhoneChange}
+                    value={phone}
+                    className="bg-transparent outline-none w-full text-white placeholder-gray-400"
+                    type="tel"
+                    placeholder="Phone Number (10 digits)"
+                    pattern="[0-9]{10}"
+                    maxLength="10"
+                    required
+                  />
+                </div>
+              )}
 
               <div className="flex items-center gap-3 w-full px-5 py-3 rounded-full bg-slate-800 border border-slate-700 hover:border-green-500/50 transition-colors group">
                 <Lock className="h-5 w-5 text-green-400 group-hover:text-green-300 transition-colors" />
