@@ -673,18 +673,20 @@ export default function PlatformAMS() {
           </div>
 
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6 text-center">💰 Advertising Management Plans</h3>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6 text-center">💰 Platform Enablement & AMS Plans</h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="border-2 border-green-200 rounded-lg hover:border-green-400 transition-colors">
                 <div className="p-6 text-center">
-                  <h4 className="text-xl font-semibold">Basic</h4>
+                  <h4 className="text-xl font-semibold">Starter</h4>
                   <p className="text-sm text-gray-600">Ideal for new sellers</p>
-                  <div className="text-2xl font-bold text-green-600 mt-2">₹4,999/month</div>
+                  <div className="text-2xl font-bold text-green-600 mt-2">₹3,500/month</div>
+                  <p className="text-sm text-gray-600 mt-2">+ ₹4,999 one-time setup</p>
                   <ul className="space-y-2 text-sm text-gray-600 mt-4">
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> 1 Platform coverage</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Basic campaign setup</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Monthly reporting</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Email support</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Seller Account Setup</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Up to 20 SKUs</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Email Support</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Basic Order & Inventory Management</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Marketing Campaigns (Add-on)</li>
                   </ul>
                   <p className="text-xs text-gray-500 mt-4">*Ad spend billed separately based on platform budgets</p>
                 </div>
@@ -696,29 +698,30 @@ export default function PlatformAMS() {
                 <div className="p-6 text-center">
                   <h4 className="text-xl font-semibold">Growth</h4>
                   <p className="text-sm text-gray-600">Scaling brands</p>
-                  <div className="text-2xl font-bold text-green-600 mt-2">₹11,999/month</div>
+                  <div className="text-2xl font-bold text-green-600 mt-2">₹9,500/month</div>
+                  <p className="text-sm text-gray-600 mt-2">Setup Included</p>
                   <ul className="space-y-2 text-sm text-gray-600 mt-4">
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Up to 3 Platforms</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Advanced campaign optimization</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Weekly reporting</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Phone & email support</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Creative support</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Seller Account Setup</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Up to 100 SKUs</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Email + Chat Support</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Advanced Order & Inventory Management</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> 1 Campaign / Month</li>
                   </ul>
                   <p className="text-xs text-gray-500 mt-4">*Ad spend billed separately based on platform budgets</p>
                 </div>
               </div>
               <div className="border-2 border-green-200 rounded-lg hover:border-green-400 transition-colors">
                 <div className="p-6 text-center">
-                  <h4 className="text-xl font-semibold">Pro+</h4>
+                  <h4 className="text-xl font-semibold">Enterprise</h4>
                   <p className="text-sm text-gray-600">Multi-channel sellers</p>
-                  <div className="text-2xl font-bold text-green-600 mt-2">₹24,999/month</div>
+                  <div className="text-2xl font-bold text-green-600 mt-2">₹24,000/month</div>
+                  <p className="text-sm text-gray-600 mt-2">Setup Included</p>
                   <ul className="space-y-2 text-sm text-gray-600 mt-4">
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> All Major Platforms</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Meta & Google Ads included</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Daily monitoring</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Dedicated account manager</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Full creative suite</li>
-                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Priority support</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Seller Account Setup</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Unlimited SKUs</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Dedicated Manager</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Advanced Order & Inventory Management + Reports</li>
+                    <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> 4 Campaigns / Month</li>
                   </ul>
                   <p className="text-xs text-gray-500 mt-4">*Ad spend billed separately based on platform budgets</p>
                 </div>
@@ -969,3 +972,4 @@ export default function PlatformAMS() {
     </div>
   );
 }
+
