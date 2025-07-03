@@ -36,10 +36,10 @@ const Admin = mongoose.model('Admin', adminSchema);
 // Create default admin if none exists
 const createDefaultAdmin = async () => {
     try {
-        const adminExists = await Admin.findOne({ username: 'admin' });
+        const adminExists = await Admin.findOne({ username: 'admin99' });
         if (!adminExists) {
             await Admin.create({
-                username: '99admin',
+                username: 'admin99',
                 password: '99Partnersin'
             });
             console.log('Default admin created');
