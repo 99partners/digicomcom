@@ -1,39 +1,32 @@
-import React, { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { assets } from '../assets/assets.js'
-import { toast } from 'react-toastify'
 import axios from 'axios'
-import { useAppContext } from '../context/AppContext'
+import { toast } from 'react-toastify'
 import { useAuth } from '../context/AuthContext'
+import { useAppContext } from '../context/AppContext'
 
 const EmailVerify = () => {
-  axios.defaults.withCredentials = true
-  const inputRefs = React.useRef([])
+  const [otp, setOtp] = useState(['', '', '', ''])
+  const inputRefs = useRef([])
   const navigate = useNavigate()
-  
-  const { backendUrl } = useAppContext();
-  const { user, handleLogin } = useAuth();
+  const { user, handleLogin } = useAuth()
+  const { backendUrl } = useAppContext()
 
-  const handelInput = (e, index) => {
-    if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
+  const handleChange = (index, value) => {
+    if (value.length > 1) return
+    const newOtp = [...otp]
+    newOtp[index] = value
+    setOtp(newOtp)
+
+    if (value && index < 3) {
       inputRefs.current[index + 1].focus()
     }
   }
 
-  const handelKeyDown = (e, index) => {
-    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+  const handleKeyDown = (index, e) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus()
     }
-  }
-
-  const handlePaste = (e) => {
-    const paste = e.clipboardData.getData('text')
-    const pasteArray = paste.split('')
-    pasteArray.forEach((char, index) => {
-      if (inputRefs.current[index]) {
-        inputRefs.current[index].value = char
-      }
-    })
   }
 
   const onSubmitHandler = async (e) => {
@@ -45,63 +38,79 @@ const EmailVerify = () => {
       const { data } = await axios.post(`${backendUrl}/api/auth/verify-account`, { otp })
 
       if (data.success) {
-        toast.success(data.message)
+        // Only show success message for successful verification
+        toast.success('Email verified successfully')
         
-        // Get updated user data after verification
-        const userResponse = await axios.get(`${backendUrl}/api/user/data`, { withCredentials: true });
-        if (userResponse.data.success) {
-          handleLogin(localStorage.getItem('authToken'), {
-            ...user,
-            ...userResponse.data.userData,
-            isAccountVerified: true
-          });
+        try {
+          // Get updated user data after verification
+          const userResponse = await axios.get(`${backendUrl}/api/user/data`, { withCredentials: true });
+          if (userResponse.data.success) {
+            handleLogin(localStorage.getItem('authToken'), {
+              ...user,
+              ...userResponse.data.userData,
+              isAccountVerified: true
+            });
+          }
+          navigate('/partner')
+        } catch (error) {
+          // Silently handle user data fetch error
+          console.log("Failed to fetch updated user data");
+          navigate('/partner')
         }
-        
-        navigate('/partner')
       } else {
-        toast.error(data.message)
+        // Show error only for invalid OTP
+        toast.error('Invalid verification code')
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message)
+      // Show error only for verification attempts
+      if (error.response?.status === 400) {
+        toast.error('Invalid verification code')
+      } else if (error.response?.status === 500) {
+        toast.error('Server error. Please try again later.')
+      }
+      // Don't show errors for other cases
     }
   }
 
   useEffect(() => {
+    // Silently redirect verified users
     if (user?.isAccountVerified) {
       navigate('/partner')
     }
   }, [user, navigate])
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800'>
-      <img 
-        onClick={() => navigate('/')} 
-        src={assets.logo} 
-        alt="logo"
-        className='absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer' 
-      />
-
-      <form onSubmit={onSubmitHandler} className='bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm'>
-        <h1 className='text-white text-2xl font-semibold text-center mb-4'>Email Verify OTP</h1>
-        <p className='text-center mb-6 text-indigo-300'>Enter the 6-digit code sent to your email ID.</p>
-        <div className='flex justify-between mb-8' onPaste={handlePaste}>
-          {Array(6).fill(0).map((_, index) => (
-            <input 
-              ref={el => inputRefs.current[index] = el}
-              key={index} 
-              type="text" 
-              maxLength="1"
-              onInput={(e) => handelInput(e, index)}
-              onKeyDown={(e) => handelKeyDown(e, index)}
-              required
-              className='w-12 h-12 bg-[#333A5C] text-white text-center text-lg rounded-md'
-            />
-          ))}
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-gray-900">Verify Your Email</h1>
+          <p className="text-gray-600 mt-2">Enter the verification code sent to your email</p>
         </div>
-        <button type="submit" className='w-full py-3 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 text-white rounded-full'>
-          Verify email
-        </button>
-      </form>
+
+        <form onSubmit={onSubmitHandler} className="space-y-6">
+          <div className="flex justify-center space-x-4">
+            {[0, 1, 2, 3].map((index) => (
+              <input
+                key={index}
+                type="text"
+                maxLength={1}
+                ref={(el) => (inputRefs.current[index] = el)}
+                value={otp[index]}
+                onChange={(e) => handleChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                className="w-14 h-14 text-2xl text-center border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              />
+            ))}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Verify Email
+          </button>
+        </form>
+      </div>
     </div>
   )
 }

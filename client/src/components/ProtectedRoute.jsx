@@ -14,13 +14,14 @@ export const ProtectedRoute = ({ children }) => {
     );
   }
 
+  // Silently redirect unauthorized users
   if (!user) {
-    return <Navigate to={isAdminRoute ? "/admin/login" : "/partnerlogin"} replace />;
+    return <Navigate to={isAdminRoute ? "/admin/login" : "/partnerlogin"} replace state={{ from: location }} />;
   }
 
-  // For admin routes, check if user has admin role
+  // Silently redirect non-admin users from admin routes
   if (isAdminRoute && user.role !== 'admin') {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/admin/login" replace state={{ from: location }} />;
   }
 
   return children;

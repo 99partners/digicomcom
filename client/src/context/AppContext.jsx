@@ -20,11 +20,12 @@ export const AppContextProvider = ({ children }) => {
             const { data } = await axios.get(`${backendUrl}/api/user/data`);
             if (data.success) {
                 setUserData(data.userData);
-            } else {
-                toast.error(data.message);
             }
+            // Don't show error toast for failed user data fetch
         } catch (error) {
-            toast.error(error.response?.data?.message || error.message);
+            // Silently handle user data fetch errors
+            console.log("Failed to fetch user data");
+            setUserData(null);
         }
     };
 
@@ -34,10 +35,14 @@ export const AppContextProvider = ({ children }) => {
             if (data.success) {
                 setIsLogin(true);
                 getUserData();
+            } else {
+                // Silently handle unsuccessful auth
+                setIsLogin(false);
+                setUserData(null);
             }
         } catch (error) {
-            // Don't show error toast when checking auth status
-            console.log("Not authenticated");
+            // Silently handle auth check errors
+            console.log("Auth check failed");
             setIsLogin(false);
             setUserData(null);
         }
