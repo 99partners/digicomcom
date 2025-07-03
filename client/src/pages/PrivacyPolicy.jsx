@@ -1,8 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Mail } from 'lucide-react'
+import { useEffect } from "react";
 
 const PrivacyPolicy = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="min-h-screen bg-white text-gray-800">
       <main className="pt-32 container mx-auto px-4 py-16 max-w-4xl">
@@ -82,11 +87,3 @@ const PrivacyPolicy = () => {
 }
 
 export default PrivacyPolicy
-
-
-
-
-
-
-
-

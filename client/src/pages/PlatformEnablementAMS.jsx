@@ -39,7 +39,13 @@ import {
   Eye,
 } from "lucide-react";
 
-export default function PlatformAMS() {
+import { useEffect } from "react";
+
+// Scroll to top on component mount
+export default function PlatformEnablementAMS() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -972,4 +978,3 @@ export default function PlatformAMS() {
     </div>
   );
 }
-

@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom"
 import { Globe, Handshake, Megaphone, Truck, ArrowRight, Star } from "lucide-react"
 
+import { useEffect } from "react";
 const Home = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const features = [
     {
       icon: Globe,
