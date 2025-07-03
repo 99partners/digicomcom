@@ -20,7 +20,7 @@ const Header = () => {
       { name: "Co-Branding Solutions", href: "/services/co-branding" },
       { name: "Platform Enablement & AMS", href: "/services/platform-ams" }
     ] },
-    { name: "Product Partners", href: "/partners" },
+    { name: "For Product Partners", href: "/partners" },
     { name: "Resources", href: "/resources" },
     { name: "Careers", href: "/careers" },
     { name: "Contact Us", href: "/contact" },
