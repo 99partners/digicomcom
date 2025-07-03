@@ -30,7 +30,13 @@ const AdminLogin = () => {
                 navigate('/admin');
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Login failed');
+            // Only show error toast for actual login attempts, not for auth checks
+            if (error.response?.status === 401) {
+                toast.error('Invalid credentials');
+            } else if (error.response?.status === 500) {
+                toast.error('Server error. Please try again later.');
+            }
+            // Don't show any toast for other errors
         } finally {
             setIsLoading(false);
         }

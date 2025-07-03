@@ -24,30 +24,40 @@ export const AuthProvider = ({ children }) => {
       // Check admin auth first
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
-        const response = await axios.get('http://localhost:5050/api/admin/dashboard-stats', {
-          withCredentials: true
-        });
-        if (response.data.success) {
-          setUser({ role: 'admin' });
-          return;
+        try {
+          const response = await axios.get('http://localhost:5050/api/admin/dashboard-stats', {
+            withCredentials: true
+          });
+          if (response.data.success) {
+            setUser({ role: 'admin' });
+            setLoading(false);
+            return;
+          }
+        } catch (adminError) {
+          // Silently handle admin auth failure
+          console.log('Admin auth check failed');
+          localStorage.removeItem('adminToken');
         }
       }
 
       // Check regular user auth
       const userToken = localStorage.getItem('authToken');
       if (userToken) {
-        const response = await axios.get('http://localhost:5050/api/user/profile', {
-          withCredentials: true
-        });
-        if (response.data.success) {
-          setUser(response.data.user);
-        } else {
+        try {
+          const response = await axios.get('http://localhost:5050/api/user/profile', {
+            withCredentials: true
+          });
+          if (response.data.success) {
+            setUser(response.data.user);
+          } else {
+            handleLogout();
+          }
+        } catch (userError) {
+          // Silently handle user auth failure
+          console.log('User auth check failed');
           handleLogout();
         }
       }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      handleLogout();
     } finally {
       setLoading(false);
     }
