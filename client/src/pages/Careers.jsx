@@ -115,7 +115,7 @@ const Careers = () => {
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Build the future of digital commerce with a team that values innovation, collaboration, and growth.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="#positions"
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
@@ -129,75 +129,39 @@ const Careers = () => {
             >
               Explore Internships
             </Link>
-          </div>
+          </div> */}
         </div>
       </section>
 
-      {/* Culture & Values */}
-      <section className="py-16 px-4 bg-green-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Culture</h2>
-              <p className="text-lg text-gray-600 mb-6">
-                At 99digicom.com, we foster innovation, collaboration, and growth. We believe in creating a dynamic,
-                inclusive workplace where every team member can thrive and make a meaningful impact.
-              </p>
-              <p className="text-lg text-gray-600 mb-8">
-                Expect a culture that values creativity, encourages learning, and celebrates both individual
-                achievements and team success. We're building something extraordinary together.
-              </p>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-900">Our Values:</h3>
-                <ul className="space-y-2">
-                  {values.map((value, index) => (
-                    <li key={index} className="flex items-start">
-                      <div className="w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span className="text-gray-600 text-sm">{value}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="relative">
-              <img
-                src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Team collaboration"
-                className="rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Work With Us?</h2>
-            <p className="text-lg text-gray-600">
-              We believe in taking care of our team with competitive benefits and a supportive environment.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => {
-              const IconComponent = benefit.icon
-              return (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
-                >
-                  <div className="w-12 h-12 bg-green-50 hover:bg-green-100 rounded-lg flex items-center justify-center mb-4 transition-colors">
-                    <IconComponent className="h-6 w-6 text-green-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm">{benefit.description}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+      
+      {/* Benefits
+      // <section className="py-16 px-4 bg-white">
+      //   <div className="max-w-7xl mx-auto">
+      //     <div className="text-center mb-12">
+      //       <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Work With Us?</h2>
+      //       <p className="text-lg text-gray-600">
+      //         We believe in taking care of our team with competitive benefits and a supportive environment.
+      //       </p>
+      //     </div>
+      //     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      //       {benefits.map((benefit, index) => {
+      //         const IconComponent = benefit.icon
+      //         return (
+      //           <div
+      //             key={index}
+      //             className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
+      //           >
+      //             <div className="w-12 h-12 bg-green-50 hover:bg-green-100 rounded-lg flex items-center justify-center mb-4 transition-colors">
+      //               <IconComponent className="h-6 w-6 text-green-600" />
+      //             </div>
+      //             <h3 className="text-lg font-semibold text-gray-900 mb-3">{benefit.title}</h3>
+      //             <p className="text-gray-600 text-sm">{benefit.description}</p>
+      //           </div>
+      //         )
+      //       })}
+      //     </div>
+      //   </div>
+      // </section> */}
 
       {/* Open Positions */}
       <section id="positions" className="py-16 px-4 bg-green-50">
@@ -309,6 +273,48 @@ const Careers = () => {
           </div>
         </div>
       </section>
+
+            {/* Culture & Values */}
+      <section className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Culture</h2>
+              <p className="text-lg text-gray-600 mb-6">
+                At 99digicom.com, we foster innovation, collaboration, and growth. We believe in creating a dynamic,
+                inclusive workplace where every team member can thrive and make a meaningful impact.
+              </p>
+              <p className="text-lg text-gray-600 mb-8">
+                Expect a culture that values creativity, encourages learning, and celebrates both individual
+                achievements and team success. We're building something extraordinary together.
+              </p>
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-gray-900">Our Values:</h3>
+                <ul className="space-y-2">
+                  {values.map((value, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="w-2 h-2 bg-green-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span className="text-gray-600 text-sm">{value}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="relative">
+              <img
+                src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600"
+                alt="Team collaboration"
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
 
       {/* CTA Section */}
       <section className="py-16 px-4 bg-white">
