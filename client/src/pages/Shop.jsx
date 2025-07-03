@@ -3,8 +3,13 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Star, ShoppingCart, Filter, Search } from "lucide-react"
+import { useEffect } from "react";
 
 const Shop = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
 

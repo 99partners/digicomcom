@@ -13,7 +13,13 @@ import {
   CheckCircle,
 } from "lucide-react";
 
+import { useEffect } from "react";
 const Contact = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [partnerForm, setPartnerForm] = useState({
     name: "",
     email: "",
@@ -375,4 +381,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Contact

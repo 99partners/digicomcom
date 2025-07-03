@@ -2,8 +2,14 @@
 
 import { Link } from "react-router-dom"
 import { Download, TrendingUp, ArrowRight, FileText, Video, Calendar } from "lucide-react"
+import { useEffect } from "react";
 
 const Resources = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const articles = [
     {
       title: "How ONDC is Revolutionizing Digital Commerce",

@@ -12,8 +12,14 @@ import {
   Calendar,
   Star
 } from "lucide-react"
+import { useEffect } from "react";
 
 const Partners = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const benefits = [
     {
       icon: Globe,

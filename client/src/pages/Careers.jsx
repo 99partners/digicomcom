@@ -2,8 +2,13 @@
 
 import { Link } from "react-router-dom"
 import { MapPin, Clock, DollarSign, Users, Heart, Lightbulb, Award, Coffee, ArrowRight } from "lucide-react"
+import { useEffect } from "react";
 
 const Careers = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const openPositions = [
     {
       title: "Digital Marketing Manager",

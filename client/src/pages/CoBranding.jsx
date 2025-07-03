@@ -21,7 +21,16 @@ import {
   ExternalLink,
 } from "lucide-react"
 
-export default function CoBrandingPage() {
+import { useEffect } from "react";
+const CoBranding = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+// The rest of the component is below
+}
+export default CoBrandingPage;
+function CoBrandingPage() {
   const [formData, setFormData] = useState({
     brandName: "",
     website: "",
