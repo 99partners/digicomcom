@@ -24,11 +24,9 @@ import AuthRouter from './routes/AuthRoutes.js'
 import UserRouter from './routes/UserRoutes.js'
 import newsletterRoutes from './routes/newsletterRoutes.js';
 import AdminRouter from './routes/AdminRoutes.js'
-
 import platformAMSRoutes from './routes/platformAMSRoutes.js';
-
 import coBrandingRoutes from './routes/coBrandingRoutes.js';
-
+import contactRoutes from './routes/contactRoutes.js';
 
 //API's Endpoints...........
 app.get('/', (req, res)=>{
@@ -40,12 +38,9 @@ app.use('/api/auth',  AuthRouter);
 app.use('/api/user', UserRouter);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/admin", AdminRouter);
-
 app.use("/api/platform-ams", platformAMSRoutes);
-
 app.use('/api/co-branding', coBrandingRoutes);
-
-
+app.use('/api/contact', contactRoutes);
 
 app.listen(PORT,()=>{
     console.log(`Server running on PORT : ${PORT}`)
