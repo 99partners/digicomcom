@@ -56,7 +56,6 @@ export default function CoBrandingPage() {
 
         if (data.success) {
             alert('Thank you for your application! We will contact you soon.');
-            // Reset form
             setFormData({
                 brandName: "",
                 website: "",
@@ -100,7 +99,6 @@ export default function CoBrandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Hero Section */}
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
@@ -116,7 +114,6 @@ export default function CoBrandingPage() {
         </div>
       </section>
 
-      {/* What is Brand Collaboration */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -130,7 +127,6 @@ export default function CoBrandingPage() {
         </div>
       </section>
 
-      {/* How We Help */}
       <section className="py-16 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -182,7 +178,6 @@ export default function CoBrandingPage() {
         </div>
       </section>
 
-      {/* Benefits */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -216,7 +211,6 @@ export default function CoBrandingPage() {
         </div>
       </section>
 
-      {/* Who Should Collaborate */}
       <section className="py-16 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -239,7 +233,6 @@ export default function CoBrandingPage() {
         </div>
       </section>
 
-      {/* Example Collaborations */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -266,7 +259,6 @@ export default function CoBrandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-16 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -294,99 +286,117 @@ export default function CoBrandingPage() {
                 title: "Joint Marketing Campaigns",
                 points: [
                   "Run co-branded promotions across social media, email, marketplaces, and more",
-                  "Benefit from combined budgets for greater reach and creative variety",
-                  "Includes festive campaigns, product launches, and influencer-led promotions",
+                  "Benefit from combined budgets for greater reach",
+                  "Cross-promote through newsletters and influencer partnerships",
                 ],
               },
               {
                 number: "3️⃣",
-                title: "Bundled Product Promotions",
+                title: "Customized Offer Creation",
                 points: [
-                  "Create curated product hampers or combo offers with partner brands",
-                  "Ideal for gift sets, limited editions, and festival offerings",
-                  "Boosts average order value and improves product discovery",
+                  "Develop bundled offers tailored to festive seasons or themes",
+                  "Create exclusive product combos for higher conversions",
+                  "Design co-branded gift packs for special events",
                 ],
               },
               {
                 number: "4️⃣",
-                title: "Co-Branded Packaging & Branding",
+                title: "Performance Tracking & Optimization",
                 points: [
-                  "Visually represent the collaboration on product labels, packaging, and promotional materials",
-                  "Strengthens brand recall and customer trust",
-                  "Available for select collaborations under Premium and Boost plans",
-                ],
-              },
-              {
-                number: "5️⃣",
-                title: "Landing Pages & Content Creation",
-                points: [
-                  "Professionally designed co-branded landing pages to showcase the partnership",
-                  "Custom banners, product videos, and collaborative stories that drive engagement",
-                ],
-              },
-              {
-                number: "6️⃣",
-                title: "Performance Reporting & Analytics",
-                points: [
-                  "Track the impact of your co-branding campaign with detailed reports",
-                  "Monitor engagement, conversion rates, and ROI across channels",
-                  "Post-campaign analysis to help plan future collaborations",
-                ],
-              },
-              {
-                number: "7️⃣",
-                title: "Brand Matchmaking & Strategy Support",
-                points: [
-                  "We analyze your brand DNA and suggest ideal collaboration partners",
-                  "Strategic guidance to ensure alignment in values, audience, and campaign tone",
-                  "Access to a curated brand pool within our platform",
+                  "Monitor campaign performance with detailed analytics",
+                  "Optimize promotions based on real-time data",
+                  "Measure ROI and customer acquisition metrics",
                 ],
               },
             ].map((feature, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg p-6">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-2xl">{feature.number}</span>
-                  <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
                 </div>
-                <ul className="space-y-2">
-                  {feature.points.map((point, pointIndex) => (
-                    <li key={pointIndex} className="flex items-start space-x-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-600 text-sm">{point}</span>
+                <ul className="space-y-2 text-gray-600">
+                  {feature.points.map((point, idx) => (
+                    <li key={idx} className="flex items-center space-x-2">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>{point}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-12 text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">🎁 Why Choose Co-Branding with 99digicom?</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                "Reduce marketing costs by up to 50%",
-                "Get access to high-engagement campaign formats",
-                "Build brand equity with smart, value-aligned partnerships",
-                "Stand out with themed, festival, or influencer-driven collabs",
-              ].map((benefit, index) => (
-                <div key={index} className="flex items-center space-x-2 bg-white p-4 rounded-lg">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                  <span className="text-sm text-gray-700">{benefit}</span>
-                </div>
-              ))}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">💰 Co-Branding Plans</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Choose a plan that fits your collaboration goals and budget.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="border-2 border-green-200 rounded-lg hover:border-green-400 transition-colors">
+              <div className="p-6 text-center">
+                <h4 className="text-xl font-semibold">Collaborate</h4>
+                <p className="text-sm text-gray-600">Start with co-branding</p>
+                <div className="text-2xl font-bold text-green-600 mt-2">₹9,999/year</div>
+                <ul className="space-y-2 text-sm text-gray-600 mt-4">
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> 1 Brand Collaboration</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Limited Cross-Promotion on 99digicom.com</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Email Support</li>
+                </ul>
+                <p className="text-xs text-gray-500 mt-4">*Additional features like co-branded packaging available as add-ons</p>
+              </div>
+            </div>
+            <div className="border-2 border-green-400 rounded-lg relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-medium">Popular</span>
+              </div>
+              <div className="p-6 text-center">
+                <h4 className="text-xl font-semibold">Boost</h4>
+                <p className="text-sm text-gray-600">Scale your collaborations</p>
+                <div className="text-2xl font-bold text-green-600 mt-2">₹24,999/year</div>
+                <ul className="space-y-2 text-sm text-gray-600 mt-4">
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> 3 Brand Collaborations</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> 1 Joint Campaign / Quarter</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Standard Cross-Promotion on 99digicom.com</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Custom Landing Page</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Quarterly Review & Strategy</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Email + Chat Support</li>
+                </ul>
+                <p className="text-xs text-gray-500 mt-4">*Co-branded packaging available as add-on</p>
+              </div>
+            </div>
+            <div className="border-2 border-green-200 rounded-lg hover:border-green-400 transition-colors">
+              <div className="p-6 text-center">
+                <h4 className="text-xl font-semibold">Premium Collab</h4>
+                <p className="text-sm text-gray-600">Maximize your reach</p>
+                <div className="text-2xl font-bold text-green-600 mt-2">₹59,999/year</div>
+                <ul className="space-y-2 text-sm text-gray-600 mt-4">
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Unlimited Brand Collaborations</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Monthly Joint Campaigns</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Co-Branded Packaging Design</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Featured Cross-Promotion on 99digicom.com</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Custom Landing Page</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Quarterly Review & Strategy</li>
+                  <li className="flex items-center justify-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" /> Dedicated Manager</li>
+                </ul>
+                <p className="text-xs text-gray-500 mt-4">*All features included</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Application Form */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">📝 Co-Branding Application Form</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">📝 Apply for Co-Branding</h2>
             <p className="text-lg text-gray-600">
-              Let's grow together. Fill out the form below to help us understand your brand and find the right
-              collaboration opportunities for you.
+              Ready to explore collaboration opportunities? Fill out the form below to get started.
             </p>
           </div>
 
@@ -684,7 +694,6 @@ export default function CoBrandingPage() {
               </div>
             </form>
           </div>
-
         </div>
       </section>
     </div>
