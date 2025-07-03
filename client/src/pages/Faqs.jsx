@@ -103,8 +103,8 @@ const FAQs = () => {
       .map(category => ({
         ...category,
         questions: category.questions.filter(
-          faq => 
-            faq.question.toLowerCase().includes(term) || 
+          faq =>
+            faq.question.toLowerCase().includes(term) ||
             faq.answer.toLowerCase().includes(term)
         )
       }))
@@ -114,11 +114,11 @@ const FAQs = () => {
   };
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-white text-gray-800">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-          <p className="text-xl text-gray-600">Get answers to common questions about our platform and services.</p>
+          <h2 className="text-4xl font-bold text-green-700 mb-4">Frequently Asked Questions</h2>
+          <p className="text-lg text-gray-600">Get answers to common questions about our platform and services.</p>
         </div>
 
         {/* Search Bar */}
@@ -128,7 +128,7 @@ const FAQs = () => {
             placeholder="🔎 Type your question here..."
             value={searchTerm}
             onChange={handleSearch}
-            className="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-lg"
+            className="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 text-lg"
           />
           {searchTerm && (
             <div className="mt-2 bg-gray-50 rounded-lg p-4">
@@ -140,9 +140,7 @@ const FAQs = () => {
                     .flatMap(category => category.questions)
                     .slice(0, 5)
                     .map((faq, index) => (
-                      <li key={index} className="py-1">
-                        {faq.question}
-                      </li>
+                      <li key={index} className="py-1">{faq.question}</li>
                     ))}
                 </ul>
               )}
@@ -151,16 +149,16 @@ const FAQs = () => {
         </div>
 
         {/* Accordion Layout */}
-        <div className="space-y-8">
+        <div className="space-y-12">
           {filteredFAQs.map((category, catIndex) => (
             <div key={catIndex}>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">{category.category}</h3>
+              <h3 className="text-2xl font-semibold text-green-700 mb-4">{category.category}</h3>
               <div className="space-y-4">
                 {category.questions.map((faq, index) => (
-                  <details key={index} className="bg-gray-50 rounded-lg p-6 group">
-                    <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-lg">
+                  <details key={index} className="bg-gray-50 rounded-lg p-6 group border border-green-100">
+                    <summary className="flex items-center justify-between cursor-pointer font-medium text-gray-900 text-lg">
                       <span>{faq.question}</span>
-                      <Plus className="h-5 w-5 text-blue-600 group-open:rotate-45 transition-transform duration-300" />
+                      <Plus className="h-5 w-5 text-green-600 group-open:rotate-45 transition-transform duration-300" />
                     </summary>
                     <div className="mt-4 text-gray-600 leading-relaxed">
                       {faq.answer}
@@ -171,9 +169,6 @@ const FAQs = () => {
             </div>
           ))}
         </div>
-
-       
-       
       </div>
     </section>
   );
