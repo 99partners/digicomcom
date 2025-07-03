@@ -1,34 +1,118 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'How do I join ONDC through 99digicom.com?',
-    answer: 'Follow our simple 4-step onboarding process: Submit application, review & approval, setup & training, then go live. Our team will guide you through each step.'
+    category: 'For Product Partners / Sellers',
+    questions: [
+      {
+        question: 'How do I become a seller on 99digicom?',
+        answer: 'Fill out the Partner Application Form. Our team will contact you in 2–4 business days.'
+      },
+      {
+        question: 'What documents do I need?',
+        answer: 'GST, PAN, bank details, FSSAI (if applicable), product photos, and brand logo.'
+      },
+      {
+        question: 'Do I need to sell on all platforms?',
+        answer: 'No. You can choose platforms like ONDC, Amazon, Flipkart, Swiggy, Zomato, etc., based on your category and goals.'
+      }
+    ]
   },
   {
-    question: 'What are the costs of partnering with 99digicom.com?',
-    answer: 'We have transparent pricing: ₹10,000 one-time setup fee and ₹2,999 monthly subscription. Optional add-ons include digital marketing (₹5,000/month) and logistics support (₹3,000/month).'
+    category: 'Account Setup & Management',
+    questions: [
+      {
+        question: 'How long does seller account setup take?',
+        answer: 'Typically 3–7 working days, depending on the platform.'
+      },
+      {
+        question: 'Can I update product listings myself?',
+        answer: 'Yes, or you can opt for our AMS plan, and we’ll manage it for you.'
+      }
+    ]
   },
   {
-    question: 'Can I cancel my subscription anytime?',
-    answer: 'Yes, you can cancel your subscription at any time with no penalties or hidden fees. We believe in flexible partnerships that work for your business.'
+    category: 'Co-Branding & Collaboration',
+    questions: [
+      {
+        question: 'What is co-branding?',
+        answer: 'It’s a collaboration between two brands for joint marketing or product bundles to reach more customers.'
+      },
+      {
+        question: 'How do I apply for co-branding?',
+        answer: 'Use the Co-Branding Application Form. We’ll match you with a relevant partner and help you launch your campaign.'
+      }
+    ]
   },
   {
-    question: 'What kind of support do you provide?',
-    answer: 'We offer 24/7 technical support, dedicated account managers, comprehensive training resources, and regular performance analytics to ensure your success.'
+    category: 'Marketing & Promotions',
+    questions: [
+      {
+        question: 'Can you run ads for my brand?',
+        answer: 'Yes! We run paid campaigns on Amazon, Flipkart, Meta (Instagram/Facebook), and Google.'
+      },
+      {
+        question: 'What’s the minimum marketing budget?',
+        answer: 'Starts from ₹4,999/month, plus ad spend. Custom packages available.'
+      }
+    ]
   },
   {
-    question: 'How long does ONDC integration take?',
-    answer: 'Typically, ONDC integration takes 7-14 business days after approval. This includes setup, testing, and going live on the network.'
+    category: 'Payments & Fees',
+    questions: [
+      {
+        question: 'How much does it cost to onboard?',
+        answer: 'Starting from ₹4,999 one-time. Monthly plans available based on service scope.'
+      },
+      {
+        question: 'Who pays for co-branding promotions?',
+        answer: 'Costs are shared between collaborating brands, depending on the campaign design.'
+      }
+    ]
   },
   {
-    question: 'Do you provide marketing support?',
-    answer: 'Yes, we offer comprehensive digital marketing services including SEO, social media marketing, and targeted advertising campaigns as optional add-ons.'
+    category: 'For Customers',
+    questions: [
+      {
+        question: 'How do I place an order?',
+        answer: '99digicom does not directly sell products. You’ll be redirected to our partner platforms like Amazon, Flipkart, or ONDC to complete your purchase.'
+      },
+      {
+        question: 'Who handles delivery?',
+        answer: 'The respective platform (Amazon, Zomato, etc.) manages delivery, tracking, and customer service.'
+      }
+    ]
   }
 ];
 
 const FAQs = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredFAQs, setFilteredFAQs] = useState(faqs);
+
+  const handleSearch = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    if (term === '') {
+      setFilteredFAQs(faqs);
+      return;
+    }
+
+    const filtered = faqs
+      .map(category => ({
+        ...category,
+        questions: category.questions.filter(
+          faq => 
+            faq.question.toLowerCase().includes(term) || 
+            faq.answer.toLowerCase().includes(term)
+        )
+      }))
+      .filter(category => category.questions.length > 0);
+
+    setFilteredFAQs(filtered);
+  };
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,19 +121,59 @@ const FAQs = () => {
           <p className="text-xl text-gray-600">Get answers to common questions about our platform and services.</p>
         </div>
 
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <details key={index} className="bg-gray-50 rounded-lg p-6 group">
-              <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-lg">
-                <span>{faq.question}</span>
-                <Plus className="h-5 w-5 text-blue-600 group-open:rotate-45 transition-transform duration-300" />
-              </summary>
-              <div className="mt-4 text-gray-600 leading-relaxed">
-                {faq.answer}
+        {/* Search Bar */}
+        <div className="mb-12 sticky top-0 z-10 bg-white py-4">
+          <input
+            type="text"
+            placeholder="🔎 Type your question here..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-lg"
+          />
+          {searchTerm && (
+            <div className="mt-2 bg-gray-50 rounded-lg p-4">
+              {filteredFAQs.flatMap(category => category.questions).length === 0 ? (
+                <p className="text-gray-600">No results found.</p>
+              ) : (
+                <ul className="list-disc pl-5 text-gray-600">
+                  {filteredFAQs
+                    .flatMap(category => category.questions)
+                    .slice(0, 5)
+                    .map((faq, index) => (
+                      <li key={index} className="py-1">
+                        {faq.question}
+                      </li>
+                    ))}
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Accordion Layout */}
+        <div className="space-y-8">
+          {filteredFAQs.map((category, catIndex) => (
+            <div key={catIndex}>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">{category.category}</h3>
+              <div className="space-y-4">
+                {category.questions.map((faq, index) => (
+                  <details key={index} className="bg-gray-50 rounded-lg p-6 group">
+                    <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-lg">
+                      <span>{faq.question}</span>
+                      <Plus className="h-5 w-5 text-blue-600 group-open:rotate-45 transition-transform duration-300" />
+                    </summary>
+                    <div className="mt-4 text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  </details>
+                ))}
               </div>
-            </details>
+            </div>
           ))}
         </div>
+
+       
+       
       </div>
     </section>
   );
