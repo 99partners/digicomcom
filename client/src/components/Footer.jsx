@@ -9,7 +9,7 @@ import {
   Twitter,
 } from "lucide-react";
 import { SiMedium } from "react-icons/si";
-import logo from "../assets/99digicom.png"; // Using old footer's logo import
+import logo from "../assets/99digicom.png";
 import axios from "axios";
 
 const Footer = () => {
@@ -57,7 +57,7 @@ const Footer = () => {
   ];
 
   const domains = [
-    { name: "99digicom.com", url: "https://99digicom.com" },
+    { name: "99partners.in", url: "https://99partners.in" },
     { name: "99infosource.com", url: "https://99infosource.com" },
     { name: "99finserv.com", url: "https://99finserv.com" },
     { name: "harmonyhights.com", url: "https://harmonyhights.com" },
@@ -257,11 +257,11 @@ const Footer = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full sm:flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 transition-colors"
+                    className="w-full sm:flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-green-500 transition-colors"
                   />
                   <button
                     onClick={handleSubscribe}
-                    className="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm rounded-md hover:from-purple-700 hover:to-indigo-700 transition-colors"
+                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 transition-colors"
                   >
                     Subscribe
                   </button>
@@ -283,7 +283,7 @@ const Footer = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={label}
-                        className="w-9 h-9 bg-gray-800 rounded-md flex items-center justify-center hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 transition-transform hover:scale-110"
+                        className="w-9 h-9 bg-gray-800 rounded-md flex items-center justify-center hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 transition-transform hover:scale-110"
                       >
                         <Icon className="w-4 h-4 text-white" />
                       </a>

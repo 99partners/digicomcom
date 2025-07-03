@@ -32,6 +32,32 @@ const Contact = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const validatePhoneNumber = (phone) => {
+    // Ensure exactly 10 digits
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const handleKeyDown = (e) => {
+    // Allow numbers and control keys (e.g., Backspace, Arrow keys, Delete, Tab)
+    const allowedKeys = [
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Delete",
+      "Tab",
+    ];
+    const isNumber = /[0-9]/.test(e.key);
+    // Prevent input if 10 digits are already entered
+    if (e.target.value.length >= 10 && !allowedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
+    // Block non-numeric keys
+    if (!isNumber && !allowedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const handlePartnerSubmit = (e) => {
     e.preventDefault();
     console.log("Partner inquiry:", partnerForm);
@@ -46,6 +72,12 @@ const Contact = () => {
     setLoading(true);
     setError("");
     setSuccess("");
+
+    if (!validatePhoneNumber(supportForm.phone)) {
+      setError("Please enter exactly 10 digits for the phone number.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await axios.post('http://localhost:5050/api/contact/submit', {
@@ -237,8 +269,10 @@ const Contact = () => {
                   onChange={(e) =>
                     setSupportForm({ ...supportForm, phone: e.target.value })
                   }
+                  onKeyDown={handleKeyDown}
+                  maxLength="10"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  placeholder="Enter your phone number"
+                  placeholder="Enter 10-digit phone number"
                 />
               </div>
               <div>
@@ -284,7 +318,7 @@ const Contact = () => {
       {/* Office Locations */}
       <section className="py-16 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12  ">
+          <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Visit Our Offices
             </h2>
@@ -305,14 +339,15 @@ const Contact = () => {
                   </h3>
                 </div>
                 <div className="space-y-3">
-                  <p className="text-gray-600 text-sm">{office.address}</p>
-                  <div className="flex items-center">
-                    <Phone className="h-4 w-4 text-gray-600 mr-2" />
+                  <div className="flex items-start gap-3">
+                    <MapPin className="h-4 w-4 text-gray-600 mr-2 mt-0.5" />
                     <a
-                      href={`tel:${office.phone}`}
-                      className="text-green-600 hover:text-green-800 transition-colors"
+                      href={office.mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:text-green-800 transition-colors text-sm"
                     >
-                      {office.phone}
+                      {office.address}
                     </a>
                   </div>
                   <div className="flex items-center">
