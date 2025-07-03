@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import axios from "axios";
 import {
   Mail,
   Phone,
@@ -23,9 +24,13 @@ const Contact = () => {
   const [supportForm, setSupportForm] = useState({
     name: "",
     email: "",
-    subject: "",
+    phone: "",
     message: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handlePartnerSubmit = (e) => {
     e.preventDefault();
@@ -36,11 +41,29 @@ const Contact = () => {
     setPartnerForm({ name: "", email: "", businessName: "", message: "" });
   };
 
-  const handleSupportSubmit = (e) => {
+  const handleSupportSubmit = async (e) => {
     e.preventDefault();
-    console.log("Support request:", supportForm);
-    alert("Your support request has been submitted. We'll respond soon!");
-    setSupportForm({ name: "", email: "", subject: "", message: "" });
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await axios.post('http://localhost:5050/api/contact/submit', {
+        name: supportForm.name,
+        email: supportForm.email,
+        phone: supportForm.phone,
+        message: supportForm.message
+      });
+
+      if (response.data.success) {
+        setSuccess("Your message has been sent successfully!");
+        setSupportForm({ name: "", email: "", phone: "", message: "" });
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const offices = [
@@ -150,6 +173,16 @@ const Contact = () => {
               Have questions or need support? Our team is here to assist you
               with any inquiries.
             </p>
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
+                {success}
+              </div>
+            )}
             <form onSubmit={handleSupportSubmit} className="space-y-6">
               <div>
                 <label
@@ -191,31 +224,22 @@ const Contact = () => {
               </div>
               <div>
                 <label
-                  htmlFor="support-subject"
+                  htmlFor="support-phone"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Subject *
+                  Phone Number *
                 </label>
-                <select
-                  id="support-subject"
+                <input
+                  type="tel"
+                  id="support-phone"
                   required
-                  value={supportForm.subject}
+                  value={supportForm.phone}
                   onChange={(e) =>
-                    setSupportForm({ ...supportForm, subject: e.target.value })
+                    setSupportForm({ ...supportForm, phone: e.target.value })
                   }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                >
-                  <option value="">Select a subject</option>
-                  <option value="Technical Support">Technical Support</option>
-                  <option value="Billing Inquiry">Billing Inquiry</option>
-                  <option value="Product Information">
-                    Product Information
-                  </option>
-                  <option value="Partnership Question">
-                    Partnership Question
-                  </option>
-                  <option value="Other">Other</option>
-                </select>
+                  placeholder="Enter your phone number"
+                />
               </div>
               <div>
                 <label
@@ -238,10 +262,19 @@ const Contact = () => {
               </div>
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                disabled={loading}
+                className={`w-full inline-flex items-center justify-center px-6 py-3 ${
+                  loading ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'
+                } text-white font-medium rounded-lg transition-colors`}
               >
-                <Send className="h-5 w-5 mr-2" />
-                Send Message
+                {loading ? (
+                  'Sending...'
+                ) : (
+                  <>
+                    <Send className="h-5 w-5 mr-2" />
+                    Send Message
+                  </>
+                )}
               </button>
             </form>
           </div>
