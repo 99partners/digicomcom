@@ -7,22 +7,30 @@ import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from '../config/emailT
 
 export const register = async (req, res)=>{
 
-    const{name, email, password} = req.body;
-    if(!name || !email || !password){
+    const{name, email, password, phone} = req.body;
+    if(!name || !email || !password || !phone){
         return res.json({success:false,message:"Missing Details"});
     }
 
     try{
+        // Check for existing email
         const existingUser = await userModel.findOne({email})
-
         if(existingUser){
-            return res.json({success:false, message:"User already exists"})
+            return res.json({success:false, message:"User already exists with this email"})
         }
+
+        // Check for existing phone number
+        const existingPhone = await userModel.findOne({phone})
+        if(existingPhone){
+            return res.json({success:false, message:"User already exists with this phone number"})
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10)
 
         const user = new userModel({
             name,
             email,
+            phone,
             password: hashedPassword
         })
         await user.save()
@@ -55,7 +63,7 @@ export const register = async (req, res)=>{
             id: user._id,
             name: user.name,
             email: user.email,
-            phoneNumber: user.phoneNumber
+            phone: user.phone
         };
 
         return res.json({
@@ -106,7 +114,7 @@ export const login = async(req, res)=>{
             id: user._id,
             name: user.name,
             email: user.email,
-            phoneNumber: user.phoneNumber
+            phone: user.phone
         };
 
         return res.json({
