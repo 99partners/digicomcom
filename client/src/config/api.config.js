@@ -11,7 +11,8 @@ const axiosInstance = axios.create({
   withCredentials: true,
   headers: {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
   }
 });
 
@@ -30,8 +31,15 @@ axiosInstance.interceptors.request.use((config) => {
     };
   }
 
+  // Ensure headers are properly set for each request
+  config.headers = {
+    ...config.headers,
+    'X-Requested-With': 'XMLHttpRequest'
+  };
+
   return config;
 }, (error) => {
+  console.error('Request configuration error:', error);
   return Promise.reject(error);
 });
 
@@ -58,6 +66,11 @@ axiosInstance.interceptors.response.use(
     // Handle CORS errors
     if (error.response?.status === 403) {
       console.error('Access forbidden:', error.response.data);
+    }
+
+    // Handle authentication errors
+    if (error.response?.status === 401) {
+      console.error('Authentication failed:', error.response.data);
     }
 
     return Promise.reject(error);
