@@ -71,7 +71,7 @@ export default function PlatformEnablementAMS() {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://99digicom.com/api/platform-ams/submit', {
+      const response = await fetch('https://99digicom.com/api/platform-ams/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
         try {
-          const response = await axios.get('http://99digicom.com/api/admin/dashboard-stats', {
+          const response = await axios.get('https://99digicom.com/api/admin/dashboard-stats', {
             withCredentials: true
           });
           if (response.data.success) {
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       const userToken = localStorage.getItem('authToken');
       if (userToken) {
         try {
-          const response = await axios.get('http://99digicom.com/api/user/profile', {
+          const response = await axios.get('https://99digicom.com/api/user/profile', {
             withCredentials: true
           });
           if (response.data.success) {
