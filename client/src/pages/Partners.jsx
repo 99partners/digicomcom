@@ -15,7 +15,6 @@ import {
 import { useEffect } from "react";
 
 const Partners = () => {
-  // Scroll to top on component mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -96,36 +95,36 @@ const Partners = () => {
       {/* Hero */}
       <section className="pt-24 pb-16 px-4 bg-white text-center">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">
             Why Partner with <span className="text-green-600">99digicom.com</span>?
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-8 max-w-2xl mx-auto">
             We don't just offer a platform — we build partnerships. Empower your brand with visibility, support, and scale.
           </p>
           <Link
             to="/contact"
-            className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+            className="inline-flex items-center px-6 sm:px-8 md:px-10 py-3 sm:py-3 md:py-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-sm sm:text-base md:text-lg"
           >
-            Become a Partner Today
-            <ArrowRight className="ml-2 h-5 w-5" />
+            Get in touch
+            <ArrowRight className="ml-2 h-4 sm:h-5 md:h-6 w-4 sm:w-5 md:w-6" />
           </Link>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 px-4 bg-green-50">
+      <section className="py-12 sm:py-16 md:py-20 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Benefits of Collaboration</h2>
-          <p className="text-lg text-gray-600 mb-10">We simplify selling, boost your visibility, and fuel your growth.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+          <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">Benefits of Collaboration</h2>
+          <p className="text-base sm:text-lg md:text-lg text-gray-600 mb-8 sm:mb-10 md:mb-10">We simplify selling, boost your visibility, and fuel your growth.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 text-left">
             {benefits.map((benefit, index) => {
               const Icon = benefit.icon
               return (
-                <div key={index} className="flex items-start space-x-4 p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                  <Icon className="h-6 w-6 text-green-600 mt-1" />
+                <div key={index} className="flex items-start space-x-4 p-4 sm:p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                  <Icon className="h-5 sm:h-6 md:h-7 w-5 sm:w-6 md:w-7 text-green-600 mt-1" />
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{benefit.title}</h3>
-                    <p className="text-gray-600 text-sm">{benefit.description}</p>
+                    <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900">{benefit.title}</h3>
+                    <p className="text-sm sm:text-base md:text-sm text-gray-600">{benefit.description}</p>
                   </div>
                 </div>
               )
@@ -135,18 +134,18 @@ const Partners = () => {
       </section>
 
       {/* Onboarding Process */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-12 sm:py-16 md:py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Partner Onboarding</h2>
-          <p className="text-lg text-gray-600 mb-12">Start your journey with 99digicom in 5 easy steps</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">Partner Onboarding</h2>
+          <p className="text-base sm:text-lg md:text-lg text-gray-600 mb-8 sm:mb-10 md:mb-12">Start your journey with 99digicom in 5 easy steps</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 md:gap-10">
             {onboardingSteps.map((step, index) => (
-              <div key={index} className="bg-green-50 p-6 rounded-lg shadow-lg text-center">
-                <div className="w-12 h-12 bg-green-600 text-white font-bold flex items-center justify-center rounded-full mx-auto mb-4">
+              <div key={index} className="bg-green-50 p-4 sm:p-6 md:p-8 rounded-lg shadow-lg text-center">
+                <div className="w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 bg-green-600 text-white font-bold flex items-center justify-center rounded-full mx-auto mb-2 sm:mb-4 md:mb-4">
                   {step.step}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
-                <p className="text-sm text-gray-600 mt-2">{step.description}</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900">{step.title}</h3>
+                <p className="text-sm sm:text-base md:text-sm text-gray-600 mt-2">{step.description}</p>
               </div>
             ))}
           </div>
@@ -154,11 +153,11 @@ const Partners = () => {
       </section>
 
       {/* Commitments CTA */}
-      <section className="py-16 px-4 bg-green-50 text-center">
+      <section className="py-12 sm:py-16 md:py-20 px-4 bg-green-50 text-center">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">What We Expect from Our Partners</h2>
-          <p className="text-lg text-gray-600 mb-6">Collaboration works best when both sides bring clarity and commitment.</p>
-          <ul className="text-left text-sm text-gray-700 space-y-2 mx-auto max-w-2xl">
+          <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">What We Expect from Our Partners</h2>
+          <p className="text-base sm:text-lg md:text-lg text-gray-600 mb-4 sm:mb-6 md:mb-6">Collaboration works best when both sides bring clarity and commitment.</p>
+          <ul className="text-left text-sm sm:text-base md:text-sm text-gray-700 space-y-2 mx-auto max-w-2xl">
             <li>✅ Submit valid business documents like GST, PAN, FSSAI, etc.</li>
             <li>✅ Provide accurate product info and approve listings on time</li>
             <li>✅ Ensure product authenticity and comply with marketplace rules</li>
@@ -170,48 +169,26 @@ const Partners = () => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-12 sm:py-16 md:py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Transparent Pricing</h2>
-          <p className="text-lg text-gray-600 mb-10">No hidden costs. No long-term lock-ins.</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="border rounded-lg p-6 shadow">
-              <h3 className="font-semibold text-xl mb-2">One-Time Onboarding Fee</h3>
-              <p className="text-green-600 font-bold text-2xl">From ₹4,999</p>
-              <p className="text-sm text-gray-600 mt-2">Account setup, listing, dashboard access</p>
+          <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">Transparent Pricing</h2>
+          <p className="text-base sm:text-lg md:text-lg text-gray-600 mb-8 sm:mb-10 md:mb-10">No hidden costs. No long-term lock-ins.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 text-center">
+            <div className="border rounded-lg p-4 sm:p-6 md:p-8 shadow">
+              <h3 className="font-semibold text-lg sm:text-xl md:text-2xl mb-2">One-Time Onboarding Fee</h3>
+              <p className="text-green-600 font-bold text-xl sm:text-2xl md:text-3xl">From ₹4,999</p>
+              <p className="text-sm sm:text-base md:text-sm text-gray-600 mt-2">Account setup, listing, dashboard access</p>
             </div>
-            <div className="border rounded-lg p-6 shadow">
-              <h3 className="font-semibold text-xl mb-2">Monthly Management</h3>
-              <p className="text-green-600 font-bold text-2xl">From ₹3,500/mo</p>
-              <p className="text-sm text-gray-600 mt-2">Platform support, updates, growth monitoring</p>
+            <div className="border rounded-lg p-4 sm:p-6 md:p-8 shadow">
+              <h3 className="font-semibold text-lg sm:text-xl md:text-2xl mb-2">Monthly Management</h3>
+              <p className="text-green-600 font-bold text-xl sm:text-2xl md:text-3xl">From ₹3,500/mo</p>
+              <p className="text-sm sm:text-base md:text-sm text-gray-600 mt-2">Platform support, updates, growth monitoring</p>
             </div>
-            <div className="border rounded-lg p-6 shadow">
-              <h3 className="font-semibold text-xl mb-2">Ad Budget (Optional)</h3>
-              <p className="text-green-600 font-bold text-lg">Flexible</p>
-              <p className="text-sm text-gray-600 mt-2">Customizable per campaign goals</p>
+            <div className="border rounded-lg p-4 sm:p-6 md:p-8 shadow">
+              <h3 className="font-semibold text-lg sm:text-xl md:text-2xl mb-2">Ad Budget (Optional)</h3>
+              <p className="text-green-600 font-bold text-base sm:text-lg md:text-xl">Flexible</p>
+              <p className="text-sm sm:text-base md:text-sm text-gray-600 mt-2">Customizable per campaign goals</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-16 px-4 bg-green-50 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Let’s Grow, Together</h2>
-          <p className="text-lg text-gray-700 mb-8">At 99digicom, we believe in shared success. Join us to build India’s most trusted digital commerce ecosystem.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/contact"
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium"
-            >
-              Apply to Become a Partner
-            </Link>
-            <Link
-              to="/services"
-              className="border border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-3 rounded-lg font-medium"
-            >
-              Schedule a Free Consultation
-            </Link>
           </div>
         </div>
       </section>
