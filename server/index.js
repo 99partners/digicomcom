@@ -13,12 +13,26 @@ const PORT = process.env.PORT || 5050
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Force HTTPS
+// Security middleware
 app.enable('trust proxy');
+
+// Force HTTPS
 app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'production' && !req.secure) {
-    return res.redirect('https://' + req.headers.host + req.url);
+  if (process.env.NODE_ENV === 'production') {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      // Redirect to https
+      return res.redirect('https://' + req.headers.host + req.url);
+    }
   }
+  next();
+});
+
+// Secure headers middleware
+app.use((req, res, next) => {
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
   next();
 });
 
@@ -44,15 +58,24 @@ app.use(cors({
   origin: function(origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    
+    // In production, only allow HTTPS origins
+    if (process.env.NODE_ENV === 'production') {
+      if (!origin.startsWith('https://')) {
+        return callback(new Error('Only HTTPS origins are allowed in production'), false);
+      }
     }
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('CORS policy violation'), false);
+    }
+    
     return callback(null, true);
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   credentials: true,
+  maxAge: 86400, // CORS preflight cache for 24 hours
 }));
 
 // Serve uploaded files
