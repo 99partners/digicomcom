@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, Handshake, MessageSquare } from 'lucide-react';
+import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, Handshake, MessageSquare, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import AMSSubmissions from '../components/admin/AMSSubmissions';
 import CoBrandingSubmissions from '../components/admin/CoBrandingSubmissions';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
+import BlogManagement from '../components/admin/BlogManagement';
+import BlogForm from '../components/admin/BlogForm';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
@@ -74,6 +76,7 @@ const AdminDashboard = () => {
         { id: 'dashboard', label: 'Dashboard', icon: Users },
         { id: 'users', label: 'Users', icon: UserCheck },
         { id: 'newsletter', label: 'Newsletter', icon: Mail },
+        { id: 'blogs', label: 'Blog Management', icon: BookOpen },
         { id: 'ams', label: 'AMS Submissions', icon: FileText },
         { id: 'co-branding', label: 'Co-Branding', icon: Handshake },
         { id: 'contacts', label: 'Contact Messages', icon: MessageSquare },
@@ -102,6 +105,9 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                 );
+
+            case 'blogs':
+                return <BlogManagement />;
 
             case 'users':
                 return (
@@ -199,7 +205,7 @@ const AdminDashboard = () => {
                 return (
                     <div className="bg-white rounded-lg shadow p-6">
                         <h2 className="text-xl font-semibold mb-4">Settings</h2>
-                        {/* Settings content */}
+                        <p>Settings content goes here...</p>
                     </div>
                 );
 

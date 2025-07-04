@@ -24,6 +24,8 @@ import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import BlogForm from './components/admin/BlogForm';
+import BlogEdit from './components/admin/BlogEdit';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './context/AuthContext';
@@ -33,9 +35,9 @@ const Layout = ({ children }) => {
   const location = useLocation();
   
   // List of routes where we don't want to show header and footer
-  const noHeaderFooterRoutes = ['/partnerlogin', '/customerlogin', '/partner', '/reset-password', '/email-verify', '/admin/login', '/admin'];
+  const noHeaderFooterRoutes = ['/partnerlogin', '/customerlogin', '/partner', '/reset-password', '/email-verify', '/admin/login', '/admin', '/admin/blogs/new', '/admin/blogs/edit'];
   
-  const shouldShowHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
+  const shouldShowHeaderFooter = !noHeaderFooterRoutes.some(route => location.pathname.startsWith(route));
 
   return (
     <div className="min-h-screen bg-white">
@@ -92,6 +94,22 @@ function App() {
                   <AdminDashboard />
                 </ProtectedRoute>
               } 
+            />
+            <Route
+              path="/admin/blogs/new"
+              element={
+                <ProtectedRoute key="admin-blog-new">
+                  <BlogForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/blogs/edit/:id"
+              element={
+                <ProtectedRoute key="admin-blog-edit">
+                  <BlogEdit />
+                </ProtectedRoute>
+              }
             />
           </Routes>
         </Layout>
