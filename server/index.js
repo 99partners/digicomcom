@@ -28,7 +28,7 @@ connectDB()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: ["http://localhost:5173","https://99digicom.com" ,"https://99digicom.com"],
+  origin: ["http://localhost:5173","http://99digicom.com" ,"http://99digicom.com"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true, // Optional: if using cookies or sessions
@@ -57,22 +57,6 @@ app.use("/api/platform-ams", platformAMSRoutes);
 app.use('/api/co-branding', coBrandingRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/blogs', blogRoutes);
-
 app.listen(PORT,()=>{
     console.log(`Server running on PORT : ${PORT}`)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
