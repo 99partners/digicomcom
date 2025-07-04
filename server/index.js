@@ -1,5 +1,4 @@
 import express from 'express'
-import cors from 'cors'
 import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import { connectDB } from './config/db.js'
@@ -53,51 +52,41 @@ app.use(express.json())
 app.use(cookieParser())
 
 // CORS Configuration
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
+const allowedDomains = [
   'https://99digicom.com',
-  'https://www.99digicom.com'
+  'https://www.99digicom.com',
+  'http://localhost:3000',
+  'http://localhost:5173'
 ];
 
-// CORS middleware
-app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, or Postman)
-    if (!origin) {
-      return callback(null, true);
+// Enable CORS for all methods
+app.use(function(req, res, next) {
+  const origin = req.headers.origin;
+  console.log('Request origin:', origin);
+
+  if (allowedDomains.includes(origin)) {
+    // Set CORS headers for allowed domains
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+      res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+      res.status(204).end();
+      return;
     }
-
-    // Check if the origin is allowed
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With',
-    'Accept',
-    'Origin',
-    'Access-Control-Allow-Headers',
-    'Access-Control-Request-Method',
-    'Access-Control-Request-Headers'
-  ],
-  exposedHeaders: ['Content-Range', 'X-Content-Range'],
-  maxAge: 86400 // 24 hours
-}));
-
-// Handle CORS preflight requests
-app.options('*', cors());
-
-// Additional headers middleware
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
+    next(); // Proceed with the request
+  } else {
+    // Log unauthorized attempts
+    console.warn('Unauthorized access attempt from:', origin);
+    // Deny access to other domains
+    res.status(403).json({ 
+      error: 'CORS Error',
+      message: 'Access forbidden: Origin not allowed'
+    });
+  }
 });
 
 //call the DB fun.
@@ -130,18 +119,6 @@ app.use("/api/platform-ams", platformAMSRoutes);
 app.use('/api/co-branding', coBrandingRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/blogs', blogRoutes);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  if (err.message === 'Not allowed by CORS') {
-    res.status(403).json({
-      error: 'CORS Error',
-      message: 'This origin is not allowed to access the resource'
-    });
-  } else {
-    next(err);
-  }
-});
 
 app.listen(PORT,()=>{
     console.log(`Server running on PORT : ${PORT}`)
