@@ -29,7 +29,7 @@ const AMSSubmissions = () => {
   const fetchSubmissions = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://99digicom.com/api/platform-ams/submissions', {
+      const response = await fetch('http://99digicom.com/api/platform-ams/submissions', {
         credentials: 'include'
       });
       const data = await response.json();
@@ -49,7 +49,7 @@ const AMSSubmissions = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`https://99digicom.com/api/platform-ams/submissions/${id}/status`, {
+      const response = await fetch(`http://99digicom.com/api/platform-ams/submissions/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

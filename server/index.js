@@ -34,7 +34,7 @@ connectDB()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: ["http://localhost:5173","http://99digicom.com" ,"https://99digicom.com"],
+  origin: ["http://localhost:5173","http://99digicom.com" ,"http://99digicom.com"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true, // Optional: if using cookies or sessions

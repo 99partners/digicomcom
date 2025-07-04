@@ -22,7 +22,7 @@ const BlogEdit = () => {
 
   const fetchBlog = async () => {
     try {
-      const response = await axios.get(`https://99digicom.com/api/blogs/${id}`, {
+      const response = await axios.get(`http://99digicom.com/api/blogs/${id}`, {
         withCredentials: true
       });
       if (response.data.success) {
@@ -49,7 +49,7 @@ const BlogEdit = () => {
     setError('');
 
     try {
-      const response = await axios.put(`https://99digicom.com/api/blogs/${id}`, formData, {
+      const response = await axios.put(`http://99digicom.com/api/blogs/${id}`, formData, {
         withCredentials: true
       });
 

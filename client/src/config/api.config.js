@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://99digicom.com';
+export const API_BASE_URL = 'http://99digicom.com';
 
 // Helper function to build API URLs
 export const getApiUrl = (endpoint) => {

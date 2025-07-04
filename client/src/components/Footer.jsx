@@ -29,7 +29,7 @@ const Footer = () => {
 
     try {
       const response = await axios.post(
-        "https://99digicom.com/api/newsletter",
+        "http://99digicom.com/api/newsletter",
         { email }
       );
       if (response.status === 200) {
