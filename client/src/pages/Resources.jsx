@@ -2,41 +2,33 @@
 
 import { Link } from "react-router-dom"
 import { Download, TrendingUp, ArrowRight, FileText, Video, Calendar } from "lucide-react"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Resources = () => {
-  // Scroll to top on component mount
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  // Fetch blogs from the server
   useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get('http://localhost:5050/api/blogs');
+        if (response.data.success) {
+          setBlogs(response.data.data);
+        }
+      } catch (err) {
+        setError('Failed to fetch blogs');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
     window.scrollTo(0, 0);
   }, []);
-
-  const articles = [
-    {
-      title: "How ONDC is Revolutionizing Digital Commerce",
-      excerpt: "Discover how the Open Network for Digital Commerce is transforming the e-commerce landscape in India.",
-      image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "Industry Insights",
-      readTime: "8 min read",
-      date: "Dec 15, 2024",
-    },
-    {
-      title: "Top 5 Co-Branding Strategies for 2025",
-      excerpt:
-        "Learn the most effective co-branding strategies that will drive growth and visibility for your business.",
-      image: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "Marketing",
-      readTime: "6 min read",
-      date: "Dec 12, 2024",
-    },
-    {
-      title: "Maximizing ROI with Digital Marketing",
-      excerpt: "Proven techniques and strategies to maximize your return on investment in digital marketing campaigns.",
-      image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "Digital Marketing",
-      readTime: "10 min read",
-      date: "Dec 10, 2024",
-    },
-  ]
 
   const guides = [
     {
@@ -139,44 +131,50 @@ const Resources = () => {
               Stay ahead with the latest in digital commerce and business growth strategies.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {articles.map((article, index) => (
-              <article
-                key={index}
-                className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
-              >
-                <div className="relative">
-                  <img
-                    src={article.image || "/placeholder.svg"}
-                    alt={article.title}
-                    className="w-full h-48 object-cover rounded-lg"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                      {article.category}
-                    </span>
+          {loading ? (
+            <div className="text-center">Loading blogs...</div>
+          ) : error ? (
+            <div className="text-center text-red-600">{error}</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {blogs.map((blog) => (
+                <article
+                  key={blog._id}
+                  className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
+                >
+                  <div className="relative">
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                        {blog.category}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center text-sm text-gray-600 mb-3">
-                    <Calendar className="h-4 w-4 text-green-600 mr-1" />
-                    <span>{article.date}</span>
-                    <span className="mx-2">•</span>
-                    <span>{article.readTime}</span>
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Calendar className="h-4 w-4 text-green-600 mr-1" />
+                      <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                      <span className="mx-2">•</span>
+                      <span>{blog.readTime}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">{blog.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{blog.excerpt}</p>
+                    <Link
+                      to={`/blog/${blog._id}`}
+                      className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
+                    >
+                      Read More
+                      <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{article.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{article.excerpt}</p>
-                  <Link
-                    to="#"
-                    className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
-                  >
-                    Read More
-                    <ArrowRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
