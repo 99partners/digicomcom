@@ -140,7 +140,7 @@ const Partner = () => {
 
   const onLogout = async () => {
     try {
-      const response = await axios.post('http://99digicom.com/api/auth/logout', {}, { withCredentials: true });
+      const response = await axios.post('https://99digicom.com/api/auth/logout', {}, { withCredentials: true });
       if (response.data.success) {
         handleLogout();
         setPartnerData(null);
