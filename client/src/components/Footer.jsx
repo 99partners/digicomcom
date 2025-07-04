@@ -28,7 +28,7 @@ const Footer = () => {
       return alert("Please enter a valid email address.");
 
     try {
-      const response = await axios.post('/api/newsletter', { email });
+      const response = await axios.post('https://99digicom.com/api/newsletter', { email });
       if (response.status === 200) {
         setIsSubmitted(true);
         setEmail("");
