@@ -14,7 +14,7 @@ const Resources = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('http://localhost:5050/api/blogs');
+        const response = await axios.get('https://99digicom.com/api/blogs');
         if (response.data.success) {
           setBlogs(response.data.data);
         }

@@ -15,7 +15,7 @@ const CoBrandingSubmissions = () => {
 
     const fetchApplications = async () => {
         try {
-            const response = await axios.get('http://localhost:5050/api/co-branding/applications', {
+            const response = await axios.get('https://99digicom.com/api/co-branding/applications', {
                 withCredentials: true
             });
             setApplications(response.data.data);

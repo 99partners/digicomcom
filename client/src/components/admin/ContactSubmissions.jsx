@@ -13,7 +13,7 @@ const ContactSubmissions = () => {
 
     const fetchContacts = async () => {
         try {
-            const response = await axios.get('http://localhost:5050/api/contact/all', {
+            const response = await axios.get('https://99digicom.com/api/contact/all', {
                 withCredentials: true
             });
             setContacts(response.data.data);

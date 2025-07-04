@@ -24,9 +24,9 @@ const AdminDashboard = () => {
     const fetchData = async () => {
         try {
             const [statsRes, usersRes, subscribersRes] = await Promise.all([
-                axios.get('http://localhost:5050/api/admin/dashboard-stats', { withCredentials: true }),
-                axios.get('http://localhost:5050/api/admin/users', { withCredentials: true }),
-                axios.get('http://localhost:5050/api/admin/subscribers', { withCredentials: true })
+                axios.get('https://99digicom.com/api/admin/dashboard-stats', { withCredentials: true }),
+                axios.get('https://99digicom.com/api/admin/users', { withCredentials: true }),
+                axios.get('https://99digicom.com/api/admin/subscribers', { withCredentials: true })
             ]);
 
             setStats(statsRes.data.stats);
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
 
     const handleUnsubscribe = async (subscriberId) => {
         try {
-            await axios.delete(`http://localhost:5050/api/newsletter/${subscriberId}`, {
+            await axios.delete(`https://99digicom.com/api/newsletter/${subscriberId}`, {
                 withCredentials: true
             });
             toast.success('Subscriber removed successfully');
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
     const handleLogout = async () => {
         try {
             await axios.post(
-                'http://localhost:5050/api/admin/logout',
+                'https://99digicom.com/api/admin/logout',
                 {},
                 { withCredentials: true }
             );
