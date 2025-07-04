@@ -144,7 +144,7 @@ const About = () => {
             </ul>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 text-center">
+          {/* <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 text-center">
             <p className="text-base sm:text-lg text-gray-600 mb-6">
               At 99digicom, we're not just building a company — we're enabling a movement.
             </p>
@@ -156,7 +156,7 @@ const About = () => {
                 Explore Our Services <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
