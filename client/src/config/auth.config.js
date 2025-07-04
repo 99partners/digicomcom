@@ -1,9 +1,14 @@
-export const authConfig = {
-  // Auth0 Configuration
-  auth0: {
-    domain: import.meta.env.VITE_AUTH0_DOMAIN || 'your-auth0-domain.auth0.com',
-    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || 'your-auth0-client-id',
-    callbackUrl: import.meta.env.VITE_AUTH0_CALLBACK_URL || 'http://localhost:5173/callback',
+import { API_BASE_URL } from './api.config';
+
+export const AUTH_CONFIG = {
+  apiUrl: API_BASE_URL,
+  endpoints: {
+    login: '/api/auth/login',
+    register: '/api/auth/register',
+    logout: '/api/auth/logout',
+    verify: '/api/auth/verify',
+    resetPassword: '/api/auth/reset-password',
+    forgotPassword: '/api/auth/forgot-password'
   }
 };
 
