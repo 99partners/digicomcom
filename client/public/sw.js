@@ -2,12 +2,22 @@
 const CACHE_NAME = 'digicom-cache-v1';
 const API_DOMAIN = 'api.99digicom.com';
 
-// Don't cache API requests
+// Handle fetch events
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
-  // Skip caching for API requests
+  // Pass through API requests without interference
   if (url.hostname === API_DOMAIN) {
+    event.respondWith(
+      fetch(event.request.clone())
+        .catch(error => {
+          console.error('API request failed:', error);
+          return new Response(JSON.stringify({ error: 'Network request failed' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        })
+    );
     return;
   }
 

@@ -77,18 +77,9 @@ app.use((req, res, next) => {
     
     // Handle preflight
     if (req.method === 'OPTIONS') {
-      // Accept all requested headers
-      const requestHeaders = req.headers['access-control-request-headers'];
-      if (requestHeaders) {
-        res.header('Access-Control-Allow-Headers', requestHeaders);
-      }
-
-      // Accept all requested methods
-      const requestMethod = req.headers['access-control-request-method'];
-      if (requestMethod) {
-        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-      }
-
+      // Set explicit allowed headers
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control');
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
       res.header('Access-Control-Max-Age', '86400'); // 24 hours
       return res.status(204).end();
     }
