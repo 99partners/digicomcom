@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Pencil, Trash2, Plus, X } from 'lucide-react';
+import { getApiUrl } from '../../config/api.config';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -24,7 +25,7 @@ const BlogManagement = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get('http://localhost:5050/api/blogs', {
+      const response = await axios.get(getApiUrl('api/blogs'), {
         withCredentials: true
       });
       if (response.data.success) {
@@ -44,7 +45,7 @@ const BlogManagement = () => {
     }
 
     try {
-      await axios.delete(`http://localhost:5050/api/blogs/${blogId}`, {
+      await axios.delete(getApiUrl(`api/blogs/${blogId}`), {
         withCredentials: true
       });
       fetchBlogs(); // Refresh the list
@@ -87,12 +88,12 @@ const BlogManagement = () => {
       let response;
       if (editingBlogId) {
         // Update existing blog
-        response = await axios.put(`http://localhost:5050/api/blogs/${editingBlogId}`, formData, {
+        response = await axios.put(getApiUrl(`api/blogs/${editingBlogId}`), formData, {
           withCredentials: true
         });
       } else {
         // Create new blog
-        response = await axios.post('http://localhost:5050/api/blogs', formData, {
+        response = await axios.post(getApiUrl('api/blogs'), formData, {
           withCredentials: true
         });
       }
