@@ -8,7 +8,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 const app = express()
 const PORT = process.env.PORT || 5050
-// const allowedOrigins = ['https://mern-auth-frontend-5pdz.onrender.com', "http://localhost:5173"]
+
 // Get current directory
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -47,39 +47,65 @@ const storage = multer.diskStorage({
   }
 })
 const upload = multer({ storage: storage })
-//call the DB fun.
-connectDB()
+
+// Parse JSON bodies and cookies before CORS
 app.use(express.json())
 app.use(cookieParser())
 
 // CORS Configuration
-const allowedOrigins = ['http://localhost:5173', 'https://99digicom.com'];
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://99digicom.com',
+  'https://www.99digicom.com'
+];
+
+// CORS middleware
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    // In production, only allow HTTPS origins
-    if (process.env.NODE_ENV === 'production') {
-      if (!origin.startsWith('https://')) {
-        return callback(new Error('Only HTTPS origins are allowed in production'), false);
-      }
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin) {
+      return callback(null, true);
     }
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error('CORS policy violation'), false);
+
+    // Check if the origin is allowed
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    
-    return callback(null, true);
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   credentials: true,
-  maxAge: 86400, // CORS preflight cache for 24 hours
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Request-Method',
+    'Access-Control-Request-Headers'
+  ],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  maxAge: 86400 // 24 hours
 }));
+
+// Handle CORS preflight requests
+app.options('*', cors());
+
+// Additional headers middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+//call the DB fun.
+connectDB()
 
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
 //Routes
 import AuthRouter from './routes/AuthRoutes.js'
 import UserRouter from './routes/UserRoutes.js'
@@ -89,10 +115,12 @@ import platformAMSRoutes from './routes/platformAMSRoutes.js';
 import coBrandingRoutes from './routes/coBrandingRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
+
 //API's Endpoints...........
 app.get('/', (req, res)=>{
     res.send(`<h1> API's is Working... </h1>`)
 })
+
 //:white_tick: Register Routes
 app.use('/api/auth',  AuthRouter);
 app.use('/api/user', UserRouter);
@@ -102,6 +130,19 @@ app.use("/api/platform-ams", platformAMSRoutes);
 app.use('/api/co-branding', coBrandingRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/blogs', blogRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  if (err.message === 'Not allowed by CORS') {
+    res.status(403).json({
+      error: 'CORS Error',
+      message: 'This origin is not allowed to access the resource'
+    });
+  } else {
+    next(err);
+  }
+});
+
 app.listen(PORT,()=>{
     console.log(`Server running on PORT : ${PORT}`)
 })
