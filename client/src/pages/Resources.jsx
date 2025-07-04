@@ -114,7 +114,8 @@ const Resources = () => {
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">Resource Center</h1>
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            <span className="text-green-600">Resource</span> Center</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Everything you need to succeed in digital commerce - guides, insights, and expert knowledge at your
             fingertips.

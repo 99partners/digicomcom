@@ -116,7 +116,7 @@ const Careers = () => {
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">Join Our Team</h1>
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">Join <span className="text-green-600">Our Team</span></h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Build the future of digital commerce with a team that values innovation, collaboration, and growth.
           </p>

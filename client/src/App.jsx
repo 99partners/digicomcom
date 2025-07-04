@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -34,10 +34,20 @@ import { AuthProvider } from './context/AuthContext';
 const Layout = ({ children }) => {
   const location = useLocation();
   
-  // List of routes where we don't want to show header and footer
-  const noHeaderFooterRoutes = ['/partnerlogin', '/customerlogin', '/partner', '/reset-password', '/email-verify', '/admin/login', '/admin', '/admin/blogs/new', '/admin/blogs/edit'];
+  // Exact routes where we don't want to show header and footer
+  const noHeaderFooterRoutes = [
+    '/partnerlogin',
+    '/customerlogin',
+    '/partner',
+    '/reset-password',
+    '/email-verify',
+    '/admin/login',
+    '/admin',
+    '/admin/blogs/new',
+    '/admin/blogs/edit'
+  ];
   
-  const shouldShowHeaderFooter = !noHeaderFooterRoutes.some(route => location.pathname.startsWith(route));
+  const shouldShowHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-white">
@@ -83,7 +93,7 @@ function App() {
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
             <Route path="/co-branding" element={<CoBranding />} />
             <Route path="/email-verify" element={<EmailVerify />} />
-            <Route path="/reset-password" element={<ResetPassword/>} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
