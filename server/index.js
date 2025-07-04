@@ -60,52 +60,44 @@ const allowedDomains = [
   'http://localhost:5173'
 ];
 
-// List of all allowed headers
-const allowedHeaders = [
-  'Content-Type',
-  'Authorization',
-  'X-Requested-With',
-  'Accept',
-  'Origin',
-  'Access-Control-Allow-Headers',
-  'Access-Control-Request-Method',
-  'Access-Control-Request-Headers',
-  'Access-Control-Allow-Origin',
-  'Access-Control-Allow-Credentials',
-  'X-Auth-Token',
-  'X-CSRF-Token'
-];
-
-// Enable CORS for all methods
-app.use(function(req, res, next) {
+// CORS middleware
+app.use((req, res, next) => {
   const origin = req.headers.origin;
   console.log('Request origin:', origin);
 
-  // Handle requests with no origin (like mobile apps or Postman)
+  // Allow requests with no origin
   if (!origin) {
     return next();
   }
 
   if (allowedDomains.includes(origin)) {
-    // Set CORS headers for allowed domains
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD');
-    res.setHeader('Access-Control-Allow-Headers', allowedHeaders.join(', '));
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Expose-Headers', 'Content-Length, X-Content-Range');
+    // Set basic CORS headers
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
     
-    // Handle preflight requests
+    // Handle preflight
     if (req.method === 'OPTIONS') {
-      res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
-      res.status(204).end();
-      return;
+      // Accept all requested headers
+      const requestHeaders = req.headers['access-control-request-headers'];
+      if (requestHeaders) {
+        res.header('Access-Control-Allow-Headers', requestHeaders);
+      }
+
+      // Accept all requested methods
+      const requestMethod = req.headers['access-control-request-method'];
+      if (requestMethod) {
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+      }
+
+      res.header('Access-Control-Max-Age', '86400'); // 24 hours
+      return res.status(204).end();
     }
-    next(); // Proceed with the request
+
+    next();
   } else {
     // Log unauthorized attempts
     console.warn('Unauthorized access attempt from:', origin);
-    // Deny access to other domains
-    res.status(403).json({ 
+    res.status(403).json({
       error: 'CORS Error',
       message: 'Access forbidden: Origin not allowed',
       allowedOrigins: allowedDomains,
