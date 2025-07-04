@@ -55,8 +55,25 @@ app.use(cookieParser())
 const allowedDomains = [
   'https://99digicom.com',
   'https://www.99digicom.com',
+  'https://api.99digicom.com',
   'http://localhost:3000',
   'http://localhost:5173'
+];
+
+// List of all allowed headers
+const allowedHeaders = [
+  'Content-Type',
+  'Authorization',
+  'X-Requested-With',
+  'Accept',
+  'Origin',
+  'Access-Control-Allow-Headers',
+  'Access-Control-Request-Method',
+  'Access-Control-Request-Headers',
+  'Access-Control-Allow-Origin',
+  'Access-Control-Allow-Credentials',
+  'X-Auth-Token',
+  'X-CSRF-Token'
 ];
 
 // Enable CORS for all methods
@@ -64,12 +81,18 @@ app.use(function(req, res, next) {
   const origin = req.headers.origin;
   console.log('Request origin:', origin);
 
+  // Handle requests with no origin (like mobile apps or Postman)
+  if (!origin) {
+    return next();
+  }
+
   if (allowedDomains.includes(origin)) {
     // Set CORS headers for allowed domains
     res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD');
+    res.setHeader('Access-Control-Allow-Headers', allowedHeaders.join(', '));
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Length, X-Content-Range');
     
     // Handle preflight requests
     if (req.method === 'OPTIONS') {
@@ -84,7 +107,9 @@ app.use(function(req, res, next) {
     // Deny access to other domains
     res.status(403).json({ 
       error: 'CORS Error',
-      message: 'Access forbidden: Origin not allowed'
+      message: 'Access forbidden: Origin not allowed',
+      allowedOrigins: allowedDomains,
+      requestOrigin: origin
     });
   }
 });
