@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getApiUrl } from '../../config/api.config';
 
 const BlogEdit = () => {
   const { id } = useParams();
@@ -17,24 +18,19 @@ const BlogEdit = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const response = await axios.get(getApiUrl(`api/blogs/${id}`));
+        setFormData(response.data.data);
+      } catch (error) {
+        setError('Failed to fetch blog');
+        console.error('Error fetching blog:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchBlog();
   }, [id]);
-
-  const fetchBlog = async () => {
-    try {
-      const response = await axios.get(`https://99digicom.com/api/blogs/${id}`, {
-        withCredentials: true
-      });
-      if (response.data.success) {
-        setFormData(response.data.data);
-      }
-    } catch (err) {
-      setError('Failed to fetch blog');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleChange = (e) => {
     setFormData({
@@ -49,16 +45,18 @@ const BlogEdit = () => {
     setError('');
 
     try {
-      const response = await axios.put(`https://99digicom.com/api/blogs/${id}`, formData, {
-        withCredentials: true
-      });
+      const response = await axios.put(
+        getApiUrl(`api/blogs/${id}`),
+        formData
+      );
 
       if (response.data.success) {
         alert('Blog updated successfully!');
         navigate('/admin/blogs');
       }
-    } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong');
+    } catch (error) {
+      setError(error.response?.data?.error || 'Something went wrong');
+      console.error('Error updating blog:', error);
     } finally {
       setLoading(false);
     }

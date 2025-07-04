@@ -8,6 +8,7 @@ import CoBrandingSubmissions from '../components/admin/CoBrandingSubmissions';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
+import { getApiUrl } from '../config/api.config';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
@@ -23,15 +24,15 @@ const AdminDashboard = () => {
 
     const fetchData = async () => {
         try {
-            const [statsRes, usersRes, subscribersRes] = await Promise.all([
-                axios.get('https://99digicom.com/api/admin/dashboard-stats', { withCredentials: true }),
-                axios.get('https://99digicom.com/api/admin/users', { withCredentials: true }),
-                axios.get('https://99digicom.com/api/admin/subscribers', { withCredentials: true })
+            const [statsResponse, usersResponse, subscribersResponse] = await Promise.all([
+                axios.get(getApiUrl('api/admin/dashboard-stats')),
+                axios.get(getApiUrl('api/admin/users')),
+                axios.get(getApiUrl('api/admin/subscribers'))
             ]);
 
-            setStats(statsRes.data.stats);
-            setUsers(usersRes.data.users);
-            setSubscribers(subscribersRes.data.subscribers);
+            setStats(statsResponse.data.stats);
+            setUsers(usersResponse.data.users);
+            setSubscribers(subscribersResponse.data.subscribers);
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -42,9 +43,7 @@ const AdminDashboard = () => {
 
     const handleUnsubscribe = async (subscriberId) => {
         try {
-            await axios.delete(`https://99digicom.com/api/newsletter/${subscriberId}`, {
-                withCredentials: true
-            });
+            await axios.delete(getApiUrl(`api/newsletter/${subscriberId}`));
             toast.success('Subscriber removed successfully');
             // Update the subscribers list
             setSubscribers(subscribers.filter(sub => sub._id !== subscriberId));
@@ -61,11 +60,7 @@ const AdminDashboard = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post(
-                'https://99digicom.com/api/admin/logout',
-                {},
-                { withCredentials: true }
-            );
+            await axios.post(getApiUrl('api/admin/logout'));
             navigate('/admin/login');
         } catch (error) {
             toast.error('Logout failed');

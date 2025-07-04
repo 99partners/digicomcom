@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
+import { getApiUrl } from '../config/api.config';
 
 const AdminLogin = () => {
     const [credentials, setCredentials] = useState({
@@ -19,7 +20,7 @@ const AdminLogin = () => {
 
         try {
             const response = await axios.post(
-                'https://99digicom.com/api/admin/login',
+                getApiUrl('api/admin/login'),
                 credentials,
                 { withCredentials: true }
             );

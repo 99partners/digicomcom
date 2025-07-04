@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { getApiUrl } from '../../config/api.config';
 
 const ContactSubmissions = () => {
     const [contacts, setContacts] = useState([]);
@@ -13,7 +14,7 @@ const ContactSubmissions = () => {
 
     const fetchContacts = async () => {
         try {
-            const response = await axios.get('https://99digicom.com/api/contact/all', {
+            const response = await axios.get(getApiUrl('api/contact/all'), {
                 withCredentials: true
             });
             setContacts(response.data.data);

@@ -22,6 +22,7 @@ import {
   CheckCircle,
   XCircle
 } from 'lucide-react';
+import { getApiUrl } from '../config/api.config';
 
 const Partner = () => {
   const [partnerData, setPartnerData] = useState(null);
@@ -140,7 +141,7 @@ const Partner = () => {
 
   const onLogout = async () => {
     try {
-      const response = await axios.post('https://99digicom.com/api/auth/logout', {}, { withCredentials: true });
+      const response = await axios.post(getApiUrl('api/auth/logout'));
       if (response.data.success) {
         handleLogout();
         setPartnerData(null);
