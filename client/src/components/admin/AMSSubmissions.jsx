@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { getApiUrl } from '../../config/api.config';
 import { 
   CheckCircle, 
   XCircle, 
@@ -26,57 +28,36 @@ const AMSSubmissions = () => {
     rejected: <XCircle className="h-5 w-5 text-red-500" />
   };
 
-  const fetchSubmissions = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('https://99digicom.com/api/platform-ams/submissions', {
-        credentials: 'include'
-      });
-      const data = await response.json();
-      
-      if (data.success) {
-        setSubmissions(data.data);
-      } else {
-        setError(data.message);
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      try {
+        const response = await axios.get(getApiUrl('api/platform-ams/submissions'));
+        setSubmissions(response.data);
+      } catch (error) {
+        console.error('Error fetching submissions:', error);
+        setError('Failed to fetch submissions');
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError('Failed to fetch submissions');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    fetchSubmissions();
+  }, []);
 
   const updateStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`https://99digicom.com/api/platform-ams/submissions/${id}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ status: newStatus })
-      });
-
-      const data = await response.json();
-      
-      if (data.success) {
-        // Update the local state
-        setSubmissions(submissions.map(sub => 
-          sub._id === id ? { ...sub, status: newStatus } : sub
-        ));
-      } else {
-        alert('Error updating status: ' + data.message);
-      }
-    } catch (err) {
-      alert('Failed to update status');
-      console.error(err);
+      const response = await axios.put(
+        getApiUrl(`api/platform-ams/submissions/${id}/status`),
+        { status: newStatus }
+      );
+      // Update local state
+      setSubmissions(submissions.map(sub => 
+        sub._id === id ? { ...sub, status: newStatus } : sub
+      ));
+    } catch (error) {
+      console.error('Error updating status:', error);
+      setError('Failed to update status');
     }
   };
-
-  useEffect(() => {
-    fetchSubmissions();
-  }, []);
 
   const filteredSubmissions = submissions.filter(sub => {
     const matchesFilter = filter === 'all' || sub.status === filter;
@@ -100,7 +81,11 @@ const AMSSubmissions = () => {
       <div className="text-center text-red-500 p-4">
         <p>{error}</p>
         <button 
-          onClick={fetchSubmissions}
+          onClick={() => {
+            setLoading(true);
+            setError(null);
+            fetchSubmissions();
+          }}
           className="mt-4 flex items-center gap-2 mx-auto px-4 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100"
         >
           <RefreshCcw className="h-4 w-4" />
@@ -115,7 +100,11 @@ const AMSSubmissions = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-800">Platform AMS Submissions</h2>
         <button 
-          onClick={fetchSubmissions}
+          onClick={() => {
+            setLoading(true);
+            setError(null);
+            fetchSubmissions();
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100"
         >
           <RefreshCcw className="h-4 w-4" />

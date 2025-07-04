@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Search, Filter, ChevronDown, RefreshCcw, ExternalLink } from 'lucide-react';
+import { getApiUrl } from '../../config/api.config';
 
 const CoBrandingSubmissions = () => {
     const [applications, setApplications] = useState([]);
@@ -15,7 +16,7 @@ const CoBrandingSubmissions = () => {
 
     const fetchApplications = async () => {
         try {
-            const response = await axios.get('https://99digicom.com/api/co-branding/applications', {
+            const response = await axios.get(getApiUrl('api/co-branding/applications'), {
                 withCredentials: true
             });
             setApplications(response.data.data);

@@ -40,6 +40,8 @@ import {
 } from "lucide-react";
 
 import { useEffect } from "react";
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 // Scroll to top on component mount
 export default function PlatformEnablementAMS() {
@@ -71,16 +73,9 @@ export default function PlatformEnablementAMS() {
     e.preventDefault();
     
     try {
-      const response = await fetch('https://99digicom.com/api/platform-ams/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials: 'include',
-      });
+      const response = await axios.post(getApiUrl('api/platform-ams/submit'), formData);
 
-      const data = await response.json();
+      const data = await response.data;
 
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly.');
@@ -108,7 +103,7 @@ export default function PlatformEnablementAMS() {
         alert('Error submitting form: ' + data.message);
       }
     } catch (error) {
-      console.error('Form submission error:', error);
+      console.error('Error submitting form:', error);
       alert('Error submitting form. Please try again.');
     }
   };

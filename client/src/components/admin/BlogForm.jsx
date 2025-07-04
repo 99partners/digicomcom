@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { getApiUrl } from '../../config/api.config';
 
 const BlogForm = () => {
   const navigate = useNavigate();
@@ -28,9 +29,13 @@ const BlogForm = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://99digicom.com/api/blogs', formData, {
-        withCredentials: true
-      });
+      const response = await axios.post(
+        getApiUrl('api/blogs'),
+        formData,
+        {
+          withCredentials: true
+        }
+      );
 
       if (response.data.success) {
         alert('Blog created successfully!');

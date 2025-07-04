@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { Download, TrendingUp, ArrowRight, FileText, Video, Calendar } from "lucide-react"
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getApiUrl } from '../config/api.config';
 
 const Resources = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,13 +15,13 @@ const Resources = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('https://99digicom.com/api/blogs');
+        const response = await axios.get(getApiUrl('api/blogs'));
         if (response.data.success) {
           setBlogs(response.data.data);
         }
-      } catch (err) {
+      } catch (error) {
         setError('Failed to fetch blogs');
-        console.error(err);
+        console.error('Error fetching blogs:', error);
       } finally {
         setLoading(false);
       }
