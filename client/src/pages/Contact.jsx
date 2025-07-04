@@ -117,7 +117,7 @@ const Contact = () => {
       <section className="pt-24 pb-16 px-4 bg-white text-center">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">
-            Get in Touch
+            Get in <span className="text-green-600">Touch</span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-8 max-w-2xl mx-auto">
             Ready to transform your business? Have questions about our services? We're here to help you succeed.
