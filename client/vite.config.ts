@@ -9,7 +9,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'https://99digicom.com',
+      '/api': 'http://99digicom.com',
     },
   }
 });

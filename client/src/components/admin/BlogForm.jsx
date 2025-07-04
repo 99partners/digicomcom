@@ -28,7 +28,7 @@ const BlogForm = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://99digicom.com/api/blogs', formData, {
+      const response = await axios.post('http://99digicom.com/api/blogs', formData, {
         withCredentials: true
       });
 

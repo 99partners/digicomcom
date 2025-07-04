@@ -19,7 +19,7 @@ const AdminLogin = () => {
 
         try {
             const response = await axios.post(
-                'https://99digicom.com/api/admin/login',
+                'http://99digicom.com/api/admin/login',
                 credentials,
                 { withCredentials: true }
             );
