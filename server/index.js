@@ -14,18 +14,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // Security middleware
-app.enable('trust proxy');
-
-// Force HTTPS
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'production') {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-      // Redirect to https
-      return res.redirect('https://' + req.headers.host + req.url);
-    }
-  }
-  next();
-});
+ 
 
 // CORS Configuration
 app.use(cors({
