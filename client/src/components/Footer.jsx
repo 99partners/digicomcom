@@ -12,9 +12,7 @@ import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
 
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://api.99digicom.com' 
-  : 'http://localhost:5050';
+const API_URL = 'https://99digicom.com';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -52,7 +50,7 @@ const Footer = () => {
 
     try {
       const response = await axios({
-        method: 'GET',
+        method: 'POST',
         url: `${API_URL}/api/newsletter`,
         data: { email },
         headers: {
