@@ -73,12 +73,8 @@ import blogRoutes from './routes/blogRoutes.js'
 app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
 
-// ✅ Explicit newsletter route handling
-app.post('/api/newsletter', (req, res, next) => {
-  console.log('Newsletter POST request received');
-  next();
-});
-app.use('/api/newsletter', newsletterRoutes)  // Newsletter route registered before static files
+// ✅ Mount newsletter routes at root level since paths include /api/newsletter
+app.use('/', newsletterRoutes)  // Routes already include full /api/newsletter path
 
 app.use('/api/admin', AdminRouter)
 app.use('/api/platform-ams', platformAMSRoutes)
