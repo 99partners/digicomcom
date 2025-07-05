@@ -18,30 +18,20 @@ const __dirname = path.dirname(__filename)
 app.use(express.json())
 app.use(cookieParser())
 
-// CORS Configuration with allowed origins
-app.use((req, res, next) => {
-  const allowedOrigins = [
-    'https://99digicom.com',
-    'https://www.99digicom.com',
-    'https://api.99digicom.com',
-    'http://localhost:5173',
-    'http://localhost:3000'
-  ];
-  
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  }
+// CORS Configuration
+const corsOptions = {
+  origin: ['https://99digicom.com', 'https://www.99digicom.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
-  next();
-});
+// Handle OPTIONS requests for all API routes
+app.options('/api/*', cors(corsOptions));
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -82,7 +72,14 @@ import blogRoutes from './routes/blogRoutes.js'
 // ✅ Register API routes BEFORE static frontend
 app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
+
+// ✅ Explicit newsletter route handling
+app.post('/api/newsletter', (req, res, next) => {
+  console.log('Newsletter POST request received');
+  next();
+});
 app.use('/api/newsletter', newsletterRoutes)  // Newsletter route registered before static files
+
 app.use('/api/admin', AdminRouter)
 app.use('/api/platform-ams', platformAMSRoutes)
 app.use('/api/co-branding', coBrandingRoutes)
