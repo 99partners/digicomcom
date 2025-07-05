@@ -31,7 +31,7 @@ const Footer = () => {
 
     try {
       const response = await axios({
-        method: 'post',
+        method: 'POST',
         url: '/api/newsletter',
         data: { email },
         headers: {
