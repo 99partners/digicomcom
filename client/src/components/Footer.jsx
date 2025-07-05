@@ -49,6 +49,15 @@ const Footer = () => {
     }
 
     try {
+      console.log('Attempting newsletter subscription...', {
+        url: `${API_URL}/api/newsletter`,
+        email,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+
       const response = await axios.post(
         `${API_URL}/api/newsletter`,
         { email },
@@ -61,13 +70,26 @@ const Footer = () => {
         }
       );
 
+      console.log('Newsletter subscription response:', response);
+
       if (response.status === 200) {
         setIsSubmitted(true);
         setEmail('');
         setError(null);
       }
     } catch (err) {
-      console.error('Newsletter subscription error:', err);
+      console.error('Newsletter subscription error details:', {
+        message: err.message,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        data: err.response?.data,
+        config: {
+          url: err.config?.url,
+          method: err.config?.method,
+          headers: err.config?.headers,
+          data: err.config?.data
+        }
+      });
       setError(err.response?.data?.message || 'Failed to subscribe. Please try again.');
       setIsSubmitted(false);
     } finally {
