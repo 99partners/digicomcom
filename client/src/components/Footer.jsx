@@ -11,7 +11,10 @@ import {
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
-import { API_BASE_URL } from '../config/api.config.js';
+
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://api.99digicom.com' 
+  : 'http://localhost:5050';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -24,15 +27,33 @@ const Footer = () => {
   // Hide footer on login page
   if (location.pathname === "/login") return null;
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
+    // Validate email
+    if (!email) {
+      setError('Please enter an email address');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await axios({
         method: 'POST',
-        url: '/api/newsletter',
+        url: `${API_URL}/api/newsletter`,
         data: { email },
         headers: {
           'Content-Type': 'application/json',
