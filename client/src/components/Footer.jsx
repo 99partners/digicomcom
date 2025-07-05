@@ -11,6 +11,7 @@ import {
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
+import { API_BASE_URL } from '../config/api.config.js';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -28,7 +29,13 @@ const Footer = () => {
       return alert("Please enter a valid email address.");
 
     try {
-      const response = await axios.post('https://99digicom.com/api/newsletter', { email });
+      const response = await axios.post(`${API_BASE_URL}/api/newsletter`, { email }, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
       if (response.status === 200) {
         setIsSubmitted(true);
         setEmail("");
