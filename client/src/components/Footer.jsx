@@ -49,16 +49,17 @@ const Footer = () => {
     }
 
     try {
-      const response = await axios({
-        method: 'POST',
-        url: `${API_URL}/api/newsletter`,
-        data: { email },
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        withCredentials: true
-      });
+      const response = await axios.post(
+        `${API_URL}/api/newsletter`,
+        { email },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          withCredentials: true
+        }
+      );
 
       if (response.status === 200) {
         setIsSubmitted(true);
