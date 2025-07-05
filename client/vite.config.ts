@@ -9,7 +9,14 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'https://99digicom.com',
-    },
+      '/api': {
+        target: 'https://api.99digicom.com',
+        changeOrigin: true,
+        secure: true,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      }
+    }
   }
 });
