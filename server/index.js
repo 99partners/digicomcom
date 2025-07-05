@@ -19,19 +19,42 @@ app.use(express.json())
 app.use(cookieParser())
 
 // CORS Configuration
-const corsOptions = {
-  origin: ['https://99digicom.com', 'https://www.99digicom.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200
-};
+const allowedDomains = [
+  'https://99digicom.com',
+  'https://www.99digicom.com',
+  'http://localhost:3000',
+  'http://localhost:5173'
+];
 
-// Apply CORS middleware
-app.use(cors(corsOptions));
+// Enable CORS with domain checking
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  console.log('Request origin:', origin);
 
-// Handle OPTIONS requests for all API routes
-app.options('/api/*', cors(corsOptions));
+  if (allowedDomains.includes(origin)) {
+    // Set CORS headers for allowed domains
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With,Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    // Handle preflight
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
+    
+    next(); // Proceed with the request
+  } else {
+    // Log and deny access to other domains
+    console.warn('Unauthorized access attempt from:', origin);
+    res.status(403).json({ 
+      error: 'CORS Error',
+      message: 'Access forbidden: Origin not allowed',
+      allowedOrigins: allowedDomains,
+      requestOrigin: origin
+    });
+  }
+});
 
 // Logging middleware
 app.use((req, res, next) => {
