@@ -22,16 +22,23 @@ app.use(cookieParser())
 
 // CORS Configuration with detailed error handling
 app.use((req, res, next) => {
-  const allowedOrigins = ['https://99digicom.com', 'https://www.99digicom.com'];
+  const allowedOrigins = [
+    'https://99digicom.com',
+    'https://www.99digicom.com',
+    'https://api.99digicom.com',
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ];
+  
   const origin = req.headers.origin;
+  console.log('Request origin:', origin);
 
   if (allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   }
-
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
 
   // Handle preflight
   if (req.method === 'OPTIONS') {
