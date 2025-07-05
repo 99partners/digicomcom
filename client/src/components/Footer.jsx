@@ -32,7 +32,7 @@ const Footer = () => {
     try {
       const response = await axios({
         method: 'post',
-        url: 'https://api.99digicom.com/api/newsletter',
+        url: '/api/newsletter',
         data: { email },
         headers: {
           'Content-Type': 'application/json',
