@@ -52,7 +52,7 @@ const Footer = () => {
 
     try {
       const response = await axios({
-        method: 'POST',
+        method: 'GET',
         url: `${API_URL}/api/newsletter`,
         data: { email },
         headers: {
