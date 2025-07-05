@@ -6,7 +6,8 @@ import adminAuth from '../middleware/adminAuth.js';
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+// ✅ Newsletter subscription (POST)
+router.post("/api/newsletter", async (req, res) => {
   console.log('Newsletter subscription request received:', req.body);
   
   const { email } = req.body;
@@ -41,7 +42,7 @@ router.post("/", async (req, res) => {
 });
 
 // Delete subscriber (admin only)
-router.delete("/:id", adminAuth, async (req, res) => {
+router.delete("/api/newsletter/:id", adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -62,7 +63,8 @@ router.delete("/:id", adminAuth, async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+// Get all subscribers
+router.get("/api/newsletter", async (req, res) => {
   try {
     if (mongoose.connection.readyState !== 1) {
       return res.status(200).json([]);
