@@ -17,32 +17,41 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const location = useLocation();
 
   // Hide footer on login page
   if (location.pathname === "/login") return null;
 
-  const handleSubscribe = async () => {
-    if (!email) return alert("Please enter an email.");
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email))
-      return alert("Please enter a valid email address.");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/newsletter`, { email }, {
-        withCredentials: true,
+      const response = await axios({
+        method: 'post',
+        url: 'https://api.99digicom.com/api/newsletter',
+        data: { email },
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
-        }
+        },
+        withCredentials: true
       });
+
       if (response.status === 200) {
         setIsSubmitted(true);
-        setEmail("");
+        setEmail('');
+        setError(null);
       }
-    } catch (error) {
-      console.error("Subscription failed:", error);
-      alert("Subscription failed. Try again later.");
+    } catch (err) {
+      console.error('Newsletter subscription error:', err);
+      setError(err.response?.data?.message || 'Failed to subscribe. Please try again.');
+      setIsSubmitted(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -264,7 +273,7 @@ const Footer = () => {
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-xs sm:text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-green-500 transition-colors"
                   />
                   <button
-                    onClick={handleSubscribe}
+                    onClick={handleSubmit}
                     className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white text-xs sm:text-sm rounded-md hover:bg-green-700 transition-colors"
                   >
                     Subscribe
@@ -274,6 +283,12 @@ const Footer = () => {
                 {isSubmitted && (
                   <p className="text-green-400 text-xs sm:text-sm mt-1">
                     Subscribed successfully!
+                  </p>
+                )}
+
+                {error && (
+                  <p className="text-red-400 text-xs sm:text-sm mt-1">
+                    {error}
                   </p>
                 )}
 
