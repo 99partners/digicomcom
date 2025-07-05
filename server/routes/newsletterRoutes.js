@@ -7,20 +7,36 @@ import adminAuth from '../middleware/adminAuth.js';
 const router = express.Router();
 
 router.post("/", async (req, res) => {
+  console.log('Newsletter subscription request received:', req.body);
+  
   const { email } = req.body;
 
   if (!email) {
+    console.log('Newsletter subscription failed: Email is required');
     return res.status(400).json({ message: "Email is required" });
   }
 
   try {
+    // Check if email already exists
+    const existingSubscriber = await Newsletter.findOne({ email });
+    if (existingSubscriber) {
+      console.log('Newsletter subscription failed: Email already exists');
+      return res.status(400).json({ message: "Email already subscribed" });
+    }
+
     // Save email to DB
-    await Newsletter.create({ email });
-    // console.log(`✅ Newsletter subscription from: ${email}`);
-    return res.status(200).json({ message: "Subscribed successfully!" });
+    const subscriber = await Newsletter.create({ email });
+    console.log('Newsletter subscription successful:', subscriber);
+    return res.status(200).json({ 
+      message: "Subscribed successfully!",
+      subscriber: subscriber
+    });
   } catch (error) {
-    console.error("❌ Error subscribing:", error);
-    return res.status(500).json({ message: "Subscription failed" });
+    console.error("Newsletter subscription error:", error);
+    return res.status(500).json({ 
+      message: "Subscription failed",
+      error: error.message 
+    });
   }
 });
 
