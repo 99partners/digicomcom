@@ -18,7 +18,7 @@ const PartnerLogin = () => {
 
   const navigate = useNavigate()
   const { handleLogin } = useAuth()
-  const backendUrl = "http://localhost:5050"
+  const backendUrl = "https://99digicom.com/"
 
   const handlePhoneChange = (e) => {
     const input = e.target.value.replace(/\D/g, ''); // Remove non-digits
