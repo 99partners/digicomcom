@@ -97,7 +97,7 @@ app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
 
 // ✅ Mount newsletter routes at root level since paths include /api/newsletter
-app.use('/', newsletterRoutes)  // Routes already include full /api/newsletter path
+app.use('/api/newsletter', newsletterRoutes)  // Routes already include full /api/newsletter path
 
 app.use('/api/admin', AdminRouter)
 app.use('/api/platform-ams', platformAMSRoutes)
