@@ -20,7 +20,7 @@ app.use(cookieParser())
 
 // CORS Configuration
 const allowedDomains = [
-  'https://99digicom.com/',
+  'https://99digicom.com',
   'https://www.99digicom.com',
   'http://localhost:3000',
   'http://localhost:5173'
@@ -95,10 +95,8 @@ import blogRoutes from './routes/blogRoutes.js'
 // ✅ Register API routes BEFORE static frontend
 app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
-
 // ✅ Mount newsletter routes at root level since paths include /api/newsletter
 app.use('/api/newsletter', newsletterRoutes)  // Routes already include full /api/newsletter path
-
 app.use('/api/admin', AdminRouter)
 app.use('/api/platform-ams', platformAMSRoutes)
 app.use('/api/co-branding', coBrandingRoutes)
