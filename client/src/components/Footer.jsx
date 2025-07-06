@@ -12,7 +12,7 @@ import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
 
-const API_URL = 'https://99digicom.com';
+const API_URL = 'http://localhost:5050';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
