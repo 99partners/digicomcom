@@ -3,7 +3,7 @@ import axios from 'axios';
 // Ensure HTTPS is always used in production
 export const API_BASE_URL = process.env.NODE_ENV === 'production' 
   ? 'https://api.99digicom.com'
-  : 'http://localhost:5050';
+  : 'https://99digicom.com/';
 
 // Configure axios defaults
 const axiosInstance = axios.create({
