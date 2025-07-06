@@ -21,6 +21,7 @@ app.use(cookieParser())
 // CORS Configuration
 const allowedDomains = [
   'https://99digicom.com',
+  'https://api.99digicom.com',
   'https://www.99digicom.com',
   'http://localhost:3000',
   'http://localhost:5173'
