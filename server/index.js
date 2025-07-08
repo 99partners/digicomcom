@@ -23,9 +23,7 @@ const allowedDomains = [
   'https://99digicom.com',
   'https://api.99digicom.com',
   'https://www.99digicom.com',
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'http://localhost:5050'  // Added localhost:5050
+  'http://localhost:5173' // Added localhost:5050
 ];
 
 // Enable CORS with domain checking
