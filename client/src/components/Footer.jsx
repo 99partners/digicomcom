@@ -11,7 +11,7 @@ import {
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
-import { getApiUrl } from '../config/api.config';
+import { getApiUrl } from "../config/api.config";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -36,38 +36,42 @@ const Footer = () => {
 
     // Validate email
     if (!email) {
-      setError('Please enter an email address');
+      setError("Please enter an email address");
       setIsLoading(false);
       return;
     }
 
     if (!validateEmail(email)) {
-      setError('Please enter a valid email address');
+      setError("Please enter a valid email address");
       setIsLoading(false);
       return;
     }
 
     try {
       const response = await axios.post(
-        getApiUrl('api/newsletter'),
+        getApiUrl("api/newsletter"),
         { email },
         {
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
 
       if (response.data.success) {
         setIsSubmitted(true);
-        setEmail('');
+        setEmail("");
         setError(null);
       } else {
-        setError(response.data.message || 'Failed to subscribe. Please try again.');
+        setError(
+          response.data.message || "Failed to subscribe. Please try again."
+        );
       }
     } catch (err) {
-      console.error('Newsletter subscription error:', err.message);
-      setError(err.response?.data?.message || 'Failed to subscribe. Please try again.');
+      console.error("Newsletter subscription error:", err.message);
+      setError(
+        err.response?.data?.message || "Failed to subscribe. Please try again."
+      );
       setIsSubmitted(false);
     } finally {
       setIsLoading(false);
@@ -299,8 +303,12 @@ const Footer = () => {
                   </button>
                 </div>
 
-                {isSubmitted  && !error && (
-                  <p className="text-green-400 text-xs sm:text-sm mt-1">
+                {isSubmitted && !error && (
+                  <p
+                    className={`text-green-400 text-xs sm:text-sm mt-1 ${
+                      error ? "text-red-400" : ""
+                    }`}
+                  >
                     Subscribed successfully!
                   </p>
                 )}
