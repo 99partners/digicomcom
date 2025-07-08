@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
@@ -42,6 +42,7 @@ const Partner = () => {
     recentActivity: []
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const { handleLogout, user, checkAuthStatus } = useAuth();
   const { backendUrl } = useAppContext();
 
@@ -138,7 +139,15 @@ const Partner = () => {
 
   useEffect(() => {
     fetchPartnerData();
-  }, []);
+    // Check if we have a section in the navigation state
+    if (location.state?.section) {
+      setActiveSection(location.state.section);
+      // Clear the navigation state
+      navigate(location.pathname, { replace: true, state: {} });
+    } else {
+      checkExistingRequest();
+    }
+  }, [location]);
 
   useEffect(() => {
     if (user) {
@@ -149,16 +158,13 @@ const Partner = () => {
     }
   }, [user]);
 
-  useEffect(() => {
-    checkExistingRequest();
-  }, []);
-
   const checkExistingRequest = async () => {
     try {
       const response = await axiosInstance.get('/api/partner/has-request');
       setHasCreatedRequest(response.data.hasRequest);
       if (!response.data.hasRequest) {
         setActiveSection('create-user');
+        setShowUserForm(true);
       } else {
         setActiveSection('dashboard');
       }

@@ -29,6 +29,18 @@ const PartnerLogin = () => {
     }
   }
 
+  const checkPartnerRequest = async () => {
+    try {
+      const response = await axios.get(backendUrl + '/api/partner/has-request', {
+        withCredentials: true
+      });
+      return response.data.hasRequest;
+    } catch (error) {
+      console.error('Error checking partner request:', error);
+      return false;
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     setIsLoading(true)
@@ -43,8 +55,21 @@ const PartnerLogin = () => {
       if (data.success) {
         // Store the token and user data for persistent login
         handleLogin(data.token, data.user)
-        toast.success(state === "Sign Up" ? "Account created successfully!" : "Login successful!")
-        navigate("/partner")
+        
+        if (state === "Sign Up") {
+          toast.success("Account created successfully!")
+          // For new registrations, always redirect to create partner request
+          navigate("/partner", { state: { section: 'create-user' } })
+        } else {
+          // For login, check if user has existing partner request
+          const hasRequest = await checkPartnerRequest()
+          toast.success("Login successful!")
+          navigate("/partner", { 
+            state: { 
+              section: hasRequest ? 'dashboard' : 'create-user' 
+            } 
+          })
+        }
       } else {
         toast.error(data.message)
       }
