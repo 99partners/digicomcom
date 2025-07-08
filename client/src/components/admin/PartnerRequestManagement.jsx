@@ -16,6 +16,7 @@ const PartnerRequestManagement = () => {
     const [loading, setLoading] = useState(true);
     const [expandedRequest, setExpandedRequest] = useState(null);
     const [filter, setFilter] = useState('all'); // all, pending, approved, rejected
+    const [serviceTypeFilter, setServiceTypeFilter] = useState('all'); // all, ams, platform, cobranding, marketing
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
@@ -80,12 +81,13 @@ const PartnerRequestManagement = () => {
     };
 
     const filteredRequests = requests.filter(request => {
-        const matchesFilter = filter === 'all' || request.status === filter;
+        const matchesStatusFilter = filter === 'all' || request.status === filter;
+        const matchesServiceFilter = serviceTypeFilter === 'all' || request.serviceType === serviceTypeFilter;
         const matchesSearch = searchTerm === '' || 
             Object.values(request).some(value => 
                 String(value).toLowerCase().includes(searchTerm.toLowerCase())
             );
-        return matchesFilter && matchesSearch;
+        return matchesStatusFilter && matchesServiceFilter && matchesSearch;
     });
 
     if (loading) {
@@ -121,18 +123,33 @@ const PartnerRequestManagement = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Filter className="h-5 w-5 text-gray-400" />
-                        <select
-                            className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
-                            value={filter}
-                            onChange={(e) => setFilter(e.target.value)}
-                        >
-                            <option value="all">All Requests</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
-                        </select>
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                            <Filter className="h-5 w-5 text-gray-400" />
+                            <select
+                                className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
+                                value={filter}
+                                onChange={(e) => setFilter(e.target.value)}
+                            >
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <select
+                                className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
+                                value={serviceTypeFilter}
+                                onChange={(e) => setServiceTypeFilter(e.target.value)}
+                            >
+                                <option value="all">All Services</option>
+                                <option value="ams">AMS</option>
+                                <option value="platform">Platform</option>
+                                <option value="cobranding">Co-branding</option>
+                                <option value="marketing">Marketing</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 

@@ -1,6 +1,14 @@
 import mongoose from 'mongoose';
 
 const partnerRequestSchema = new mongoose.Schema({
+    userName: {
+        type: String,
+        required: true
+    },
+    userEmail: {
+        type: String,
+        required: true
+    },
     serviceType: {
         type: String,
         required: true,
