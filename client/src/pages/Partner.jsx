@@ -23,28 +23,28 @@ import {
   XCircle
 } from 'lucide-react';
 import { getApiUrl } from '../config/api.config';
+import PartnerUserForm from '../components/partner/PartnerUserForm';
 
 const Partner = () => {
   const [partnerData, setPartnerData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [activeSection, setActiveSection] = useState('dashboard');
+  const [activeSection, setActiveSection] = useState('create-user');
   const [showPlans, setShowPlans] = useState(false);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [showUserForm, setShowUserForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [hasCreatedRequest, setHasCreatedRequest] = useState(false);
   const navigate = useNavigate();
   const { handleLogout, user } = useAuth();
   const { backendUrl } = useAppContext();
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'customers', label: 'Customers', icon: Users },
-    { id: 'transactions', label: 'Transactions', icon: CreditCard },
-    { id: 'reports', label: 'Reports', icon: FileText },
-    { id: 'analytics', label: 'Analytics', icon: BarChart },
-    { id: 'wallet', label: 'Wallet', icon: Wallet },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'settings', label: 'Settings', icon: Settings },
-    { id: 'support', label: 'Support', icon: HelpCircle },
+    { id: 'create-user', label: 'Create Request', icon: FileText },
+    { id: 'customers', label: 'My Requests', icon: Users, requiresRequest: true },
+    { id: 'notifications', label: 'Notifications', icon: Bell, requiresRequest: true },
+    { id: 'settings', label: 'Settings', icon: Settings, requiresRequest: true },
+    { id: 'support', label: 'Support', icon: HelpCircle, requiresRequest: true },
   ];
 
   const subscriptionPlans = [
@@ -139,6 +139,30 @@ const Partner = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    checkExistingRequest();
+  }, []);
+
+  const checkExistingRequest = async () => {
+    try {
+      const response = await axios.get(getApiUrl('api/partner/has-request'), { withCredentials: true });
+      setHasCreatedRequest(response.data.hasRequest);
+      if (!response.data.hasRequest) {
+        setActiveSection('create-user');
+      }
+    } catch (error) {
+      console.error('Error checking request status:', error);
+    }
+  };
+
+  const handleSectionChange = (sectionId) => {
+    if (menuItems.find(item => item.id === sectionId)?.requiresRequest && !hasCreatedRequest) {
+      toast.warning('Please create a request first');
+      return;
+    }
+    setActiveSection(sectionId);
+  };
+
   const onLogout = async () => {
     try {
       const response = await axios.post(getApiUrl('api/auth/logout'));
@@ -172,6 +196,19 @@ const Partner = () => {
   const handleSubscribe = (planId) => {
     setSelectedPlan(planId);
     console.log(`Subscribing to ${planId} plan`);
+  };
+
+  const handleUserFormSubmit = async () => {
+    setShowUserForm(false);
+    setSelectedUser(null);
+    setHasCreatedRequest(true);
+    toast.success('Request created successfully! You can now access other sections.');
+    await fetchPartnerData();
+  };
+
+  const handleUserFormCancel = () => {
+    setShowUserForm(false);
+    setSelectedUser(null);
   };
 
   const renderDashboardContent = () => {
@@ -335,6 +372,17 @@ const Partner = () => {
           </div>
         );
 
+      case 'create-user':
+        return (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <PartnerUserForm
+              user={selectedUser}
+              onSubmit={handleUserFormSubmit}
+              onCancel={handleUserFormCancel}
+            />
+          </div>
+        );
+
       case 'settings':
         const currentPlan = subscriptionPlans.find(p => p.id === selectedPlan);
         return (
@@ -427,92 +475,97 @@ const Partner = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Left Sidebar - Navigation */}
-      <div className="w-64 bg-[#1a1c23] shadow-lg">
-        <div className="p-4 border-b border-gray-700">
-          <h2 className="text-xl font-bold text-white">99 Digicom Partner</h2>
-        </div>
-        <nav className="p-4">
-          <ul className="space-y-2">
+    <div className="min-h-screen bg-gray-100">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-white shadow-lg min-h-screen">
+          <div className="p-6">
+            <h1 className="text-2xl font-bold text-gray-800">Partner Panel</h1>
+          </div>
+          <nav className="mt-6">
             {menuItems.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => {
-                    setActiveSection(item.id);
-                    setShowPlans(false);
-                  }}
-                  className={`w-full flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-200 ${
-                    activeSection === item.id && !showPlans
-                      ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
-                      : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                  }`}
-                >
-                  <item.icon className={`h-5 w-5 ${
-                    activeSection === item.id && !showPlans
-                      ? 'text-white'
-                      : 'text-gray-400 group-hover:text-white'
-                  }`} />
-                  <span>{item.label}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 p-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Welcome back, {user?.name}
-              </h1>
-            </div>
-
-            <div className="flex items-center space-x-4">
               <button
-                onClick={() => setShowPlans(!showPlans)}
-                className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                  showPlans
-                    ? 'bg-black text-white'
-                    : 'text-gray-600 hover:bg-gray-100'
+                key={item.id}
+                onClick={() => handleSectionChange(item.id)}
+                disabled={item.requiresRequest && !hasCreatedRequest}
+                className={`w-full flex items-center px-6 py-3 text-left ${
+                  activeSection === item.id
+                    ? 'bg-purple-50 text-purple-600'
+                    : item.requiresRequest && !hasCreatedRequest
+                    ? 'text-gray-400 cursor-not-allowed'
+                    : 'text-gray-500 hover:bg-gray-50'
                 }`}
               >
-                <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
-                {selectedPlan ? subscriptionPlans.find(p => p.id === selectedPlan)?.name : 'Plans'}
+                <item.icon className="w-5 h-5 mr-3" />
+                {item.label}
+                {item.requiresRequest && !hasCreatedRequest && (
+                  <span className="ml-2 text-xs text-gray-400">(Create request first)</span>
+                )}
               </button>
-              {/* Profile Button from Navbar.jsx */}
-              <div className="relative group">
-                <div className="flex items-center justify-center rounded-full bg-black text-white w-8 h-8 cursor-pointer">
-                  {user?.name?.[0]?.toUpperCase() || 'U'}
-                </div>
-                <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black pt-10 rounded">
-                  <ul className="list-none m-0 p-2 bg-gray-100 text-sm">
-                    {!partnerData?.isAccountVerified && (
+            ))}
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center px-6 py-3 text-left text-red-500 hover:bg-red-50"
+            >
+              <LogOut className="w-5 h-5 mr-3" />
+              Logout
+            </button>
+          </nav>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Welcome back, {user?.name}
+                </h1>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => setShowPlans(!showPlans)}
+                  className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                    showPlans
+                      ? 'bg-black text-white'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
+                  {selectedPlan ? subscriptionPlans.find(p => p.id === selectedPlan)?.name : 'Plans'}
+                </button>
+                {/* Profile Button from Navbar.jsx */}
+                <div className="relative group">
+                  <div className="flex items-center justify-center rounded-full bg-black text-white w-8 h-8 cursor-pointer">
+                    {user?.name?.[0]?.toUpperCase() || 'U'}
+                  </div>
+                  <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black pt-10 rounded">
+                    <ul className="list-none m-0 p-2 bg-gray-100 text-sm">
+                      {!partnerData?.isAccountVerified && (
+                        <li
+                          onClick={!isProfileLoading ? sendVerificationOpt : undefined}
+                          className={`py-1 px-2 hover:bg-gray-200 cursor-pointer ${isProfileLoading ? 'opacity-50' : ''}`}
+                        >
+                          {isProfileLoading ? 'Sending OTP...' : 'Verify email'}
+                        </li>
+                      )}
                       <li
-                        onClick={!isProfileLoading ? sendVerificationOpt : undefined}
-                        className={`py-1 px-2 hover:bg-gray-200 cursor-pointer ${isProfileLoading ? 'opacity-50' : ''}`}
+                        onClick={onLogout}
+                        className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10"
                       >
-                        {isProfileLoading ? 'Sending OTP...' : 'Verify email'}
+                        Logout
                       </li>
-                    )}
-                    <li
-                      onClick={onLogout}
-                      className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10"
-                    >
-                      Logout
-                    </li>
-                  </ul>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div>
-            {renderDashboardContent()}
+            <div>
+              {renderDashboardContent()}
+            </div>
           </div>
         </div>
       </div>

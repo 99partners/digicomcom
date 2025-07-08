@@ -8,14 +8,17 @@ import CoBrandingSubmissions from '../components/admin/CoBrandingSubmissions';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
+import UserForm from '../components/admin/UserForm';
 import { getApiUrl } from '../config/api.config';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
     const [subscribers, setSubscribers] = useState([]);
-    const [activeSection, setActiveSection] = useState('dashboard');
+    const [activeSection, setActiveSection] = useState('users');
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [showUserForm, setShowUserForm] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -67,6 +70,27 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleEditUser = (user) => {
+        setSelectedUser(user);
+        setShowUserForm(true);
+    };
+
+    const handleCreateUser = () => {
+        setSelectedUser(null);
+        setShowUserForm(true);
+    };
+
+    const handleUserFormSubmit = () => {
+        setShowUserForm(false);
+        setSelectedUser(null);
+        fetchData(); // Refresh the users list
+    };
+
+    const handleUserFormCancel = () => {
+        setShowUserForm(false);
+        setSelectedUser(null);
+    };
+
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: Users },
         { id: 'users', label: 'Users', icon: UserCheck },
@@ -105,10 +129,24 @@ const AdminDashboard = () => {
                 return <BlogManagement />;
 
             case 'users':
-                return (
+                return showUserForm ? (
+                    <UserForm 
+                        user={selectedUser}
+                        onSubmit={handleUserFormSubmit}
+                        onCancel={handleUserFormCancel}
+                    />
+                ) : (
                     <div className="bg-white rounded-lg shadow overflow-hidden">
                         <div className="p-6">
-                            <h2 className="text-xl font-semibold mb-4">User Management</h2>
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-xl font-semibold">User Management</h2>
+                                <button
+                                    onClick={handleCreateUser}
+                                    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                                >
+                                    Add New User
+                                </button>
+                            </div>
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
@@ -117,6 +155,7 @@ const AdminDashboard = () => {
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
@@ -137,6 +176,14 @@ const AdminDashboard = () => {
                                                     }`}>
                                                         {user.isAccountVerified ? 'Verified' : 'Not Verified'}
                                                     </span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    <button 
+                                                        onClick={() => handleEditUser(user)}
+                                                        className="text-blue-600 hover:text-blue-900 mr-3"
+                                                    >
+                                                        Edit
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -259,4 +306,4 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard; 
+export default AdminDashboard;

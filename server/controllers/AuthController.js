@@ -183,32 +183,49 @@ export const sendVerifyOtp = async(req, res)=>{
 export const verifyEmail = async(req, res)=>{
     const {userId, otp} = req.body;
     if(!userId || !otp){
-        return res.json({success:false, message:"Missing Details"})
+        return res.status(400).json({success:false, message:"Missing user ID or OTP"});
     }
 
     try {
-        const user = await userModel.findById(userId)
+        const user = await userModel.findById(userId);
 
         if(!user){
-            return res.json({success:false, message:"User not found"})
+            return res.status(404).json({success:false, message:"User not found"});
         }
 
-        if(user.verifyOtp === '' || user.verifyOtp!== otp){
-            return res.json({success:false, message:"Invalid OTP"})
+        if(user.isAccountVerified){
+            return res.status(400).json({success:false, message:"Account is already verified"});
+        }
+
+        if(!user.verifyOtp || user.verifyOtp !== otp){
+            return res.status(400).json({success:false, message:"Invalid verification code"});
         }
 
         if(user.verifyOtpExpireAt < Date.now()){
-            return res.json({success:false, message:"OTP expired. Please request a new OTP"})
+            return res.status(400).json({success:false, message:"Verification code has expired"});
         }
 
-        user.isAccountVerified = true
-        user.verifyOtp = ''
-        user.verifyOtpExpireAt = 0
-        await user.save()
+        // Update user verification status
+        user.isAccountVerified = true;
+        user.verifyOtp = '';
+        user.verifyOtpExpireAt = null;
+        await user.save();
 
-        return res.json({success:true, message:"Account verified successfully"})
-    }catch(err) {
-        return res.json({success:false, message: err.message})
+        return res.json({
+            success: true,
+            message: "Email verified successfully",
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                isAccountVerified: true
+            }
+        });
+
+    } catch(err) {
+        console.error("Email verification error:", err);
+        return res.status(500).json({success:false, message: "Server error. Please try again later."});
     }
 }
 
