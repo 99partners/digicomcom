@@ -16,15 +16,10 @@ import FAQs from './pages/Faqs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
-<<<<<<< HEAD
 import CoBrandingPage from './pages/coBranding';
 import AccountManagementServices from './pages/ams';
 import ECommerce from './pages/eCommerce';
 import PlatformEnablement from './pages/platformEnable';
-=======
-// import CoBranding from './pages/CoBranding';
-import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
->>>>>>> 75fe0b0b7f495c24e68a3bf78f736a6581b1a281
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -75,17 +70,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-<<<<<<< HEAD
             <Route path="/services/coBranding" element={<CoBrandingPage />} />          
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/platformEnable" element={<PlatformEnablement />} />
             <Route path="/services/eCommerce" element={<ECommerce />} />
             
-=======
-            <Route path="/services" element={<Services />} />
-            {/* <Route path="/services/co-branding" element={<coBranding />} /> */}
-            <Route path="/services/platform-ams" element={<PlatformEnablementAMS />} />
->>>>>>> 75fe0b0b7f495c24e68a3bf78f736a6581b1a281
             <Route path="/partners" element={<Partners />} />
             <Route 
               path="/partner" 
@@ -105,10 +94,6 @@ function App() {
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
-<<<<<<< HEAD
-=======
-            {/* <Route path="/co-branding" element={<coBranding />} /> */}
->>>>>>> 75fe0b0b7f495c24e68a3bf78f736a6581b1a281
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             
