@@ -17,7 +17,7 @@ import FAQs from './pages/Faqs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
-import coBranding from './pages/coBranding';
+// import CoBranding from './pages/CoBranding';
 import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
@@ -70,7 +70,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
-            <Route path="/services/co-branding" element={<coBranding />} />
+            {/* <Route path="/services/co-branding" element={<coBranding />} /> */}
             <Route path="/services/platform-ams" element={<PlatformEnablementAMS />} />
             <Route path="/partners" element={<Partners />} />
             <Route 
@@ -91,7 +91,7 @@ function App() {
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
-            <Route path="/co-branding" element={<coBranding />} />
+            {/* <Route path="/co-branding" element={<coBranding />} /> */}
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             
