@@ -1,22 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 
 const faqs = [
   {
-    category: 'For Product Partners / Sellers',
+    category: 'About 99digicom',
     questions: [
       {
-        question: 'How do I become a seller on 99digicom?',
-        answer: 'Fill out the Partner Application Form. Our team will contact you in 2–4 business days.',
+        question: 'What makes 99digicom different from other agencies?',
+        answer: 'We combine platform mastery (Amazon, Flipkart, ONDC, Swiggy, etc.) with end-to-end solutions – from setup and account management to ads and co-branding. Unlike niche players, we orchestrate unified strategies across all channels for maximum impact.',
       },
       {
-        question: 'What documents do I need?',
-        answer: 'GST, PAN, bank details, FSSAI (if applicable), product photos, and brand logo.',
-      },
-      {
-        question: 'Do I need to sell on all platforms?',
-        answer: 'No. You can choose platforms like ONDC, Amazon, Flipkart, Swiggy, Zomato, etc., based on your category and goals.',
+        question: 'Do you work with brands outside India?',
+        answer: 'Yes! While we specialize in Indian marketplaces (Flipkart, Meesho, ONDC), our advertising and co-branding strategies serve global brands entering India or leveraging cross-border e-commerce platforms.',
       },
     ],
   },
@@ -24,12 +19,20 @@ const faqs = [
     category: 'Account Setup & Management',
     questions: [
       {
-        question: 'How long does seller account setup take?',
-        answer: 'Typically 3–7 working days, depending on the platform.',
+        question: 'How long does it take to onboard our brand?',
+        answer: 'Platform enablement takes 7–14 days (depending on catalog complexity). Account management begins immediately after onboarding. Advertising/co-branding campaigns launch in 2–3 weeks post-strategy finalization.',
       },
       {
-        question: 'Can I update product listings myself?',
-        answer: 'Yes, or you can opt for our AMS plan, and we’ll manage it for you.',
+        question: 'What’s included in your Account Management service?',
+        answer: 'Full lifecycle support: Daily platform operations (listings, inventory, orders), performance monitoring & reporting, compliance/issue resolution, optimizing catalog content & promotions, coordinating with marketplace support teams.',
+      },
+      {
+        question: 'How do you measure success for Platform Enablement/Account Management?',
+        answer: 'We track platform-specific KPIs: Sales volume & market share, account health metrics (e.g., Amazon Seller Rating), listing visibility & conversion rates, operational efficiency (inventory/order errors).',
+      },
+      {
+        question: 'What if we only need one service (e.g., ads but not account management)?',
+        answer: 'No problem! Services are modular. We’ll align with your internal teams to ensure seamless integration (e.g., sharing ad performance data with your sales ops).',
       },
     ],
   },
@@ -37,12 +40,8 @@ const faqs = [
     category: 'Co-Branding & Collaboration',
     questions: [
       {
-        question: 'What is co-branding?',
-        answer: 'It’s a collaboration between two brands for joint marketing or product bundles to reach more customers.',
-      },
-      {
-        question: 'How do I apply for co-branding?',
-        answer: 'Use the Co-Branding Application Form. We’ll match you with a relevant partner and help you launch your campaign.',
+        question: 'How do co-branding partnerships work?',
+        answer: 'We identify brands with synergistic audiences, negotiate terms, then co-create campaigns (e.g., joint social contests, bundled products, co-hosted webinars). We handle strategy, execution, and performance tracking for both partners.',
       },
     ],
   },
@@ -50,38 +49,29 @@ const faqs = [
     category: 'Marketing & Promotions',
     questions: [
       {
-        question: 'Can you run ads for my brand?',
-        answer: 'Yes! We run paid campaigns on Amazon, Flipkart, Meta (Instagram/Facebook), and Google.',
+        question: 'Can you manage advertising across multiple platforms?',
+        answer: 'Absolutely. Our eCommerce Advertising service runs unified campaigns on Amazon Ads, Flipkart Ads, Swiggy/Zomato Promotions, and social media – all optimized through a single dashboard to maximize ROAS.',
       },
       {
-        question: 'What’s the minimum marketing budget?',
-        answer: 'Starts from ₹4,999/month, plus ad spend. Custom packages available.',
-      },
-    ],
-  },
-  {
-    category: 'Payments & Fees',
-    questions: [
-      {
-        question: 'How much does it cost to onboard?',
-        answer: 'Starting from ₹4,999 one-time. Monthly plans available based on service scope.',
-      },
-      {
-        question: 'Who pays for co-branding promotions?',
-        answer: 'Costs are shared between collaborating brands, depending on the campaign design.',
+        question: 'What industries do you specialize in?',
+        answer: 'We serve FMCG, electronics, fashion, home goods, and food brands – especially those scaling on marketplaces. Our ONDC expertise also supports hyperlocal businesses (pharmacies, groceries, services).',
       },
     ],
   },
   {
-    category: 'For Customers',
+    category: 'Contracts & Reporting',
     questions: [
       {
-        question: 'How do I place an order?',
-        answer: '99digicom does not directly sell products. You’ll be redirected to our partner platforms like Amazon, Flipkart, or ONDC to complete your purchase.',
+        question: 'Are there long-term contracts?',
+        answer: 'We offer flexible engagements (monthly/quarterly). Most clients start with a 3-month pilot to validate results before scaling.',
       },
       {
-        question: 'Who handles delivery?',
-        answer: 'The respective platform (Amazon, Zomato, etc.) manages delivery, tracking, and customer service.',
+        question: 'How do you report results?',
+        answer: 'Custom dashboards track KPIs like: Platforms: Sales growth, ROI, traffic; Ads: ROAS, CPC, new customer acquisition; Co-branding: Shared lead gen, campaign reach. Bi-weekly reviews + quarterly strategy audits included.',
+      },
+      {
+        question: 'How do you stay updated with platform changes (e.g., ONDC/Flipkart updates)?',
+        answer: 'Our team holds platform certifications, attends beta programs, and maintains direct partner relationships. We share critical updates via monthly client briefings and agile strategy tweaks.',
       },
     ],
   },
