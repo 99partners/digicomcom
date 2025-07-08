@@ -1,177 +1,223 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useAuth } from '../context/AuthContext'
-import { useAppContext } from '../context/AppContext'
+import axiosInstance from '../config/api.config'
 
 const EmailVerify = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const inputRefs = useRef([])
   const navigate = useNavigate()
-  const { user, handleLogin } = useAuth()
-  const { backendUrl } = useAppContext()
+  const { user, checkAuthStatus } = useAuth()
 
   useEffect(() => {
-    // If no user or token exists, redirect to login
-    const token = localStorage.getItem('authToken')
-    if (!token || !user) {
-      navigate('/login')
-      return
+    const verifyAuth = async () => {
+      try {
+        const token = localStorage.getItem('authToken')
+        if (!token) {
+          toast.error('Please login to continue')
+          navigate('/partnerlogin')
+          return
+        }
+
+        // Try to get user data if not available
+        if (!user) {
+          await checkAuthStatus()
+        }
+
+        // Check if already verified
+        if (user?.isAccountVerified) {
+          toast.success('Your account is already verified')
+          navigate('/partner')
+          return
+        }
+
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Auth check error:', error)
+        toast.error('Authentication failed. Please login again.')
+        navigate('/partnerlogin')
+      }
     }
 
-    // If user is already verified, redirect to partner dashboard
-    if (user?.isAccountVerified) {
-      navigate('/partner')
-    }
-  }, [user, navigate])
+    verifyAuth()
+  }, [user, navigate, checkAuthStatus])
 
   const handleChange = (index, value) => {
-    if (value.length > 1) return
+    // Only allow numbers
+    if (!/^\d*$/.test(value)) return
+
     const newOtp = [...otp]
     newOtp[index] = value
     setOtp(newOtp)
 
+    // Auto-focus next input
     if (value && index < 5) {
       inputRefs.current[index + 1].focus()
     }
   }
 
   const handleKeyDown = (index, e) => {
+    // Handle backspace
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      const newOtp = [...otp]
+      newOtp[index - 1] = ''
+      setOtp(newOtp)
       inputRefs.current[index - 1].focus()
     }
   }
 
-  const handlePaste = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const pastedData = e.clipboardData.getData('text').trim()
-    if (pastedData.length === 6 && /^\d+$/.test(pastedData)) {
-      const digits = pastedData.split('')
-      setOtp(digits)
-      digits.forEach((digit, index) => {
-        if (inputRefs.current[index]) {
-          inputRefs.current[index].value = digit
-        }
+    const otpString = otp.join('')
+
+    if (otpString.length !== 6) {
+      toast.error('Please enter a valid 6-digit code')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      // Ensure we have a token
+      const token = localStorage.getItem('authToken')
+      if (!token) {
+        toast.error('Session expired. Please login again.')
+        navigate('/partnerlogin')
+        return
+      }
+
+      const response = await axiosInstance.post('/api/auth/verify-account', {
+        otp: otpString
       })
-      inputRefs.current[5].focus()
+
+      if (response.data.success) {
+        toast.success('Email verified successfully')
+        await checkAuthStatus() // Update auth context with new verification status
+        navigate('/partner')
+      } else {
+        toast.error(response.data.message || 'Verification failed')
+        // Clear OTP fields on error
+        setOtp(['', '', '', '', '', ''])
+        // Focus first input
+        inputRefs.current[0].focus()
+      }
+    } catch (error) {
+      console.error('Verification error:', error)
+      if (error.response?.status === 401) {
+        toast.error('Session expired. Please login again.')
+        navigate('/partnerlogin')
+      } else {
+        const errorMessage = error.response?.data?.message || 'Failed to verify email'
+        console.log('Error details:', error.response?.data) // Add this for debugging
+        toast.error(errorMessage)
+        // Clear OTP fields on error
+        setOtp(['', '', '', '', '', ''])
+        // Focus first input
+        inputRefs.current[0].focus()
+      }
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault()
+  const handleResendOtp = async () => {
+    if (isSubmitting) return
+
+    setIsSubmitting(true)
     try {
-      const otpArray = inputRefs.current.map(e => e.value)
-      const otpString = otpArray.join('')
-
-      if (otpString.length !== 6) {
-        toast.error('Please enter all 6 digits')
-        return
-      }
-
+      // Ensure we have a token
       const token = localStorage.getItem('authToken')
-      if (!token || !user?.id) {
-        toast.error('Not authorized. Please login again.')
-        navigate('/login')
+      if (!token) {
+        toast.error('Session expired. Please login again.')
+        navigate('/partnerlogin')
         return
       }
 
-      const { data } = await axios.post(
-        `${backendUrl}/api/auth/verify-account`,
-        {
-          userId: user.id,
-          otp: otpString
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          withCredentials: true
-        }
-      )
-
-      if (data.success) {
-        toast.success('Email verified successfully')
-        
-        try {
-          const userResponse = await axios.get(
-            `${backendUrl}/api/user/data`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              },
-              withCredentials: true
-            }
-          )
-          
-          if (userResponse.data.success) {
-            handleLogin(token, {
-              ...user,
-              ...userResponse.data.userData,
-              isAccountVerified: true
-            })
-            navigate('/partner')
-          }
-        } catch (error) {
-          console.error("Failed to fetch updated user data:", error)
-          if (error.response?.status === 401) {
-            toast.error('Session expired. Please login again.')
-            navigate('/login')
-          } else {
-            navigate('/partner')
-          }
-        }
+      const response = await axiosInstance.post('/api/auth/send-verify-otp')
+      if (response.data.success) {
+        toast.success('New verification code sent to your email')
+        setOtp(['', '', '', '', '', '']) // Clear OTP fields
+        // Focus first input
+        inputRefs.current[0].focus()
       } else {
-        toast.error(data.message || 'Invalid verification code')
+        toast.error(response.data.message || 'Failed to send verification code')
       }
     } catch (error) {
-      console.error("Verification error:", error)
+      console.error('Resend error:', error)
       if (error.response?.status === 401) {
-        toast.error('Not authorized. Please login again.')
-        navigate('/login')
-      } else if (error.response?.status === 400) {
-        toast.error(error.response.data.message || 'Invalid verification code')
+        toast.error('Session expired. Please login again.')
+        navigate('/partnerlogin')
       } else {
-        toast.error('Server error. Please try again later.')
+        toast.error(error.response?.data?.message || 'Failed to resend verification code')
       }
+    } finally {
+      setIsSubmitting(false)
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Verify Your Email</h1>
-          <p className="text-gray-600 mt-2">Enter the 6-digit verification code sent to your email</p>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
+          <p className="text-sm text-gray-600 mb-6">
+            We've sent a verification code to {user?.email}
+          </p>
         </div>
 
-        <form onSubmit={onSubmitHandler} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex justify-center space-x-3">
-            {[0, 1, 2, 3, 4, 5].map((index) => (
+            {otp.map((digit, index) => (
               <input
                 key={index}
+                ref={(el) => (inputRefs.current[index] = el)}
                 type="text"
                 maxLength={1}
-                ref={(el) => (inputRefs.current[index] = el)}
-                value={otp[index]}
+                value={digit}
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                onPaste={handlePaste}
-                pattern="[0-9]"
-                inputMode="numeric"
-                autoComplete="one-time-code"
+                className="w-12 h-12 text-center text-2xl font-semibold border-2 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-colors"
                 required
-                className="w-12 h-12 text-xl text-center border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
               />
             ))}
           </div>
 
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          >
-            Verify Email
-          </button>
+          <div className="flex flex-col items-center space-y-4">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                  Verifying...
+                </>
+              ) : (
+                'Verify Email'
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleResendOtp}
+              disabled={isSubmitting}
+              className="text-sm text-green-600 hover:text-green-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Resend Code
+            </button>
+          </div>
         </form>
       </div>
     </div>

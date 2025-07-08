@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance, { API_BASE_URL } from '../config/api.config';
 
 const AuthContext = createContext(null);
 
@@ -25,17 +25,14 @@ export const AuthProvider = ({ children }) => {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
         try {
-          const response = await axios.get('https://99digicom.com/api/admin/dashboard-stats', {
-            withCredentials: true
-          });
+          const response = await axiosInstance.get('/api/admin/dashboard-stats');
           if (response.data.success) {
-            setUser({ role: 'admin' });
+            setUser({ role: 'admin', ...response.data.admin });
             setLoading(false);
             return;
           }
         } catch (adminError) {
-          // Silently handle admin auth failure
-          console.log('Admin auth check failed');
+          console.error('Admin auth check failed:', adminError);
           localStorage.removeItem('adminToken');
         }
       }
@@ -44,17 +41,14 @@ export const AuthProvider = ({ children }) => {
       const userToken = localStorage.getItem('authToken');
       if (userToken) {
         try {
-          const response = await axios.get('https://99digicom.com/api/user/profile', {
-            withCredentials: true
-          });
+          const response = await axiosInstance.get('/api/user/data');
           if (response.data.success) {
-            setUser(response.data.user);
+            setUser(response.data.userData);
           } else {
             handleLogout();
           }
         } catch (userError) {
-          // Silently handle user auth failure
-          console.log('User auth check failed');
+          console.error('User auth check failed:', userError);
           handleLogout();
         }
       }
@@ -63,20 +57,35 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleLogin = (token, userData, isAdmin = false) => {
-    if (isAdmin) {
-      localStorage.setItem('adminToken', token);
-    } else {
-      localStorage.setItem('authToken', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  const handleLogin = async (token, userData, isAdmin = false) => {
+    try {
+      if (isAdmin) {
+        localStorage.setItem('adminToken', token);
+      } else {
+        localStorage.setItem('authToken', token);
+      }
+      
+      // Update axios instance headers
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      // Set user data
+      setUser(userData);
+
+      // Verify the token immediately after login
+      await checkAuthStatus();
+      
+      return true;
+    } catch (error) {
+      console.error('Login error:', error);
+      handleLogout();
+      return false;
     }
-    setUser(userData);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('adminToken');
-    delete axios.defaults.headers.common['Authorization'];
+    delete axiosInstance.defaults.headers.common['Authorization'];
     setUser(null);
   };
 
@@ -86,6 +95,7 @@ export const AuthProvider = ({ children }) => {
     handleLogin,
     handleLogout,
     isAuthenticated: !!user,
+    checkAuthStatus, // Export this so components can manually check auth status
   };
 
   return (
