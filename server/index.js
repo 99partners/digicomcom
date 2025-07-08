@@ -81,6 +81,7 @@ import platformAMSRoutes from './routes/platformAMSRoutes.js'
 import coBrandingRoutes from './routes/coBrandingRoutes.js'
 import contactRoutes from './routes/contactRoutes.js'
 import blogRoutes from './routes/blogRoutes.js'
+import partnerRoutes from './routes/partnerRoutes.js'
 
 // API routes
 app.use('/api/auth', AuthRouter)
@@ -91,6 +92,7 @@ app.use('/api/platform-ams', platformAMSRoutes)
 app.use('/api/co-branding', coBrandingRoutes)
 app.use('/api/contact', contactRoutes)
 app.use('/api/blogs', blogRoutes)
+app.use('/api/partner', partnerRoutes)
 
 // Basic route to test server
 app.get('/', (req, res) => {

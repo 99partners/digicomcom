@@ -29,22 +29,29 @@ const Partner = () => {
   const [partnerData, setPartnerData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [activeSection, setActiveSection] = useState('create-user');
+  const [activeSection, setActiveSection] = useState('dashboard');
   const [showPlans, setShowPlans] = useState(false);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
   const [showUserForm, setShowUserForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [hasCreatedRequest, setHasCreatedRequest] = useState(false);
+  const [dashboardStats, setDashboardStats] = useState({
+    totalOrders: 0,
+    revenue: 0,
+    activeProducts: 0,
+    recentActivity: []
+  });
   const navigate = useNavigate();
   const { handleLogout, user } = useAuth();
   const { backendUrl } = useAppContext();
 
   const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'create-user', label: 'Create Request', icon: FileText },
-    { id: 'customers', label: 'My Requests', icon: Users, requiresRequest: true },
-    { id: 'notifications', label: 'Notifications', icon: Bell, requiresRequest: true },
-    { id: 'settings', label: 'Settings', icon: Settings, requiresRequest: true },
-    { id: 'support', label: 'Support', icon: HelpCircle, requiresRequest: true },
+    { id: 'customers', label: 'My Requests', icon: Users },
+    { id: 'notifications', label: 'Notifications', icon: Bell },
+    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'support', label: 'Support', icon: HelpCircle },
   ];
 
   const subscriptionPlans = [
@@ -149,6 +156,8 @@ const Partner = () => {
       setHasCreatedRequest(response.data.hasRequest);
       if (!response.data.hasRequest) {
         setActiveSection('create-user');
+      } else {
+        setActiveSection('dashboard');
       }
     } catch (error) {
       console.error('Error checking request status:', error);
@@ -156,10 +165,6 @@ const Partner = () => {
   };
 
   const handleSectionChange = (sectionId) => {
-    if (menuItems.find(item => item.id === sectionId)?.requiresRequest && !hasCreatedRequest) {
-      toast.warning('Please create a request first');
-      return;
-    }
     setActiveSection(sectionId);
   };
 
@@ -210,6 +215,24 @@ const Partner = () => {
     setShowUserForm(false);
     setSelectedUser(null);
   };
+
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await axios.get(getApiUrl('api/partner/dashboard-stats'), { withCredentials: true });
+      if (response.data.success) {
+        setDashboardStats(response.data.stats);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+      toast.error('Failed to load dashboard statistics');
+    }
+  };
+
+  useEffect(() => {
+    if (hasCreatedRequest && activeSection === 'dashboard') {
+      fetchDashboardStats();
+    }
+  }, [hasCreatedRequest, activeSection]);
 
   const renderDashboardContent = () => {
     if (showPlans) {
@@ -282,9 +305,7 @@ const Partner = () => {
       case 'dashboard':
         return (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold mb-6">
-              {showPlans ? 'Subscription Plans' : menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
-            </h2>
+            <h2 className="text-xl font-semibold mb-6">Partner Dashboard</h2>
             
             {/* Account Status Section */}
             <div className="mb-8">
@@ -319,19 +340,60 @@ const Partner = () => {
               </div>
             </div>
 
-            {/* Rest of the dashboard content */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium mb-2">Total Orders</h4>
-                <p className="text-2xl font-bold">0</p>
+            {/* Statistics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-medium text-gray-700">Total Orders</h4>
+                  <BarChart className="h-6 w-6 text-purple-500" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">{dashboardStats.totalOrders}</p>
+                <p className="text-sm text-gray-500 mt-2">Total orders processed</p>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium mb-2">Revenue</h4>
-                <p className="text-2xl font-bold">₹0</p>
+              
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-medium text-gray-700">Revenue</h4>
+                  <Wallet className="h-6 w-6 text-green-500" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">₹{dashboardStats.revenue.toLocaleString()}</p>
+                <p className="text-sm text-gray-500 mt-2">Total revenue earned</p>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium mb-2">Active Products</h4>
-                <p className="text-2xl font-bold">0</p>
+              
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-medium text-gray-700">Active Products</h4>
+                  <Star className="h-6 w-6 text-yellow-500" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">{dashboardStats.activeProducts}</p>
+                <p className="text-sm text-gray-500 mt-2">Products in catalog</p>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+              <div className="p-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
+                {dashboardStats.recentActivity && dashboardStats.recentActivity.length > 0 ? (
+                  <div className="space-y-4">
+                    {dashboardStats.recentActivity.map((activity, index) => (
+                      <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="flex-shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                            <activity.icon className="h-4 w-4 text-purple-600" />
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{activity.title}</p>
+                          <p className="text-sm text-gray-500">{activity.description}</p>
+                          <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm">No recent activity to display</p>
+                )}
               </div>
             </div>
           </div>
@@ -487,20 +549,14 @@ const Partner = () => {
               <button
                 key={item.id}
                 onClick={() => handleSectionChange(item.id)}
-                disabled={item.requiresRequest && !hasCreatedRequest}
                 className={`w-full flex items-center px-6 py-3 text-left ${
                   activeSection === item.id
                     ? 'bg-purple-50 text-purple-600'
-                    : item.requiresRequest && !hasCreatedRequest
-                    ? 'text-gray-400 cursor-not-allowed'
                     : 'text-gray-500 hover:bg-gray-50'
                 }`}
               >
                 <item.icon className="w-5 h-5 mr-3" />
-                {item.label}
-                {item.requiresRequest && !hasCreatedRequest && (
-                  <span className="ml-2 text-xs text-gray-400">(Create request first)</span>
-                )}
+                <span>{item.label}</span>
               </button>
             ))}
             <button
