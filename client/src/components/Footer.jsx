@@ -11,8 +11,7 @@ import {
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
-
-const API_URL = 'https://99digicom.com';
+import { getApiUrl } from '../config/api.config';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -49,47 +48,25 @@ const Footer = () => {
     }
 
     try {
-      console.log('Attempting newsletter subscription...', {
-        url: `${API_URL}/api/newsletter`,
-        email,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      });
-
       const response = await axios.post(
-        `${API_URL}/api/newsletter`,
+        getApiUrl('api/newsletter'),
         { email },
         {
           headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          withCredentials: true
+            'Content-Type': 'application/json'
+          }
         }
       );
 
-      console.log('Newsletter subscription response:', response);
-
-      if (response.status === 200) {
+      if (response.data.success) {
         setIsSubmitted(true);
         setEmail('');
         setError(null);
+      } else {
+        setError(response.data.message || 'Failed to subscribe. Please try again.');
       }
     } catch (err) {
-      console.error('Newsletter subscription error details:', {
-        message: err.message,
-        status: err.response?.status,
-        statusText: err.response?.statusText,
-        data: err.response?.data,
-        config: {
-          url: err.config?.url,
-          method: err.config?.method,
-          headers: err.config?.headers,
-          data: err.config?.data
-        }
-      });
+      console.error('Newsletter subscription error:', err.message);
       setError(err.response?.data?.message || 'Failed to subscribe. Please try again.');
       setIsSubmitted(false);
     } finally {
