@@ -23,28 +23,48 @@ const allowedDomains = [
     'https://99digicom.com',
     'https://api.99digicom.com',
     'https://www.99digicom.com',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://localhost:5050'
 ];
 
-// Enable CORS
+// Enable CORS with proper configuration
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
+        // Allow requests with no origin (like mobile apps, Postman or curl requests)
         if (!origin) return callback(null, true);
         
-        if (allowedDomains.indexOf(origin) === -1) {
+        // Check if the origin is allowed
+        if (allowedDomains.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
             console.warn('Unauthorized access attempt from:', origin);
-            return callback(null, false);
+            callback(new Error('Not allowed by CORS'));
         }
-        return callback(null, true);
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    credentials: true
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'Accept',
+        'Origin',
+        'Access-Control-Request-Method',
+        'Access-Control-Request-Headers'
+    ],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    credentials: true,
+    maxAge: 86400 // 24 hours
 }));
 
-// Handle preflight requests
+// Handle preflight requests for all routes
 app.options('*', cors());
+
+// Add security headers
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    next();
+});
 
 // Global error handler middleware
 app.use((err, req, res, next) => {

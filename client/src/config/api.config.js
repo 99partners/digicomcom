@@ -12,7 +12,8 @@ const axiosInstance = axios.create({
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'Origin': window.location.origin
   }
 });
 
@@ -36,19 +37,13 @@ axiosInstance.interceptors.request.use((config) => {
     config.url = config.url.replace('http:', 'https:');
   }
 
-  // Add cache-busting parameter for GET requests to bypass service worker cache
+  // Add cache-busting parameter for GET requests
   if (config.method === 'get') {
     config.params = {
       ...config.params,
       _t: new Date().getTime()
     };
   }
-
-  // Ensure headers are properly set for each request
-  config.headers = {
-    ...config.headers,
-    'X-Requested-With': 'XMLHttpRequest'
-  };
 
   return config;
 }, (error) => {
@@ -65,16 +60,22 @@ axiosInstance.interceptors.response.use(
     // Handle network errors
     if (!error.response) {
       console.error('Network error occurred:', error);
-      // Retry the request once
-      try {
-        // Add retry flag to prevent infinite loops
-        if (!originalRequest._retry) {
-          originalRequest._retry = true;
+      // Only retry once to prevent infinite loops
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
           return await axiosInstance(originalRequest);
+        } catch (retryError) {
+          console.error('Retry failed:', retryError);
         }
-      } catch (retryError) {
-        console.error('Retry failed:', retryError);
       }
+    }
+
+    // Handle CORS errors
+    if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
+      console.error('CORS or network error:', error);
+      // You might want to show a user-friendly message here
+      return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
     }
 
     // Handle authentication errors
