@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Mail,
@@ -7,14 +7,11 @@ import {
   Instagram,
   Youtube,
   Twitter,
-  CheckCircle2,
-  XCircle
 } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
 import { getApiUrl } from '../config/api.config';
-import { useAuth } from '../context/AuthContext';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -22,36 +19,7 @@ const Footer = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [backendStatus, setBackendStatus] = useState({
-    local: false,
-    live: false
-  });
   const location = useLocation();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    const checkBackendStatus = async () => {
-      try {
-        // Check local backend (5050)
-        const localResponse = await axios.get('http://localhost:5050', { timeout: 5000 });
-        setBackendStatus(prev => ({ ...prev, local: localResponse.status === 200 }));
-      } catch (error) {
-        setBackendStatus(prev => ({ ...prev, local: false }));
-      }
-
-      try {
-        // Check live backend
-        const liveResponse = await axios.get('https://99digicom.com', { timeout: 5000 });
-        setBackendStatus(prev => ({ ...prev, live: liveResponse.status === 200 }));
-      } catch (error) {
-        setBackendStatus(prev => ({ ...prev, live: false }));
-      }
-    };
-
-    checkBackendStatus();
-    const interval = setInterval(checkBackendStatus, 60000); // Check every minute
-    return () => clearInterval(interval);
-  }, []);
 
   // Hide footer on login page
   if (location.pathname === "/login") return null;
@@ -187,26 +155,6 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
-        {/* Backend Status Bar */}
-        <div className="flex items-center justify-end gap-4 mb-6 text-sm">
-          <div className="flex items-center gap-2">
-            <span>Local:</span>
-            {backendStatus.local ? (
-              <CheckCircle2 className={`w-4 h-4 ${user ? 'text-green-500' : 'text-yellow-500'}`} />
-            ) : (
-              <XCircle className="w-4 h-4 text-red-500" />
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <span>Live:</span>
-            {backendStatus.live ? (
-              <CheckCircle2 className={`w-4 h-4 ${user ? 'text-green-500' : 'text-yellow-500'}`} />
-            ) : (
-              <XCircle className="w-4 h-4 text-red-500" />
-            )}
-          </div>
-        </div>
-
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10">
           {/* Left Column */}
           <div className="space-y-6">
