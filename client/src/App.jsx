@@ -19,7 +19,9 @@ import CookiePolicy from './pages/CookiePolicy';
 import CoBrandingPage from './pages/CoBranding';
 import AccountManagementServices from './pages/ams';
 import ECommerce from './pages/eCommerce';
+import PartnerOnboarding from './pages/partnersOnboarding';
 import PlatformEnablement from './pages/platformEnable';
+import ForProductPartners from './pages/whyPartners';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -74,8 +76,8 @@ function App() {
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/platformEnable" element={<PlatformEnablement />} />
             <Route path="/services/eCommerce" element={<ECommerce />} />
-            
-            <Route path="/partners" element={<Partners />} />
+            <Route path="/partners/whyPartners" element={<ForProductPartners/>} />
+            <Route path="/partners/partnersOnboarding" element={<PartnerOnboarding />} />
             <Route 
               path="/partner" 
               element={
