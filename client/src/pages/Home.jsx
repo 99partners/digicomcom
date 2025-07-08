@@ -8,7 +8,10 @@ import {  Puzzle,
   Headset,
   Trophy,
 Star} from "lucide-react"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { getApiUrl } from '../config/api.config';
+
 
 const Home = () => {
   // Scroll to top on component mount
@@ -96,27 +99,6 @@ const Home = () => {
     },
   ]
 
-  const featuredProducts = [
-    {
-      title: "ONDC Starter Kit",
-      description: "Tools for seamless ONDC onboarding, including APIs and compliance guides.",
-      price: "₹4,999/month",
-      image: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=400",
-    },
-    {
-      title: "Co-Branding Suite",
-      description: "Custom templates and analytics for impactful brand partnerships.",
-      price: "₹7,999/month",
-      image: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400",
-    },
-    {
-      title: "Digital Marketing Pro",
-      description: "SEO, social media, and ads tailored to your business goals.",
-      price: "₹9,999/month",
-      image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400",
-    },
-  ]
-
   return (
     <div className="pt-12 sm:pt-16">
       {/* Hero Section */}
@@ -128,7 +110,7 @@ const Home = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-32 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight text-gray-900">
             Empowering Businesses 
-            <br /> in
+            <br /> in 
             <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-green-700 to-green-400 text-transparent bg-clip-text animate-gradient">
               Digital Commerce
