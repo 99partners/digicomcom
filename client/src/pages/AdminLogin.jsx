@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../config/api.config';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
+import { getApiUrl } from '../config/api.config';
 
 const AdminLogin = () => {
     const [credentials, setCredentials] = useState({
@@ -18,14 +19,13 @@ const AdminLogin = () => {
         setIsLoading(true);
 
         try {
-            const response = await axiosInstance.post(
-                '/api/admin/login',
-                credentials
+            const response = await axios.post(
+                getApiUrl('api/admin/login'),
+                credentials,
+                { withCredentials: true }
             );
 
             if (response.data.success) {
-                // Store the admin token
-                localStorage.setItem('adminToken', response.data.token);
                 handleLogin(response.data.token, { role: 'admin' }, true);
                 toast.success('Login successful');
                 navigate('/admin');
@@ -36,9 +36,8 @@ const AdminLogin = () => {
                 toast.error('Invalid credentials');
             } else if (error.response?.status === 500) {
                 toast.error('Server error. Please try again later.');
-            } else {
-                toast.error('Network error. Please check your connection.');
             }
+            // Don't show any toast for other errors
         } finally {
             setIsLoading(false);
         }
