@@ -4,7 +4,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
-import Services from './pages/Services';
 import Partners from './pages/Partners';
 import Shop from './pages/Shop';
 import Resources from './pages/Resources';
@@ -17,8 +16,10 @@ import FAQs from './pages/Faqs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
-import coBranding from './pages/coBranding';
-import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
+import CoBrandingPage from './pages/coBranding';
+import AccountManagementServices from './pages/ams';
+import ECommerce from './pages/eCommerce';
+import PlatformEnablement from './pages/platformEnable';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -69,9 +70,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/co-branding" element={<coBranding />} />
-            <Route path="/services/platform-ams" element={<PlatformEnablementAMS />} />
+            <Route path="/services/coBranding" element={<CoBrandingPage />} />          
+            <Route path="/services/ams" element={<AccountManagementServices />} />
+            <Route path="/services/platformEnable" element={<PlatformEnablement />} />
+            <Route path="/services/eCommerce" element={<ECommerce />} />
+            
             <Route path="/partners" element={<Partners />} />
             <Route 
               path="/partner" 
@@ -91,7 +94,6 @@ function App() {
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
-            <Route path="/co-branding" element={<coBranding />} />
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             
