@@ -3,6 +3,18 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance, { getApiUrl } from '../../config/api.config';
 import { useAuth } from '../../context/AuthContext';
+import {
+    Store,
+    CheckCircle,
+    ArrowRight,
+    Building,
+    Package,
+    ShoppingCart,
+    Mail,
+    Phone,
+    User,
+    FileText,
+} from 'lucide-react';
 
 const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     const navigate = useNavigate();
@@ -716,9 +728,10 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     // Show loading state while checking authentication
     if (loading) {
         return (
-            <div className="bg-white rounded-lg shadow p-6">
-                <div className="flex items-center justify-center">
-                    <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center">
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                    <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                    <p className="text-gray-600 text-sm mt-4">Loading...</p>
                 </div>
             </div>
         );
@@ -730,74 +743,232 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     }
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-semibold mb-6">{user ? 'Edit Request' : 'Create Request'}</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Service Type</label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {serviceTypes.map((service) => (
-                            <div key={service.id} className="relative">
-                                <input
-                                    type="radio"
-                                    name="serviceType"
-                                    id={service.id}
-                                    value={service.id}
-                                    checked={formData.serviceType === service.id}
-                                    onChange={handleChange}
-                                    className="peer absolute opacity-0"
-                                    required
-                                />
-                                <label
-                                    htmlFor={service.id}
-                                    className="block p-4 bg-white border-2 rounded-lg cursor-pointer transition-all peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50"
-                                >
-                                    <div className="font-medium text-gray-900">{service.label}</div>
-                                </label>
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+            {/* Hero Section */}
+            <section className="pt-24 pb-16 px-4">
+                <div className="max-w-7xl mx-auto text-center">
+                    <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                        <Store className="h-4 w-4" />
+                        <span>Partner with 99digicom</span>
+                    </div>
+                    <h1 className="text-5xl font-bold text-gray-900 mb-6">
+                        {user ? 'Edit Your Partner Request' : 'Create Your Partner Request'}
+                    </h1>
+                    <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                        Join our network of successful partners and grow your business with our comprehensive solutions.
+                    </p>
+                </div>
+            </section>
+
+            {/* Form Section */}
+            <section className="py-16 px-4">
+                <div className="max-w-3xl mx-auto">
+                    <div className="bg-white rounded-lg shadow-lg p-8 border border-green-100 hover:shadow-xl transition-shadow">
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            {/* Service Type Selection */}
+                            <div className="bg-green-50 p-6 rounded-lg">
+                                <label className="block text-sm font-medium text-gray-700 mb-4">Service Type</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {serviceTypes.map((service) => (
+                                        <div key={service.id} className="relative">
+                                            <input
+                                                type="radio"
+                                                name="serviceType"
+                                                id={service.id}
+                                                value={service.id}
+                                                checked={formData.serviceType === service.id}
+                                                onChange={handleChange}
+                                                className="peer absolute opacity-0"
+                                                required
+                                            />
+                                            <label
+                                                htmlFor={service.id}
+                                                className="block p-4 bg-white border-2 rounded-lg cursor-pointer transition-all peer-checked:border-green-600 peer-checked:bg-green-50 hover:bg-gray-50"
+                                            >
+                                                <div className="font-medium text-gray-900">{service.label}</div>
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
+
+                            {/* Service-specific fields - Keep existing rendering logic but update styling */}
+                            <div className="mt-4">
+                                {formData.serviceType === 'ams' && (
+                                    <div className="space-y-4">
+                                        {/* Marketplaces Section */}
+                                        <div className="bg-green-50 p-6 rounded-lg">
+                                            <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                {marketplaceOptions.map(marketplace => (
+                                                    <label key={marketplace} className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-green-600 transition-colors">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="marketplaces"
+                                                            value={marketplace}
+                                                            checked={formData.marketplaces.includes(marketplace)}
+                                                            onChange={handleChange}
+                                                            className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
+                                                        />
+                                                        <span className="text-sm text-gray-700">{marketplace}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* GST Section */}
+                                        <div className="bg-green-50 p-6 rounded-lg">
+                                            <label className="block text-sm font-medium text-gray-700 mb-4">Do you have GST number?</label>
+                                            <div className="flex space-x-6 mb-4">
+                                                <label className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-green-600 transition-colors">
+                                                    <input
+                                                        type="radio"
+                                                        name="hasGST"
+                                                        value="yes"
+                                                        checked={formData.hasGST === 'yes'}
+                                                        onChange={handleChange}
+                                                        className="w-4 h-4 text-green-600 focus:ring-green-600"
+                                                    />
+                                                    <span className="text-sm text-gray-700">Yes</span>
+                                                </label>
+                                                <label className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-green-600 transition-colors">
+                                                    <input
+                                                        type="radio"
+                                                        name="hasGST"
+                                                        value="no"
+                                                        checked={formData.hasGST === 'no'}
+                                                        onChange={handleChange}
+                                                        className="w-4 h-4 text-green-600 focus:ring-green-600"
+                                                    />
+                                                    <span className="text-sm text-gray-700">No</span>
+                                                </label>
+                                            </div>
+
+                                            {formData.hasGST === 'yes' && (
+                                                <div className="mt-4">
+                                                    <label className="block text-sm font-medium text-gray-700 mb-2">GST Number</label>
+                                                    <div className="relative">
+                                                        <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                                                        <input
+                                                            type="text"
+                                                            name="gstNumber"
+                                                            value={formData.gstNumber}
+                                                            onChange={handleChange}
+                                                            placeholder="Enter your GST number"
+                                                            className={`w-full pl-10 pr-3 py-3 rounded-lg shadow-sm focus:ring-2 ${
+                                                                gstError 
+                                                                    ? 'border-red-300 bg-red-50 focus:ring-red-600 focus:border-red-600' 
+                                                                    : 'border-gray-300 focus:ring-green-600 focus:border-green-600'
+                                                            }`}
+                                                        />
+                                                    </div>
+                                                    {gstError && (
+                                                        <p className="mt-2 text-sm text-red-600">{gstError}</p>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Monthly Sales Volume */}
+                                        <div className="bg-green-50 p-6 rounded-lg">
+                                            <label className="block text-sm font-medium text-gray-700 mb-4">Monthly Online Sales Volume (Optional)</label>
+                                            <select
+                                                name="monthlyOnlineSales"
+                                                value={formData.monthlyOnlineSales}
+                                                onChange={handleChange}
+                                                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600"
+                                            >
+                                                <option value="">Select sales volume</option>
+                                                {salesVolumeOptions.map(option => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Keep other service type sections (platform, cobranding, marketing) with updated styling */}
+                                {formData.serviceType === 'platform' && renderPlatformFields()}
+                                {formData.serviceType === 'cobranding' && renderCoBrandingFields()}
+                                {formData.serviceType === 'marketing' && renderMarketingFields()}
+                            </div>
+
+                            {/* Additional Notes */}
+                            <div className="bg-green-50 p-6 rounded-lg">
+                                <label className="block text-sm font-medium text-gray-700 mb-4">Additional Notes</label>
+                                <textarea
+                                    name="additionalNotes"
+                                    value={formData.additionalNotes}
+                                    onChange={handleChange}
+                                    rows="4"
+                                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600 resize-y"
+                                    placeholder="Any additional information you'd like to share..."
+                                />
+                            </div>
+
+                            {/* Form Actions */}
+                            <div className="flex justify-end space-x-4">
+                                <button
+                                    type="button"
+                                    onClick={onCancel}
+                                    className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-medium rounded-lg hover:bg-green-600 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled={isSubmitting}
+                                >
+                                    Cancel
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled={isSubmitting || (formData.hasGST === 'yes' && gstError)}
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                                            Submitting...
+                                        </>
+                                    ) : (
+                                        <>
+                                            {user ? 'Update Request' : 'Submit Request'}
+                                            <ArrowRight className="ml-2 h-5 w-5" />
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </section>
 
-                {/* Service-specific fields */}
-                <div className="mt-4">
-                    {formData.serviceType === 'ams' && renderAMSFields()}
-                    {formData.serviceType === 'platform' && renderPlatformFields()}
-                    {formData.serviceType === 'cobranding' && renderCoBrandingFields()}
-                    {formData.serviceType === 'marketing' && renderMarketingFields()}
+            {/* CTA Section */}
+            <section className="py-16 px-4 bg-white">
+                <div className="max-w-7xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                        Ready to Scale Your Business?
+                    </h2>
+                    <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+                        Join our network of successful partners and access comprehensive solutions to grow your business.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button
+                            onClick={() => navigate("/partner/register")}
+                            className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
+                        >
+                            Get Started
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                        </button>
+                        <button
+                            onClick={() => navigate("/partner/options")}
+                            className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-medium rounded-lg hover:bg-green-600 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
+                        >
+                            Explore Partnership Options
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                        </button>
+                    </div>
                 </div>
-
-                {/* Additional Notes */}
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Additional Notes</label>
-                    <textarea
-                        name="additionalNotes"
-                        value={formData.additionalNotes}
-                        onChange={handleChange}
-                        rows="4"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
-                        placeholder="Any additional information you'd like to share..."
-                    />
-                </div>
-
-                <div className="flex justify-end space-x-4 mt-4 pt-4 border-t">
-                    <button
-                        type="button"
-                        onClick={onCancel}
-                        className="px-6 py-3 border-2 border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                        disabled={isSubmitting}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="px-6 py-3 border-2 border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={isSubmitting || (formData.hasGST === 'yes' && gstError)}
-                    >
-                        {isSubmitting ? 'Submitting...' : (user ? 'Update' : 'Create')}
-                    </button>
-                </div>
-            </form>
+            </section>
         </div>
     );
 };
