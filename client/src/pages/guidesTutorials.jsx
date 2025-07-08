@@ -314,51 +314,12 @@ const GuidesTutorials = () => {
                   </div>
                 ))}
             </div>
-            <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="#"
-                className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
-              >
-                Subscribe for Early Access
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                to="#"
-                className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white"
-              >
-                Join Our Email List
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </div>
+            
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Need Help?</h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-            Our team is here to provide personalized support for your digital commerce journey.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-            >
-              Chat with an Expert
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-medium rounded-lg transition-colors"
-            >
-              Request a Custom Walkthrough
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
+    
     </div>
   )
 }
