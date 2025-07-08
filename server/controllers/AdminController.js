@@ -2,6 +2,7 @@ import Admin from '../models/AdminModel.js';
 import Newsletter from '../models/Newsletter.js';
 import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
+import PartnerRequest from '../models/PartnerRequestModel.js';
 
 // Admin Login
 export const adminLogin = async (req, res) => {
@@ -30,6 +31,7 @@ export const adminLogin = async (req, res) => {
             { expiresIn: '1d' }
         );
 
+        // Set HTTP-only cookie
         res.cookie('adminToken', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -37,9 +39,11 @@ export const adminLogin = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
 
+        // Send token in response body for localStorage
         res.json({ 
             success: true, 
             message: 'Login successful',
+            token, // Add token to response
             admin: {
                 username: admin.username,
                 role: admin.role
@@ -131,6 +135,75 @@ export const adminLogout = async (req, res) => {
         res.status(500).json({ 
             success: false, 
             message: error.message 
+        });
+    }
+}; 
+
+// Get all partner requests (admin)
+export const getAllPartnerRequests = async (req, res) => {
+    try {
+        const requests = await PartnerRequest.find()
+            .sort({ createdAt: -1 })
+            .populate('userId', 'name email');
+
+        res.json({
+            success: true,
+            data: requests
+        });
+    } catch (error) {
+        console.error('Error fetching partner requests:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching partner requests',
+            error: error.message
+        });
+    }
+};
+
+// Update partner request status (admin)
+export const updatePartnerRequestStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!['pending', 'approved', 'rejected'].includes(status)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid status value'
+            });
+        }
+
+        // Find the request first to check its current status
+        const existingRequest = await PartnerRequest.findById(id);
+        
+        if (!existingRequest) {
+            return res.status(404).json({
+                success: false,
+                message: 'Partner request not found'
+            });
+        }
+
+        // Allow admin to update status regardless of current status
+        const request = await PartnerRequest.findByIdAndUpdate(
+            id,
+            { 
+                status,
+                updatedAt: new Date() 
+            },
+            { new: true, runValidators: true }
+        );
+
+        res.json({
+            success: true,
+            message: 'Partner request status updated successfully',
+            data: request
+        });
+    } catch (error) {
+        console.error('Error updating partner request status:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error updating partner request status',
+            error: error.message
         });
     }
 }; 

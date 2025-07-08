@@ -14,11 +14,14 @@ import {
     Phone,
     User,
     FileText,
+    Edit2,
 } from 'lucide-react';
 
 const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     const navigate = useNavigate();
     const { isAuthenticated, loading } = useAuth();
+    const [submittedRequest, setSubmittedRequest] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         serviceType: user?.serviceType || 'ams',
         marketplaces: user?.marketplaces || [],
@@ -47,13 +50,37 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     const [gstError, setGstError] = useState('');
     const [errors, setErrors] = useState({});
 
+    // Load the most recent request when component mounts
     useEffect(() => {
-        // Redirect to login if not authenticated
-        if (!loading && !isAuthenticated) {
-            toast.error('Please login to create a request');
-            navigate('/partnerlogin');
+        const fetchLatestRequest = async () => {
+            try {
+                const response = await axiosInstance.get('api/partner-requests/my-requests');
+                if (response.data.success && response.data.data.length > 0) {
+                    const latestRequest = response.data.data[0];
+                    setSubmittedRequest(latestRequest);
+                    if (!isEditing) {
+                        setFormData({
+                            ...latestRequest,
+                            marketingServices: latestRequest.marketingServices || {
+                                sponsoredAds: false,
+                                seasonalCampaigns: false,
+                                platformPromotions: false,
+                                socialMediaPromotions: false,
+                                creativeDesign: false,
+                                platformSpecificAds: false
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching latest request:', error);
+            }
+        };
+
+        if (isAuthenticated) {
+            fetchLatestRequest();
         }
-    }, [isAuthenticated, loading, navigate]);
+    }, [isAuthenticated]);
 
     const serviceTypes = [
         { id: 'ams', label: 'AMS (Account Management Services)' },
@@ -154,19 +181,19 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
     const renderAMSFields = () => (
         <>
-            <div className="space-y-4 px-4">
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
+            <div className="space-y-4 px-2">
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Marketplaces</label>
                     <div className="grid grid-cols-2 gap-4">
                         {marketplaceOptions.map(marketplace => (
-                            <label key={marketplace} className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                            <label key={marketplace} className="flex items-center space-x-3 p-3 bg-white/90 rounded-md border border-green-100/50 hover:border-green-500 transition-colors">
                                 <input
                                     type="checkbox"
                                     name="marketplaces"
                                     value={marketplace}
                                     checked={formData.marketplaces.includes(marketplace)}
                                     onChange={handleChange}
-                                    className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                    className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                                 />
                                 <span className="text-sm text-gray-700">{marketplace}</span>
                             </label>
@@ -174,40 +201,40 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                     </div>
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Service Account Number</label>
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Service Account Number</label>
                     <input
                         type="text"
                         name="serviceAccountNumber"
                         value={formData.serviceAccountNumber}
                         onChange={handleChange}
                         placeholder="Enter your service account number"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-3"
                     />
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Do you have GST number?</label>
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Do you have GST number?</label>
                     <div className="flex space-x-6 mb-4">
-                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                        <label className="flex items-center space-x-3 p-3 bg-white/90 rounded-md border border-green-100/50 hover:border-green-500 transition-colors">
                             <input
                                 type="radio"
                                 name="hasGST"
                                 value="yes"
                                 checked={formData.hasGST === 'yes'}
                                 onChange={handleChange}
-                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                                className="w-4 h-4 text-green-600 focus:ring-green-500"
                             />
                             <span className="text-sm text-gray-700">Yes</span>
                         </label>
-                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                        <label className="flex items-center space-x-3 p-3 bg-white/90 rounded-md border border-green-100/50 hover:border-green-500 transition-colors">
                             <input
                                 type="radio"
                                 name="hasGST"
                                 value="no"
                                 checked={formData.hasGST === 'no'}
                                 onChange={handleChange}
-                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                                className="w-4 h-4 text-green-600 focus:ring-green-500"
                             />
                             <span className="text-sm text-gray-700">No</span>
                         </label>
@@ -222,7 +249,7 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                                 value={formData.gstNumber}
                                 onChange={handleChange}
                                 placeholder="Enter your GST number"
-                                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 ${
+                                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 p-3 ${
                                     gstError ? 'border-red-300 bg-red-50' : 'border-gray-300'
                                 }`}
                             />
@@ -233,13 +260,13 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                     )}
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Monthly Online Sales Volume (Optional)</label>
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Monthly Online Sales Volume (Optional)</label>
                     <select
                         name="monthlyOnlineSales"
                         value={formData.monthlyOnlineSales}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-3"
                     >
                         <option value="">Select sales volume</option>
                         {salesVolumeOptions.map(option => (
@@ -255,48 +282,48 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
     const renderPlatformFields = () => (
         <>
-            <div className="space-y-4 px-4">
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
+            <div className="space-y-4 px-2">
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Platform Type</label>
                     <div className="grid grid-cols-2 gap-4">
-                        {marketplaceOptions.map(marketplace => (
-                            <label key={marketplace} className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                        {platformOptions.map(platform => (
+                            <label key={platform} className="flex items-center space-x-3 p-3 bg-white/90 rounded-md border border-green-100/50 hover:border-green-500 transition-colors">
                                 <input
                                     type="checkbox"
                                     name="marketplaces"
-                                    value={marketplace}
-                                    checked={formData.marketplaces.includes(marketplace)}
+                                    value={platform}
+                                    checked={formData.marketplaces.includes(platform)}
                                     onChange={handleChange}
-                                    className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                    className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                                 />
-                                <span className="text-sm text-gray-700">{marketplace}</span>
+                                <span className="text-sm text-gray-700">{platform}</span>
                             </label>
                         ))}
                     </div>
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Do you have GST number?</label>
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Do you have GST number?</label>
                     <div className="flex space-x-6 mb-4">
-                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                        <label className="flex items-center space-x-3 p-3 bg-white/90 rounded-md border border-green-100/50 hover:border-green-500 transition-colors">
                             <input
                                 type="radio"
                                 name="hasGST"
                                 value="yes"
                                 checked={formData.hasGST === 'yes'}
                                 onChange={handleChange}
-                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                                className="w-4 h-4 text-green-600 focus:ring-green-500"
                             />
                             <span className="text-sm text-gray-700">Yes</span>
                         </label>
-                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                        <label className="flex items-center space-x-3 p-3 bg-white/90 rounded-md border border-green-100/50 hover:border-green-500 transition-colors">
                             <input
                                 type="radio"
                                 name="hasGST"
                                 value="no"
                                 checked={formData.hasGST === 'no'}
                                 onChange={handleChange}
-                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                                className="w-4 h-4 text-green-600 focus:ring-green-500"
                             />
                             <span className="text-sm text-gray-700">No</span>
                         </label>
@@ -311,7 +338,7 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                                 value={formData.gstNumber}
                                 onChange={handleChange}
                                 placeholder="Enter your GST number"
-                                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 ${
+                                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 p-3 ${
                                     gstError ? 'border-red-300 bg-red-50' : 'border-gray-300'
                                 }`}
                             />
@@ -322,13 +349,13 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                     )}
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Monthly Online Sales Volume (Optional)</label>
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Monthly Online Sales Volume (Optional)</label>
                     <select
                         name="monthlyOnlineSales"
                         value={formData.monthlyOnlineSales}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-3"
                     >
                         <option value="">Select sales volume</option>
                         {salesVolumeOptions.map(option => (
@@ -344,9 +371,9 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
     const renderCoBrandingFields = () => (
         <>
-            <div className="space-y-4 px-4">
-                {/* Manufacturer Checkbox */}
-                <div className="bg-gray-50 p-6 rounded-lg">
+            <div className="space-y-4 px-2">
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Are you a manufacturer?</label>
                     <div className="flex items-center mb-4">
                         <input
                             type="checkbox"
@@ -494,28 +521,20 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
     const renderMarketingFields = () => (
         <>
-            <div className="space-y-4 px-4">
+            <div className="space-y-4 px-2">
                 {/* Marketplaces Section */}
-                <div className="bg-gray-50 p-6 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Select Target Marketplaces</label>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {['ONDC', 'Amazon', 'Flipkart', 'Meesho', 'JioMart', 'IndiaMART', 'Snapdeal'].map((marketplace) => (
-                            <div key={marketplace} className="flex items-center">
+                        {marketplaceOptions.map((marketplace) => (
+                            <div key={marketplace} className="flex items-center p-3 bg-white/90 rounded-md border border-green-100/50">
                                 <input
                                     type="checkbox"
                                     id={`marketplace-${marketplace}`}
                                     name="marketplaces"
                                     value={marketplace}
                                     checked={formData.marketplaces.includes(marketplace)}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        setFormData(prev => ({
-                                            ...prev,
-                                            marketplaces: e.target.checked
-                                                ? [...prev.marketplaces, value]
-                                                : prev.marketplaces.filter(m => m !== value)
-                                        }));
-                                    }}
+                                    onChange={handleChange}
                                     className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                 />
                                 <label htmlFor={`marketplace-${marketplace}`} className="ml-2 text-sm text-gray-700">
@@ -526,8 +545,8 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                     </div>
                 </div>
 
-                {/* Marketing Services Section */}
-                <div className="bg-gray-50 p-6 rounded-lg">
+                {/* What We Offer Section */}
+                <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">What We Offer</h3>
                     
                     {/* Sponsored Ad Campaigns */}
@@ -588,7 +607,7 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                             </label>
                         </div>
                         <ul className="ml-6 text-sm text-gray-600 space-y-1">
-                            <li>• Participation in Lightning Deals, Big Billion Day, Amazon Prime Day, etc.</li>
+                            <li>• Participation in Lightning Deals, Big Billion Day, Amazon Prime Day, Flipkart Big Savings, etc.</li>
                             <li>• Exclusive offers and banner placements</li>
                             <li>• Pricing strategy for offer periods</li>
                         </ul>
@@ -656,6 +675,41 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                             <li>• Meesho Promotions – Flash Sale Strategy, Discount Management</li>
                             <li>• Jiomart Promotions – Homepage banners, Coupon Offers, Deal Days</li>
                             <li>• ONDC – Buyer-side visibility campaigns (via partner apps)</li>
+                            <li>• Zomato / Swiggy – Sponsored listings, discount campaigns, and regional targeting</li>
+                        </ul>
+                    </div>
+
+                    {/* Our Process */}
+                    <div className="mb-6">
+                        <h4 className="text-sm font-medium text-gray-900 mb-2">Our Process</h4>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Audit – Analyze your current product listings and ad performance</li>
+                            <li>• Strategy – Define goals (awareness, sales, traffic) and target audience</li>
+                            <li>• Execution – Launch platform and social ads, seasonal campaigns</li>
+                            <li>• Optimization – Weekly monitoring, reporting, and ad refinements</li>
+                            <li>• Scale – Expand to new platforms or regions</li>
+                        </ul>
+                    </div>
+
+                    {/* Advertising Management Plans */}
+                    <div className="mb-6">
+                        <h4 className="text-sm font-medium text-gray-900 mb-2">Advertising Management Plans</h4>
+                        <div className="ml-6 text-sm text-gray-600">
+                            <p>• Basic Plan - Ideal for new sellers</p>
+                            <p>• Growth Plan - Perfect for scaling brands</p>
+                            <p>• Pro+ Plan - Best for multi-channel sellers</p>
+                            <p className="mt-2 text-xs italic">* Ad spend is billed separately based on platform budgets.</p>
+                        </div>
+                    </div>
+
+                    {/* Why Choose Us */}
+                    <div className="mb-6">
+                        <h4 className="text-sm font-medium text-gray-900 mb-2">Why Choose 99digicom?</h4>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Platform-specific ad specialists</li>
+                            <li>• Weekly performance reports</li>
+                            <li>• Creative support for banners, videos & reels</li>
+                            <li>• Campaigns tailored to your product category</li>
                         </ul>
                     </div>
                 </div>
@@ -675,27 +729,56 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
         if (isSubmitting) return;
 
+        // Validate required fields
+        const errors = [];
+        if (!formData.serviceType) {
+            errors.push('Service type is required');
+        }
+        if (!formData.hasGST) {
+            errors.push('Please select whether you have GST or not');
+        }
+        if (formData.hasGST === 'yes' && !formData.gstNumber) {
+            errors.push('GST number is required when GST is available');
+        }
+        if (formData.serviceType === 'ams' && formData.marketplaces.length === 0) {
+            errors.push('Please select at least one marketplace for AMS service');
+        }
+
+        if (errors.length > 0) {
+            toast.error(errors.join('\n'));
+            return;
+        }
+
         setIsSubmitting(true);
         try {
-            console.log('Submitting form data:', formData);
+            // Clean up the form data before sending
+            const requestData = {
+                ...formData,
+                // Remove empty strings and null values
+                ...Object.fromEntries(
+                    Object.entries(formData).filter(([_, value]) => 
+                        value !== '' && value !== null && 
+                        !(Array.isArray(value) && value.length === 0)
+                    )
+                )
+            };
+
+            console.log('Submitting form data:', requestData);
             
             let response;
-            if (user?._id) {
-                response = await axiosInstance.put(`api/partner/users/${user._id}`, formData);
+            if (submittedRequest?._id && isEditing) {
+                response = await axiosInstance.put(`api/partner-requests/${submittedRequest._id}`, requestData);
                 console.log('Update response:', response.data);
                 toast.success('Request updated successfully');
             } else {
-                response = await axiosInstance.post('api/partner/users', formData);
+                response = await axiosInstance.post('api/partner-requests', requestData);
                 console.log('Create response:', response.data);
                 toast.success('Request created successfully');
             }
             
-            // Redirect based on service type
-            if (formData.serviceType === 'ams') {
-                navigate('/ams');
-            } else {
-            onSubmit();
-            }
+            // Update the submitted request with the new data
+            setSubmittedRequest(response.data.data);
+            setIsEditing(false);
         } catch (error) {
             console.error('Full error details:', error);
             console.error('Error response:', error.response?.data);
@@ -704,14 +787,20 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
             
             if (error.response) {
                 if (error.response.status === 400) {
-                    errorMessage = error.response.data?.message || 'Invalid request data';
+                    const validationErrors = error.response.data?.errors;
+                    if (validationErrors && validationErrors.length > 0) {
+                        errorMessage = validationErrors.join('\n');
+                    } else if (error.response.data?.message) {
+                        errorMessage = error.response.data.message;
+                    }
                 } else if (error.response.status === 401) {
                     errorMessage = 'Please log in again to continue';
                     navigate('/partnerlogin');
                 } else if (error.response.status === 403) {
                     errorMessage = 'You do not have permission to perform this action';
                 } else if (error.response.status === 500) {
-                    errorMessage = 'Server error. Please try again later';
+                    errorMessage = error.response.data?.message || 'Server error. Please try again later';
+                    console.error('Server error details:', error.response.data?.error);
                 }
             } else if (error.request) {
                 errorMessage = 'No response from server. Please check your connection';
@@ -723,6 +812,25 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        setFormData({
+            ...submittedRequest,
+            marketingServices: submittedRequest.marketingServices || {
+                sponsoredAds: false,
+                seasonalCampaigns: false,
+                platformPromotions: false,
+                socialMediaPromotions: false,
+                creativeDesign: false,
+                platformSpecificAds: false
+            }
+        });
     };
 
     // Show loading state while checking authentication
@@ -742,162 +850,169 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
         return null;
     }
 
+    // If there's a submitted request and we're not editing, show the details view
+    if (submittedRequest && !isEditing) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 py-12 px-4">
+                <div className="max-w-3xl mx-auto">
+                    <div className="bg-white rounded-lg shadow-lg p-8 border border-green-100">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold text-gray-900">Partner Request Details</h2>
+                            <button
+                                onClick={handleEdit}
+                                className="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
+                            >
+                                <Edit2 className="w-4 h-4 mr-2" />
+                                Edit Request
+                            </button>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900">Service Type</h3>
+                                <p className="mt-1 text-gray-600 capitalize">{submittedRequest.serviceType}</p>
+                            </div>
+
+                            {submittedRequest.marketplaces && submittedRequest.marketplaces.length > 0 && (
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">Marketplaces</h3>
+                                    <div className="mt-2 flex flex-wrap gap-2">
+                                        {submittedRequest.marketplaces.map((marketplace) => (
+                                            <span
+                                                key={marketplace}
+                                                className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm"
+                                            >
+                                                {marketplace}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {submittedRequest.serviceAccountNumber && (
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">Service Account Number</h3>
+                                    <p className="mt-1 text-gray-600">{submittedRequest.serviceAccountNumber}</p>
+                                </div>
+                            )}
+
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900">GST Status</h3>
+                                <p className="mt-1 text-gray-600">
+                                    {submittedRequest.hasGST === 'yes' ? (
+                                        <>
+                                            Has GST: {submittedRequest.gstNumber}
+                                        </>
+                                    ) : (
+                                        'No GST'
+                                    )}
+                                </p>
+                            </div>
+
+                            {submittedRequest.monthlyOnlineSales && (
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">Monthly Online Sales</h3>
+                                    <p className="mt-1 text-gray-600">{submittedRequest.monthlyOnlineSales}</p>
+                                </div>
+                            )}
+
+                            {submittedRequest.marketingServices && Object.values(submittedRequest.marketingServices).some(Boolean) && (
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">Marketing Services</h3>
+                                    <div className="mt-2 space-y-2">
+                                        {Object.entries(submittedRequest.marketingServices)
+                                            .filter(([_, value]) => value)
+                                            .map(([service]) => (
+                                                <div key={service} className="flex items-center">
+                                                    <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+                                                    <span className="text-gray-600">{service.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {submittedRequest.additionalNotes && (
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">Additional Notes</h3>
+                                    <p className="mt-1 text-gray-600">{submittedRequest.additionalNotes}</p>
+                                </div>
+                            )}
+
+                            <div className="mt-8 pt-6 border-t border-gray-200">
+                                <p className="text-sm text-gray-500">
+                                    Request Status: <span className="font-medium capitalize">{submittedRequest.status}</span>
+                                </p>
+                                <p className="text-sm text-gray-500 mt-1">
+                                    Submitted: {new Date(submittedRequest.createdAt).toLocaleDateString()}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Render the form for editing or creating
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+        <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
             {/* Hero Section */}
-            <section className="pt-24 pb-16 px-4">
+            <section className="pt-12 pb-8 px-4">
                 <div className="max-w-7xl mx-auto text-center">
-                    <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
                         <Store className="h-4 w-4" />
                         <span>Partner with 99digicom</span>
                     </div>
-                    <h1 className="text-5xl font-bold text-gray-900 mb-6">
-                        {user ? 'Edit Your Partner Request' : 'Create Your Partner Request'}
+                    <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                        {isEditing ? 'Edit Your Partner Request' : 'Create Your Partner Request'}
                     </h1>
-                    <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                        Join our network of successful partners and grow your business with our comprehensive solutions.
-                    </p>
                 </div>
             </section>
 
             {/* Form Section */}
-            <section className="py-16 px-4">
+            <section className="py-8 px-4">
                 <div className="max-w-3xl mx-auto">
-                    <div className="bg-white rounded-lg shadow-lg p-8 border border-green-100 hover:shadow-xl transition-shadow">
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="bg-gradient-to-br from-white via-green-50/30 to-emerald-50/30 backdrop-blur-sm rounded-lg shadow-lg p-8 border border-green-100/50 hover:shadow-xl transition-shadow">
+            <form onSubmit={handleSubmit} className="space-y-4">
                             {/* Service Type Selection */}
-                            <div className="bg-green-50 p-6 rounded-lg">
+                            <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
                                 <label className="block text-sm font-medium text-gray-700 mb-4">Service Type</label>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {serviceTypes.map((service) => (
-                                        <div key={service.id} className="relative">
-                                            <input
-                                                type="radio"
-                                                name="serviceType"
-                                                id={service.id}
-                                                value={service.id}
-                                                checked={formData.serviceType === service.id}
-                                                onChange={handleChange}
-                                                className="peer absolute opacity-0"
-                                                required
-                                            />
-                                            <label
-                                                htmlFor={service.id}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {serviceTypes.map((service) => (
+                            <div key={service.id} className="relative">
+                                <input
+                                    type="radio"
+                                    name="serviceType"
+                                    id={service.id}
+                                    value={service.id}
+                                    checked={formData.serviceType === service.id}
+                                    onChange={handleChange}
+                                    className="peer absolute opacity-0"
+                                    required
+                                />
+                                <label
+                                    htmlFor={service.id}
                                                 className="block p-4 bg-white border-2 rounded-lg cursor-pointer transition-all peer-checked:border-green-600 peer-checked:bg-green-50 hover:bg-gray-50"
-                                            >
-                                                <div className="font-medium text-gray-900">{service.label}</div>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
+                                >
+                                    <div className="font-medium text-gray-900">{service.label}</div>
+                                </label>
                             </div>
+                        ))}
+                    </div>
+                </div>
 
-                            {/* Service-specific fields - Keep existing rendering logic but update styling */}
+                            {/* Service-specific fields */}
                             <div className="mt-4">
-                                {formData.serviceType === 'ams' && (
-                                    <div className="space-y-4">
-                                        {/* Marketplaces Section */}
-                                        <div className="bg-green-50 p-6 rounded-lg">
-                                            <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                                {marketplaceOptions.map(marketplace => (
-                                                    <label key={marketplace} className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-green-600 transition-colors">
-                                                        <input
-                                                            type="checkbox"
-                                                            name="marketplaces"
-                                                            value={marketplace}
-                                                            checked={formData.marketplaces.includes(marketplace)}
-                                                            onChange={handleChange}
-                                                            className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
-                                                        />
-                                                        <span className="text-sm text-gray-700">{marketplace}</span>
-                                                    </label>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* GST Section */}
-                                        <div className="bg-green-50 p-6 rounded-lg">
-                                            <label className="block text-sm font-medium text-gray-700 mb-4">Do you have GST number?</label>
-                                            <div className="flex space-x-6 mb-4">
-                                                <label className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-green-600 transition-colors">
-                                                    <input
-                                                        type="radio"
-                                                        name="hasGST"
-                                                        value="yes"
-                                                        checked={formData.hasGST === 'yes'}
-                                                        onChange={handleChange}
-                                                        className="w-4 h-4 text-green-600 focus:ring-green-600"
-                                                    />
-                                                    <span className="text-sm text-gray-700">Yes</span>
-                                                </label>
-                                                <label className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-green-600 transition-colors">
-                                                    <input
-                                                        type="radio"
-                                                        name="hasGST"
-                                                        value="no"
-                                                        checked={formData.hasGST === 'no'}
-                                                        onChange={handleChange}
-                                                        className="w-4 h-4 text-green-600 focus:ring-green-600"
-                                                    />
-                                                    <span className="text-sm text-gray-700">No</span>
-                                                </label>
-                                            </div>
-
-                                            {formData.hasGST === 'yes' && (
-                                                <div className="mt-4">
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">GST Number</label>
-                                                    <div className="relative">
-                                                        <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                                                        <input
-                                                            type="text"
-                                                            name="gstNumber"
-                                                            value={formData.gstNumber}
-                                                            onChange={handleChange}
-                                                            placeholder="Enter your GST number"
-                                                            className={`w-full pl-10 pr-3 py-3 rounded-lg shadow-sm focus:ring-2 ${
-                                                                gstError 
-                                                                    ? 'border-red-300 bg-red-50 focus:ring-red-600 focus:border-red-600' 
-                                                                    : 'border-gray-300 focus:ring-green-600 focus:border-green-600'
-                                                            }`}
-                                                        />
-                                                    </div>
-                                                    {gstError && (
-                                                        <p className="mt-2 text-sm text-red-600">{gstError}</p>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Monthly Sales Volume */}
-                                        <div className="bg-green-50 p-6 rounded-lg">
-                                            <label className="block text-sm font-medium text-gray-700 mb-4">Monthly Online Sales Volume (Optional)</label>
-                                            <select
-                                                name="monthlyOnlineSales"
-                                                value={formData.monthlyOnlineSales}
-                                                onChange={handleChange}
-                                                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600"
-                                            >
-                                                <option value="">Select sales volume</option>
-                                                {salesVolumeOptions.map(option => (
-                                                    <option key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Keep other service type sections (platform, cobranding, marketing) with updated styling */}
+                                {formData.serviceType === 'ams' && renderAMSFields()}
                                 {formData.serviceType === 'platform' && renderPlatformFields()}
                                 {formData.serviceType === 'cobranding' && renderCoBrandingFields()}
                                 {formData.serviceType === 'marketing' && renderMarketingFields()}
                             </div>
 
                             {/* Additional Notes */}
-                            <div className="bg-green-50 p-6 rounded-lg">
-                                <label className="block text-sm font-medium text-gray-700 mb-4">Additional Notes</label>
+                            <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
+                                <label className="block text-sm font-medium text-gray-700 mb-3">Additional Notes</label>
                                 <textarea
                                     name="additionalNotes"
                                     value={formData.additionalNotes}
@@ -910,18 +1025,18 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
                             {/* Form Actions */}
                             <div className="flex justify-end space-x-4">
-                                <button
-                                    type="button"
-                                    onClick={onCancel}
-                                    className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-medium rounded-lg hover:bg-green-600 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    disabled={isSubmitting}
-                                >
-                                    Cancel
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                {isEditing && (
+                    <button
+                        type="button"
+                                        onClick={handleCancel}
+                                        className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                                )}
+                    <button
+                        type="submit"
+                                    className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-medium rounded-lg hover:from-green-700 hover:to-emerald-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                     disabled={isSubmitting || (formData.hasGST === 'yes' && gstError)}
                                 >
                                     {isSubmitting ? (
@@ -931,41 +1046,13 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                                         </>
                                     ) : (
                                         <>
-                                            {user ? 'Update Request' : 'Submit Request'}
+                                            {isEditing ? 'Update Request' : 'Submit Request'}
                                             <ArrowRight className="ml-2 h-5 w-5" />
                                         </>
                                     )}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                    </button>
                 </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-16 px-4 bg-white">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                        Ready to Scale Your Business?
-                    </h2>
-                    <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-                        Join our network of successful partners and access comprehensive solutions to grow your business.
-                    </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                        <button
-                            onClick={() => navigate("/partner/register")}
-                            className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
-                        >
-                            Get Started
-                            <ArrowRight className="ml-2 h-5 w-5" />
-                        </button>
-                        <button
-                            onClick={() => navigate("/partner/options")}
-                            className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-medium rounded-lg hover:bg-green-600 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
-                        >
-                            Explore Partnership Options
-                            <ArrowRight className="ml-2 h-5 w-5" />
-                        </button>
+            </form>
                     </div>
                 </div>
             </section>

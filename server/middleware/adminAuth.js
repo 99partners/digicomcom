@@ -3,7 +3,17 @@ import Admin from '../models/AdminModel.js';
 
 const adminAuth = async (req, res, next) => {
     try {
-        const token = req.cookies.adminToken;
+        // Check Authorization header first
+        const authHeader = req.headers.authorization;
+        let token;
+
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            // Extract token from Bearer header
+            token = authHeader.split(' ')[1];
+        } else {
+            // Fallback to cookie
+            token = req.cookies.adminToken;
+        }
 
         if (!token) {
             return res.status(401).json({ 
@@ -25,6 +35,7 @@ const adminAuth = async (req, res, next) => {
         req.admin = admin;
         next();
     } catch (error) {
+        console.error('Admin auth error:', error);
         return res.status(401).json({ 
             success: false, 
             message: 'Invalid or expired token' 
