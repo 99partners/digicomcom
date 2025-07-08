@@ -5,11 +5,12 @@ import { getApiUrl } from '../../config/api.config';
 
 const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState({
-        serviceType: user?.serviceType || 'ams'
+        serviceType: user?.serviceType || 'dashboard'
     });
 
     const serviceTypes = [
-        { id: 'ams', label: 'AMS (Application Management Services)' },
+        { id: 'dashboard', label: 'Dashboard' },
+        { id: 'ams', label: 'AMS (Account Management Services)' },
         { id: 'platform', label: 'Platform Enablement' },
         { id: 'cobranding', label: 'Co-Branding' },
         { id: 'marketing', label: 'Marketing' }
