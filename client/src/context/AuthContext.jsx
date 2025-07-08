@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axiosInstance, { API_BASE_URL } from '../config/api.config';
-import { toast } from 'react-toastify';
 
 const AuthContext = createContext(null);
 
@@ -26,19 +25,14 @@ export const AuthProvider = ({ children }) => {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
         try {
-          console.log('Checking admin auth status...');
           const response = await axiosInstance.get('/api/admin/dashboard-stats');
           if (response.data.success) {
-            console.log('Admin auth successful');
             setUser({ role: 'admin', ...response.data.admin });
             setLoading(false);
             return;
           }
         } catch (adminError) {
           console.error('Admin auth check failed:', adminError);
-          if (adminError.response?.status === 401) {
-            toast.error('Admin session expired. Please login again.');
-          }
           localStorage.removeItem('adminToken');
         }
       }
@@ -47,26 +41,17 @@ export const AuthProvider = ({ children }) => {
       const userToken = localStorage.getItem('authToken');
       if (userToken) {
         try {
-          console.log('Checking user auth status...');
           const response = await axiosInstance.get('/api/user/data');
           if (response.data.success) {
-            console.log('User auth successful');
             setUser(response.data.userData);
           } else {
-            console.log('User auth failed, logging out');
             handleLogout();
           }
         } catch (userError) {
           console.error('User auth check failed:', userError);
-          if (userError.response?.status === 401) {
-            toast.error('Session expired. Please login again.');
-          }
           handleLogout();
         }
       }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      handleLogout();
     } finally {
       setLoading(false);
     }
@@ -74,8 +59,6 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogin = async (token, userData, isAdmin = false) => {
     try {
-      console.log(`Handling ${isAdmin ? 'admin' : 'user'} login...`);
-      
       if (isAdmin) {
         localStorage.setItem('adminToken', token);
       } else {
@@ -94,14 +77,12 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       console.error('Login error:', error);
-      toast.error('Login failed. Please try again.');
       handleLogout();
       return false;
     }
   };
 
   const handleLogout = () => {
-    console.log('Logging out...');
     localStorage.removeItem('authToken');
     localStorage.removeItem('adminToken');
     delete axiosInstance.defaults.headers.common['Authorization'];
@@ -114,7 +95,7 @@ export const AuthProvider = ({ children }) => {
     handleLogin,
     handleLogout,
     isAuthenticated: !!user,
-    checkAuthStatus,
+    checkAuthStatus, // Export this so components can manually check auth status
   };
 
   return (
