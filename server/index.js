@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 import cors from 'cors'
 
 const app = express()
-const PORT = process.env.PORT || 5050
+const PORT = 5050
 
 // Get __dirname in ES module scope
 const __filename = fileURLToPath(import.meta.url)
@@ -23,39 +23,28 @@ const allowedDomains = [
   'https://99digicom.com',
   'https://api.99digicom.com',
   'https://www.99digicom.com',
-  'http://localhost:3000',
   'http://localhost:5173'
 ];
 
-// Enable CORS with domain checking
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  console.log('Request origin:', origin);
-
-  if (allowedDomains.includes(origin)) {
-    // Set CORS headers for allowed domains
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With,Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-    // Handle preflight
-    if (req.method === 'OPTIONS') {
-      return res.status(200).end();
-    }
+// Enable CORS
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
     
-    next(); // Proceed with the request
-  } else {
-    // Log and deny access to other domains
-    console.warn('Unauthorized access attempt from:', origin);
-    res.status(403).json({ 
-      error: 'CORS Error',
-      message: 'Access forbidden: Origin not allowed',
-      allowedOrigins: allowedDomains,
-      requestOrigin: origin
-    });
-  }
-});
+    if (allowedDomains.indexOf(origin) === -1) {
+      console.warn('Unauthorized access attempt from:', origin);
+      return callback(null, false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+}));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -93,26 +82,31 @@ import coBrandingRoutes from './routes/coBrandingRoutes.js'
 import contactRoutes from './routes/contactRoutes.js'
 import blogRoutes from './routes/blogRoutes.js'
 
-// ✅ Register API routes BEFORE static frontend
+// API routes
 app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
-// ✅ Mount newsletter routes at root level since paths include /api/newsletter
-app.use('/api/newsletter', newsletterRoutes)  // Routes already include full /api/newsletter path
+app.use('/api/newsletter', newsletterRoutes)
 app.use('/api/admin', AdminRouter)
 app.use('/api/platform-ams', platformAMSRoutes)
 app.use('/api/co-branding', coBrandingRoutes)
 app.use('/api/contact', contactRoutes)
 app.use('/api/blogs', blogRoutes)
 
-// ✅ Serve static frontend AFTER all API routes
-app.use(express.static(path.join(__dirname, 'client/dist')))
+// Basic route to test server
+app.get('/', (req, res) => {
+  res.json({ message: 'Server is running successfully!' });
+});
 
-// Catch-all route for SPA
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'))
-})
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    success: false, 
+    message: 'Something went wrong! Please try again later.'
+  });
+});
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on PORT: ${PORT}`)
-})
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});

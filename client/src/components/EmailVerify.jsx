@@ -12,6 +12,20 @@ const EmailVerify = () => {
   const { user, handleLogin } = useAuth()
   const { backendUrl } = useAppContext()
 
+  useEffect(() => {
+    // If no user or token exists, redirect to login
+    const token = localStorage.getItem('authToken')
+    if (!token || !user) {
+      navigate('/login')
+      return
+    }
+
+    // If user is already verified, redirect to partner dashboard
+    if (user?.isAccountVerified) {
+      navigate('/partner')
+    }
+  }, [user, navigate])
+
   const handleChange = (index, value) => {
     if (value.length > 1) return
     const newOtp = [...otp]
@@ -48,49 +62,80 @@ const EmailVerify = () => {
     e.preventDefault()
     try {
       const otpArray = inputRefs.current.map(e => e.value)
-      const otp = otpArray.join('')
+      const otpString = otpArray.join('')
 
-      if (otp.length !== 6) {
+      if (otpString.length !== 6) {
         toast.error('Please enter all 6 digits')
         return
       }
 
-      const { data } = await axios.post(`${backendUrl}/api/auth/verify-account`, { otp })
+      const token = localStorage.getItem('authToken')
+      if (!token || !user?.id) {
+        toast.error('Not authorized. Please login again.')
+        navigate('/login')
+        return
+      }
+
+      const { data } = await axios.post(
+        `${backendUrl}/api/auth/verify-account`,
+        {
+          userId: user.id,
+          otp: otpString
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          withCredentials: true
+        }
+      )
 
       if (data.success) {
         toast.success('Email verified successfully')
         
         try {
-          const userResponse = await axios.get(`${backendUrl}/api/user/data`, { withCredentials: true });
+          const userResponse = await axios.get(
+            `${backendUrl}/api/user/data`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              },
+              withCredentials: true
+            }
+          )
+          
           if (userResponse.data.success) {
-            handleLogin(localStorage.getItem('authToken'), {
+            handleLogin(token, {
               ...user,
               ...userResponse.data.userData,
               isAccountVerified: true
-            });
+            })
+            navigate('/partner')
           }
-          navigate('/partner')
         } catch (error) {
-          console.log("Failed to fetch updated user data");
-          navigate('/partner')
+          console.error("Failed to fetch updated user data:", error)
+          if (error.response?.status === 401) {
+            toast.error('Session expired. Please login again.')
+            navigate('/login')
+          } else {
+            navigate('/partner')
+          }
         }
       } else {
-        toast.error('Invalid verification code')
+        toast.error(data.message || 'Invalid verification code')
       }
     } catch (error) {
-      if (error.response?.status === 400) {
-        toast.error('Invalid verification code')
-      } else if (error.response?.status === 500) {
+      console.error("Verification error:", error)
+      if (error.response?.status === 401) {
+        toast.error('Not authorized. Please login again.')
+        navigate('/login')
+      } else if (error.response?.status === 400) {
+        toast.error(error.response.data.message || 'Invalid verification code')
+      } else {
         toast.error('Server error. Please try again later.')
       }
     }
   }
-
-  useEffect(() => {
-    if (user?.isAccountVerified) {
-      navigate('/partner')
-    }
-  }, [user, navigate])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
