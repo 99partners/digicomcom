@@ -299,7 +299,7 @@ const Footer = () => {
                   </button>
                 </div>
 
-                {isSubmitted && (
+                {isSubmitted  && !error && (
                   <p className="text-green-400 text-xs sm:text-sm mt-1">
                     Subscribed successfully!
                   </p>
