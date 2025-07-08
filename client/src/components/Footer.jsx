@@ -103,7 +103,7 @@ const Footer = () => {
     { name: "Privacy Policy", path: "/privacypolicy" },
     { name: "Terms of Service", path: "/termsofservice" },
     { name: "Cookie Policy", path: "/cookiepolicy" },
-    { name: "FAQs", path: "/faqs" },
+    { name: "FAQs", path: "/faqss" },
   ];
 
   const socialLinks = [

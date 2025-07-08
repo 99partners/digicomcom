@@ -4,15 +4,21 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
-import Partners from './pages/Partners';
+
 import Shop from './pages/Shop';
-import Resources from './pages/Resources';
+
+import Blogs from './pages/blogs';  
+import CaseStudies from './pages/caseStudies';
+import GuidesTutorials from './pages/guidesTutorials';
+import Faqs from './pages/faqss';
+
+
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import CustomerLogin from './pages/CutomerLogin';
 import PartnerLogin from './pages/PartnerLogin';
 import Partner from './pages/Partner';
-import FAQs from './pages/Faqs';
+
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
@@ -87,12 +93,16 @@ function App() {
               } 
             />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/careers" element={<Careers />} />
+            
+            <Route path="/resources/blogs" element={<Blogs />} />
+            <Route path="/resources/caseStudies" element={<CaseStudies />} />
+            <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
+            <Route path='/resources/faqss' element={<Faqs />} />
+            <Route path="resources/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/customerlogin" element={<CustomerLogin />} />
             <Route path="/partnerlogin" element={<PartnerLogin />} />
-            <Route path="/faqs" element={<FAQs />} />
+
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />

@@ -220,19 +220,7 @@ export default function ForProductPartners() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Let’s Grow, Together</h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-            At 99digicom, we believe in long-term collaboration, shared growth, and building India’s most trusted digital commerce ecosystem.
-          </p>
-          <div className="flex justify-center space-x-4">
-            
-          </div>
-        </div>
-      </section>
-
+ 
       
       
     </div>
