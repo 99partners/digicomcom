@@ -20,24 +20,40 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const adminToken = localStorage.getItem('adminToken');
+        if (!adminToken) {
+            navigate('/admin/login');
+            return;
+        }
         fetchData();
     }, []);
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
+            console.log('Fetching admin dashboard data...');
             const [statsResponse, usersResponse, subscribersResponse] = await Promise.all([
                 axiosInstance.get('/api/admin/dashboard-stats'),
                 axiosInstance.get('/api/admin/users'),
                 axiosInstance.get('/api/admin/subscribers')
             ]);
 
+            console.log('Dashboard stats response:', statsResponse.data);
+            console.log('Users response:', usersResponse.data);
+            console.log('Subscribers response:', subscribersResponse.data);
+
             setStats(statsResponse.data.stats);
             setUsers(usersResponse.data.users);
             setSubscribers(subscribersResponse.data.subscribers);
-            setIsLoading(false);
         } catch (error) {
-            console.error('Error fetching data:', error);
-            toast.error('Failed to fetch data');
+            console.error('Error fetching admin dashboard data:', error);
+            if (error.response?.status === 401) {
+                toast.error('Session expired. Please login again.');
+                navigate('/admin/login');
+            } else {
+                toast.error('Failed to fetch dashboard data. Please try again.');
+            }
+        } finally {
             setIsLoading(false);
         }
     };
