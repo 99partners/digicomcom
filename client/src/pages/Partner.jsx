@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/api.config';
+import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
-import { toast } from 'react-toastify';
 import { 
   LogOut, 
   Star, 
@@ -13,16 +13,16 @@ import {
   Users,
   Settings,
   FileText,
-  CreditCard,
   Bell,
   HelpCircle,
   BarChart,
   Wallet,
   Mail,
   CheckCircle,
-  XCircle
+  XCircle,
+  User
 } from 'lucide-react';
-import { getApiUrl } from '../config/api.config';
+
 import PartnerUserForm from '../components/partner/PartnerUserForm';
 
 const Partner = () => {
@@ -42,7 +42,7 @@ const Partner = () => {
     recentActivity: []
   });
   const navigate = useNavigate();
-  const { handleLogout, user } = useAuth();
+  const { handleLogout, user, checkAuthStatus } = useAuth();
   const { backendUrl } = useAppContext();
 
   const menuItems = [
@@ -122,12 +122,15 @@ const Partner = () => {
 
   const fetchPartnerData = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/user/data`, { withCredentials: true });
+      const response = await axiosInstance.get('/api/user/data');
       if (response.data.success) {
         setPartnerData(response.data.userData);
       }
     } catch (error) {
       console.error('Error fetching partner data:', error);
+      if (error.response?.status === 401) {
+        navigate('/partnerlogin');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -135,7 +138,7 @@ const Partner = () => {
 
   useEffect(() => {
     fetchPartnerData();
-  }, [backendUrl]);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -152,7 +155,7 @@ const Partner = () => {
 
   const checkExistingRequest = async () => {
     try {
-      const response = await axios.get(getApiUrl('api/partner/has-request'), { withCredentials: true });
+      const response = await axiosInstance.get('/api/partner/has-request');
       setHasCreatedRequest(response.data.hasRequest);
       if (!response.data.hasRequest) {
         setActiveSection('create-user');
@@ -170,7 +173,7 @@ const Partner = () => {
 
   const onLogout = async () => {
     try {
-      const response = await axios.post(getApiUrl('api/auth/logout'));
+      const response = await axiosInstance.post('/api/auth/logout');
       if (response.data.success) {
         handleLogout();
         setPartnerData(null);
@@ -181,18 +184,19 @@ const Partner = () => {
     }
   };
 
-  const sendVerificationOpt = async () => {
+  const sendVerificationOtp = async () => {
     try {
       setIsProfileLoading(true);
-      const response = await axios.post(`${backendUrl}/api/auth/send-verify-otp`, {}, { withCredentials: true });
+      const response = await axiosInstance.post('/api/auth/send-verify-otp');
       if (response.data.success) {
-        toast.success('Verification OTP sent to your email');
+        toast.success('Verification code sent to your email');
         navigate('/email-verify');
       } else {
-        toast.error(response.data.message);
+        toast.error(response.data.message || 'Failed to send verification code');
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Error sending verification OTP');
+      console.error('Verification error:', error);
+      toast.error(error.response?.data?.message || 'Error sending verification code');
     } finally {
       setIsProfileLoading(false);
     }
@@ -218,7 +222,7 @@ const Partner = () => {
 
   const fetchDashboardStats = async () => {
     try {
-      const response = await axios.get(getApiUrl('api/partner/dashboard-stats'), { withCredentials: true });
+      const response = await axiosInstance.get('/api/partner/dashboard-stats');
       if (response.data.success) {
         setDashboardStats(response.data.stats);
       }
@@ -301,237 +305,129 @@ const Partner = () => {
       );
     }
 
-    switch (activeSection) {
-      case 'dashboard':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold mb-6">Partner Dashboard</h2>
-            
-            {/* Account Status Section */}
-            <div className="mb-8">
-              <h3 className="text-lg font-medium mb-4">Account Status</h3>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center">
-                    <Mail className="h-5 w-5 text-gray-400 mr-2" />
-                    <span className="text-sm text-gray-600">{user?.email}</span>
-                  </div>
-                  <div className="flex items-center">
-                    {partnerData?.isAccountVerified ? (
-                      <>
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                        <span className="text-sm text-green-600">Email Verified</span>
-                      </>
-                    ) : (
-                      <>
-                        <XCircle className="h-5 w-5 text-red-500 mr-2" />
-                        <span className="text-sm text-red-600">Email Not Verified</span>
-                        <button
-                          onClick={!isProfileLoading ? sendVerificationOpt : undefined}
-                          className="ml-4 px-4 py-1 text-sm bg-red-100 text-red-700 hover:bg-red-200 rounded-full transition-colors disabled:opacity-50"
-                          disabled={isProfileLoading}
-                        >
-                          {isProfileLoading ? 'Sending...' : 'Verify Now'}
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-lg font-medium text-gray-700">Total Orders</h4>
-                  <BarChart className="h-6 w-6 text-purple-500" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">{dashboardStats.totalOrders}</p>
-                <p className="text-sm text-gray-500 mt-2">Total orders processed</p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-lg font-medium text-gray-700">Revenue</h4>
-                  <Wallet className="h-6 w-6 text-green-500" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">₹{dashboardStats.revenue.toLocaleString()}</p>
-                <p className="text-sm text-gray-500 mt-2">Total revenue earned</p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-lg font-medium text-gray-700">Active Products</h4>
-                  <Star className="h-6 w-6 text-yellow-500" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">{dashboardStats.activeProducts}</p>
-                <p className="text-sm text-gray-500 mt-2">Products in catalog</p>
-              </div>
-            </div>
-
-            {/* Recent Activity */}
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-              <div className="p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
-                {dashboardStats.recentActivity && dashboardStats.recentActivity.length > 0 ? (
-                  <div className="space-y-4">
-                    {dashboardStats.recentActivity.map((activity, index) => (
-                      <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                        <div className="flex-shrink-0">
-                          <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                            <activity.icon className="h-4 w-4 text-purple-600" />
-                          </div>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">{activity.title}</p>
-                          <p className="text-sm text-gray-500">{activity.description}</p>
-                          <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
-                        </div>
-                      </div>
-                    ))}
+    return (
+      <div className="space-y-6">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-bold text-gray-900">Partner Dashboard</h2>
+          
+          {/* Account Status Section */}
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Status</h3>
+            <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
+              <div className="flex-1">
+                {user?.isAccountVerified ? (
+                  <div className="flex items-center text-green-600">
+                    <CheckCircle className="h-5 w-5 mr-2" />
+                    <span>Email Verified</span>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-sm">No recent activity to display</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center text-red-600">
+                      <XCircle className="h-5 w-5 mr-2" />
+                      <span>Email Not Verified</span>
+                    </div>
+                    <button
+                      onClick={sendVerificationOtp}
+                      disabled={isProfileLoading}
+                      className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isProfileLoading ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                          Sending...
+                        </>
+                      ) : (
+                        'Verify Now'
+                      )}
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
           </div>
-        );
 
-      case 'customers':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold mb-4">Customer Management</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <tr key={i}>
-                      <td className="px-6 py-4 whitespace-nowrap">Customer {i}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">customer{i}@example.com</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                          Active
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <button className="text-blue-600 hover:text-blue-800">View</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case 'create-user':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <PartnerUserForm
-              user={selectedUser}
-              onSubmit={handleUserFormSubmit}
-              onCancel={handleUserFormCancel}
-            />
-          </div>
-        );
-
-      case 'settings':
-        const currentPlan = subscriptionPlans.find(p => p.id === selectedPlan);
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-medium mb-4">Profile Information</h3>
-                <div className="grid grid-cols-1 gap-4 max-w-md">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
-                      value={user?.name || ''}
-                      readOnly
-                    />
+          {/* Profile Section */}
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile</h3>
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0">
+                {user?.profileImage ? (
+                  <img
+                    src={user.profileImage}
+                    alt="Profile"
+                    className="h-16 w-16 rounded-full object-cover border-2 border-green-500"
+                  />
+                ) : (
+                  <div className="h-16 w-16 rounded-full bg-green-100 flex items-center justify-center">
+                    <User className="h-8 w-8 text-green-600" />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input
-                      type="email"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
-                      value={user?.email || ''}
-                      readOnly
-                    />
-                  </div>
-                  <div className="pt-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Current Plan</label>
-                    {currentPlan ? (
-                      <div className="border border-green-200 rounded-lg p-4 bg-green-50">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center">
-                            <Crown className="h-5 w-5 text-green-500 mr-2" />
-                            <span className="font-medium text-gray-900">{currentPlan.name}</span>
-                          </div>
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Active
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600">
-                            ₹{currentPlan.price}/month
-                          </span>
-                          <span className="text-green-600 font-medium">
-                            Save {currentPlan.savePercent}%
-                          </span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                        <div className="flex items-center text-gray-500">
-                          <Crown className="h-5 w-5 mr-2" />
-                          <span>No active plan</span>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setShowPlans(true);
-                            setActiveSection(null);
-                          }}
-                          className="mt-2 text-sm text-green-600 hover:text-green-700 font-medium"
-                        >
-                          Choose a plan →
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                )}
+              </div>
+              <div className="flex-1">
+                <h4 className="text-lg font-medium text-gray-900">{user?.name || 'Partner'}</h4>
+                <p className="text-sm text-gray-500">{user?.email}</p>
+                {user?.phone && (
+                  <p className="text-sm text-gray-500">{user.phone}</p>
+                )}
               </div>
             </div>
           </div>
-        );
 
-      default:
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold">Coming Soon</h2>
-            <p className="text-gray-600 mt-2">This section is under development.</p>
+          {/* Stats Section */}
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-medium text-gray-500">Total Orders</h4>
+                <BarChart className="h-5 w-5 text-gray-400" />
+              </div>
+              <p className="mt-2 text-2xl font-semibold text-gray-900">{dashboardStats.totalOrders}</p>
+              <p className="text-sm text-gray-500">Total orders processed</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-medium text-gray-500">Revenue</h4>
+                <Wallet className="h-5 w-5 text-gray-400" />
+              </div>
+              <p className="mt-2 text-2xl font-semibold text-gray-900">₹{dashboardStats.revenue}</p>
+              <p className="text-sm text-gray-500">Total revenue earned</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-medium text-gray-500">Active Products</h4>
+                <Star className="h-5 w-5 text-gray-400" />
+              </div>
+              <p className="mt-2 text-2xl font-semibold text-gray-900">{dashboardStats.activeProducts}</p>
+              <p className="text-sm text-gray-500">Products in catalog</p>
+            </div>
           </div>
-        );
-    }
+
+          {/* Recent Activity */}
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+            {dashboardStats.recentActivity.length > 0 ? (
+              <div className="space-y-4">
+                {dashboardStats.recentActivity.map((activity, index) => (
+                  <div key={index} className="bg-white p-4 rounded-lg border border-gray-200">
+                    <p className="text-sm text-gray-900">{activity.description}</p>
+                    <p className="text-xs text-gray-500 mt-1">{activity.date}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">No recent activity to display</p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -539,91 +435,69 @@ const Partner = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
-        {/* Sidebar - Fixed */}
-        <div className="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0">
+        {/* Sidebar */}
+        <div className="w-64 bg-white shadow-lg fixed h-full">
           <div className="p-6">
-            <h1 className="text-2xl font-bold text-gray-800">Partner Panel</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Partner Panel</h1>
           </div>
           <nav className="mt-6">
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleSectionChange(item.id)}
-                className={`w-full flex items-center px-6 py-3 text-left ${
-                  activeSection === item.id
-                    ? 'bg-purple-50 text-purple-600'
-                    : 'text-gray-500 hover:bg-gray-50'
-                }`}
-              >
-                <item.icon className="w-5 h-5 mr-3" />
-                <span>{item.label}</span>
-              </button>
-            ))}
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleSectionChange(item.id)}
+                  className={`w-full flex items-center px-6 py-3 text-sm font-medium transition-colors ${
+                    activeSection === item.id
+                      ? 'text-green-600 bg-green-50'
+                      : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
+                  }`}
+                >
+                  <Icon className="h-5 w-5 mr-3" />
+                  {item.label}
+                </button>
+              );
+            })}
             <button
               onClick={onLogout}
-              className="w-full flex items-center px-6 py-3 text-left text-red-500 hover:bg-red-50"
+              className="w-full flex items-center px-6 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
             >
-              <LogOut className="w-5 h-5 mr-3" />
+              <LogOut className="h-5 w-5 mr-3" />
               Logout
             </button>
           </nav>
         </div>
 
-        {/* Main Content - Adjusted margin for fixed sidebar */}
-        <div className="flex-1 ml-64">
-          <div className="p-8">
-            <div className="max-w-7xl mx-auto">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    Welcome back, {user?.name}
-                  </h1>
-                </div>
-
-                <div className="flex items-center space-x-4">
+        {/* Main Content */}
+        <div className="flex-1 ml-64 p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <h1 className="text-2xl font-bold text-gray-900">
+                Welcome back, {user?.name || 'Partner'}
+              </h1>
+              <div className="flex items-center space-x-4">
+                {!user?.isAccountVerified && (
                   <button
-                    onClick={() => setShowPlans(!showPlans)}
-                    className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                      showPlans
-                        ? 'bg-black text-white'
-                        : 'text-gray-600 hover:bg-gray-100'
-                    }`}
+                    onClick={sendVerificationOtp}
+                    disabled={isProfileLoading}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
-                    {selectedPlan ? subscriptionPlans.find(p => p.id === selectedPlan)?.name : 'Plans'}
+                    {isProfileLoading ? 'Sending...' : 'Verify Email'}
                   </button>
-                  {/* Profile Button */}
-                  <div className="relative group">
-                    <div className="flex items-center justify-center rounded-full bg-black text-white w-8 h-8 cursor-pointer">
-                      {user?.name?.[0]?.toUpperCase() || 'U'}
-                    </div>
-                    <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black pt-10 rounded">
-                      <ul className="list-none m-0 p-2 bg-gray-100 text-sm">
-                        {!partnerData?.isAccountVerified && (
-                          <li
-                            onClick={!isProfileLoading ? sendVerificationOpt : undefined}
-                            className={`py-1 px-2 hover:bg-gray-200 cursor-pointer ${isProfileLoading ? 'opacity-50' : ''}`}
-                          >
-                            {isProfileLoading ? 'Sending OTP...' : 'Verify email'}
-                          </li>
-                        )}
-                        <li
-                          onClick={onLogout}
-                          className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10"
-                        >
-                          Logout
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                {renderDashboardContent()}
+                )}
               </div>
             </div>
+
+            {/* Render active section content */}
+            {activeSection === 'dashboard' && renderDashboardContent()}
+            {activeSection === 'create-user' && (
+              <PartnerUserForm
+                user={selectedUser}
+                onSubmit={handleUserFormSubmit}
+                onCancel={handleUserFormCancel}
+              />
+            )}
+            {/* Add other section content here */}
           </div>
         </div>
       </div>
