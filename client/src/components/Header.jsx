@@ -12,6 +12,7 @@ const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const location = useLocation()
   const pathname = location.pathname
+  const timeoutRef = useRef(null)
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -60,6 +61,19 @@ const Header = () => {
 
   const dropdownRefs = useRef({})
 
+  const handleMouseEnter = (menuName) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    setActiveDropdown(menuName)
+  }
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null)
+    }, 300) // 300ms delay before closing
+  }
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!Object.values(dropdownRefs.current).some(ref => ref && ref.contains(event.target))) {
@@ -68,7 +82,12 @@ const Header = () => {
     }
 
     document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
   }, [])
 
   if (pathname === "/customerlogin" || pathname === "/partnerlogin") return null
@@ -77,12 +96,12 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 min-w-0">
         {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <img src={logo || "/placeholder.svg"} alt="Digicom Logo" className="h-12 w-auto object-contain sm:h-14 lg:h-16" />
-            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
-              Digicom
-            </span>
-          </Link>
+        <Link to="/" className="flex items-center space-x-2 group">
+          <img src={logo || "/placeholder.svg"} alt="Digicom Logo" className="h-12 w-auto object-contain sm:h-14 lg:h-16" />
+          <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
+            Digicom
+          </span>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-1 flex-shrink-0 relative z-10">
@@ -90,8 +109,8 @@ const Header = () => {
             <div
               key={item.name}
               className="relative group"
-              onMouseEnter={() => item.submenu && setActiveDropdown(item.name)}
-              onMouseLeave={() => item.submenu && setActiveDropdown(null)}
+              onMouseEnter={() => item.submenu && handleMouseEnter(item.name)}
+              onMouseLeave={() => item.submenu && handleMouseLeave()}
               ref={(el) => (dropdownRefs.current[item.name] = el)}
             >
               <Link
@@ -106,7 +125,11 @@ const Header = () => {
                 {item.submenu && <ChevronDown className="ml-1 h-4 w-4" />}
               </Link>
               {item.submenu && activeDropdown === item.name && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                <div
+                  className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  onMouseEnter={() => handleMouseEnter(item.name)}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {item.submenu.map((subItem) => (
                     <Link
                       key={subItem.name}
@@ -128,8 +151,6 @@ const Header = () => {
 
         {/* Desktop Right Section */}
         <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
-
-
           {/* Shop Button */}
           <Link
             to="/shop"
@@ -254,4 +275,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Header;
