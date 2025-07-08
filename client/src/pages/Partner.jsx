@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
@@ -42,6 +42,7 @@ const Partner = () => {
     recentActivity: []
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const { handleLogout, user, checkAuthStatus } = useAuth();
   const { backendUrl } = useAppContext();
 
@@ -131,14 +132,47 @@ const Partner = () => {
       if (error.response?.status === 401) {
         navigate('/partnerlogin');
       }
+      throw error;
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPartnerData();
-  }, []);
+    const initializePartnerPanel = async () => {
+      try {
+        // First check auth status
+        const isAuthenticated = await checkAuthStatus();
+        if (!isAuthenticated) {
+          navigate('/partnerlogin');
+          return;
+        }
+
+        // Then fetch partner data
+        await fetchPartnerData();
+
+        // Check for section in navigation state
+        if (location.state?.section) {
+          setActiveSection(location.state.section);
+          if (location.state.section === 'create-user') {
+            setShowUserForm(true);
+          }
+          // Clear the navigation state
+          navigate(location.pathname, { replace: true, state: {} });
+        } else {
+          // If no section specified, check existing request
+          await checkExistingRequest();
+        }
+      } catch (error) {
+        console.error('Error initializing partner panel:', error);
+        if (error.response?.status === 401) {
+          navigate('/partnerlogin');
+        }
+      }
+    };
+
+    initializePartnerPanel();
+  }, [location]);
 
   useEffect(() => {
     if (user) {
@@ -149,21 +183,23 @@ const Partner = () => {
     }
   }, [user]);
 
-  useEffect(() => {
-    checkExistingRequest();
-  }, []);
-
   const checkExistingRequest = async () => {
     try {
       const response = await axiosInstance.get('/api/partner/has-request');
       setHasCreatedRequest(response.data.hasRequest);
       if (!response.data.hasRequest) {
         setActiveSection('create-user');
+        setShowUserForm(true);
       } else {
         setActiveSection('dashboard');
+        await fetchDashboardStats();
       }
     } catch (error) {
       console.error('Error checking request status:', error);
+      if (error.response?.status === 401) {
+        navigate('/partnerlogin');
+      }
+      throw error;
     }
   };
 
@@ -173,14 +209,12 @@ const Partner = () => {
 
   const onLogout = async () => {
     try {
-      const response = await axiosInstance.post('/api/auth/logout');
-      if (response.data.success) {
-        handleLogout();
-        setPartnerData(null);
-        navigate('/partnerlogin');
-      }
+      await axiosInstance.post('/api/auth/logout');
+      handleLogout();
+      navigate('/partnerlogin');
     } catch (error) {
       console.error('Logout failed:', error);
+      toast.error('Failed to logout. Please try again.');
     }
   };
 
