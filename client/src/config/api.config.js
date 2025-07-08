@@ -18,6 +18,14 @@ const axiosInstance = axios.create({
 
 // Add request interceptor
 axiosInstance.interceptors.request.use((config) => {
+  // Get the auth token from localStorage
+  const token = localStorage.getItem('authToken');
+  
+  // If token exists, add it to the headers
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
   // Ensure the URL uses HTTPS in production
   if (process.env.NODE_ENV === 'production' && config.url?.startsWith('http:')) {
     config.url = config.url.replace('http:', 'https:');
@@ -47,30 +55,37 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const originalRequest = error.config;
+
     // Handle network errors
     if (!error.response) {
       console.error('Network error occurred:', error);
       // Retry the request once
       try {
-        const config = error.config;
         // Add retry flag to prevent infinite loops
-        if (!config._retry) {
-          config._retry = true;
-          return await axiosInstance(config);
+        if (!originalRequest._retry) {
+          originalRequest._retry = true;
+          return await axiosInstance(originalRequest);
         }
       } catch (retryError) {
         console.error('Retry failed:', retryError);
+      }
+    }
+
+    // Handle authentication errors
+    if (error.response?.status === 401) {
+      // Clear invalid token
+      localStorage.removeItem('authToken');
+      
+      // If we're not already on the login page, redirect to it
+      if (!window.location.pathname.includes('login')) {
+        window.location.href = '/partnerlogin';
       }
     }
     
     // Handle CORS errors
     if (error.response?.status === 403) {
       console.error('Access forbidden:', error.response.data);
-    }
-
-    // Handle authentication errors
-    if (error.response?.status === 401) {
-      console.error('Authentication failed:', error.response.data);
     }
 
     return Promise.reject(error);
