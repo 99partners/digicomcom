@@ -9,21 +9,31 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     const { isAuthenticated, loading } = useAuth();
     const [formData, setFormData] = useState({
         serviceType: user?.serviceType || 'ams',
-        companyName: user?.companyName || '',
-        businessType: user?.businessType || '',
-        website: user?.website || '',
         marketplaces: user?.marketplaces || [],
-        monthlyOrders: user?.monthlyOrders || '',
-        monthlyRevenue: user?.monthlyRevenue || '',
-        productCategories: user?.productCategories || [],
-        marketingBudget: user?.marketingBudget || '',
-        targetAudience: user?.targetAudience || '',
-        brandGuidelines: user?.brandGuidelines || false,
-        platformPreference: user?.platformPreference || [],
-        integrationNeeds: user?.integrationNeeds || [],
+        serviceAccountNumber: user?.serviceAccountNumber || '',
+        hasGST: user?.hasGST || 'no',
+        gstNumber: user?.gstNumber || '',
+        monthlyOnlineSales: user?.monthlyOnlineSales || '',
+        marketingServices: {
+            sponsoredAds: false,
+            seasonalCampaigns: false,
+            platformPromotions: false,
+            socialMediaPromotions: false,
+            creativeDesign: false,
+            platformSpecificAds: false
+        },
+        isManufacturer: false,
+        yearEstablished: '',
+        numberOfProducts: '',
+        productUSP: '',
+        productCategory: '',
+        productDescription: '',
+        panNumber: '',
         additionalNotes: user?.additionalNotes || ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [gstError, setGstError] = useState('');
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         // Redirect to login if not authenticated
@@ -41,22 +51,36 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     ];
 
     const marketplaceOptions = [
-        'Amazon', 'Flipkart', 'Meesho', 'JioMart', 'Other'
-    ];
-
-    const businessTypes = [
-        'Manufacturer', 'Retailer', 'Wholesaler', 'Brand Owner', 'Distributor', 'Other'
+        'ONDC', 'Amazon', 'Flipkart', 'Meesho', 'JioMart', 'IndiaMART', 'Snapdeal'
     ];
 
     const platformOptions = [
         'Shopify', 'WooCommerce', 'Magento', 'Custom Solution', 'Other'
     ];
 
+    const salesVolumeOptions = [
+        { value: 'less-50k', label: 'Less than ₹50,000' },
+        { value: '50k-2L', label: '₹50,000 – ₹2,00,000' },
+        { value: '2L-5L', label: '₹2,00,000 – ₹5,00,000' },
+        { value: '5L+', label: '₹5,00,000+' }
+    ];
+
+    const validateGST = (gstNumber) => {
+        // GST format: 2 digits for state code, 10 digits for PAN, 1 digit for entity, 1 digit for check sum
+        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+        return gstRegex.test(gstNumber);
+    };
+
+    const validatePAN = (pan) => {
+        const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        return panRegex.test(pan);
+    };
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         
         if (type === 'checkbox') {
-            if (name === 'marketplaces' || name === 'productCategories' || name === 'platformPreference' || name === 'integrationNeeds') {
+            if (name === 'marketplaces') {
                 setFormData(prev => ({
                     ...prev,
                     [name]: checked 
@@ -69,29 +93,68 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                     [name]: checked
                 }));
             }
+        } else if (name === 'gstNumber') {
+            const gstValue = value.toUpperCase();
+            if (gstValue === '' || validateGST(gstValue)) {
+                setGstError('');
+            } else {
+                setGstError('Please enter a valid GST number');
+            }
+            setFormData(prev => ({
+                ...prev,
+                [name]: gstValue
+            }));
+        } else if (name === 'panNumber') {
+            setFormData(prev => ({
+                ...prev,
+                panNumber: value.toUpperCase()
+            }));
+
+            if (value && !validatePAN(value)) {
+                setErrors(prev => ({
+                    ...prev,
+                    panNumber: 'Invalid PAN number format. It should be in format: ABCDE1234F'
+                }));
+            } else {
+                setErrors(prev => {
+                    const newErrors = { ...prev };
+                    delete newErrors.panNumber;
+                    return newErrors;
+                });
+            }
         } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
+    };
+
+    const handleMarketingServiceChange = (service) => {
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            marketingServices: {
+                ...prev.marketingServices,
+                [service]: !prev.marketingServices[service]
+            }
         }));
-        }
     };
 
     const renderAMSFields = () => (
         <>
-            <div className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Marketplaces</label>
-                    <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-4 px-4">
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
+                    <div className="grid grid-cols-2 gap-4">
                         {marketplaceOptions.map(marketplace => (
-                            <label key={marketplace} className="flex items-center space-x-2">
+                            <label key={marketplace} className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
                                 <input
                                     type="checkbox"
                                     name="marketplaces"
                                     value={marketplace}
                                     checked={formData.marketplaces.includes(marketplace)}
                                     onChange={handleChange}
-                                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                    className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                 />
                                 <span className="text-sm text-gray-700">{marketplace}</span>
                             </label>
@@ -99,35 +162,79 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                     </div>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Orders</label>
-                    <select
-                        name="monthlyOrders"
-                        value={formData.monthlyOrders}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Service Account Number</label>
+                    <input
+                        type="text"
+                        name="serviceAccountNumber"
+                        value={formData.serviceAccountNumber}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                    >
-                        <option value="">Select range</option>
-                        <option value="0-100">0-100</option>
-                        <option value="101-500">101-500</option>
-                        <option value="501-1000">501-1000</option>
-                        <option value="1000+">1000+</option>
-                    </select>
+                        placeholder="Enter your service account number"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
+                    />
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Revenue (INR)</label>
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Do you have GST number?</label>
+                    <div className="flex space-x-6 mb-4">
+                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                            <input
+                                type="radio"
+                                name="hasGST"
+                                value="yes"
+                                checked={formData.hasGST === 'yes'}
+                                onChange={handleChange}
+                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                            />
+                            <span className="text-sm text-gray-700">Yes</span>
+                        </label>
+                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                            <input
+                                type="radio"
+                                name="hasGST"
+                                value="no"
+                                checked={formData.hasGST === 'no'}
+                                onChange={handleChange}
+                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                            />
+                            <span className="text-sm text-gray-700">No</span>
+                        </label>
+                    </div>
+
+                    {formData.hasGST === 'yes' && (
+                        <div className="mt-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">GST Number</label>
+                            <input
+                                type="text"
+                                name="gstNumber"
+                                value={formData.gstNumber}
+                                onChange={handleChange}
+                                placeholder="Enter your GST number"
+                                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 ${
+                                    gstError ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                }`}
+                            />
+                            {gstError && (
+                                <p className="mt-2 text-sm text-red-600">{gstError}</p>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Monthly Online Sales Volume (Optional)</label>
                     <select
-                        name="monthlyRevenue"
-                        value={formData.monthlyRevenue}
+                        name="monthlyOnlineSales"
+                        value={formData.monthlyOnlineSales}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
                     >
-                        <option value="">Select range</option>
-                        <option value="0-1L">0-1L</option>
-                        <option value="1L-5L">1L-5L</option>
-                        <option value="5L-10L">5L-10L</option>
-                        <option value="10L+">10L+</option>
+                        <option value="">Select sales volume</option>
+                        {salesVolumeOptions.map(option => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
@@ -136,43 +243,88 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
     const renderPlatformFields = () => (
         <>
-            <div className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Current Platform</label>
-                    <div className="grid grid-cols-2 gap-2">
-                        {platformOptions.map(platform => (
-                            <label key={platform} className="flex items-center space-x-2">
+            <div className="space-y-4 px-4">
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
+                    <div className="grid grid-cols-2 gap-4">
+                        {marketplaceOptions.map(marketplace => (
+                            <label key={marketplace} className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
                                 <input
                                     type="checkbox"
-                                    name="platformPreference"
-                                    value={platform}
-                                    checked={formData.platformPreference.includes(platform)}
+                                    name="marketplaces"
+                                    value={marketplace}
+                                    checked={formData.marketplaces.includes(marketplace)}
                                     onChange={handleChange}
-                                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                    className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                 />
-                                <span className="text-sm text-gray-700">{platform}</span>
+                                <span className="text-sm text-gray-700">{marketplace}</span>
                             </label>
                         ))}
                     </div>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Integration Needs</label>
-                    <div className="grid grid-cols-2 gap-2">
-                        {['ERP', 'CRM', 'Accounting', 'Inventory', 'Shipping', 'Payment Gateway'].map(integration => (
-                            <label key={integration} className="flex items-center space-x-2">
-                                <input
-                                    type="checkbox"
-                                    name="integrationNeeds"
-                                    value={integration}
-                                    checked={formData.integrationNeeds.includes(integration)}
-                                    onChange={handleChange}
-                                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                                />
-                                <span className="text-sm text-gray-700">{integration}</span>
-                            </label>
-                        ))}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Do you have GST number?</label>
+                    <div className="flex space-x-6 mb-4">
+                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                            <input
+                                type="radio"
+                                name="hasGST"
+                                value="yes"
+                                checked={formData.hasGST === 'yes'}
+                                onChange={handleChange}
+                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                            />
+                            <span className="text-sm text-gray-700">Yes</span>
+                        </label>
+                        <label className="flex items-center space-x-3 p-3 bg-white rounded-md border border-gray-200 hover:border-purple-500 transition-colors">
+                            <input
+                                type="radio"
+                                name="hasGST"
+                                value="no"
+                                checked={formData.hasGST === 'no'}
+                                onChange={handleChange}
+                                className="w-4 h-4 text-purple-600 focus:ring-purple-500"
+                            />
+                            <span className="text-sm text-gray-700">No</span>
+                        </label>
                     </div>
+
+                    {formData.hasGST === 'yes' && (
+                        <div className="mt-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">GST Number</label>
+                            <input
+                                type="text"
+                                name="gstNumber"
+                                value={formData.gstNumber}
+                                onChange={handleChange}
+                                placeholder="Enter your GST number"
+                                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 ${
+                                    gstError ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                }`}
+                            />
+                            {gstError && (
+                                <p className="mt-2 text-sm text-red-600">{gstError}</p>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Monthly Online Sales Volume (Optional)</label>
+                    <select
+                        name="monthlyOnlineSales"
+                        value={formData.monthlyOnlineSales}
+                        onChange={handleChange}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
+                    >
+                        <option value="">Select sales volume</option>
+                        {salesVolumeOptions.map(option => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
                 </div>
             </div>
         </>
@@ -180,31 +332,149 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
     const renderCoBrandingFields = () => (
         <>
-            <div className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Brand Guidelines Available</label>
-                    <label className="flex items-center space-x-2">
+            <div className="space-y-4 px-4">
+                {/* Manufacturer Checkbox */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <div className="flex items-center mb-4">
                         <input
                             type="checkbox"
-                            name="brandGuidelines"
-                            checked={formData.brandGuidelines}
-                            onChange={handleChange}
-                            className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                            id="isManufacturer"
+                            checked={formData.isManufacturer}
+                            onChange={(e) => setFormData(prev => ({
+                                ...prev,
+                                isManufacturer: e.target.checked
+                            }))}
+                            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="text-sm text-gray-700">Yes, we have brand guidelines</span>
-                    </label>
-                </div>
+                        <label htmlFor="isManufacturer" className="ml-2 text-sm font-medium text-gray-900">
+                            Are you a Manufacturer?
+                        </label>
+                    </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
-                    <textarea
-                        name="targetAudience"
-                        value={formData.targetAudience}
-                        onChange={handleChange}
-                        rows="3"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                        placeholder="Describe your target audience"
-                    />
+                    {formData.isManufacturer && (
+                        <div className="space-y-4">
+                            {/* Year of Establishment */}
+                            <div>
+                                <label htmlFor="yearEstablished" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Year of Establishment
+                                </label>
+                                <input
+                                    type="number"
+                                    id="yearEstablished"
+                                    name="yearEstablished"
+                                    value={formData.yearEstablished}
+                                    onChange={handleChange}
+                                    min="1900"
+                                    max={new Date().getFullYear()}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    required
+                                />
+                            </div>
+
+                            {/* Number of Products */}
+                            <div>
+                                <label htmlFor="numberOfProducts" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Number of Products
+                                </label>
+                                <input
+                                    type="number"
+                                    id="numberOfProducts"
+                                    name="numberOfProducts"
+                                    value={formData.numberOfProducts}
+                                    onChange={handleChange}
+                                    min="1"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    required
+                                />
+                            </div>
+
+                            {/* Product Category */}
+                            <div>
+                                <label htmlFor="productCategory" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Product Category
+                                </label>
+                                <select
+                                    id="productCategory"
+                                    name="productCategory"
+                                    value={formData.productCategory}
+                                    onChange={handleChange}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    required
+                                >
+                                    <option value="">Select a category</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="fashion">Fashion</option>
+                                    <option value="home">Home & Kitchen</option>
+                                    <option value="beauty">Beauty & Personal Care</option>
+                                    <option value="health">Health & Wellness</option>
+                                    <option value="food">Food & Beverages</option>
+                                    <option value="toys">Toys & Games</option>
+                                    <option value="sports">Sports & Fitness</option>
+                                    <option value="automotive">Automotive</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            {/* Product USP */}
+                            <div>
+                                <label htmlFor="productUSP" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Product USP (Unique Selling Proposition)
+                                </label>
+                                <textarea
+                                    id="productUSP"
+                                    name="productUSP"
+                                    value={formData.productUSP}
+                                    onChange={handleChange}
+                                    rows={3}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    placeholder="What makes your products unique?"
+                                    required
+                                />
+                            </div>
+
+                            {/* Product Description */}
+                            <div>
+                                <label htmlFor="productDescription" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Product Description
+                                </label>
+                                <textarea
+                                    id="productDescription"
+                                    name="productDescription"
+                                    value={formData.productDescription}
+                                    onChange={handleChange}
+                                    rows={4}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    placeholder="Describe your products in detail..."
+                                    required
+                                />
+                            </div>
+
+                            {/* PAN Number */}
+                            <div>
+                                <label htmlFor="panNumber" className="block text-sm font-medium text-gray-700 mb-2">
+                                    PAN Number
+                                </label>
+                                <input
+                                    type="text"
+                                    id="panNumber"
+                                    name="panNumber"
+                                    value={formData.panNumber}
+                                    onChange={handleChange}
+                                    className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
+                                        errors.panNumber 
+                                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
+                                            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                                    }`}
+                                    placeholder="ABCDE1234F"
+                                    maxLength={10}
+                                    required
+                                />
+                                {errors.panNumber && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.panNumber}</p>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </>
@@ -212,39 +482,169 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
 
     const renderMarketingFields = () => (
         <>
-            <div className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Marketing Budget (Monthly)</label>
-                    <select
-                        name="marketingBudget"
-                        value={formData.marketingBudget}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                    >
-                        <option value="">Select budget range</option>
-                        <option value="0-50K">0-50K</option>
-                        <option value="50K-1L">50K-1L</option>
-                        <option value="1L-5L">1L-5L</option>
-                        <option value="5L+">5L+</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Product Categories</label>
-                    <div className="grid grid-cols-2 gap-2">
-                        {['Electronics', 'Fashion', 'Home & Kitchen', 'Beauty', 'Health', 'Other'].map(category => (
-                            <label key={category} className="flex items-center space-x-2">
+            <div className="space-y-4 px-4">
+                {/* Marketplaces Section */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Marketplaces</label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {['ONDC', 'Amazon', 'Flipkart', 'Meesho', 'JioMart', 'IndiaMART', 'Snapdeal'].map((marketplace) => (
+                            <div key={marketplace} className="flex items-center">
                                 <input
                                     type="checkbox"
-                                    name="productCategories"
-                                    value={category}
-                                    checked={formData.productCategories.includes(category)}
-                                    onChange={handleChange}
-                                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                    id={`marketplace-${marketplace}`}
+                                    name="marketplaces"
+                                    value={marketplace}
+                                    checked={formData.marketplaces.includes(marketplace)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            marketplaces: e.target.checked
+                                                ? [...prev.marketplaces, value]
+                                                : prev.marketplaces.filter(m => m !== value)
+                                        }));
+                                    }}
+                                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                 />
-                                <span className="text-sm text-gray-700">{category}</span>
-                            </label>
+                                <label htmlFor={`marketplace-${marketplace}`} className="ml-2 text-sm text-gray-700">
+                                    {marketplace}
+                                </label>
+                            </div>
                         ))}
+                    </div>
+                </div>
+
+                {/* Marketing Services Section */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">What We Offer</h3>
+                    
+                    {/* Sponsored Ad Campaigns */}
+                    <div className="mb-6">
+                        <div className="flex items-center mb-2">
+                            <input
+                                type="checkbox"
+                                id="sponsoredAds"
+                                checked={formData.marketingServices.sponsoredAds}
+                                onChange={() => handleMarketingServiceChange('sponsoredAds')}
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="sponsoredAds" className="ml-2 text-sm font-medium text-gray-900">
+                                Sponsored Ad Campaigns (PPC)
+                            </label>
+                        </div>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Create and manage product ads on Amazon, Flipkart, Meesho, Jiomart, and more</li>
+                            <li>• Keyword research and targeting</li>
+                            <li>• Ad budget optimization for maximum ROI</li>
+                            <li>• A/B testing and performance tracking</li>
+                        </ul>
+                    </div>
+
+                    {/* Seasonal & Festival Campaigns */}
+                    <div className="mb-6">
+                        <div className="flex items-center mb-2">
+                            <input
+                                type="checkbox"
+                                id="seasonalCampaigns"
+                                checked={formData.marketingServices.seasonalCampaigns}
+                                onChange={() => handleMarketingServiceChange('seasonalCampaigns')}
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="seasonalCampaigns" className="ml-2 text-sm font-medium text-gray-900">
+                                Seasonal & Festival Campaigns
+                            </label>
+                        </div>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Diwali, Holi, Republic Day, New Year, Raksha Bandhan, etc.</li>
+                            <li>• Custom promotions and product bundling</li>
+                            <li>• Sale event calendar planning</li>
+                        </ul>
+                    </div>
+
+                    {/* Platform-Specific Promotions */}
+                    <div className="mb-6">
+                        <div className="flex items-center mb-2">
+                            <input
+                                type="checkbox"
+                                id="platformPromotions"
+                                checked={formData.marketingServices.platformPromotions}
+                                onChange={() => handleMarketingServiceChange('platformPromotions')}
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="platformPromotions" className="ml-2 text-sm font-medium text-gray-900">
+                                Platform-Specific Promotions
+                            </label>
+                        </div>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Participation in Lightning Deals, Big Billion Day, Amazon Prime Day, etc.</li>
+                            <li>• Exclusive offers and banner placements</li>
+                            <li>• Pricing strategy for offer periods</li>
+                        </ul>
+                    </div>
+
+                    {/* Social Media & Off-Platform Promotions */}
+                    <div className="mb-6">
+                        <div className="flex items-center mb-2">
+                            <input
+                                type="checkbox"
+                                id="socialMediaPromotions"
+                                checked={formData.marketingServices.socialMediaPromotions}
+                                onChange={() => handleMarketingServiceChange('socialMediaPromotions')}
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="socialMediaPromotions" className="ml-2 text-sm font-medium text-gray-900">
+                                Social Media & Off-Platform Promotions
+                            </label>
+                        </div>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Targeted ads on Meta (Facebook/Instagram), Google, YouTube</li>
+                            <li>• Influencer collaborations & affiliate campaigns</li>
+                            <li>• Landing pages & conversion tracking</li>
+                        </ul>
+                    </div>
+
+                    {/* Creative & Content Design */}
+                    <div className="mb-6">
+                        <div className="flex items-center mb-2">
+                            <input
+                                type="checkbox"
+                                id="creativeDesign"
+                                checked={formData.marketingServices.creativeDesign}
+                                onChange={() => handleMarketingServiceChange('creativeDesign')}
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="creativeDesign" className="ml-2 text-sm font-medium text-gray-900">
+                                Creative & Content Design
+                            </label>
+                        </div>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Ad banners, creatives, product videos, short reels</li>
+                            <li>• Enhanced brand content (A+ Content on Amazon)</li>
+                            <li>• Product infographics and storytelling visuals</li>
+                        </ul>
+                    </div>
+
+                    {/* Platform-Specific Advertising */}
+                    <div className="mb-6">
+                        <div className="flex items-center mb-2">
+                            <input
+                                type="checkbox"
+                                id="platformSpecificAds"
+                                checked={formData.marketingServices.platformSpecificAds}
+                                onChange={() => handleMarketingServiceChange('platformSpecificAds')}
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="platformSpecificAds" className="ml-2 text-sm font-medium text-gray-900">
+                                Platform-Specific Advertising Expertise
+                            </label>
+                        </div>
+                        <ul className="ml-6 text-sm text-gray-600 space-y-1">
+                            <li>• Amazon Ads – Sponsored Products, Sponsored Brands, Brand Store Ads</li>
+                            <li>• Flipkart Ads – Product Listing Ads (PLA), Flipkart Deals, Video Ads</li>
+                            <li>• Meesho Promotions – Flash Sale Strategy, Discount Management</li>
+                            <li>• Jiomart Promotions – Homepage banners, Coupon Offers, Deal Days</li>
+                            <li>• ONDC – Buyer-side visibility campaigns (via partner apps)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -330,54 +730,11 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     }
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">{user ? 'Edit Request' : 'Create Request'}</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Common Fields */}
-                <div className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
-                        <input
-                            type="text"
-                            name="companyName"
-                            value={formData.companyName}
-                            onChange={handleChange}
-                            required
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
-                        <select
-                            name="businessType"
-                            value={formData.businessType}
-                            onChange={handleChange}
-                            required
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                        >
-                            <option value="">Select business type</option>
-                            {businessTypes.map(type => (
-                                <option key={type} value={type}>{type}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
-                        <input
-                            type="url"
-                            name="website"
-                            value={formData.website}
-                            onChange={handleChange}
-                            placeholder="https://"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Service Type</label>
+        <div className="bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-semibold mb-6">{user ? 'Edit Request' : 'Create Request'}</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Service Type</label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {serviceTypes.map((service) => (
                             <div key={service.id} className="relative">
@@ -393,7 +750,7 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                                 />
                                 <label
                                     htmlFor={service.id}
-                                    className="block p-4 bg-white border rounded-lg cursor-pointer transition-colors peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50"
+                                    className="block p-4 bg-white border-2 rounded-lg cursor-pointer transition-all peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50"
                                 >
                                     <div className="font-medium text-gray-900">{service.label}</div>
                                 </label>
@@ -403,7 +760,7 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                 </div>
 
                 {/* Service-specific fields */}
-                <div className="mt-6 border-t pt-6">
+                <div className="mt-4">
                     {formData.serviceType === 'ams' && renderAMSFields()}
                     {formData.serviceType === 'platform' && renderPlatformFields()}
                     {formData.serviceType === 'cobranding' && renderCoBrandingFields()}
@@ -411,31 +768,31 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                 </div>
 
                 {/* Additional Notes */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Additional Notes</label>
+                <div className="bg-gray-50 p-6 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">Additional Notes</label>
                     <textarea
                         name="additionalNotes"
                         value={formData.additionalNotes}
                         onChange={handleChange}
                         rows="4"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3"
                         placeholder="Any additional information you'd like to share..."
                     />
                 </div>
 
-                <div className="flex justify-end space-x-3 mt-6">
+                <div className="flex justify-end space-x-4 mt-4 pt-4 border-t">
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                        className="px-6 py-3 border-2 border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                         disabled={isSubmitting}
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={isSubmitting}
+                        className="px-6 py-3 border-2 border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={isSubmitting || (formData.hasGST === 'yes' && gstError)}
                     >
                         {isSubmitting ? 'Submitting...' : (user ? 'Update' : 'Create')}
                     </button>

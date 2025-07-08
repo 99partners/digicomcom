@@ -539,8 +539,8 @@ const Partner = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
-        {/* Sidebar */}
-        <div className="w-64 bg-white shadow-lg min-h-screen">
+        {/* Sidebar - Fixed */}
+        <div className="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0">
           <div className="p-6">
             <h1 className="text-2xl font-bold text-gray-800">Partner Panel</h1>
           </div>
@@ -569,58 +569,60 @@ const Partner = () => {
           </nav>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 p-8">
-          <div className="max-w-7xl mx-auto">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Welcome back, {user?.name}
-                </h1>
-              </div>
+        {/* Main Content - Adjusted margin for fixed sidebar */}
+        <div className="flex-1 ml-64">
+          <div className="p-8">
+            <div className="max-w-7xl mx-auto">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    Welcome back, {user?.name}
+                  </h1>
+                </div>
 
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setShowPlans(!showPlans)}
-                  className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                    showPlans
-                      ? 'bg-black text-white'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
-                  {selectedPlan ? subscriptionPlans.find(p => p.id === selectedPlan)?.name : 'Plans'}
-                </button>
-                {/* Profile Button from Navbar.jsx */}
-                <div className="relative group">
-                  <div className="flex items-center justify-center rounded-full bg-black text-white w-8 h-8 cursor-pointer">
-                    {user?.name?.[0]?.toUpperCase() || 'U'}
-                  </div>
-                  <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black pt-10 rounded">
-                    <ul className="list-none m-0 p-2 bg-gray-100 text-sm">
-                      {!partnerData?.isAccountVerified && (
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => setShowPlans(!showPlans)}
+                    className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                      showPlans
+                        ? 'bg-black text-white'
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Crown className={`h-4 w-4 mr-1.5 ${showPlans ? 'text-white' : 'text-gray-400'}`} />
+                    {selectedPlan ? subscriptionPlans.find(p => p.id === selectedPlan)?.name : 'Plans'}
+                  </button>
+                  {/* Profile Button */}
+                  <div className="relative group">
+                    <div className="flex items-center justify-center rounded-full bg-black text-white w-8 h-8 cursor-pointer">
+                      {user?.name?.[0]?.toUpperCase() || 'U'}
+                    </div>
+                    <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black pt-10 rounded">
+                      <ul className="list-none m-0 p-2 bg-gray-100 text-sm">
+                        {!partnerData?.isAccountVerified && (
+                          <li
+                            onClick={!isProfileLoading ? sendVerificationOpt : undefined}
+                            className={`py-1 px-2 hover:bg-gray-200 cursor-pointer ${isProfileLoading ? 'opacity-50' : ''}`}
+                          >
+                            {isProfileLoading ? 'Sending OTP...' : 'Verify email'}
+                          </li>
+                        )}
                         <li
-                          onClick={!isProfileLoading ? sendVerificationOpt : undefined}
-                          className={`py-1 px-2 hover:bg-gray-200 cursor-pointer ${isProfileLoading ? 'opacity-50' : ''}`}
+                          onClick={onLogout}
+                          className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10"
                         >
-                          {isProfileLoading ? 'Sending OTP...' : 'Verify email'}
+                          Logout
                         </li>
-                      )}
-                      <li
-                        onClick={onLogout}
-                        className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10"
-                      >
-                        Logout
-                      </li>
-                    </ul>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div>
-              {renderDashboardContent()}
+              <div>
+                {renderDashboardContent()}
+              </div>
             </div>
           </div>
         </div>
