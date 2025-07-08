@@ -173,37 +173,6 @@ const Footer = () => {
               solutions and strategic partnerships.
             </p>
 
-            {/* Newsletter Form */}
-            <div className="max-w-md">
-              <h3 className="text-sm font-semibold mb-2">Subscribe to our newsletter</h3>
-              <form onSubmit={handleSubmit} className="space-y-2">
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="flex-1 px-3 py-2 bg-gray-800 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? 'Subscribing...' : 'Subscribe'}
-                  </button>
-                </div>
-                {error && (
-                  <p className="text-red-500 text-sm">{error}</p>
-                )}
-                {isSubmitted && (
-                  <p className="text-green-500 text-sm font-medium">
-                    Subscribed successfully!
-                  </p>
-                )}
-              </form>
-            </div>
-
             <div className="text-xs sm:text-sm text-gray-400 space-y-3">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
@@ -365,7 +334,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-700 text-center text-xs sm:text-sm text-gray-400">
-          © {currentYear} 99digicom.com. All rights reserved.
+          ©️ {currentYear} 99digicom.com. All rights reserved.
         </div>
       </div>
     </footer>
