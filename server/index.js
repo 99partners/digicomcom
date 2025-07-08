@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 import cors from 'cors'
 
 const app = express()
-const PORT = process.env.PORT || 5050
+const PORT = 5050 // Fixed port for development
 
 // Get __dirname in ES module scope
 const __filename = fileURLToPath(import.meta.url)
@@ -24,7 +24,8 @@ const allowedDomains = [
   'https://api.99digicom.com',
   'https://www.99digicom.com',
   'http://localhost:3000',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'http://localhost:5050'  // Added localhost:5050
 ];
 
 // Enable CORS with domain checking
