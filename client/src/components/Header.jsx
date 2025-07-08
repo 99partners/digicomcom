@@ -19,7 +19,6 @@ const Header = () => {
     { name: "About Us", href: "/about" },
     {
       name: "Services",
-      href: "/services",
       submenu: [
         { name: "Platform Enablement", href: "/services/platformEnable" },
         { name: "AMS", href: "/services/ams" },
@@ -29,7 +28,6 @@ const Header = () => {
     },
     {
       name: "Partners",
-      href: "/partners",
       submenu: [
         { name: "Our Partners", href: "/partners/ourPartners" },
         { name: "Why Partners", href: "/partners/whyPartners" },
@@ -38,7 +36,6 @@ const Header = () => {
     },
     {
       name: "Resources",
-      href: "/resources",
       submenu: [
         { name: "Blogs", href: "/resources/blogs" },
         { name: "Guides & Tutorials", href: "/resources/guidesTutorials" },
@@ -50,7 +47,7 @@ const Header = () => {
     { name: "Contact Us", href: "/contact" },
   ]
 
-  const isActive = (href) => pathname === href || pathname.startsWith(href + "/")
+  const isActive = (href) => pathname === href || (href && pathname.startsWith(href + "/"))
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -72,6 +69,11 @@ const Header = () => {
     timeoutRef.current = setTimeout(() => {
       setActiveDropdown(null)
     }, 300) // 300ms delay before closing
+  }
+
+  const handleDropdownClick = (e, menuName) => {
+    e.preventDefault() // Prevent navigation
+    setActiveDropdown(activeDropdown === menuName ? null : menuName)
   }
 
   useEffect(() => {
@@ -113,17 +115,30 @@ const Header = () => {
               onMouseLeave={() => item.submenu && handleMouseLeave()}
               ref={(el) => (dropdownRefs.current[item.name] = el)}
             >
-              <Link
-                to={item.href}
-                className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
-                  isActive(item.href)
-                    ? "text-green-700 bg-green-100"
-                    : "text-gray-600 hover:text-green-700 hover:bg-green-50"
-                } flex items-center`}
-              >
-                {item.name}
-                {item.submenu && <ChevronDown className="ml-1 h-4 w-4" />}
-              </Link>
+              {item.submenu ? (
+                <button
+                  onClick={(e) => handleDropdownClick(e, item.name)}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
+                    isActive(item.submenu.find(sub => sub.href === pathname)?.href)
+                      ? "text-green-700 bg-green-100"
+                      : "text-gray-600 hover:text-green-700 hover:bg-green-50"
+                  } flex items-center`}
+                >
+                  {item.name}
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </button>
+              ) : (
+                <Link
+                  to={item.href}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
+                    isActive(item.href)
+                      ? "text-green-700 bg-green-100"
+                      : "text-gray-600 hover:text-green-700 hover:bg-green-50"
+                  } flex items-center`}
+                >
+                  {item.name}
+                </Link>
+              )}
               {item.submenu && activeDropdown === item.name && (
                 <div
                   className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -180,21 +195,6 @@ const Header = () => {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="lg:hidden bg-white shadow-md px-4 pt-4 pb-6 space-y-2">
-          <div className="mb-4">
-            <form onSubmit={handleSearch} className="relative">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 w-full rounded-lg border-gray-200 focus:border-green-500 focus:ring-green-500 text-sm"
-                />
-              </div>
-            </form>
-          </div>
-
           {navigation.map((item) => (
             <div key={item.name}>
               {item.submenu ? (
@@ -202,7 +202,7 @@ const Header = () => {
                   <button
                     onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
                     className={`w-full text-left px-4 py-2 rounded-lg text-base flex items-center ${
-                      isActive(item.href) || activeDropdown === item.name
+                      isActive(item.submenu.find(sub => sub.href === pathname)?.href)
                         ? "text-green-700 bg-green-100"
                         : "text-gray-700 hover:bg-green-50 hover:text-green-700"
                     }`}
@@ -275,4 +275,4 @@ const Header = () => {
   )
 }
 
-export default Header;
+export default Header
