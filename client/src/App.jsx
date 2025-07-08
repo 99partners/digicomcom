@@ -16,7 +16,7 @@ import FAQs from './pages/Faqs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
-import CoBrandingPage from './pages/coBranding';
+import CoBrandingPage from './pages/CoBranding';
 import AccountManagementServices from './pages/ams';
 import ECommerce from './pages/eCommerce';
 import PlatformEnablement from './pages/platformEnable';
