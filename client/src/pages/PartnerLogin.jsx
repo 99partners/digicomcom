@@ -18,10 +18,9 @@ const PartnerLogin = () => {
 
   const navigate = useNavigate()
   const { handleLogin } = useAuth()
-  const backendUrl = "https://99digicom.com"
 
   const handlePhoneChange = (e) => {
-    const input = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    const input = e.target.value.replace(/\D/g, '');
     if (input.length <= 10) {
       setPhone(input);
     } else {
@@ -29,27 +28,57 @@ const PartnerLogin = () => {
     }
   }
 
+  const checkPartnerRequest = async (token) => {
+    try {
+      const response = await axios.get('https://99digicom.com/api/partner/has-request', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data.hasRequest;
+    } catch (error) {
+      console.error('Error checking partner request:', error);
+      return false;
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     setIsLoading(true)
 
     try {
-      axios.defaults.withCredentials = true
-      const url = backendUrl + (state === "Sign Up" ? "/api/auth/register" : "/api/auth/login")
+      const url = `https://99digicom.com/api/auth/${state === "Sign Up" ? "register" : "login"}`
       const payload = state === "Sign Up" ? { name, email, phone, password } : { email, password }
 
       const { data } = await axios.post(url, payload)
 
       if (data.success) {
-        // Store the token and user data for persistent login
+        // Store the token and user data
         handleLogin(data.token, data.user)
-        toast.success(state === "Sign Up" ? "Account created successfully!" : "Login successful!")
-        navigate("/partner")
+        
+        if (state === "Sign Up") {
+          toast.success("Account created successfully!")
+          // For new registrations, always redirect to create partner request
+          navigate("/partner", { state: { section: 'create-user' } })
+        } else {
+          // For login, check if user has existing partner request
+          const hasRequest = await checkPartnerRequest(data.token)
+          toast.success("Login successful!")
+          
+          // Redirect based on whether they have a request or not
+          navigate("/partner", { 
+            state: { 
+              section: hasRequest ? 'dashboard' : 'create-user' 
+            } 
+          })
+        }
       } else {
-        toast.error(data.message)
+        toast.error(data.message || "Authentication failed")
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message || "Something went wrong")
+      const errorMessage = error.response?.data?.message || error.message || "Something went wrong"
+      toast.error(errorMessage)
+      console.error('Auth error:', error)
     } finally {
       setIsLoading(false)
     }
