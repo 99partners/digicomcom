@@ -19,7 +19,6 @@ const Footer = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
   const location = useLocation();
 
   // Hide footer on login page
@@ -34,7 +33,6 @@ const Footer = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    setSuccessMessage("");
 
     // Validate email
     if (!email) {
@@ -64,7 +62,6 @@ const Footer = () => {
         setIsSubmitted(true);
         setEmail('');
         setError(null);
-        setSuccessMessage("Subscribed successfully!");
       } else {
         setError(response.data.message || 'Failed to subscribe. Please try again.');
       }
@@ -199,8 +196,10 @@ const Footer = () => {
                 {error && (
                   <p className="text-red-500 text-sm">{error}</p>
                 )}
-                {successMessage && (
-                  <p className="text-green-500 text-sm font-medium">{successMessage}</p>
+                {isSubmitted && (
+                  <p className="text-green-500 text-sm font-medium">
+                    Subscribed successfully!
+                  </p>
                 )}
               </form>
             </div>
