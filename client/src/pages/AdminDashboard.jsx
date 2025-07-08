@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, Handshake, MessageSquare, BookOpen } from 'lucide-react';
+import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import AMSSubmissions from '../components/admin/AMSSubmissions';
-import CoBrandingSubmissions from '../components/admin/CoBrandingSubmissions';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
@@ -96,8 +94,6 @@ const AdminDashboard = () => {
         { id: 'users', label: 'Users', icon: UserCheck },
         { id: 'newsletter', label: 'Newsletter', icon: Mail },
         { id: 'blogs', label: 'Blog Management', icon: BookOpen },
-        { id: 'ams', label: 'AMS Submissions', icon: FileText },
-        { id: 'co-branding', label: 'Co-Branding', icon: Handshake },
         { id: 'contacts', label: 'Contact Messages', icon: MessageSquare },
     ];
 
@@ -233,12 +229,6 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                 );
-
-            case 'ams':
-                return <AMSSubmissions />;
-
-            case 'co-branding':
-                return <CoBrandingSubmissions />;
 
             case 'contacts':
                 return <ContactSubmissions />;
