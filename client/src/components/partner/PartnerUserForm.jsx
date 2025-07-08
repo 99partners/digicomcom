@@ -17,18 +17,20 @@ import {
     Edit2,
 } from 'lucide-react';
 
-const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
+const PartnerUserForm = ({ onSubmit, onCancel }) => {
     const navigate = useNavigate();
     const { isAuthenticated, loading } = useAuth();
     const [submittedRequest, setSubmittedRequest] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [userData, setUserData] = useState(null);
+    const [isLoadingUser, setIsLoadingUser] = useState(true);
     const [formData, setFormData] = useState({
-        serviceType: user?.serviceType || 'ams',
-        marketplaces: user?.marketplaces || [],
-        serviceAccountNumber: user?.serviceAccountNumber || '',
-        hasGST: user?.hasGST || 'no',
-        gstNumber: user?.gstNumber || '',
-        monthlyOnlineSales: user?.monthlyOnlineSales || '',
+        serviceType: 'ams',
+        marketplaces: [],
+        serviceAccountNumber: '',
+        hasGST: 'no',
+        gstNumber: '',
+        monthlyOnlineSales: '',
         marketingServices: {
             sponsoredAds: false,
             seasonalCampaigns: false,
@@ -44,11 +46,34 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
         productCategory: '',
         productDescription: '',
         panNumber: '',
-        additionalNotes: user?.additionalNotes || ''
+        additionalNotes: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [gstError, setGstError] = useState('');
     const [errors, setErrors] = useState({});
+
+    // Fetch user data
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axiosInstance.get('/api/user/data');
+                if (response.data.success) {
+                    setUserData(response.data.userData);
+                } else {
+                    toast.error('Failed to fetch user data');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                toast.error('Error loading user information');
+            } finally {
+                setIsLoadingUser(false);
+            }
+        };
+
+        if (isAuthenticated) {
+            fetchUserData();
+        }
+    }, [isAuthenticated]);
 
     // Load the most recent request when component mounts
     useEffect(() => {
@@ -74,6 +99,7 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
                 }
             } catch (error) {
                 console.error('Error fetching latest request:', error);
+                toast.error('Error loading previous request');
             }
         };
 
@@ -522,7 +548,6 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
     const renderMarketingFields = () => (
         <>
             <div className="space-y-4 px-2">
-                {/* Marketplaces Section */}
                 <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
                     <label className="block text-sm font-medium text-gray-700 mb-3">Select Target Marketplaces</label>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -730,22 +755,18 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
         if (isSubmitting) return;
 
         // Validate required fields
-        const errors = [];
+        const errors = {};
         if (!formData.serviceType) {
-            errors.push('Service type is required');
+            errors.serviceType = 'Service type is required';
         }
         if (!formData.hasGST) {
-            errors.push('Please select whether you have GST or not');
+            errors.hasGST = 'GST information is required';
         }
         if (formData.hasGST === 'yes' && !formData.gstNumber) {
-            errors.push('GST number is required when GST is available');
+            errors.gstNumber = 'GST number is required when GST is available';
         }
-        if (formData.serviceType === 'ams' && formData.marketplaces.length === 0) {
-            errors.push('Please select at least one marketplace for AMS service');
-        }
-
-        if (errors.length > 0) {
-            toast.error(errors.join('\n'));
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors);
             return;
         }
 
@@ -754,6 +775,9 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
             // Clean up the form data before sending
             const requestData = {
                 ...formData,
+                // Include user information
+                userName: userData?.name,
+                userEmail: userData?.email,
                 // Remove empty strings and null values
                 ...Object.fromEntries(
                     Object.entries(formData).filter(([_, value]) => 
@@ -833,8 +857,8 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
         });
     };
 
-    // Show loading state while checking authentication
-    if (loading) {
+    // Show loading state while checking authentication or loading user data
+    if (loading || isLoadingUser) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center">
                 <div className="bg-white rounded-lg shadow-lg p-6">
@@ -974,7 +998,37 @@ const PartnerUserForm = ({ user, onSubmit, onCancel }) => {
             <section className="py-8 px-4">
                 <div className="max-w-3xl mx-auto">
                     <div className="bg-gradient-to-br from-white via-green-50/30 to-emerald-50/30 backdrop-blur-sm rounded-lg shadow-lg p-8 border border-green-100/50 hover:shadow-xl transition-shadow">
-            <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            {/* User Information Section */}
+                            <div className="bg-white p-6 rounded-lg shadow-sm border border-green-100 mb-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">User Information</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                        <div className="flex items-center bg-gray-50 px-4 py-2.5 rounded-md">
+                                            <User className="w-5 h-5 text-gray-400 mr-2" />
+                                            <span className="text-gray-900">{userData?.name || 'N/A'}</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                        <div className="flex items-center bg-gray-50 px-4 py-2.5 rounded-md">
+                                            <Mail className="w-5 h-5 text-gray-400 mr-2" />
+                                            <span className="text-gray-900">{userData?.email || 'N/A'}</span>
+                                        </div>
+                                    </div>
+                                    {userData?.phone && (
+                                        <div className="col-span-2">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                                            <div className="flex items-center bg-gray-50 px-4 py-2.5 rounded-md">
+                                                <Phone className="w-5 h-5 text-gray-400 mr-2" />
+                                                <span className="text-gray-900">{userData.phone}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
                             {/* Service Type Selection */}
                             <div className="bg-gradient-to-br from-white to-green-50/50 p-4 rounded-lg border border-green-100/50">
                                 <label className="block text-sm font-medium text-gray-700 mb-4">Service Type</label>

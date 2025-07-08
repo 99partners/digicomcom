@@ -3,6 +3,7 @@ import Newsletter from '../models/Newsletter.js';
 import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
 import PartnerRequest from '../models/PartnerRequestModel.js';
+import Contact from '../models/ContactModel.js';
 
 // Admin Login
 export const adminLogin = async (req, res) => {
@@ -60,20 +61,26 @@ export const adminLogin = async (req, res) => {
 // Get Dashboard Stats
 export const getDashboardStats = async (req, res) => {
     try {
-        const [totalUsers, totalSubscribers, totalBlogs, totalPartners] = await Promise.all([
+        const [totalUsers, totalSubscribers, totalContacts, totalPartners] = await Promise.all([
             User.countDocuments(),
             Newsletter.countDocuments(),
-            Promise.resolve(2), // Placeholder for blog count
+            Contact.countDocuments(),
             Promise.resolve(1)  // Placeholder for partner count
         ]);
+
+        // Get recent contacts
+        const recentContacts = await Contact.find()
+            .sort({ createdAt: -1 })
+            .limit(5);
 
         res.json({
             success: true,
             stats: {
                 totalUsers,
                 totalSubscribers,
-                totalBlogs,
-                totalPartners
+                totalContacts,
+                totalPartners,
+                recentContacts
             }
         });
     } catch (error) {
@@ -203,6 +210,53 @@ export const updatePartnerRequestStatus = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error updating partner request status',
+            error: error.message
+        });
+    }
+}; 
+
+// Get all contact submissions
+export const getAllContacts = async (req, res) => {
+    try {
+        const contacts = await Contact.find()
+            .sort({ createdAt: -1 });
+
+        res.json({
+            success: true,
+            data: contacts
+        });
+    } catch (error) {
+        console.error('Error fetching contact submissions:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching contact submissions',
+            error: error.message
+        });
+    }
+};
+
+// Delete a contact submission
+export const deleteContact = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const contact = await Contact.findByIdAndDelete(id);
+
+        if (!contact) {
+            return res.status(404).json({
+                success: false,
+                message: 'Contact submission not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Contact submission deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting contact submission:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error deleting contact submission',
             error: error.message
         });
     }

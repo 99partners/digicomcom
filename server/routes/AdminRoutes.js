@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminLogin, adminLogout, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus } from '../controllers/AdminController.js';
+import { adminLogin, adminLogout, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact } from '../controllers/AdminController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import PartnerRequest from '../models/PartnerRequestModel.js';
 
@@ -13,6 +13,8 @@ router.post('/logout', adminLogout);
 router.get('/dashboard-stats', adminAuth, getDashboardStats);
 router.get('/users', adminAuth, getAllUsers);
 router.get('/subscribers', adminAuth, getAllSubscribers);
+router.get('/contacts', adminAuth, getAllContacts);
+router.delete('/contacts/:id', adminAuth, deleteContact);
 
 // Get all partner requests
 router.get('/partner-requests', adminAuth, async (req, res) => {
