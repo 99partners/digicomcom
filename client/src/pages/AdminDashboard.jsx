@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
-import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen } from 'lucide-react';
+import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
 import UserForm from '../components/admin/UserForm';
-import { getApiUrl } from '../config/api.config';
+import PartnerRequestManagement from '../components/admin/PartnerRequestManagement';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
@@ -26,9 +26,9 @@ const AdminDashboard = () => {
     const fetchData = async () => {
         try {
             const [statsResponse, usersResponse, subscribersResponse] = await Promise.all([
-                axios.get(getApiUrl('api/admin/dashboard-stats')),
-                axios.get(getApiUrl('api/admin/users')),
-                axios.get(getApiUrl('api/admin/subscribers'))
+                axiosInstance.get('/api/admin/dashboard-stats'),
+                axiosInstance.get('/api/admin/users'),
+                axiosInstance.get('/api/admin/subscribers')
             ]);
 
             setStats(statsResponse.data.stats);
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
 
     const handleUnsubscribe = async (subscriberId) => {
         try {
-            await axios.delete(getApiUrl(`api/newsletter/${subscriberId}`));
+            await axiosInstance.delete(`/api/newsletter/${subscriberId}`);
             toast.success('Subscriber removed successfully');
             // Update the subscribers list
             setSubscribers(subscribers.filter(sub => sub._id !== subscriberId));
@@ -61,7 +61,7 @@ const AdminDashboard = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post(getApiUrl('api/admin/logout'));
+            await axiosInstance.post('/api/admin/logout');
             navigate('/admin/login');
         } catch (error) {
             toast.error('Logout failed');
@@ -95,6 +95,7 @@ const AdminDashboard = () => {
         { id: 'newsletter', label: 'Newsletter', icon: Mail },
         { id: 'blogs', label: 'Blog Management', icon: BookOpen },
         { id: 'contacts', label: 'Contact Messages', icon: MessageSquare },
+        { id: 'partner-requests', label: 'Partner Requests', icon: Handshake },
     ];
 
     const contentItems = [
@@ -232,6 +233,9 @@ const AdminDashboard = () => {
 
             case 'contacts':
                 return <ContactSubmissions />;
+
+            case 'partner-requests':
+                return <PartnerRequestManagement />;
 
             case 'settings':
                 return (

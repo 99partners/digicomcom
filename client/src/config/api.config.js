@@ -18,12 +18,17 @@ const axiosInstance = axios.create({
 
 // Add request interceptor
 axiosInstance.interceptors.request.use((config) => {
-  // Get the auth token from localStorage
-  const token = localStorage.getItem('authToken');
+  // Get both auth tokens from localStorage
+  const userToken = localStorage.getItem('authToken');
+  const adminToken = localStorage.getItem('adminToken');
   
-  // If token exists, add it to the headers
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  // If admin token exists and the request is to an admin endpoint, use admin token
+  if (adminToken && config.url?.includes('/api/admin')) {
+    config.headers.Authorization = `Bearer ${adminToken}`;
+  }
+  // Otherwise, if user token exists, use that
+  else if (userToken) {
+    config.headers.Authorization = `Bearer ${userToken}`;
   }
 
   // Ensure the URL uses HTTPS in production
@@ -74,12 +79,17 @@ axiosInstance.interceptors.response.use(
 
     // Handle authentication errors
     if (error.response?.status === 401) {
-      // Clear invalid token
-      localStorage.removeItem('authToken');
-      
-      // If we're not already on the login page, redirect to it
-      if (!window.location.pathname.includes('login')) {
-        window.location.href = '/partnerlogin';
+      // Check if this was an admin request
+      if (originalRequest.url?.includes('/api/admin')) {
+        localStorage.removeItem('adminToken');
+        if (!window.location.pathname.includes('adminlogin')) {
+          window.location.href = '/adminlogin';
+        }
+      } else {
+        localStorage.removeItem('authToken');
+        if (!window.location.pathname.includes('login')) {
+          window.location.href = '/partnerlogin';
+        }
       }
     }
     
