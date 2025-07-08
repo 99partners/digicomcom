@@ -41,7 +41,6 @@ const Partner = () => {
 
   const menuItems = [
     { id: 'create-user', label: 'Create Request', icon: FileText },
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, requiresRequest: true },
     { id: 'customers', label: 'My Requests', icon: Users, requiresRequest: true },
     { id: 'notifications', label: 'Notifications', icon: Bell, requiresRequest: true },
     { id: 'settings', label: 'Settings', icon: Settings, requiresRequest: true },
