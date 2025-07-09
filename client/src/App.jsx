@@ -4,15 +4,11 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
-
 import Shop from './pages/Shop';
-
 import Blogs from './pages/blogs';  
 import CaseStudies from './pages/caseStudies';
 import GuidesTutorials from './pages/guidesTutorials';
 import Faqs from './pages/faqss';
-
-
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import CustomerLogin from './pages/CutomerLogin';
@@ -43,9 +39,7 @@ const Layout = ({ children }) => {
   
   // Exact routes where we don't want to show header and footer
   const noHeaderFooterRoutes = [
-   
     '/customerlogin',
-   
     '/reset-password',
     '/email-verify',
     '/admin/login',
@@ -83,16 +77,7 @@ function App() {
             <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
             <Route path="/partners/whyPartners" element={<ForProductPartners/>} />
             <Route path="/partners/partnersOnboarding" element={<PartnerOnboarding />} />
-            <Route 
-              path="/partner" 
-              element={
-                <ProtectedRoute key="partner-route">
-                  <Partner />
-                </ProtectedRoute>
-              } 
-            />
             <Route path="/shop" element={<Shop />} />
-            
             <Route path="/resources/blogs" element={<Blogs />} />
             <Route path="/resources/caseStudies" element={<CaseStudies />} />
             <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
@@ -100,7 +85,6 @@ function App() {
             <Route path="resources/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/customerlogin" element={<CustomerLogin />} />
-
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
