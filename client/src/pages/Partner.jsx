@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
@@ -21,7 +21,7 @@ import {
   CheckCircle,
   XCircle,
   User,
-  Plus
+  Clock
 } from 'lucide-react';
 
 import PartnerUserForm from '../components/partner/PartnerUserForm';
@@ -36,47 +36,93 @@ const Partner = () => {
   const [showUserForm, setShowUserForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [hasCreatedRequest, setHasCreatedRequest] = useState(false);
-  const [allRequests, setAllRequests] = useState([]);
   const [dashboardStats, setDashboardStats] = useState({
     totalOrders: 0,
     revenue: 0,
     activeProducts: 0,
     recentActivity: []
   });
-
   const navigate = useNavigate();
-  const location = useLocation();
-  const { handleLogout, user } = useAuth();
+  const { handleLogout, user, checkAuthStatus } = useAuth();
   const { backendUrl } = useAppContext();
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'my-requests', label: 'My Requests', icon: Users },
-    { id: 'create-request', label: 'Create Request', icon: Plus },
+    { id: 'create-user', label: 'Create Request', icon: FileText },
+    { id: 'customers', label: 'My Requests', icon: Users },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'support', label: 'Support', icon: HelpCircle },
   ];
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/partnerlogin');
-      return;
+  const subscriptionPlans = [
+    {
+      id: 'single',
+      name: 'Single',
+      description: 'A great solution for beginners',
+      price: '89.00',
+      originalPrice: '399.00',
+      savePercent: 78,
+      renewalPrice: '289.00',
+      features: [
+        'Basic features',
+        'Up to 10 products',
+        'Basic analytics',
+        'Email support'
+      ]
+    },
+    {
+      id: 'premium',
+      name: 'Premium',
+      description: 'Everything you need to create your website.',
+      price: '139.00',
+      originalPrice: '599.00',
+      savePercent: 77,
+      renewalPrice: '449.00',
+      features: [
+        'All Single features',
+        'Up to 100 products',
+        'Advanced analytics',
+        'Priority support',
+        'Custom domain'
+      ]
+    },
+    {
+      id: 'business',
+      name: 'Business',
+      description: 'Level up with more power and enhanced features.',
+      price: '229.00',
+      originalPrice: '699.00',
+      savePercent: 67,
+      renewalPrice: '649.00',
+      features: [
+        'All Premium features',
+        'Unlimited products',
+        'Advanced reporting',
+        '24/7 support',
+        'Multiple domains'
+      ]
+    },
+    {
+      id: 'cloud-startup',
+      name: 'Cloud Startup',
+      description: 'Enjoy optimised performance & guaranteed resources.',
+      price: '599.00',
+      originalPrice: '1,699.00',
+      savePercent: 65,
+      renewalPrice: '1,599.00',
+      features: [
+        'All Business features',
+        'Dedicated resources',
+        'Custom solutions',
+        'Enterprise support',
+        'SLA guarantee'
+      ]
     }
-    fetchPartnerData();
-    fetchAllRequests();
-  }, [user]);
-
-  useEffect(() => {
-    // Set initial section from location state if available
-    if (location.state?.section) {
-      setActiveSection(location.state.section);
-    }
-  }, [location]);
+  ];
 
   const fetchPartnerData = async () => {
     try {
-      setIsLoading(true);
       const response = await axiosInstance.get('/api/user/data');
       if (response.data.success) {
         setPartnerData(response.data.userData);
@@ -91,18 +137,9 @@ const Partner = () => {
     }
   };
 
-  const fetchAllRequests = async () => {
-    try {
-      const response = await axiosInstance.get('/api/partner-requests/my-requests');
-      if (response.data.success) {
-        setAllRequests(response.data.requests);
-        setHasCreatedRequest(response.data.requests.length > 0);
-      }
-    } catch (error) {
-      console.error('Error fetching requests:', error);
-      toast.error('Failed to load requests');
-    }
-  };
+  useEffect(() => {
+    fetchPartnerData();
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -113,131 +150,328 @@ const Partner = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    checkExistingRequest();
+  }, []);
+
+  const checkExistingRequest = async () => {
+    try {
+      const response = await axiosInstance.get('/api/partner/has-request');
+      setHasCreatedRequest(response.data.hasRequest);
+      if (!response.data.hasRequest) {
+        setActiveSection('create-user');
+      } else {
+        setActiveSection('dashboard');
+      }
+    } catch (error) {
+      console.error('Error checking request status:', error);
+    }
+  };
+
   const handleSectionChange = (sectionId) => {
     setActiveSection(sectionId);
   };
 
-  const handleRequestSubmit = async (requestData) => {
-    await fetchAllRequests();
-    setActiveSection('my-requests');
-    toast.success('Request submitted successfully!');
+  const onLogout = async () => {
+    try {
+      const response = await axiosInstance.post('/api/auth/logout');
+      if (response.data.success) {
+        handleLogout();
+        setPartnerData(null);
+        navigate('/partnerlogin');
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
-  const renderMyRequests = () => {
-    if (allRequests.length === 0) {
+  const sendVerificationOtp = async () => {
+    try {
+      setIsProfileLoading(true);
+      const response = await axiosInstance.post('/api/auth/send-verify-otp');
+      if (response.data.success) {
+        toast.success('Verification code sent to your email');
+        navigate('/email-verify');
+      } else {
+        toast.error(response.data.message || 'Failed to send verification code');
+      }
+    } catch (error) {
+      console.error('Verification error:', error);
+      toast.error(error.response?.data?.message || 'Error sending verification code');
+    } finally {
+      setIsProfileLoading(false);
+    }
+  };
+
+  const handleSubscribe = (planId) => {
+    setSelectedPlan(planId);
+    console.log(`Subscribing to ${planId} plan`);
+  };
+
+  const handleUserFormSubmit = async () => {
+    setShowUserForm(false);
+    setSelectedUser(null);
+    setHasCreatedRequest(true);
+    toast.success('Request created successfully! You can now access other sections.');
+    await fetchPartnerData();
+  };
+
+  const handleUserFormCancel = () => {
+    setShowUserForm(false);
+    setSelectedUser(null);
+  };
+
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await axiosInstance.get('/api/partner/dashboard-stats');
+      if (response.data.success) {
+        setDashboardStats(response.data.stats);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+      toast.error('Failed to load dashboard statistics');
+    }
+  };
+
+  useEffect(() => {
+    if (hasCreatedRequest && activeSection === 'dashboard') {
+      fetchDashboardStats();
+    }
+  }, [hasCreatedRequest, activeSection]);
+
+  const renderDashboardContent = () => {
+    if (showPlans) {
       return (
-        <div className="text-center py-8">
-          <div className="mb-4">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto" />
+        <div className="space-y-8">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Pick your perfect plan</h2>
+              <p className="text-gray-600">Choose the best plan for your business needs</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {subscriptionPlans.map((plan) => (
+                <div
+                  key={plan.id}
+                  className={`relative bg-white rounded-lg border-2 transition-all ${
+                    selectedPlan === plan.id
+                      ? 'border-purple-500 shadow-lg'
+                      : 'border-gray-200 hover:border-purple-300'
+                  } ${plan.id === 'premium' ? 'relative' : ''}`}
+                >
+                  {plan.id === 'premium' && (
+                    <div className="absolute -top-4 left-0 right-0">
+                      <div className="bg-purple-500 text-white text-sm font-medium py-1 px-4 rounded-full mx-auto w-max">
+                        MOST POPULAR
+                      </div>
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{plan.description}</p>
+                    
+                    <div className="mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
+                          SAVE {plan.savePercent}%
+                        </span>
+                        <span className="text-gray-500 text-sm line-through">₹{plan.originalPrice}</span>
+                      </div>
+                      <div className="flex items-baseline mt-2">
+                        <span className="text-4xl font-bold">₹{plan.price}</span>
+                        <span className="text-gray-600 ml-1">/mo</span>
+                      </div>
+                      <div className="text-purple-600 text-sm mt-1">+3 months free</div>
+                    </div>
+
+                    <button
+                      onClick={() => handleSubscribe(plan.id)}
+                      className={`w-full py-3 rounded-lg text-center transition-colors mb-4 ${
+                        selectedPlan === plan.id
+                          ? 'bg-purple-100 text-purple-700 border-2 border-purple-500'
+                          : 'bg-white text-purple-600 border-2 border-purple-500 hover:bg-purple-50'
+                      }`}
+                    >
+                      Choose plan
+                    </button>
+
+                    <div className="text-gray-500 text-sm text-center">
+                      Renews at ₹{plan.renewalPrice}/mo for a year. Cancel anytime
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <h3 className="text-lg font-medium text-gray-900">No requests yet</h3>
-          <p className="mt-1 text-sm text-gray-500">Create your first request to get started</p>
-          <button
-            onClick={() => setActiveSection('create-request')}
-            className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Create Request
-          </button>
         </div>
       );
     }
 
     return (
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-900">My Requests</h2>
-            <button
-              onClick={() => setActiveSection('create-request')}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Request
-            </button>
+      <div className="space-y-6">
+        {/* User Profile Card */}
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">User Profile</h2>
+            {!partnerData?.isAccountVerified && (
+              <button
+                onClick={sendVerificationOtp}
+                disabled={isProfileLoading}
+                className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md"
+              >
+                {isProfileLoading ? (
+                  <>
+                    <span className="mr-2">Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-4 h-4 mr-2" />
+                    Verify Email
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <User className="w-5 h-5 text-gray-500" />
+                <div>
+                  <p className="text-sm text-gray-500">Full Name</p>
+                  <p className="font-medium">{partnerData?.name || 'Not provided'}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <Mail className="w-5 h-5 text-gray-500" />
+                <div>
+                  <p className="text-sm text-gray-500">Email</p>
+                  <p className="font-medium">{partnerData?.email}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <CheckCircle className={`w-5 h-5 ${partnerData?.isAccountVerified ? 'text-green-500' : 'text-gray-400'}`} />
+                <div>
+                  <p className="text-sm text-gray-500">Email Verification</p>
+                  <p className={`font-medium ${partnerData?.isAccountVerified ? 'text-green-600' : 'text-yellow-600'}`}>
+                    {partnerData?.isAccountVerified ? 'Verified' : 'Not Verified'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Crown className="w-5 h-5 text-gray-500" />
+                <div>
+                  <p className="text-sm text-gray-500">Account Type</p>
+                  <p className="font-medium capitalize">{partnerData?.role || 'Partner'}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <BarChart className="w-5 h-5 text-gray-500" />
+                <div>
+                  <p className="text-sm text-gray-500">Account Status</p>
+                  <p className="font-medium text-green-600">Active</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Clock className="w-5 h-5 text-gray-500" />
+                <div>
+                  <p className="text-sm text-gray-500">Member Since</p>
+                  <p className="font-medium">
+                    {partnerData?.createdAt 
+                      ? new Date(partnerData.createdAt).toLocaleDateString('en-US', {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric'
+                        })
+                      : 'Not available'}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Service Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created At
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Last Updated
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {allRequests.map((request) => (
-                <tr key={request._id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="capitalize">{request.serviceType}</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      request.status === 'processed' 
-                        ? 'bg-green-100 text-green-800'
-                        : request.status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {request.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(request.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(request.updatedAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      onClick={() => {
-                        setSelectedUser(request);
-                        setShowUserForm(true);
-                        setActiveSection('create-request');
-                      }}
-                      className="text-green-600 hover:text-green-900 mr-4"
-                      disabled={request.status === 'processed'}
-                    >
-                      View Details
-                    </button>
-                  </td>
-                </tr>
+
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Total Orders</p>
+                <p className="text-2xl font-semibold">{dashboardStats.totalOrders}</p>
+              </div>
+              <BarChart className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Revenue</p>
+                <p className="text-2xl font-semibold">₹{dashboardStats.revenue}</p>
+              </div>
+              <Wallet className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Active Products</p>
+                <p className="text-2xl font-semibold">{dashboardStats.activeProducts}</p>
+              </div>
+              <Star className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Verification Status</p>
+                <p className="text-2xl font-semibold text-green-600">
+                  {partnerData?.isAccountVerified ? 'Verified' : 'Pending'}
+                </p>
+              </div>
+              {partnerData?.isAccountVerified ? (
+                <CheckCircle className="w-8 h-8 text-green-500" />
+              ) : (
+                <XCircle className="w-8 h-8 text-yellow-500" />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+          {dashboardStats.recentActivity && dashboardStats.recentActivity.length > 0 ? (
+            <div className="space-y-4">
+              {dashboardStats.recentActivity.map((activity, index) => (
+                <div key={index} className="flex items-center justify-between py-2 border-b last:border-0">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <Bell className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">{activity.description}</p>
+                      <p className="text-xs text-gray-500">{activity.timestamp}</p>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-500">{activity.type}</span>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center py-4">No recent activity</p>
+          )}
         </div>
       </div>
     );
-  };
-
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'my-requests':
-        return renderMyRequests();
-      case 'create-request':
-        return (
-          <PartnerUserForm 
-            onSubmit={handleRequestSubmit}
-            onCancel={() => setActiveSection('my-requests')}
-          />
-        );
-      // ... other cases for dashboard, notifications, etc.
-      default:
-        return <div>Select a section</div>;
-    }
   };
 
   if (isLoading) {
@@ -252,9 +486,9 @@ const Partner = () => {
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-64 bg-white shadow-lg h-screen fixed">
+        <div className="w-64 bg-white shadow-lg fixed h-full">
           <div className="p-6">
-            <h1 className="text-2xl font-bold text-gray-900">Partner Portal</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Partner Panel</h1>
           </div>
           <nav className="mt-6">
             {menuItems.map((item) => {
@@ -263,23 +497,58 @@ const Partner = () => {
                 <button
                   key={item.id}
                   onClick={() => handleSectionChange(item.id)}
-                  className={`w-full flex items-center px-6 py-3 text-sm ${
+                  className={`w-full flex items-center px-6 py-3 text-sm font-medium transition-colors ${
                     activeSection === item.id
-                      ? 'bg-green-50 text-green-600 border-r-4 border-green-600'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'text-green-600 bg-green-50'
+                      : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
                   }`}
                 >
-                  <Icon className="w-5 h-5 mr-3" />
+                  <Icon className="h-5 w-5 mr-3" />
                   {item.label}
                 </button>
               );
             })}
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center px-6 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+            >
+              <LogOut className="h-5 w-5 mr-3" />
+              Logout
+            </button>
           </nav>
         </div>
 
-        {/* Main content */}
+        {/* Main Content */}
         <div className="flex-1 ml-64 p-8">
-          {renderContent()}
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <h1 className="text-2xl font-bold text-gray-900">
+                Welcome back, {user?.name || 'Partner'}
+              </h1>
+              <div className="flex items-center space-x-4">
+                {!user?.isAccountVerified && (
+                  <button
+                    onClick={sendVerificationOtp}
+                    disabled={isProfileLoading}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isProfileLoading ? 'Sending...' : 'Verify Email'}
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Render active section content */}
+            {activeSection === 'dashboard' && renderDashboardContent()}
+            {activeSection === 'create-user' && (
+              <PartnerUserForm
+                user={selectedUser}
+                onSubmit={handleUserFormSubmit}
+                onCancel={handleUserFormCancel}
+              />
+            )}
+            {/* Add other section content here */}
+          </div>
         </div>
       </div>
     </div>
