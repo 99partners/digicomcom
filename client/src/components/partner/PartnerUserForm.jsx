@@ -744,39 +744,22 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // Check authentication before submitting
-        if (!isAuthenticated) {
-            toast.error('Please login to create a request');
-            navigate('/partnerlogin');
-            return;
-        }
-
-        if (isSubmitting) return;
-
-        // Validate required fields
-        const errors = {};
-        if (!formData.serviceType) {
-            errors.serviceType = 'Service type is required';
-        }
-        if (!formData.hasGST) {
-            errors.hasGST = 'GST information is required';
-        }
-        if (formData.hasGST === 'yes' && !formData.gstNumber) {
-            errors.gstNumber = 'GST number is required when GST is available';
-        }
-        if (Object.keys(errors).length > 0) {
-            setErrors(errors);
-            return;
-        }
-
         setIsSubmitting(true);
+
         try {
-            // Clean up the form data before sending
+            // Validate required fields based on service type
+            if (!formData.serviceType) {
+                throw new Error('Please select a service type');
+            }
+
+            // Additional validation based on service type
+            if (formData.serviceType === 'ams' && !formData.marketplaces?.length) {
+                throw new Error('Please select at least one marketplace');
+            }
+
+            // Prepare request data
             const requestData = {
                 ...formData,
-                // Include user information
-                userName: userData?.name,
                 userEmail: userData?.email,
                 // Remove empty strings and null values
                 ...Object.fromEntries(
@@ -791,23 +774,42 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
             
             let response;
             if (submittedRequest?._id && isEditing) {
-                response = await axiosInstance.put(`api/partner-requests/${submittedRequest._id}`, requestData);
+                // Check if the request is already processed
+                const checkResponse = await axiosInstance.get(`/api/partner-requests/${submittedRequest._id}`);
+                if (checkResponse.data.data.status === 'processed') {
+                    toast.error('Cannot update a processed request');
+                    setIsEditing(false);
+                    return;
+                }
+                
+                response = await axiosInstance.put(`/api/partner-requests/${submittedRequest._id}`, requestData);
                 console.log('Update response:', response.data);
                 toast.success('Request updated successfully');
             } else {
-                response = await axiosInstance.post('api/partner-requests', requestData);
+                response = await axiosInstance.post('/api/partner-requests', requestData);
                 console.log('Create response:', response.data);
                 toast.success('Request created successfully');
             }
             
             // Update the submitted request with the new data
-            setSubmittedRequest(response.data.data);
-            setIsEditing(false);
+            if (response.data.success) {
+                setSubmittedRequest(response.data.data);
+                setIsEditing(false);
+
+                // Call onSubmit callback if provided
+                if (onSubmit) {
+                    onSubmit(response.data.data);
+                }
+            } else {
+                throw new Error(response.data.message || 'Failed to save request');
+            }
         } catch (error) {
             console.error('Full error details:', error);
             console.error('Error response:', error.response?.data);
             
-            let errorMessage = 'Failed to save request. Please try again.';
+            let errorMessage = process.env.NODE_ENV === 'production'
+                ? 'Unable to save your request. Please try again or contact support if the issue persists.'
+                : 'Failed to save request. Please try again.';
             
             if (error.response) {
                 if (error.response.status === 400) {
@@ -823,13 +825,17 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
                 } else if (error.response.status === 403) {
                     errorMessage = 'You do not have permission to perform this action';
                 } else if (error.response.status === 500) {
-                    errorMessage = error.response.data?.message || 'Server error. Please try again later';
+                    errorMessage = process.env.NODE_ENV === 'production'
+                        ? 'A server error occurred. Our team has been notified and is working on it.'
+                        : error.response.data?.message || 'Server error. Please try again later';
                     console.error('Server error details:', error.response.data?.error);
                 }
             } else if (error.request) {
-                errorMessage = 'No response from server. Please check your connection';
+                errorMessage = process.env.NODE_ENV === 'production'
+                    ? 'Unable to connect to the server. Please check your connection and try again.'
+                    : 'No response from server. Please check your connection';
             } else {
-                errorMessage = 'Error preparing request. Please try again';
+                errorMessage = error.message || 'Error preparing request. Please try again';
             }
             
             toast.error(errorMessage);
