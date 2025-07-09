@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Mail,
@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
-import { simulateApiCall } from "../config/mockData";
+import apiService from "../config/api.config";
+import { toast } from 'react-toastify';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,6 +20,15 @@ const Footer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
+
+  useEffect(() => {
+    if (isSubmitted) {
+      const timer = setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000); // Hide success message after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [isSubmitted]);
 
   // Hide footer on login page
   if (location.pathname === "/login") return null;
@@ -47,21 +57,23 @@ const Footer = () => {
     }
 
     try {
-      const response = await simulateApiCall({ 
-        success: true,
-        message: "Successfully subscribed to newsletter!"
-      });
-
+      const response = await apiService.post('/api/newsletter/subscribe', { email });
+      
       if (response.success) {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
+        toast.success("Successfully subscribed to newsletter!", {
+          autoClose: 3000 // Close toast after 3 seconds
+        });
       } else {
-        setError("Failed to subscribe. Please try again.");
+        setError(response.message || "Failed to subscribe. Please try again.");
+        toast.error(response.message || "Failed to subscribe. Please try again.");
       }
     } catch (err) {
       console.error("Newsletter subscription error:", err.message);
       setError("Failed to subscribe. Please try again.");
+      toast.error("Failed to subscribe. Please try again.");
       setIsSubmitted(false);
     } finally {
       setIsLoading(false);

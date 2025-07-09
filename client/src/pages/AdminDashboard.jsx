@@ -8,12 +8,12 @@ import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
 import UserForm from '../components/admin/UserForm';
 import PartnerRequestManagement from '../components/admin/PartnerRequestManagement';
+import NewsletterSubscribers from '../components/admin/NewsletterSubscribers';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
-    const [subscribers, setSubscribers] = useState([]);
-    const [activeSection, setActiveSection] = useState('users');
+    const [activeSection, setActiveSection] = useState('dashboard');
     const [isLoading, setIsLoading] = useState(true);
     const [selectedUser, setSelectedUser] = useState(null);
     const [showUserForm, setShowUserForm] = useState(false);
@@ -25,37 +25,18 @@ const AdminDashboard = () => {
 
     const fetchData = async () => {
         try {
-            const [statsResponse, usersResponse, subscribersResponse] = await Promise.all([
+            const [statsResponse, usersResponse] = await Promise.all([
                 axiosInstance.get('/api/admin/dashboard-stats'),
-                axiosInstance.get('/api/admin/users'),
-                axiosInstance.get('/api/admin/subscribers')
+                axiosInstance.get('/api/admin/users')
             ]);
 
             setStats(statsResponse.data.stats);
             setUsers(usersResponse.data.users);
-            setSubscribers(subscribersResponse.data.subscribers);
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
             toast.error('Failed to fetch data');
             setIsLoading(false);
-        }
-    };
-
-    const handleUnsubscribe = async (subscriberId) => {
-        try {
-            await axiosInstance.delete(`/api/newsletter/${subscriberId}`);
-            toast.success('Subscriber removed successfully');
-            // Update the subscribers list
-            setSubscribers(subscribers.filter(sub => sub._id !== subscriberId));
-            // Update the stats
-            setStats(prev => ({
-                ...prev,
-                totalSubscribers: (prev.totalSubscribers || 0) - 1
-            }));
-        } catch (error) {
-            console.error('Error unsubscribing:', error);
-            toast.error('Failed to remove subscriber');
         }
     };
 
@@ -116,8 +97,8 @@ const AdminDashboard = () => {
                             <p className="text-3xl font-bold text-green-600">{stats?.totalSubscribers || 0}</p>
                         </div>
                         <div className="bg-white rounded-lg shadow p-6">
-                            <h3 className="text-lg font-semibold mb-2">Active Users</h3>
-                            <p className="text-3xl font-bold text-green-600">{stats?.activeUsers || 0}</p>
+                            <h3 className="text-lg font-semibold mb-2">Contact Messages</h3>
+                            <p className="text-3xl font-bold text-green-600">{stats?.totalContacts || 0}</p>
                         </div>
                     </div>
                 );
@@ -192,58 +173,13 @@ const AdminDashboard = () => {
                 );
 
             case 'newsletter':
-                return (
-                    <div className="bg-white rounded-lg shadow overflow-hidden">
-                        <div className="p-6">
-                            <h2 className="text-xl font-semibold mb-4">Newsletter Subscribers</h2>
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscribed Date</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {subscribers.map((subscriber) => (
-                                            <tr key={subscriber._id}>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-900">{subscriber.email}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {new Date(subscriber.subscribedAt).toLocaleDateString()}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button 
-                                                        className="text-red-600 hover:text-red-900"
-                                                        onClick={() => handleUnsubscribe(subscriber._id)}
-                                                    >
-                                                        Unsubscribe
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                );
+                return <NewsletterSubscribers />;
 
             case 'contacts':
                 return <ContactSubmissions />;
 
             case 'partner-requests':
                 return <PartnerRequestManagement />;
-
-            case 'settings':
-                return (
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h2 className="text-xl font-semibold mb-4">Settings</h2>
-                        <p>Settings content goes here...</p>
-                    </div>
-                );
 
             default:
                 return null;
@@ -252,8 +188,8 @@ const AdminDashboard = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
         );
     }
@@ -271,21 +207,19 @@ const AdminDashboard = () => {
                             <button
                                 key={item.id}
                                 onClick={() => setActiveSection(item.id)}
-                                className={`w-full flex items-center px-6 py-3 text-left ${
-                                    activeSection === item.id
-                                        ? 'bg-green-50 text-green-600'
-                                        : 'text-gray-500 hover:bg-gray-50'
+                                className={`w-full flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-800 ${
+                                    activeSection === item.id ? 'bg-gray-100 text-gray-800' : ''
                                 }`}
                             >
-                                <item.icon className="w-5 h-5 mr-3" />
+                                <item.icon className="h-5 w-5 mr-3" />
                                 {item.label}
                             </button>
                         ))}
                         <button
                             onClick={handleLogout}
-                            className="w-full flex items-center px-6 py-3 text-left text-red-500 hover:bg-red-50"
+                            className="w-full flex items-center px-6 py-3 text-red-600 hover:bg-red-50"
                         >
-                            <LogOut className="w-5 h-5 mr-3" />
+                            <LogOut className="h-5 w-5 mr-3" />
                             Logout
                         </button>
                     </nav>
