@@ -3,7 +3,7 @@
 import { useContext, useState } from "react"
 import { User, Mail, Phone, Lock, ArrowLeft } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
+import axiosInstance from "../config/api.config"
 import { toast } from "react-toastify"
 import logo from "../assets/99digicom.png"
 import { useAuth } from "../context/AuthContext"
@@ -30,11 +30,7 @@ const PartnerLogin = () => {
 
   const checkPartnerRequest = async (token) => {
     try {
-      const response = await axios.get('https://99digicom.com/api/partner/has-request', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      const response = await axiosInstance.get('/api/partner/has-request');
       return response.data.hasRequest;
     } catch (error) {
       console.error('Error checking partner request:', error);
@@ -47,30 +43,30 @@ const PartnerLogin = () => {
     setIsLoading(true)
 
     try {
-      const url = `https://99digicom.com/api/auth/${state === "Sign Up" ? "register" : "login"}`
+      const endpoint = state === "Sign Up" ? "/api/auth/register" : "/api/auth/login"
       const payload = state === "Sign Up" ? { name, email, phone, password } : { email, password }
 
-      const { data } = await axios.post(url, payload)
+      const { data } = await axiosInstance.post(endpoint, payload)
 
       if (data.success) {
         // Store the token and user data
-        handleLogin(data.token, data.user)
+        await handleLogin(data.token, data.user)
         
         if (state === "Sign Up") {
           toast.success("Account created successfully!")
           // For new registrations, always redirect to create partner request
-          navigate("/partner", { state: { section: 'create-user' } })
+          navigate("/partner")
         } else {
           // For login, check if user has existing partner request
           const hasRequest = await checkPartnerRequest(data.token)
           toast.success("Login successful!")
           
           // Redirect based on whether they have a request or not
-          navigate("/partner", { 
-            state: { 
-              section: hasRequest ? 'dashboard' : 'create-user' 
-            } 
-          })
+          if (hasRequest) {
+            navigate("/partner")
+          } else {
+            navigate("/partner", { state: { section: 'create-user' } })
+          }
         }
       } else {
         toast.error(data.message || "Authentication failed")

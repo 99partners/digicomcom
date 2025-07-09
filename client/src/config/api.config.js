@@ -2,13 +2,14 @@ import axios from 'axios';
 
 // Ensure HTTPS is always used in production
 export const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://api.99digicom.com'
+  ? 'https://99digicom.com'  // Production URL
   : 'http://localhost:5050';
 
 // Configure axios defaults
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+  timeout: 30000, // 30 second timeout for production
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -67,6 +68,7 @@ axiosInstance.interceptors.response.use(
           return await axiosInstance(originalRequest);
         } catch (retryError) {
           console.error('Retry failed:', retryError);
+          return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
         }
       }
     }
@@ -74,7 +76,6 @@ axiosInstance.interceptors.response.use(
     // Handle CORS errors
     if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
       console.error('CORS or network error:', error);
-      // You might want to show a user-friendly message here
       return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
     }
 
@@ -92,11 +93,25 @@ axiosInstance.interceptors.response.use(
           window.location.href = '/partnerlogin';
         }
       }
+      return Promise.reject(new Error('Your session has expired. Please log in again.'));
     }
     
-    // Handle CORS errors
+    // Handle forbidden errors
     if (error.response?.status === 403) {
       console.error('Access forbidden:', error.response.data);
+      return Promise.reject(new Error('You do not have permission to perform this action.'));
+    }
+
+    // Handle server errors
+    if (error.response?.status >= 500) {
+      console.error('Server error:', error.response.data);
+      return Promise.reject(new Error('Server error occurred. Please try again later.'));
+    }
+
+    // Handle other errors
+    if (error.response?.data?.message) {
+      console.error('API Error:', error.response.data.message);
+      return Promise.reject(new Error(error.response.data.message));
     }
 
     return Promise.reject(error);

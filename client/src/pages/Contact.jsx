@@ -6,7 +6,10 @@ import {
   Clock,
   Send,
   MessageCircle,
+  Loader2,
 } from 'lucide-react';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 const Contact = () => {
   useEffect(() => {
@@ -53,11 +56,17 @@ const Contact = () => {
     }
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setSuccess("Your message has been sent successfully! We'll get back to you within 24 hours.");
-      setSupportForm({ name: "", email: "", phone: "", message: "" });
+      const response = await axios.post(getApiUrl('api/contact/submit'), supportForm);
+      
+      if (response.data.success) {
+        setSuccess("Your message has been sent successfully! We'll get back to you within 24 hours.");
+        setSupportForm({ name: "", email: "", phone: "", message: "" });
+      } else {
+        setError(response.data.message || "Something went wrong. Please try again.");
+      }
     } catch (error) {
-      setError("Something went wrong. Please try again.");
+      console.error('Error submitting contact form:', error);
+      setError(error.response?.data?.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
