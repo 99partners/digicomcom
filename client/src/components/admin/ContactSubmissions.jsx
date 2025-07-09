@@ -14,7 +14,7 @@ const ContactSubmissions = () => {
         try {
             const response = await axiosInstance.get('/api/admin/contacts');
             if (response.data.success) {
-                setContacts(response.data.data);
+            setContacts(response.data.data);
             } else {
                 toast.error('Failed to fetch contact submissions');
             }
@@ -71,7 +71,7 @@ const ContactSubmissions = () => {
             {contacts.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">No contact submissions found</p>
             ) : (
-                <div className="overflow-x-auto">
+            <div className="overflow-x-auto">
                     <table className="min-w-full">
                         <thead>
                             <tr className="border-b">
@@ -80,35 +80,35 @@ const ContactSubmissions = () => {
                                 <th className="text-left py-4 px-4 text-gray-500 font-medium">EMAIL</th>
                                 <th className="text-left py-4 px-4 text-gray-500 font-medium">PHONE</th>
                                 <th className="text-left py-4 px-4 text-gray-500 font-medium">MESSAGE</th>
-                            </tr>
-                        </thead>
+                        </tr>
+                    </thead>
                         <tbody>
-                            {contacts.map((contact) => (
+                        {contacts.map((contact) => (
                                 <tr key={contact._id} className="border-b last:border-b-0">
                                     <td className="py-4 px-4 text-gray-600">
                                         {formatDate(contact.createdAt)}
-                                    </td>
+                                </td>
                                     <td className="py-4 px-4 text-gray-600">
-                                        {contact.name}
-                                    </td>
+                                    {contact.name}
+                                </td>
                                     <td className="py-4 px-4 text-gray-600">
                                         <a href={`mailto:${contact.email}`} className="hover:underline">
-                                            {contact.email}
+                                    {contact.email}
                                         </a>
-                                    </td>
+                                </td>
                                     <td className="py-4 px-4 text-gray-600">
                                         <a href={`tel:${contact.phone}`} className="hover:underline">
-                                            {contact.phone}
+                                    {contact.phone}
                                         </a>
-                                    </td>
+                                </td>
                                     <td className="py-4 px-4 text-gray-600 max-w-xs truncate">
-                                        {contact.message}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                    {contact.message}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             )}
         </div>
     );
