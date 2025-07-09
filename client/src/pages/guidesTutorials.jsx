@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Link } from "react-router-dom"
-import { FileText, Download, Video, List, Instagram, ArrowRight } from "lucide-react"
+import { FileText, Download, Video, List, Instagram } from "lucide-react"
 
 const GuidesTutorials = () => {
   const [activePlatform, setActivePlatform] = useState("All")
@@ -70,7 +69,7 @@ const GuidesTutorials = () => {
           items: [
             { name: "Accepting, Packing & Dispatching Orders", type: "Guide", icon: FileText, platforms: ["All"] },
             { name: "Using Seller Panels", type: "Guide", icon: FileText, platforms: ["All"] },
-            { name: "Auto-Responses for Order Delay", type: "Guide", icon: FileText, platforms: ["All"] },
+            { name: "Auto-Responses for Order Delay", type: "Guide", premium: true, icon: FileText, platforms: ["All"] },
             { name: "Inventory Sync Hacks", type: "Guide", icon: FileText, platforms: ["All"] },
           ],
         },
@@ -161,7 +160,7 @@ const GuidesTutorials = () => {
 
       {/* Guides Section */}
       <section className="py-16 px-4 bg-green-50">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Learn with Us</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -186,95 +185,54 @@ const GuidesTutorials = () => {
             ))}
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Sticky Sidebar */}
-            <div className="md:w-1/4 md:sticky md:top-24">
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Sections</h3>
-                <ul className="space-y-2">
-                  {filteredGuides.map((section) => (
-                    <li key={section.section}>
-                      <button
-                        onClick={() => setActiveAccordion(section.section)}
-                        className={`w-full text-left text-sm font-medium ${
-                          activeAccordion === section.section
-                            ? "text-green-600"
-                            : "text-gray-600 hover:text-green-700"
-                        }`}
-                      >
-                        {section.section}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6">
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center text-green-600 hover:text-green-800 font-medium"
-                  >
-                    Chat with an Expert
-                    <ArrowRight className="ml-1 h-4 w-4" />
-                  </Link>
-                  <Link
-                    to="/contact"
-                    className="block mt-2 text-green-600 hover:text-green-800 font-medium"
-                  >
-                    Request a Custom Walkthrough
-                    <ArrowRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
+          {/* Main Content */}
+          <div>
+            {filteredGuides.map((section) => (
+              <div key={section.section} className="mb-6">
+                <button
+                  onClick={() =>
+                    setActiveAccordion(activeAccordion === section.section ? null : section.section)
+                  }
+                  className="w-full text-left bg-white rounded-lg shadow-lg p-6 flex justify-between items-center"
+                >
+                  <h3 className="text-xl font-semibold text-gray-900">{section.section}</h3>
+                  <span>{activeAccordion === section.section ? "−" : "+"}</span>
+                </button>
+                {(activeAccordion === section.section || section.expandedByDefault) && (
+                  <div className="mt-4 space-y-6">
+                    {section.content.map((content, index) => (
+                      <div key={index} className="bg-white rounded-lg shadow-lg p-6">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-4">{content.title}</h4>
+                        <ul className="space-y-4">
+                          {content.items.map((item, itemIndex) => (
+                            <li key={itemIndex} className="flex items-start">
+                              <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-4">
+                                <item.icon className="h-5 w-5 text-green-600" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                                <p className="text-sm text-gray-600">{item.type}</p>
+                                {item.download && (
+                                  <button className="inline-flex items-center text-green-600 hover:text-green-800 mt-2">
+                                    <Download className="h-4 w-4 mr-1" />
+                                    Download Now
+                                  </button>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="md:w-3/4">
-              {filteredGuides.map((section) => (
-                <div key={section.section} className="mb-6">
-                  <button
-                    onClick={() =>
-                      setActiveAccordion(activeAccordion === section.section ? null : section.section)
-                    }
-                    className="w-full text-left bg-white rounded-lg shadow-lg p-6 flex justify-between items-center"
-                  >
-                    <h3 className="text-xl font-semibold text-gray-900">{section.section}</h3>
-                    <span>{activeAccordion === section.section ? "−" : "+"}</span>
-                  </button>
-                  {(activeAccordion === section.section || section.expandedByDefault) && (
-                    <div className="mt-4 space-y-6">
-                      {section.content.map((content, index) => (
-                        <div key={index} className="bg-white rounded-lg shadow-lg p-6">
-                          <h4 className="text-lg font-semibold text-gray-900 mb-4">{content.title}</h4>
-                          <ul className="space-y-4">
-                            {content.items.map((item, itemIndex) => (
-                              <li key={itemIndex} className="flex items-start">
-                                <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-4">
-                                  <item.icon className="h-5 w-5 text-green-600" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                                  <p className="text-sm text-gray-600">{item.type}</p>
-                                  {item.download && (
-                                    <button className="inline-flex items-center text-green-600 hover:text-green-800 mt-2">
-                                      <Download className="h-4 w-4 mr-1" />
-                                      Download Now
-                                    </button>
-                                  )}
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
 
           {/* Downloadable Resource Library */}
           <div className="mt-12">
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">Downloadable Resource Library</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">Downloadable Resource Library</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {downloadableResources
                 .filter((resource) => activePlatform === "All" || resource.platforms.includes(activePlatform))
@@ -298,7 +256,7 @@ const GuidesTutorials = () => {
 
           {/* Video Tutorials */}
           <div className="mt-12">
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">Video Tutorials (Coming Soon)</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">Video Tutorials (Coming Soon)</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {videoTutorials
                 .filter((video) => activePlatform === "All" || video.platforms.includes(activePlatform))
@@ -314,12 +272,9 @@ const GuidesTutorials = () => {
                   </div>
                 ))}
             </div>
-            
           </div>
         </div>
       </section>
-
-    
     </div>
   )
 }

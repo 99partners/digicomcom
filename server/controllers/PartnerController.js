@@ -41,8 +41,8 @@ export const createRequest = async (req, res) => {
 
         // Create new request
         const request = new PartnerRequest({
-            userId,
-            serviceType
+            ...req.body,
+            userId
         });
 
         console.log('Creating new request:', request);
@@ -53,12 +53,11 @@ export const createRequest = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'Request created successfully',
-            request
+            data: request
         });
     } catch (error) {
         console.error('Detailed error in createRequest:', error);
         
-        // Check for MongoDB validation errors
         if (error.name === 'ValidationError') {
             return res.status(400).json({
                 success: false,
@@ -67,7 +66,6 @@ export const createRequest = async (req, res) => {
             });
         }
 
-        // Check for MongoDB duplicate key error
         if (error.code === 11000) {
             return res.status(400).json({
                 success: false,
@@ -92,12 +90,13 @@ export const checkExistingRequest = async (req, res) => {
         }
 
         const userId = req.user.id;
-        const request = await PartnerRequest.findOne({ userId });
+        const request = await PartnerRequest.findOne({ userId })
+            .sort({ createdAt: -1 });
         
         res.json({
             success: true,
             hasRequest: !!request,
-            request: request || null
+            data: request
         });
     } catch (error) {
         console.error('Error checking request:', error);
@@ -106,7 +105,7 @@ export const checkExistingRequest = async (req, res) => {
             message: error.message || 'Error checking request status'
         });
     }
-}; 
+};
 
 export const getPartnerRequests = async (req, res) => {
     try {
@@ -130,6 +129,50 @@ export const getPartnerRequests = async (req, res) => {
         res.status(500).json({
             success: false,
             message: error.message || 'Error fetching partner requests'
+        });
+    }
+};
+
+export const getDashboardStats = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: 'User not authenticated'
+            });
+        }
+
+        const userId = req.user.id;
+
+        // Get the user's requests
+        const requests = await PartnerRequest.find({ userId })
+            .sort({ createdAt: -1 })
+            .limit(5);
+
+        // Convert requests to activity items
+        const recentActivity = requests.map(request => ({
+            description: `${request.serviceType.toUpperCase()} request ${request.status}`,
+            timestamp: new Date(request.createdAt).toLocaleDateString(),
+            type: request.status
+        }));
+
+        // For now, return mock data for other stats
+        const stats = {
+            totalOrders: 0,
+            revenue: 0,
+            activeProducts: 0,
+            recentActivity
+        };
+
+        res.json({
+            success: true,
+            stats
+        });
+    } catch (error) {
+        console.error('Error fetching dashboard stats:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error fetching dashboard statistics'
         });
     }
 }; 

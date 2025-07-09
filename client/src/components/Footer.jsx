@@ -78,17 +78,10 @@ const Footer = () => {
     }
   };
 
-  const quickLinks1 = [
+  const quickLinks = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
-    { name: "Services", path: "/services" },
-    { name: "Product Partners", path: "/partners" },
-  ];
-
-  const quickLinks2 = [
     { name: "Shop", path: "/shop" },
-    { name: "Resources", path: "/resources" },
-    { name: "Careers", path: "/careers" },
     { name: "Contact Us", path: "/contact" },
   ];
 
@@ -109,13 +102,13 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: Linkedin,
-      url: "https://linkedin.com/company/99digicom",
+      url: "https://www.linkedin.com/company/99-partners-digicom-private-limited/",
       label: "LinkedIn",
     },
-    { icon: Twitter, url: "https://twitter.com/99digicom", label: "X" },
+    { icon: Twitter, url: "https://x.com/99_partners?t=E3xMTe3OeDRrm3eDysWzVQ&s=08", label: "X" },
     {
       icon: Instagram,
-      url: "https://instagram.com/99digicom",
+      url: "https://www.instagram.com/99partners_?igsh=Njhlbmh5NTdkMWt2",
       label: "Instagram",
     },
     {
@@ -173,8 +166,9 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-gray-400 max-w-md">
-              Empowering businesses in the digital commerce era with innovative
-              solutions and strategic partnerships.
+              Setup, Manage, Advertise, and Co-Brand across all Top marketplaces.
+
+
             </p>
 
             <div className="text-xs sm:text-sm text-gray-400 space-y-3">
@@ -211,32 +205,18 @@ const Footer = () => {
                 <h3 className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
                   Quick Links
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
-                    {quickLinks1.map((link, i) => (
-                      <li key={i}>
-                        <Link
-                          to={link.path}
-                          className="hover:text-white transition-colors"
-                        >
-                          {link.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                  <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
-                    {quickLinks2.map((link, i) => (
-                      <li key={i}>
-                        <Link
-                          to={link.path}
-                          className="hover:text-white transition-colors"
-                        >
-                          {link.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
+                  {quickLinks.map((link, i) => (
+                    <li key={i}>
+                      <Link
+                        to={link.path}
+                        className="hover:text-white transition-colors"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div>
                 <h3 className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
