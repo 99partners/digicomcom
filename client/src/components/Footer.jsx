@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Mail,
@@ -20,6 +20,15 @@ const Footer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
+
+  useEffect(() => {
+    if (isSubmitted) {
+      const timer = setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000); // Hide success message after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [isSubmitted]);
 
   // Hide footer on login page
   if (location.pathname === "/login") return null;
@@ -54,7 +63,9 @@ const Footer = () => {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
-        toast.success("Successfully subscribed to newsletter!");
+        toast.success("Successfully subscribed to newsletter!", {
+          autoClose: 3000 // Close toast after 3 seconds
+        });
       } else {
         setError(response.message || "Failed to subscribe. Please try again.");
         toast.error(response.message || "Failed to subscribe. Please try again.");
