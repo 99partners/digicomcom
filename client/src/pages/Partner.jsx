@@ -4,10 +4,10 @@ import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
-import { 
-  LogOut, 
-  Star, 
-  Crown, 
+import {
+  LogOut,
+  Star,
+  Crown,
   Check,
   LayoutDashboard,
   Users,
@@ -20,27 +20,33 @@ import {
   Mail,
   CheckCircle,
   XCircle,
-  User
+  User,
+<<<<<<< HEAD
+  Clock,
+  Plus,
+  Eye
+=======
+  ArrowRight,
+  Clock
+>>>>>>> c5fa3dedafcae70f5443fbaa9ac9aeea72ed0ebb
 } from 'lucide-react';
 
 import PartnerUserForm from '../components/partner/PartnerUserForm';
 
 const Partner = () => {
-  const [partnerData, setPartnerData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedPlan, setSelectedPlan] = useState(null);
   const [activeSection, setActiveSection] = useState('dashboard');
-  const [showPlans, setShowPlans] = useState(false);
-  const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [partnerData, setPartnerData] = useState(null);
   const [showUserForm, setShowUserForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [hasCreatedRequest, setHasCreatedRequest] = useState(false);
-  const [dashboardStats, setDashboardStats] = useState({
-    totalOrders: 0,
-    revenue: 0,
-    activeProducts: 0,
-    recentActivity: []
-  });
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [showPlans, setShowPlans] = useState(false);
+  // Add new states for My Requests
+  const [requests, setRequests] = useState([]);
+  const [isRequestsLoading, setIsRequestsLoading] = useState(false);
+
   const navigate = useNavigate();
   const { handleLogout, user, checkAuthStatus } = useAuth();
   const { backendUrl } = useAppContext();
@@ -48,7 +54,7 @@ const Partner = () => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'create-user', label: 'Create Request', icon: FileText },
-    { id: 'customers', label: 'My Requests', icon: Users },
+    { id: 'my-requests', label: 'My Requests', icon: Users },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'support', label: 'Support', icon: HelpCircle },
@@ -224,7 +230,7 @@ const Partner = () => {
     try {
       const response = await axiosInstance.get('/api/partner/dashboard-stats');
       if (response.data.success) {
-        setDashboardStats(response.data.stats);
+        // setDashboardStats(response.data.stats); // This state was removed, so this line is removed
       }
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
@@ -237,6 +243,38 @@ const Partner = () => {
       fetchDashboardStats();
     }
   }, [hasCreatedRequest, activeSection]);
+
+  useEffect(() => {
+    if (activeSection === 'my-requests') {
+      fetchRequests();
+    }
+  }, [activeSection]);
+
+  const fetchRequests = async () => {
+    try {
+      setIsRequestsLoading(true);
+      const response = await axiosInstance.get('/api/partner/my-requests');
+      if (response.data.success) {
+        setRequests(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+      if (error.response?.status === 401) {
+        toast.error('Please log in again');
+        navigate('/partnerlogin');
+      } else {
+        toast.error('Failed to load requests');
+      }
+    } finally {
+      setIsRequestsLoading(false);
+    }
+  };
+
+  const handleViewDetails = (request) => {
+    setSelectedUser(request);
+    setShowUserForm(true);
+    setActiveSection('create-user');
+  };
 
   const renderDashboardContent = () => {
     if (showPlans) {
@@ -267,7 +305,7 @@ const Partner = () => {
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
                     <p className="text-gray-600 text-sm mb-4">{plan.description}</p>
-                    
+
                     <div className="mb-4">
                       <div className="flex items-center gap-2">
                         <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
@@ -307,7 +345,7 @@ const Partner = () => {
 
     return (
       <div className="space-y-6">
-        {/* User Profile Overview */}
+        {/* User Profile Card */}
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-gray-900">Profile Overview</h2>
@@ -328,7 +366,7 @@ const Partner = () => {
               </button>
             )}
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* User Details */}
             <div className="space-y-4">
@@ -339,7 +377,7 @@ const Partner = () => {
                   <p className="font-medium text-gray-900">{partnerData?.name || 'Not provided'}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start space-x-4">
                 <Mail className="w-5 h-5 text-gray-500 mt-1" />
                 <div>
@@ -370,21 +408,21 @@ const Partner = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-500">Total Orders</p>
-                <p className="text-2xl font-semibold text-gray-900">{dashboardStats.totalOrders}</p>
+                <p className="text-2xl font-semibold text-gray-900">{/* dashboardStats.totalOrders */}</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-500">Revenue</p>
-                <p className="text-2xl font-semibold text-gray-900">₹{dashboardStats.revenue}</p>
+                <p className="text-2xl font-semibold text-gray-900">₹{/* dashboardStats.revenue */}</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-500">Active Products</p>
-                <p className="text-2xl font-semibold text-gray-900">{dashboardStats.activeProducts}</p>
+                <p className="text-2xl font-semibold text-gray-900">{/* dashboardStats.activeProducts */}</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-500">Account Age</p>
                 <p className="text-2xl font-semibold text-gray-900">
-                  {partnerData?.createdAt ? 
-                    `${Math.floor((new Date() - new Date(partnerData.createdAt)) / (1000 * 60 * 60 * 24))} days` 
+                  {partnerData?.createdAt ?
+                    `${Math.floor((new Date() - new Date(partnerData.createdAt)) / (1000 * 60 * 60 * 24))} days`
                     : '0 days'}
                 </p>
               </div>
@@ -392,30 +430,173 @@ const Partner = () => {
           </div>
         </div>
 
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Total Orders</p>
+                <p className="text-2xl font-semibold">0</p>
+              </div>
+              <BarChart className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Revenue</p>
+                <p className="text-2xl font-semibold">₹0</p>
+              </div>
+              <Wallet className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Active Products</p>
+                <p className="text-2xl font-semibold">0</p>
+              </div>
+              <Star className="w-8 h-8 text-green-500" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Verification Status</p>
+                <p className="text-2xl font-semibold text-green-600">
+                  {partnerData?.isAccountVerified ? 'Verified' : 'Pending'}
+                </p>
+              </div>
+              {partnerData?.isAccountVerified ? (
+                <CheckCircle className="w-8 h-8 text-green-500" />
+              ) : (
+                <XCircle className="w-8 h-8 text-yellow-500" />
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Recent Activity */}
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
-          {dashboardStats.recentActivity && dashboardStats.recentActivity.length > 0 ? (
-            <div className="space-y-4">
-              {dashboardStats.recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between py-3 border-b last:border-0">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                      <Bell className="w-4 h-4 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{activity.title}</p>
-                      <p className="text-xs text-gray-500">{activity.timestamp}</p>
-                    </div>
-                  </div>
-                  <span className="text-sm text-gray-500">{activity.status}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 text-sm">No recent activity to display</p>
-          )}
+          <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+          <p className="text-gray-500 text-sm">No recent activity to display</p>
         </div>
+      </div>
+    );
+  };
+
+  const renderMyRequests = () => {
+    if (isRequestsLoading) {
+      return (
+        <div className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-white rounded-lg shadow-sm">
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-gray-900">My Requests</h2>
+            <button
+              onClick={() => setActiveSection('create-user')}
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              New Request
+            </button>
+          </div>
+        </div>
+
+        {requests.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="mb-4">
+              <FileText className="w-12 h-12 text-gray-400 mx-auto" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900">No requests yet</h3>
+            <p className="mt-1 text-sm text-gray-500">Create your first request to get started</p>
+            <button
+              onClick={() => setActiveSection('create-user')}
+              className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Create Request
+            </button>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Service Type
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Created At
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Last Updated
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {requests.map((request) => (
+                  <tr key={request._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="capitalize">{request.serviceType}</span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        request.status === 'processed' 
+                          ? 'bg-green-100 text-green-800'
+                          : request.status === 'pending'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : request.status === 'rejected'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {request.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(request.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(request.updatedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button
+                        onClick={() => handleViewDetails(request)}
+                        className="inline-flex items-center text-green-600 hover:text-green-900 transition-colors duration-200"
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     );
   };
@@ -429,31 +610,30 @@ const Partner = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="flex">
-        {/* Sidebar */}
-        <div className="w-64 bg-white shadow-lg fixed h-full">
-          <div className="p-6">
-            <h1 className="text-2xl font-bold text-gray-900">Partner Panel</h1>
+    <div className="min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div className="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-30">
+        <div className="flex flex-col h-full">
+          {/* Logo/Brand Section */}
+          <div className="p-4 border-b border-gray-200">
+            <h1 className="text-xl font-bold text-green-600">Partner Dashboard</h1>
           </div>
+<<<<<<< HEAD
           <nav className="mt-6">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleSectionChange(item.id)}
-                  className={`w-full flex items-center px-6 py-3 text-sm font-medium transition-colors ${
-                    activeSection === item.id
-                      ? 'text-green-600 bg-green-50'
-                      : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
-                  }`}
-                >
-                  <Icon className="h-5 w-5 mr-3" />
-                  {item.label}
-                </button>
-              );
-            })}
+            {menuItems.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => handleSectionChange(id)}
+                className={`w-full flex items-center px-6 py-3 text-sm font-medium transition-colors ${
+                  activeSection === id
+                    ? 'text-green-600 bg-green-50'
+                    : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
+                }`}
+              >
+                <Icon className="h-5 w-5 mr-3" />
+                {label}
+              </button>
+            ))}
             <button
               onClick={onLogout}
               className="w-full flex items-center px-6 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
@@ -461,28 +641,49 @@ const Partner = () => {
               <LogOut className="h-5 w-5 mr-3" />
               Logout
             </button>
-          </nav>
-        </div>
+=======
 
-        {/* Main Content */}
-        <div className="flex-1 ml-64 p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Welcome back, {user?.name || 'Partner'}
-              </h1>
-              <div className="flex items-center space-x-4">
-                {!user?.isAccountVerified && (
-                  <button
-                    onClick={sendVerificationOtp}
-                    disabled={isProfileLoading}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isProfileLoading ? 'Sending...' : 'Verify Email'}
-                  </button>
-                )}
+          {/* Menu Items */}
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+            {menuItems.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleSectionChange(item.id)}
+                  disabled={!hasCreatedRequest && item.id !== 'create-user'}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                    activeSection === item.id
+                      ? 'bg-green-50 text-green-600'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  } ${
+                    !hasCreatedRequest && item.id !== 'create-user'
+                      ? 'opacity-50 cursor-not-allowed'
+                      : ''
+                  }`}
+                >
+                  <IconComponent className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                </button>
+              );
+            })}
+>>>>>>> c5fa3dedafcae70f5443fbaa9ac9aeea72ed0ebb
+          </nav>
+
+          {/* User Profile Section */}
+          <div className="p-4 border-t border-gray-200">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                <User className="w-6 h-6 text-green-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {partnerData?.name || 'Partner'}
+                </p>
+                <p className="text-xs text-gray-500 truncate">{partnerData?.email}</p>
               </div>
             </div>
+<<<<<<< HEAD
 
             {/* Render active section content */}
             {activeSection === 'dashboard' && renderDashboardContent()}
@@ -493,8 +694,222 @@ const Partner = () => {
                 onCancel={handleUserFormCancel}
               />
             )}
-            {/* Add other section content here */}
+            {activeSection === 'my-requests' && renderMyRequests()}
+=======
+            <button
+              onClick={onLogout}
+              className="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
+>>>>>>> c5fa3dedafcae70f5443fbaa9ac9aeea72ed0ebb
           </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="ml-64 p-8">
+        {/* Content Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900">
+            {menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Welcome back, {partnerData?.name || 'Partner'}
+          </p>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="space-y-6">
+          {activeSection === 'dashboard' && (
+            <>
+              {/* Stats Overview */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Total Orders</p>
+                      <p className="mt-2 text-3xl font-bold text-gray-900">{dashboardStats.totalOrders}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center">
+                      <BarChart className="w-6 h-6 text-green-600" />
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center text-sm text-gray-500">
+                    <ArrowRight className="w-4 h-4 mr-1" />
+                    <span>View details</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Revenue</p>
+                      <p className="mt-2 text-3xl font-bold text-gray-900">₹{dashboardStats.revenue}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
+                      <Wallet className="w-6 h-6 text-blue-600" />
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center text-sm text-gray-500">
+                    <ArrowRight className="w-4 h-4 mr-1" />
+                    <span>View details</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Active Products</p>
+                      <p className="mt-2 text-3xl font-bold text-gray-900">{dashboardStats.activeProducts}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center">
+                      <Star className="w-6 h-6 text-purple-600" />
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center text-sm text-gray-500">
+                    <ArrowRight className="w-4 h-4 mr-1" />
+                    <span>View details</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Account Age</p>
+                      <p className="mt-2 text-3xl font-bold text-gray-900">
+                        {partnerData?.createdAt ? 
+                          `${Math.floor((new Date() - new Date(partnerData.createdAt)) / (1000 * 60 * 60 * 24))}d` 
+                          : '0d'}
+                      </p>
+                    </div>
+                    <div className="w-12 h-12 bg-yellow-50 rounded-full flex items-center justify-center">
+                      <Clock className="w-6 h-6 text-yellow-600" />
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center text-sm text-gray-500">
+                    <ArrowRight className="w-4 h-4 mr-1" />
+                    <span>View details</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Profile Overview */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-lg font-semibold text-gray-900">Profile Overview</h2>
+                    {!partnerData?.isAccountVerified && (
+                      <button
+                        onClick={sendVerificationOtp}
+                        disabled={isProfileLoading}
+                        className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors"
+                      >
+                        {isProfileLoading ? (
+                          <span className="flex items-center">
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Verifying...
+                          </span>
+                        ) : (
+                          <>
+                            <Mail className="w-4 h-4 mr-2" />
+                            Verify Email
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                        <User className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Full Name</p>
+                        <p className="font-medium text-gray-900">{partnerData?.name || 'Not provided'}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                        <Mail className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-500">Email</p>
+                        <div className="flex items-center justify-between">
+                          <p className="font-medium text-gray-900">{partnerData?.email}</p>
+                          {partnerData?.isAccountVerified ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              Verified
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                              Unverified
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                      <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                        <Crown className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Account Status</p>
+                        <p className="font-medium text-gray-900">
+                          {partnerData?.isAccountVerified ? 'Verified Account' : 'Pending Verification'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recent Activity */}
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-6">Recent Activity</h2>
+                  {dashboardStats.recentActivity && dashboardStats.recentActivity.length > 0 ? (
+                    <div className="space-y-4">
+                      {dashboardStats.recentActivity.map((activity, index) => (
+                        <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                          <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                            <Bell className="w-5 h-5 text-green-600" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-medium text-gray-900">{activity.title}</p>
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                {activity.status}
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">{activity.timestamp}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-500 text-sm">No recent activity to display</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeSection === 'create-user' && (
+            <div className="bg-white rounded-xl shadow-sm">
+              <PartnerUserForm onSubmit={handleUserFormSubmit} onCancel={handleUserFormCancel} />
+            </div>
+          )}
+
+          {/* Add other sections as needed */}
         </div>
       </div>
     </div>
