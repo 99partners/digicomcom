@@ -1,36 +1,34 @@
 "use client"
 
-import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
-import axiosInstance from '../config/api.config';
+import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { Calendar, ArrowRight } from "lucide-react"
+import axios from "axios"
+import { getApiUrl } from '../config/api.config'
 
 const Blogs = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [blogs, setBlogs] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchBlogs();
-  }, []);
-
-  const fetchBlogs = async () => {
-    try {
-      const response = await axiosInstance.get('/api/blogs');
-      setBlogs(response.data.blogs);
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-      toast.error('Failed to fetch blogs');
-    } finally {
-      setIsLoading(false);
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(getApiUrl('api/blogs'))
+        if (response.data.success) {
+          setBlogs(response.data.data)
+        }
+      } catch (error) {
+        setError('Failed to fetch blogs')
+        console.error('Error fetching blogs:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-  };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-      </div>
-    );
-  }
+    fetchBlogs()
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
@@ -55,8 +53,10 @@ const Blogs = () => {
               Explore expert insights and tips to grow your business.
             </p>
           </div>
-          {isLoading ? (
+          {loading ? (
             <div className="text-center text-gray-600">Loading blogs...</div>
+          ) : error ? (
+            <div className="text-center text-red-600">{error}</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {blogs.map((blog) => (
@@ -78,6 +78,7 @@ const Blogs = () => {
                   </div>
                   <div className="p-6">
                     <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Calendar className="h-4 w-4 text-green-600 mr-1" />
                       <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
                       <span className="mx-2">•</span>
                       <span>{blog.readTime}</span>

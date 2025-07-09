@@ -12,8 +12,8 @@ import {
   Users,
   ShoppingCart,
 } from "lucide-react";
-import axiosInstance from '../config/api.config';
-import { toast } from 'react-toastify';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 export default function ForProductPartners() {
   useEffect(() => {
@@ -34,42 +34,34 @@ export default function ForProductPartners() {
     additionalNotes: "",
     consent: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
     try {
-      const response = await axiosInstance.post('/api/partners/submit', formData);
-      toast.success('Form submitted successfully');
-      setFormData({
-        brandName: "",
-        contactPerson: "",
-        email: "",
-        phone: "",
-        website: "",
-        businessType: "",
-        productCategories: [],
-        platforms: [],
-        marketingGoals: [],
-        targetAudience: "",
-        additionalNotes: "",
-        consent: false,
-      });
+      const response = await axios.post(getApiUrl('api/partners/submit'), formData);
+      const data = await response.data;
+      if (data.success) {
+        alert('Thank you for your submission! Our team will contact you shortly.');
+        setFormData({
+          brandName: "",
+          contactPerson: "",
+          email: "",
+          phone: "",
+          website: "",
+          businessType: "",
+          productCategories: [],
+          platforms: [],
+          marketingGoals: [],
+          targetAudience: "",
+          additionalNotes: "",
+          consent: false,
+        });
+      } else {
+        alert('Error submitting form: ' + data.message);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Failed to submit form');
-    } finally {
-      setIsLoading(false);
+      alert('Error submitting form. Please try again.');
     }
   };
 
