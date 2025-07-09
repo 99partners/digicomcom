@@ -18,13 +18,13 @@ import Contact from './pages/Contact';
 import CustomerLogin from './pages/CutomerLogin';
 import PartnerLogin from './pages/PartnerLogin';
 import Partner from './pages/Partner';
-
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
 import CoBrandingPage from './pages/CoBranding';
 import AccountManagementServices from './pages/ams';
 import ECommerce from './pages/eCommerce';
+import PartnerCommitments from './pages/ourPartners';
 import PartnerOnboarding from './pages/partnersOnboarding';
 import PlatformEnablement from './pages/platformEnable';
 import ForProductPartners from './pages/whyPartners';
@@ -82,6 +82,7 @@ function App() {
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/platformEnable" element={<PlatformEnablement />} />
             <Route path="/services/eCommerce" element={<ECommerce />} />
+            <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
             <Route path="/partners/whyPartners" element={<ForProductPartners/>} />
             <Route path="/partners/partnersOnboarding" element={<PartnerOnboarding />} />
             <Route 
