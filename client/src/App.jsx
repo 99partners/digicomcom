@@ -16,8 +16,6 @@ import Faqs from './pages/faqss';
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import CustomerLogin from './pages/CutomerLogin';
-import PartnerLogin from './pages/PartnerLogin';
-import Partner from './pages/Partner';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService'; 
 import CookiePolicy from './pages/CookiePolicy';
@@ -102,7 +100,6 @@ function App() {
             <Route path="resources/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/customerlogin" element={<CustomerLogin />} />
-            <Route path="/partnerlogin" element={<PartnerLogin />} />
 
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
