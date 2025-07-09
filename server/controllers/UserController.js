@@ -1,4 +1,5 @@
 import userModel from '../models/UserModel.js';
+import PartnerRequest from '../models/PartnerRequest.js'; // Added import for PartnerRequest
 
 export const getUserData = async(req, res)=>{
     try {
@@ -56,4 +57,24 @@ export const getDashboardStats = async (req, res) => {
         console.error('Error fetching dashboard stats:', error);
         res.status(500).json({ success: false, message: 'Failed to fetch dashboard statistics' });
     }
+};
+
+export const checkPartnerRequest = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    
+    // Check if the user has any existing partner requests
+    const existingRequest = await PartnerRequest.findOne({ userId });
+    
+    return res.status(200).json({
+      success: true,
+      hasRequest: !!existingRequest
+    });
+  } catch (error) {
+    console.error('Error checking partner request:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to check partner request status'
+    });
+  }
 };
