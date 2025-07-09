@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
-import { simulateApiCall } from "../config/mockData";
+import apiService from "../config/api.config";
+import { toast } from 'react-toastify';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -47,21 +48,21 @@ const Footer = () => {
     }
 
     try {
-      const response = await simulateApiCall({ 
-        success: true,
-        message: "Successfully subscribed to newsletter!"
-      });
-
+      const response = await apiService.post('/api/newsletter/subscribe', { email });
+      
       if (response.success) {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
+        toast.success("Successfully subscribed to newsletter!");
       } else {
-        setError("Failed to subscribe. Please try again.");
+        setError(response.message || "Failed to subscribe. Please try again.");
+        toast.error(response.message || "Failed to subscribe. Please try again.");
       }
     } catch (err) {
       console.error("Newsletter subscription error:", err.message);
       setError("Failed to subscribe. Please try again.");
+      toast.error("Failed to subscribe. Please try again.");
       setIsSubmitted(false);
     } finally {
       setIsLoading(false);
