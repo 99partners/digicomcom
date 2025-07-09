@@ -137,9 +137,18 @@ const Partner = () => {
     }
   };
 
-  useEffect(() => {
-    fetchPartnerData();
-  }, []);
+  const fetchAllRequests = async () => {
+    try {
+      const response = await axiosInstance.get('/api/partner-requests/my-requests');
+      if (response.data.success) {
+        setAllRequests(response.data.requests);
+        setHasCreatedRequest(response.data.requests.length > 0);
+      }
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+      toast.error('Failed to load requests');
+    }
+  };
 
   useEffect(() => {
     if (user) {
