@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import axiosInstance from '../config/api.config';
 import {
   User,
   Mail,
@@ -19,9 +20,24 @@ import { toast } from 'react-toastify';
 const Partner = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [hasCreatedRequest, setHasCreatedRequest] = useState(false);
   const navigate = useNavigate();
   const { partnerData, dashboardStats } = useAppContext();
-  const [hasCreatedRequest, setHasCreatedRequest] = useState(true);
+
+  useEffect(() => {
+    const checkPartnerRequest = async () => {
+      try {
+        const response = await axiosInstance.get('/api/user/partner/has-request');
+        setHasCreatedRequest(response.data.hasRequest);
+      } catch (error) {
+        console.error('Error checking partner request:', error);
+        // If there's an error, we'll assume they haven't created a request
+        setHasCreatedRequest(false);
+      }
+    };
+
+    checkPartnerRequest();
+  }, []);
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart },
