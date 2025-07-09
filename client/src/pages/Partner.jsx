@@ -5,30 +5,16 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
 import {
-  LogOut,
-  Star,
-  Crown,
-  Check,
-  LayoutDashboard,
-  Users,
-  Settings,
-  FileText,
-  Bell,
-  HelpCircle,
-  BarChart,
-  Wallet,
-  Mail,
-  CheckCircle,
-  XCircle,
   User,
-
-  Clock,
-  Plus,
-  Eye,
-
+  Mail,
+  LogOut,
+  Bell,
+  Crown,
+  Star,
+  Wallet,
+  BarChart,
   ArrowRight,
   Clock
-
 } from 'lucide-react';
 
 import PartnerUserForm from '../components/partner/PartnerUserForm';
