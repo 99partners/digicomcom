@@ -10,8 +10,7 @@ import {
 } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
-import axios from "axios";
-import { getApiUrl } from "../config/api.config";
+import axiosInstance from "../config/api.config";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -48,15 +47,7 @@ const Footer = () => {
     }
 
     try {
-      const response = await axios.post(
-        getApiUrl("api/newsletter"),
-        { email },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axiosInstance.post('/api/newsletter', { email });
 
       if (response.data.success) {
         setIsSubmitted(true);

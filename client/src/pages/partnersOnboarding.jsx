@@ -13,8 +13,7 @@ import {
   Rocket,
   Globe
 } from "lucide-react";
-import axios from 'axios';
-import { getApiUrl } from '../config/api.config';
+import axiosInstance from '../config/api.config';
 
 export default function PartnerOnboarding() {
   useEffect(() => {
@@ -37,7 +36,7 @@ export default function PartnerOnboarding() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(getApiUrl('api/onboarding/submit'), formData);
+      const response = await axiosInstance.post('/api/onboarding/submit', formData);
       const data = await response.data;
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly to begin onboarding.');

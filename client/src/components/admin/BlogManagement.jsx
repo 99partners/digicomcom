@@ -1,23 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { Pencil, Trash2, Plus, X } from 'lucide-react';
-import { getApiUrl } from '../../config/api.config';
+import { toast } from 'react-toastify';
+import { Trash2, Edit, Plus } from 'lucide-react';
+import axiosInstance from '../../config/api.config';
+import BlogForm from './BlogForm';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [editingBlogId, setEditingBlogId] = useState(null);
-  const [formData, setFormData] = useState({
-    title: '',
-    excerpt: '',
-    content: '',
-    category: '',
-    image: ''
-  });
-  const [previewImage, setPreviewImage] = useState('');
+  const [editingBlog, setEditingBlog] = useState(null);
 
   useEffect(() => {
     fetchBlogs();
@@ -25,17 +16,13 @@ const BlogManagement = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get(getApiUrl('api/blogs'), {
-        withCredentials: true
-      });
-      if (response.data.success) {
-        setBlogs(response.data.data);
-      }
-    } catch (err) {
-      setError('Failed to fetch blogs');
-      console.error(err);
+      const response = await axiosInstance.get('/api/blogs');
+      setBlogs(response.data.blogs);
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      toast.error('Failed to fetch blogs');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -45,278 +32,112 @@ const BlogManagement = () => {
     }
 
     try {
-      await axios.delete(getApiUrl(`api/blogs/${blogId}`), {
-        withCredentials: true
-      });
-      fetchBlogs(); // Refresh the list
-    } catch (err) {
-      setError('Failed to delete blog');
-      console.error(err);
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-    if (name === 'image') {
-      setPreviewImage(value);
-    }
-  };
-
-  const resetForm = () => {
-    setFormData({
-      title: '',
-      excerpt: '',
-      content: '',
-      category: '',
-      image: ''
-    });
-    setPreviewImage('');
-    setEditingBlogId(null);
-    setShowForm(false);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      let response;
-      if (editingBlogId) {
-        // Update existing blog
-        response = await axios.put(getApiUrl(`api/blogs/${editingBlogId}`), formData, {
-          withCredentials: true
-        });
-      } else {
-        // Create new blog
-        response = await axios.post(getApiUrl('api/blogs'), formData, {
-          withCredentials: true
-        });
-      }
-
-      if (response.data.success) {
-        alert(editingBlogId ? 'Blog updated successfully!' : 'Blog created successfully!');
-        resetForm();
-        fetchBlogs();
-      }
-    } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong');
-    } finally {
-      setLoading(false);
+      await axiosInstance.delete(`/api/blogs/${blogId}`);
+      toast.success('Blog deleted successfully');
+      setBlogs(blogs.filter(blog => blog._id !== blogId));
+    } catch (error) {
+      console.error('Error deleting blog:', error);
+      toast.error('Failed to delete blog');
     }
   };
 
   const handleEdit = (blog) => {
-    setEditingBlogId(blog._id);
-    setFormData({
-      title: blog.title,
-      excerpt: blog.excerpt,
-      content: blog.content,
-      category: blog.category,
-      image: blog.image
-    });
-    setPreviewImage(blog.image);
+    setEditingBlog(blog);
     setShowForm(true);
   };
 
-  if (loading && !blogs.length) {
-    return <div className="text-center py-8">Loading blogs...</div>;
+  const handleFormSubmit = async (formData) => {
+    try {
+      let response;
+      if (editingBlog) {
+        response = await axiosInstance.put(`/api/blogs/${editingBlog._id}`, formData);
+        setBlogs(blogs.map(blog => 
+          blog._id === editingBlog._id ? response.data.blog : blog
+        ));
+        toast.success('Blog updated successfully');
+      } else {
+        response = await axiosInstance.post('/api/blogs', formData);
+        setBlogs([...blogs, response.data.blog]);
+        toast.success('Blog created successfully');
+      }
+      setShowForm(false);
+      setEditingBlog(null);
+    } catch (error) {
+      console.error('Error saving blog:', error);
+      toast.error('Failed to save blog');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    );
+  }
+
+  if (showForm) {
+    return (
+      <BlogForm
+        blog={editingBlog}
+        onSubmit={handleFormSubmit}
+        onCancel={() => {
+          setShowForm(false);
+          setEditingBlog(null);
+        }}
+      />
+    );
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Blog Management</h2>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-gray-900">Blog Management</h2>
         <button
-          onClick={() => {
-            if (showForm) {
-              resetForm();
-            } else {
-              setShowForm(true);
-            }
-          }}
-          className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          onClick={() => setShowForm(true)}
+          className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
         >
-          {showForm ? <X className="h-5 w-5 mr-2" /> : <Plus className="h-5 w-5 mr-2" />}
-          {showForm ? 'Close Form' : 'Create New Blog'}
+          <Plus className="h-5 w-5 mr-2" />
+          Add New Blog
         </button>
       </div>
 
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-
-      {showForm && (
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h3 className="text-xl font-semibold mb-4">
-            {editingBlogId ? 'Edit Blog' : 'Create New Blog'}
-          </h3>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title
-              </label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Excerpt
-              </label>
-              <textarea
-                name="excerpt"
-                value={formData.excerpt}
-                onChange={handleChange}
-                required
-                rows="3"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Content
-              </label>
-              <textarea
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                required
-                rows="6"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category
-              </label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                <option value="">Select a category</option>
-                <option value="Industry Insights">Industry Insights</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Digital Marketing">Digital Marketing</option>
-                <option value="Technology">Technology</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Image URL
-              </label>
-              <input
-                type="url"
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                required
-                placeholder="Enter image URL"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              {previewImage && (
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500 mb-2">Preview:</p>
-                  <img src={previewImage} alt="Preview" className="h-32 object-cover rounded" />
+      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul className="divide-y divide-gray-200">
+          {blogs.map((blog) => (
+            <li key={blog._id} className="px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-medium text-gray-900 truncate">
+                    {blog.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {new Date(blog.createdAt).toLocaleDateString()}
+                  </p>
                 </div>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
-            >
-              {loading ? (editingBlogId ? 'Updating...' : 'Creating...') : (editingBlogId ? 'Update Blog' : 'Create Blog')}
-            </button>
-          </form>
-        </div>
-      )}
-
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Image
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Category
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Created At
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Updated At
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {blogs.map((blog) => (
-              <tr key={blog._id}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <img 
-                    src={blog.image} 
-                    alt={blog.title} 
-                    className="h-16 w-16 object-cover rounded"
-                  />
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{blog.title}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    {blog.category}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(blog.createdAt).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(blog.updatedAt).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <div className="flex items-center space-x-4">
                   <button
                     onClick={() => handleEdit(blog)}
-                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                    className="text-blue-600 hover:text-blue-800"
                   >
-                    <Pencil className="h-5 w-5 inline" />
+                    <Edit className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => handleDelete(blog._id)}
-                    className="text-red-600 hover:text-red-900"
+                    className="text-red-600 hover:text-red-800"
                   >
-                    <Trash2 className="h-5 w-5 inline" />
+                    <Trash2 className="h-5 w-5" />
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </li>
+          ))}
+          {blogs.length === 0 && (
+            <li className="px-6 py-4 text-center text-gray-500">
+              No blogs found. Create one to get started.
+            </li>
+          )}
+        </ul>
       </div>
     </div>
   );

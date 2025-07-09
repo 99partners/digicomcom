@@ -1,136 +1,138 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { getApiUrl } from '../../config/api.config';
+import { toast } from 'react-toastify';
+import axiosInstance from '../../config/api.config';
 
 const BlogEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [blog, setBlog] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: '',
-    excerpt: '',
     content: '',
+    excerpt: '',
     category: '',
-    image: '',
-    readTime: ''
+    image: ''
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchBlog = async () => {
-      try {
-        const response = await axios.get(getApiUrl(`api/blogs/${id}`));
-        setFormData(response.data.data);
-      } catch (error) {
-        setError('Failed to fetch blog');
-        console.error('Error fetching blog:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchBlog();
   }, [id]);
 
+  const fetchBlog = async () => {
+    try {
+      const response = await axiosInstance.get(`/api/blogs/${id}`);
+      const blogData = response.data.blog;
+      setBlog(blogData);
+      setFormData({
+        title: blogData.title,
+        content: blogData.content,
+        excerpt: blogData.excerpt,
+        category: blogData.category,
+        image: blogData.image
+      });
+    } catch (error) {
+      console.error('Error fetching blog:', error);
+      toast.error('Failed to fetch blog');
+      navigate('/admin/blogs');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    setIsLoading(true);
 
     try {
-      const response = await axios.put(
-        getApiUrl(`api/blogs/${id}`),
-        formData
-      );
-
-      if (response.data.success) {
-        alert('Blog updated successfully!');
-        navigate('/admin/blogs');
-      }
+      await axiosInstance.put(`/api/blogs/${id}`, formData);
+      toast.success('Blog updated successfully');
+      navigate('/admin/blogs');
     } catch (error) {
-      setError(error.response?.data?.error || 'Something went wrong');
       console.error('Error updating blog:', error);
+      toast.error('Failed to update blog');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  if (loading) {
-    return <div className="text-center py-8">Loading blog...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center text-red-600 py-8">{error}</div>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-6">Edit Blog</h2>
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
             Title
           </label>
           <input
             type="text"
+            id="title"
             name="title"
             value={formData.title}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700">
             Excerpt
           </label>
           <textarea
+            id="excerpt"
             name="excerpt"
+            rows="3"
             value={formData.excerpt}
             onChange={handleChange}
             required
-            rows="3"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700">
             Content
           </label>
           <textarea
+            id="content"
             name="content"
+            rows="10"
             value={formData.content}
             onChange={handleChange}
             required
-            rows="6"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700">
             Category
           </label>
           <select
+            id="category"
             name="category"
             value={formData.category}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
           >
             <option value="">Select a category</option>
             <option value="Industry Insights">Industry Insights</option>
@@ -141,47 +143,45 @@ const BlogEdit = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="image" className="block text-sm font-medium text-gray-700">
             Image URL
           </label>
           <input
             type="url"
+            id="image"
             name="image"
             value={formData.image}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
           />
+          {formData.image && (
+            <img
+              src={formData.image}
+              alt="Blog preview"
+              className="mt-2 h-32 w-auto object-cover rounded"
+            />
+          )}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Read Time (e.g., "5 min read")
-          </label>
-          <input
-            type="text"
-            name="readTime"
-            value={formData.readTime}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
-
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
-          >
-            {loading ? 'Updating...' : 'Update Blog'}
-          </button>
+        <div className="flex justify-end space-x-3">
           <button
             type="button"
             onClick={() => navigate('/admin/blogs')}
-            className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
           >
             Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`px-4 py-2 rounded-md text-white ${
+              isLoading
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-green-600 hover:bg-green-700'
+            }`}
+          >
+            {isLoading ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
       </form>
