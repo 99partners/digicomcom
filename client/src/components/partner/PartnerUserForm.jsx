@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance, { getApiUrl } from '../../config/api.config';
+import mockApiService from '../../config/api.config';
 import { useAuth } from '../../context/AuthContext';
+import { simulateApiCall } from '../../config/mockData';
 import {
     Store,
     CheckCircle,
@@ -16,6 +17,31 @@ import {
     FileText,
     Edit2,
 } from 'lucide-react';
+
+const mockPartnerRequest = {
+    serviceType: 'ams',
+    marketplaces: ['Amazon', 'Flipkart'],
+    serviceAccountNumber: 'ACC123456',
+    hasGST: 'yes',
+    gstNumber: '27AADCB2230M1Z3',
+    monthlyOnlineSales: '2L-5L',
+    marketingServices: {
+        sponsoredAds: true,
+        seasonalCampaigns: false,
+        platformPromotions: true,
+        socialMediaPromotions: false,
+        creativeDesign: true,
+        platformSpecificAds: false
+    },
+    isManufacturer: true,
+    yearEstablished: '2020',
+    numberOfProducts: '100',
+    productUSP: 'High quality, eco-friendly products',
+    productCategory: 'Electronics',
+    productDescription: 'Smart home devices and accessories',
+    panNumber: 'ABCDE1234F',
+    additionalNotes: 'Looking for comprehensive marketplace management'
+};
 
 const PartnerUserForm = ({ onSubmit, onCancel }) => {
     const navigate = useNavigate();
@@ -56,9 +82,9 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axiosInstance.get('/api/user/data');
-                if (response.data.success) {
-                    setUserData(response.data.userData);
+                const response = await mockApiService.get('/api/user/data');
+                if (response.success) {
+                    setUserData(response.userData);
                 } else {
                     toast.error('Failed to fetch user data');
                 }
@@ -79,9 +105,12 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
     useEffect(() => {
         const fetchLatestRequest = async () => {
             try {
-                const response = await axiosInstance.get('api/partner-requests/my-requests');
-                if (response.data.success && response.data.data.length > 0) {
-                    const latestRequest = response.data.data[0];
+                const response = await simulateApiCall({ 
+                    success: true, 
+                    data: [mockPartnerRequest] 
+                });
+                if (response.success && response.data.length > 0) {
+                    const latestRequest = response.data[0];
                     setSubmittedRequest(latestRequest);
                     if (!isEditing) {
                         setFormData({
@@ -747,98 +776,50 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
         setIsSubmitting(true);
 
         try {
-            // Validate required fields based on service type
-            if (!formData.serviceType) {
-                throw new Error('Please select a service type');
-            }
-
-            // Additional validation based on service type
-            if (formData.serviceType === 'ams' && !formData.marketplaces?.length) {
-                throw new Error('Please select at least one marketplace');
-            }
-
-            // Prepare request data
-            const requestData = {
-                ...formData,
-                userEmail: userData?.email,
-                // Remove empty strings and null values
-                ...Object.fromEntries(
-                    Object.entries(formData).filter(([_, value]) => 
-                        value !== '' && value !== null && 
-                        !(Array.isArray(value) && value.length === 0)
-                    )
-                )
-            };
-
-            console.log('Submitting form data:', requestData);
-            
             let response;
+            const requestData = { ...formData };
+
             if (submittedRequest?._id && isEditing) {
                 // Check if the request is already processed
-                const checkResponse = await axiosInstance.get(`/api/partner-requests/${submittedRequest._id}`);
-                if (checkResponse.data.data.status === 'processed') {
+                const checkResponse = await simulateApiCall({
+                    success: true,
+                    data: { status: 'pending' }
+                });
+                
+                if (checkResponse.success && checkResponse.data.status === 'processed') {
                     toast.error('Cannot update a processed request');
                     setIsEditing(false);
                     return;
                 }
                 
-                response = await axiosInstance.put(`/api/partner-requests/${submittedRequest._id}`, requestData);
-                console.log('Update response:', response.data);
+                response = await simulateApiCall({
+                    success: true,
+                    data: { ...mockPartnerRequest, ...requestData }
+                });
+                console.log('Update response:', response);
                 toast.success('Request updated successfully');
             } else {
-                response = await axiosInstance.post('/api/partner-requests', requestData);
-                console.log('Create response:', response.data);
+                response = await simulateApiCall({
+                    success: true,
+                    data: { ...mockPartnerRequest, ...requestData }
+                });
+                console.log('Create response:', response);
                 toast.success('Request created successfully');
             }
             
-            // Update the submitted request with the new data
-            if (response.data.success) {
-                setSubmittedRequest(response.data.data);
+            if (response.success) {
+                setSubmittedRequest(response.data);
                 setIsEditing(false);
 
-                // Call onSubmit callback if provided
                 if (onSubmit) {
-                    onSubmit(response.data.data);
+                    onSubmit(response.data);
                 }
             } else {
-                throw new Error(response.data.message || 'Failed to save request');
+                throw new Error('Failed to save request');
             }
         } catch (error) {
-            console.error('Full error details:', error);
-            console.error('Error response:', error.response?.data);
-            
-            let errorMessage = process.env.NODE_ENV === 'production'
-                ? 'Unable to save your request. Please try again or contact support if the issue persists.'
-                : 'Failed to save request. Please try again.';
-            
-            if (error.response) {
-                if (error.response.status === 400) {
-                    const validationErrors = error.response.data?.errors;
-                    if (validationErrors && validationErrors.length > 0) {
-                        errorMessage = validationErrors.join('\n');
-                    } else if (error.response.data?.message) {
-                        errorMessage = error.response.data.message;
-                    }
-                } else if (error.response.status === 401) {
-                    errorMessage = 'Please log in again to continue';
-                    navigate('/partnerlogin');
-                } else if (error.response.status === 403) {
-                    errorMessage = 'You do not have permission to perform this action';
-                } else if (error.response.status === 500) {
-                    errorMessage = process.env.NODE_ENV === 'production'
-                        ? 'A server error occurred. Our team has been notified and is working on it.'
-                        : error.response.data?.message || 'Server error. Please try again later';
-                    console.error('Server error details:', error.response.data?.error);
-                }
-            } else if (error.request) {
-                errorMessage = process.env.NODE_ENV === 'production'
-                    ? 'Unable to connect to the server. Please check your connection and try again.'
-                    : 'No response from server. Please check your connection';
-            } else {
-                errorMessage = error.message || 'Error preparing request. Please try again';
-            }
-            
-            toast.error(errorMessage);
+            console.error('Error saving request:', error);
+            toast.error('Failed to save request. Please try again.');
         } finally {
             setIsSubmitting(false);
         }

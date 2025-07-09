@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { getApiUrl } from '../../config/api.config';
+import { simulateApiCall } from '../../config/mockData';
 
 const BlogForm = () => {
   const navigate = useNavigate();
@@ -29,20 +28,23 @@ const BlogForm = () => {
     setError('');
 
     try {
-      const response = await axios.post(
-        getApiUrl('api/blogs'),
-        formData,
-        {
-          withCredentials: true
-        }
-      );
+      const newBlog = {
+        id: String(Date.now()),
+        ...formData,
+        createdAt: new Date()
+      };
 
-      if (response.data.success) {
+      const { data } = await simulateApiCall({
+        success: true,
+        data: newBlog
+      });
+
+      if (data.success) {
         alert('Blog created successfully!');
         navigate('/admin/blogs');
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong');
+      setError('Something went wrong');
     } finally {
       setLoading(false);
     }

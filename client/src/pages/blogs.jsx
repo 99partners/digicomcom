@@ -3,8 +3,37 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Calendar, ArrowRight } from "lucide-react"
-import axios from "axios"
-import { getApiUrl } from '../config/api.config'
+import { simulateApiCall } from '../config/mockData'
+
+const mockBlogs = [
+  {
+    _id: '1',
+    title: 'Getting Started with Digital Commerce',
+    excerpt: 'Learn the fundamentals of setting up and growing your digital commerce business.',
+    category: 'E-commerce',
+    readTime: '5 min read',
+    image: '/placeholder.svg',
+    createdAt: new Date('2024-01-15'),
+  },
+  {
+    _id: '2',
+    title: 'Maximizing Your Online Sales',
+    excerpt: 'Discover proven strategies to increase your online sales and customer engagement.',
+    category: 'Marketing',
+    readTime: '7 min read',
+    image: '/placeholder.svg',
+    createdAt: new Date('2024-02-01'),
+  },
+  {
+    _id: '3',
+    title: 'Building Customer Trust Online',
+    excerpt: 'Essential tips for building and maintaining customer trust in the digital space.',
+    category: 'Customer Relations',
+    readTime: '6 min read',
+    image: '/placeholder.svg',
+    createdAt: new Date('2024-02-15'),
+  }
+];
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,9 +43,12 @@ const Blogs = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(getApiUrl('api/blogs'))
-        if (response.data.success) {
-          setBlogs(response.data.data)
+        const response = await simulateApiCall({ 
+          success: true, 
+          data: mockBlogs 
+        });
+        if (response.success) {
+          setBlogs(response.data)
         }
       } catch (error) {
         setError('Failed to fetch blogs')

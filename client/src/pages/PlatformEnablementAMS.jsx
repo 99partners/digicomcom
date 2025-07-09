@@ -40,8 +40,7 @@ import {
 } from "lucide-react";
 
 import { useEffect } from "react";
-import axios from 'axios';
-import { getApiUrl } from '../config/api.config';
+import { simulateApiCall } from '../config/mockData';
 
 // Scroll to top on component mount
 export default function PlatformEnablementAMS() {
@@ -73,9 +72,10 @@ export default function PlatformEnablementAMS() {
     e.preventDefault();
     
     try {
-      const response = await axios.post(getApiUrl('api/platform-ams/submit'), formData);
-
-      const data = await response.data;
+      const { data } = await simulateApiCall({
+        success: true,
+        message: 'Form submitted successfully'
+      });
 
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly.');
@@ -100,7 +100,7 @@ export default function PlatformEnablementAMS() {
           consent: false,
         });
       } else {
-        alert('Error submitting form: ' + data.message);
+        alert('Error submitting form. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting form:', error);

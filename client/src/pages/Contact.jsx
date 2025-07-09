@@ -8,8 +8,7 @@ import {
   MessageCircle,
   Loader2,
 } from 'lucide-react';
-import axios from 'axios';
-import { getApiUrl } from '../config/api.config';
+import { simulateApiCall } from '../config/mockData';
 
 const Contact = () => {
   useEffect(() => {
@@ -56,17 +55,11 @@ const Contact = () => {
     }
 
     try {
-      const response = await axios.post(getApiUrl('api/contact/submit'), supportForm);
-      
-      if (response.data.success) {
-        setSuccess("Your message has been sent successfully! We'll get back to you within 24 hours.");
-        setSupportForm({ name: "", email: "", phone: "", message: "" });
-      } else {
-        setError(response.data.message || "Something went wrong. Please try again.");
-      }
+      const { data } = await simulateApiCall({ success: true });
+      setSuccess("Your message has been sent successfully! We'll get back to you within 24 hours.");
+      setSupportForm({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
-      console.error('Error submitting contact form:', error);
-      setError(error.response?.data?.message || "Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

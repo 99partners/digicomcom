@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-import { getApiUrl } from '../../config/api.config';
+import { simulateApiCall } from '../../config/mockData';
 
 const UserForm = ({ user, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState({
@@ -23,19 +22,24 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (user?._id) {
-                // Update existing user
-                await axios.put(getApiUrl(`api/admin/users/${user._id}`), formData);
-                toast.success('User updated successfully');
-            } else {
-                // Create new user
-                await axios.post(getApiUrl('api/admin/users'), formData);
-                toast.success('User created successfully');
+            const userData = {
+                id: user?.id || String(Date.now()),
+                ...formData,
+                updatedAt: new Date()
+            };
+
+            const { data } = await simulateApiCall({
+                success: true,
+                data: userData
+            });
+
+            if (data.success) {
+                toast.success(user ? 'User updated successfully' : 'User created successfully');
+                onSubmit(data.data);
             }
-            onSubmit();
         } catch (error) {
             console.error('Error saving user:', error);
-            toast.error(error.response?.data?.message || 'Failed to save user');
+            toast.error('Failed to save user');
         }
     };
 

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axiosInstance, { API_BASE_URL } from '../config/api.config';
+import { mockData } from '../config/mockData';
+import { AUTH_CONFIG } from '../config/auth.config';
 
 const AuthContext = createContext(null);
 
@@ -8,9 +9,9 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing auth token in localStorage
-    const token = localStorage.getItem('authToken');
-    const adminToken = localStorage.getItem('adminToken');
+    // Check for existing mock auth token
+    const token = localStorage.getItem(AUTH_CONFIG.tokenKey);
+    const adminToken = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
     
     if (token || adminToken) {
       checkAuthStatus();
@@ -20,72 +21,27 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkAuthStatus = async () => {
-    try {
-      // Check admin auth first
-      const adminToken = localStorage.getItem('adminToken');
-      if (adminToken) {
-        try {
-          const response = await axiosInstance.get('/api/admin/dashboard-stats');
-          if (response.data.success) {
-            setUser({ role: 'admin', ...response.data.admin });
-            setLoading(false);
-            return;
-          }
-        } catch (adminError) {
-          console.error('Admin auth check failed:', adminError);
-          localStorage.removeItem('adminToken');
-        }
-      }
-
-      // Check regular user auth
-      const userToken = localStorage.getItem('authToken');
+    const adminToken = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
+    if (adminToken) {
+      setUser({ ...mockData.auth.admin });
+    } else {
+      const userToken = localStorage.getItem(AUTH_CONFIG.tokenKey);
       if (userToken) {
-        try {
-          const response = await axiosInstance.get('/api/user/data');
-          if (response.data.success) {
-            setUser(response.data.userData);
-          } else {
-            handleLogout();
-          }
-        } catch (userError) {
-          console.error('User auth check failed:', userError);
-          handleLogout();
-        }
+        setUser({ ...mockData.auth.user });
       }
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const handleLogin = async (token, userData, isAdmin = false) => {
-    try {
-      if (isAdmin) {
-        localStorage.setItem('adminToken', token);
-      } else {
-        localStorage.setItem('authToken', token);
-      }
-      
-      // Update axios instance headers
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      // Set user data
-      setUser(userData);
-
-      // Verify the token immediately after login
-      await checkAuthStatus();
-      
-      return true;
-    } catch (error) {
-      console.error('Login error:', error);
-      handleLogout();
-      return false;
-    }
+    const tokenKey = isAdmin ? AUTH_CONFIG.adminTokenKey : AUTH_CONFIG.tokenKey;
+    localStorage.setItem(tokenKey, token);
+    setUser(userData);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('adminToken');
-    delete axiosInstance.defaults.headers.common['Authorization'];
+    localStorage.removeItem(AUTH_CONFIG.tokenKey);
+    localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
     setUser(null);
   };
 
@@ -94,13 +50,12 @@ export const AuthProvider = ({ children }) => {
     loading,
     handleLogin,
     handleLogout,
-    isAuthenticated: !!user,
-    checkAuthStatus, // Export this so components can manually check auth status
+    checkAuthStatus
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
