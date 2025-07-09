@@ -1,106 +1,52 @@
 "use client"
 
-import { useContext, useState, useEffect } from "react"
-import { User, Mail, Phone, Lock, ArrowLeft } from "lucide-react"
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import axiosInstance from "../config/api.config"
-import { toast } from "react-toastify"
-import logo from "../assets/99digicom.png"
-import { useAuth } from "../context/AuthContext"
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
+import { mockData, simulateApiCall } from '../config/mockData';
 
 const PartnerLogin = () => {
-  const [state, setState] = useState("Sign Up")
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { handleLogin, user } = useAuth()
-
-  // Show message if redirected from protected route
-  useEffect(() => {
-    if (location.state?.message) {
-      toast.info(location.state.message);
-    }
-  }, [location]);
-
-  useEffect(() => {
-    // If user is already logged in, redirect to partner dashboard
-    if (user) {
-      navigate('/partner');
-    }
-  }, [user, navigate]);
-
-  const handlePhoneChange = (e) => {
-    const input = e.target.value.replace(/\D/g, '');
-    if (input.length <= 10) {
-      setPhone(input);
-    } else {
-      toast.error('Phone number should not exceed 10 digits');
-    }
-  }
-
-  const checkPartnerRequest = async (token) => {
-    try {
-      const response = await axiosInstance.get('/api/partner/has-request');
-      return response.data.hasRequest;
-    } catch (error) {
-      console.error('Error checking partner request:', error);
-      return false;
-    }
-  };
+  const [state, setState] = useState("Sign In");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { handleLogin } = useAuth();
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     try {
-      const endpoint = state === "Sign Up" ? "/api/auth/register" : "/api/auth/login"
-      const payload = state === "Sign Up" ? { name, email, phone, password } : { email, password }
-
-      const { data } = await axiosInstance.post(endpoint, payload)
+      // Simulate API call with mock data
+      const { data } = await simulateApiCall({
+        success: true,
+        token: 'mock-token',
+        user: state === "Sign Up" 
+          ? { ...mockData.auth.user, name, email, phone }
+          : mockData.auth.user
+      });
 
       if (data.success) {
-        // Store the token and user data
-        await handleLogin(data.token, data.user)
+        await handleLogin(data.token, data.user);
         
         if (state === "Sign Up") {
-          toast.success("Account created successfully!")
-          // For new registrations, always redirect to create partner request
-          navigate("/partner")
+          toast.success("Account created successfully!");
+          navigate("/partner");
         } else {
-          // For login, check if user has existing partner request
-          const hasRequest = await checkPartnerRequest(data.token)
-          toast.success("Login successful!")
-          
-          // Get the redirect URL if it exists
-          const redirectUrl = localStorage.getItem('redirectAfterLogin');
-          if (redirectUrl) {
-            localStorage.removeItem('redirectAfterLogin');
-            navigate(redirectUrl);
-          } else {
-            // Redirect based on whether they have a request or not
-            if (hasRequest) {
-              navigate("/partner")
-            } else {
-              navigate("/partner", { state: { section: 'create-user' } })
-            }
-          }
+          toast.success("Login successful!");
+          navigate("/partner");
         }
-      } else {
-        toast.error(data.message || "Authentication failed")
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || "Something went wrong"
-      toast.error(errorMessage)
-      console.error('Auth error:', error)
+      toast.error("Authentication failed. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">

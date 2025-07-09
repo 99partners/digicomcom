@@ -10,8 +10,7 @@ import {
 } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
-import axios from "axios";
-import { API_BASE_URL } from "../config/api.config";
+import { simulateApiCall } from "../config/mockData";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -48,30 +47,21 @@ const Footer = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/newsletter`,
-        { email },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await simulateApiCall({ 
+        success: true,
+        message: "Successfully subscribed to newsletter!"
+      });
 
-      if (response.data.success) {
+      if (response.success) {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
       } else {
-        setError(
-          response.data.message || "Failed to subscribe. Please try again."
-        );
+        setError("Failed to subscribe. Please try again.");
       }
     } catch (err) {
       console.error("Newsletter subscription error:", err.message);
-      setError(
-        err.response?.data?.message || "Failed to subscribe. Please try again."
-      );
+      setError("Failed to subscribe. Please try again.");
       setIsSubmitted(false);
     } finally {
       setIsLoading(false);
