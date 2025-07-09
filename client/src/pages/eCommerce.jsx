@@ -10,7 +10,8 @@ import {
   Camera,
   ShoppingCart,
 } from "lucide-react";
-import axiosInstance from '../config/api.config';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 export default function ECommerce() {
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function ECommerce() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post('/api/advertising/submit', formData);
+      const response = await axios.post(getApiUrl('api/advertising/submit'), formData);
       const data = await response.data;
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly.');

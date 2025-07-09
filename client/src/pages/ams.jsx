@@ -10,7 +10,8 @@ import {
   Mail,
   ShoppingCart,
 } from "lucide-react";
-import axiosInstance from '../config/api.config';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 export default function AccountManagementServices() {
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function AccountManagementServices() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post('/api/ams/submit', formData);
+      const response = await axios.post(getApiUrl('api/ams/submit'), formData);
       const data = await response.data;
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly.');

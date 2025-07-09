@@ -40,7 +40,8 @@ import {
 } from "lucide-react";
 
 import { useEffect } from "react";
-import axiosInstance from '../config/api.config';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 // Scroll to top on component mount
 export default function PlatformEnablementAMS() {
@@ -72,7 +73,7 @@ export default function PlatformEnablementAMS() {
     e.preventDefault();
     
     try {
-      const response = await axiosInstance.post('/api/platform-ams/submit', formData);
+      const response = await axios.post(getApiUrl('api/platform-ams/submit'), formData);
 
       const data = await response.data;
 
