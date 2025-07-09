@@ -10,8 +10,7 @@ import {
   Mail,
   ShoppingCart,
 } from "lucide-react";
-import axios from 'axios';
-import { getApiUrl } from '../config/api.config';
+import { simulateApiCall } from '../config/mockData';
 
 export default function AccountManagementServices() {
   useEffect(() => {
@@ -41,8 +40,11 @@ export default function AccountManagementServices() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(getApiUrl('api/ams/submit'), formData);
-      const data = await response.data;
+      const { data } = await simulateApiCall({ 
+        success: true,
+        message: 'Form submitted successfully'
+      });
+      
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly.');
         setFormData({
@@ -65,7 +67,7 @@ export default function AccountManagementServices() {
           consent: false,
         });
       } else {
-        alert('Error submitting form: ' + data.message);
+        alert('Error submitting form. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting form:', error);

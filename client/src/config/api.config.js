@@ -1,151 +1,49 @@
-import axios from 'axios';
+import { mockData, simulateApiCall } from './mockData';
 
-// Ensure HTTPS is always used in production
-export const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://99digicom.com'  // Production URL
-  : 'http://localhost:5050';
-
-// Helper function to construct API URLs
-export const getApiUrl = (endpoint) => {
-  // Remove leading slash if present to avoid double slashes
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-  return `${API_BASE_URL}/${cleanEndpoint}`;
+// Mock API service
+const mockApiService = {
+  get: async (endpoint) => {
+    switch (endpoint) {
+      case '/api/user/data':
+        return simulateApiCall({ success: true, userData: mockData.auth.user });
+      case '/api/admin/dashboard-stats':
+        return simulateApiCall({ success: true, stats: mockData.dashboardStats });
+      case '/api/admin/contacts':
+        return simulateApiCall({ success: true, data: mockData.contacts });
+      case '/api/admin/users':
+        return simulateApiCall({ success: true, users: mockData.auth.users });
+      case '/api/partner/dashboard-stats':
+        return simulateApiCall({ success: true, stats: mockData.dashboardStats });
+      default:
+        return simulateApiCall({ success: true, data: [] });
+    }
+  },
+  post: async (endpoint, data) => {
+    switch (endpoint) {
+      case '/api/auth/login':
+        return simulateApiCall({ 
+          success: true, 
+          token: 'mock-token',
+          user: mockData.auth.user 
+        });
+      case '/api/auth/register':
+        return simulateApiCall({ 
+          success: true, 
+          token: 'mock-token',
+          user: { ...mockData.auth.user, ...data } 
+        });
+      case '/api/contact/submit':
+        return simulateApiCall({ success: true, message: 'Contact form submitted successfully' });
+      default:
+        return simulateApiCall({ success: true, data: data });
+    }
+  },
+  put: async (endpoint, data) => {
+    return simulateApiCall({ success: true, data: data });
+  },
+  delete: async (endpoint) => {
+    return simulateApiCall({ success: true, message: 'Deleted successfully' });
+  }
 };
 
-// Configure axios defaults
-const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
-  timeout: process.env.NODE_ENV === 'production' ? 60000 : 30000, // 60 second timeout for production
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
-  }
-});
-
-// Add request interceptor
-axiosInstance.interceptors.request.use((config) => {
-  // Get both auth tokens from localStorage
-  const userToken = localStorage.getItem('authToken');
-  const adminToken = localStorage.getItem('adminToken');
-  
-  // If admin token exists and the request is to an admin endpoint, use admin token
-  if (adminToken && config.url?.includes('/api/admin')) {
-    config.headers.Authorization = `Bearer ${adminToken}`;
-  }
-  // Otherwise, if user token exists, use that
-  else if (userToken) {
-    config.headers.Authorization = `Bearer ${userToken}`;
-  }
-
-  // Ensure the URL uses HTTPS in production
-  if (process.env.NODE_ENV === 'production') {
-    if (config.url && !config.url.startsWith('https://')) {
-      config.url = config.url.replace('http://', 'https://');
-    }
-    if (config.baseURL && !config.baseURL.startsWith('https://')) {
-      config.baseURL = config.baseURL.replace('http://', 'https://');
-    }
-  }
-
-  // Add cache-busting parameter for GET requests
-  if (config.method === 'get') {
-    config.params = {
-      ...config.params,
-      _t: new Date().getTime()
-    };
-  }
-
-  return config;
-}, (error) => {
-  console.error('Request configuration error:', error);
-  return Promise.reject(error);
-});
-
-// Add response interceptor
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    // Handle network errors
-    if (!error.response) {
-      console.error('Network error occurred:', error);
-      // Only retry once to prevent infinite loops
-      if (!originalRequest._retry) {
-        originalRequest._retry = true;
-        try {
-          return await axiosInstance(originalRequest);
-        } catch (retryError) {
-          console.error('Retry failed:', retryError);
-          if (process.env.NODE_ENV === 'production') {
-            return Promise.reject(new Error('Connection failed. Please check your internet connection and try again.'));
-          } else {
-            return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
-          }
-        }
-      }
-    }
-
-    // Handle CORS errors
-    if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
-      console.error('CORS or network error:', error);
-      if (process.env.NODE_ENV === 'production') {
-        return Promise.reject(new Error('Unable to connect to the server. Please refresh the page and try again.'));
-      } else {
-        return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
-      }
-    }
-
-    // Handle authentication errors
-    if (error.response?.status === 401) {
-      // Check if this was an admin request
-      if (originalRequest.url?.includes('/api/admin')) {
-        localStorage.removeItem('adminToken');
-        if (!window.location.pathname.includes('adminlogin')) {
-          window.location.href = '/adminlogin';
-        }
-      } else {
-        localStorage.removeItem('authToken');
-        if (!window.location.pathname.includes('login')) {
-          window.location.href = '/partnerlogin';
-        }
-      }
-      return Promise.reject(new Error('Your session has expired. Please log in again.'));
-    }
-
-    // Handle forbidden errors
-    if (error.response?.status === 403) {
-      console.error('Access forbidden:', error.response.data);
-      return Promise.reject(new Error('You do not have permission to perform this action.'));
-    }
-
-    // Handle bad request errors
-    if (error.response?.status === 400) {
-      console.error('Bad request:', error.response.data);
-      const message = error.response.data.message || 'Invalid request. Please check your input.';
-      return Promise.reject(new Error(message));
-    }
-
-    // Handle server errors
-    if (error.response?.status >= 500) {
-      console.error('Server error:', error.response.data);
-      if (process.env.NODE_ENV === 'production') {
-        return Promise.reject(new Error('A server error occurred. Our team has been notified and is working on it.'));
-      } else {
-        return Promise.reject(new Error('Server error occurred. Please try again later.'));
-      }
-    }
-
-    // Handle other errors
-    if (error.response?.data?.message) {
-      console.error('API Error:', error.response.data.message);
-      return Promise.reject(new Error(error.response.data.message));
-    }
-
-    return Promise.reject(error);
-  }
-);
-
-export default axiosInstance;
+export default mockApiService;

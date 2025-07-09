@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
-import { getApiUrl } from '../config/api.config';
+import { simulateApiCall } from '../config/mockData';
 
 const AdminLogin = () => {
     const [credentials, setCredentials] = useState({
@@ -19,25 +18,22 @@ const AdminLogin = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(
-                getApiUrl('api/admin/login'),
-                credentials,
-                { withCredentials: true }
-            );
+            // Simulate admin login - in mock mode, accept any non-empty credentials
+            const { data } = await simulateApiCall({
+                success: credentials.username && credentials.password,
+                token: 'mock-admin-token',
+                message: credentials.username && credentials.password ? 'Login successful' : 'Invalid credentials'
+            });
 
-            if (response.data.success) {
-                handleLogin(response.data.token, { role: 'admin' }, true);
+            if (data.success) {
+                handleLogin(data.token, { role: 'admin' }, true);
                 toast.success('Login successful');
                 navigate('/admin');
+            } else {
+                toast.error('Invalid credentials');
             }
         } catch (error) {
-            // Only show error toast for actual login attempts, not for auth checks
-            if (error.response?.status === 401) {
-                toast.error('Invalid credentials');
-            } else if (error.response?.status === 500) {
-                toast.error('Server error. Please try again later.');
-            }
-            // Don't show any toast for other errors
+            toast.error('Server error. Please try again later.');
         } finally {
             setIsLoading(false);
         }
