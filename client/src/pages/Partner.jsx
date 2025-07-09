@@ -21,14 +21,14 @@ import {
   CheckCircle,
   XCircle,
   User,
-<<<<<<< HEAD
+
   Clock,
   Plus,
-  Eye
-=======
+  Eye,
+
   ArrowRight,
   Clock
->>>>>>> c5fa3dedafcae70f5443fbaa9ac9aeea72ed0ebb
+
 } from 'lucide-react';
 
 import PartnerUserForm from '../components/partner/PartnerUserForm';
@@ -618,7 +618,6 @@ const Partner = () => {
           <div className="p-4 border-b border-gray-200">
             <h1 className="text-xl font-bold text-green-600">Partner Dashboard</h1>
           </div>
-<<<<<<< HEAD
           <nav className="mt-6">
             {menuItems.map(({ id, label, icon: Icon }) => (
               <button
@@ -641,7 +640,6 @@ const Partner = () => {
               <LogOut className="h-5 w-5 mr-3" />
               Logout
             </button>
-=======
 
           {/* Menu Items */}
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -667,7 +665,7 @@ const Partner = () => {
                 </button>
               );
             })}
->>>>>>> c5fa3dedafcae70f5443fbaa9ac9aeea72ed0ebb
+
           </nav>
 
           {/* User Profile Section */}
@@ -683,7 +681,7 @@ const Partner = () => {
                 <p className="text-xs text-gray-500 truncate">{partnerData?.email}</p>
               </div>
             </div>
-<<<<<<< HEAD
+
 
             {/* Render active section content */}
             {activeSection === 'dashboard' && renderDashboardContent()}
@@ -695,7 +693,7 @@ const Partner = () => {
               />
             )}
             {activeSection === 'my-requests' && renderMyRequests()}
-=======
+
             <button
               onClick={onLogout}
               className="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -703,7 +701,7 @@ const Partner = () => {
               <LogOut className="w-4 h-4" />
               <span>Logout</span>
             </button>
->>>>>>> c5fa3dedafcae70f5443fbaa9ac9aeea72ed0ebb
+
           </div>
         </div>
       </div>
