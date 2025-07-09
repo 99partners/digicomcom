@@ -26,6 +26,7 @@ import PartnerCommitments from './pages/ourPartners';
 import PartnerOnboarding from './pages/partnersOnboarding';
 import PlatformEnablement from './pages/platformEnable';
 import ForProductPartners from './pages/whyPartners';
+import Partners from './pages/Partners';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -87,7 +88,7 @@ function App() {
               path="/partner" 
               element={
                 <ProtectedRoute key="partner-route">
-                  <Partner />
+                  <Partners />
                 </ProtectedRoute>
               } 
             />
