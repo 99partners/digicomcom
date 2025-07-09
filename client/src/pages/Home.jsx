@@ -10,7 +10,6 @@ import {  Puzzle,
 Star} from "lucide-react"
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getApiUrl } from '../config/api.config';
 
 const Home = () => {
   // Scroll to top on component mount
