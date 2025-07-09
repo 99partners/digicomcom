@@ -300,7 +300,7 @@ const Header = () => {
       submenu: [
         { name: "Platform Enablement", href: "/services/platformEnable" },
         { name: "AMS", href: "/services/ams" },
-        { name: "E-Commerce", href: "/services/eCommerce" },
+        { name: "Advertising & Marketing", href: "/services/eCommerce" },
         { name: "Co-Branding", href: "/services/coBranding" },
       ],
     },
