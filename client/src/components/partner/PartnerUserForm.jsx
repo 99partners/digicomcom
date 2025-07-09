@@ -782,26 +782,10 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
                     return;
                 }
                 
-                // Ensure we have a valid token before making the request
-                const token = localStorage.getItem('authToken');
-                if (!token) {
-                    toast.error('Please log in again to continue');
-                    navigate('/partnerlogin');
-                    return;
-                }
-
                 response = await axiosInstance.put(`/api/partner-requests/${submittedRequest._id}`, requestData);
                 console.log('Update response:', response.data);
                 toast.success('Request updated successfully');
             } else {
-                // Ensure we have a valid token before making the request
-                const token = localStorage.getItem('authToken');
-                if (!token) {
-                    toast.error('Please log in again to continue');
-                    navigate('/partnerlogin');
-                    return;
-                }
-
                 response = await axiosInstance.post('/api/partner-requests', requestData);
                 console.log('Create response:', response.data);
                 toast.success('Request created successfully');
@@ -837,7 +821,6 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
                     }
                 } else if (error.response.status === 401) {
                     errorMessage = 'Please log in again to continue';
-                    localStorage.removeItem('authToken');
                     navigate('/partnerlogin');
                 } else if (error.response.status === 403) {
                     errorMessage = 'You do not have permission to perform this action';

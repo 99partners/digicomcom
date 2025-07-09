@@ -149,7 +149,7 @@ export const sendVerifyOtp = async(req, res)=>{
     try {
         // Get user from token instead of requiring userId in body
         const user = await userModel.findById(req.user.id);
-        
+
         if (!user) {
             return res.status(404).json({success:false, message:"User not found"});
         }
@@ -184,7 +184,7 @@ export const sendVerifyOtp = async(req, res)=>{
         console.log('Sent verification email to:', user.email);
 
         return res.json({success:true, message:"Verification code sent to your email"});
-
+        
     } catch(err) {
         console.error('Error sending verification OTP:', err);
         return res.status(500).json({success:false, message: err.message});

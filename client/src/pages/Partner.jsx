@@ -20,8 +20,7 @@ import {
   Mail,
   CheckCircle,
   XCircle,
-  User,
-  Clock
+  User
 } from 'lucide-react';
 
 import PartnerUserForm from '../components/partner/PartnerUserForm';
@@ -137,18 +136,9 @@ const Partner = () => {
     }
   };
 
-  const fetchAllRequests = async () => {
-    try {
-      const response = await axiosInstance.get('/api/partner-requests/my-requests');
-      if (response.data.success) {
-        setAllRequests(response.data.requests);
-        setHasCreatedRequest(response.data.requests.length > 0);
-      }
-    } catch (error) {
-      console.error('Error fetching requests:', error);
-      toast.error('Failed to load requests');
-    }
-  };
+  useEffect(() => {
+    fetchPartnerData();
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -317,10 +307,10 @@ const Partner = () => {
 
     return (
       <div className="space-y-6">
-        {/* User Profile Card */}
+        {/* User Profile Overview */}
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">User Profile</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Profile Overview</h2>
             {!partnerData?.isAccountVerified && (
               <button
                 onClick={sendVerificationOtp}
@@ -328,9 +318,7 @@ const Partner = () => {
                 className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md"
               >
                 {isProfileLoading ? (
-                  <>
-                    <span className="mr-2">Sending...</span>
-                  </>
+                  <>Loading...</>
                 ) : (
                   <>
                     <Mail className="w-4 h-4 mr-2" />
@@ -342,141 +330,90 @@ const Partner = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* User Details */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <User className="w-5 h-5 text-gray-500" />
+              <div className="flex items-start space-x-4">
+                <User className="w-5 h-5 text-gray-500 mt-1" />
                 <div>
                   <p className="text-sm text-gray-500">Full Name</p>
-                  <p className="font-medium">{partnerData?.name || 'Not provided'}</p>
+                  <p className="font-medium text-gray-900">{partnerData?.name || 'Not provided'}</p>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-2">
-                <Mail className="w-5 h-5 text-gray-500" />
+              <div className="flex items-start space-x-4">
+                <Mail className="w-5 h-5 text-gray-500 mt-1" />
                 <div>
                   <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium">{partnerData?.email}</p>
+                  <div className="flex items-center space-x-2">
+                    <p className="font-medium text-gray-900">{partnerData?.email}</p>
+                    {partnerData?.isAccountVerified ? (
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <XCircle className="w-4 h-4 text-red-500" />
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <CheckCircle className={`w-5 h-5 ${partnerData?.isAccountVerified ? 'text-green-500' : 'text-gray-400'}`} />
-                <div>
-                  <p className="text-sm text-gray-500">Email Verification</p>
-                  <p className={`font-medium ${partnerData?.isAccountVerified ? 'text-green-600' : 'text-yellow-600'}`}>
-                    {partnerData?.isAccountVerified ? 'Verified' : 'Not Verified'}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Crown className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">Account Type</p>
-                  <p className="font-medium capitalize">{partnerData?.role || 'Partner'}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <BarChart className="w-5 h-5 text-gray-500" />
+              <div className="flex items-start space-x-4">
+                <Crown className="w-5 h-5 text-gray-500 mt-1" />
                 <div>
                   <p className="text-sm text-gray-500">Account Status</p>
-                  <p className="font-medium text-green-600">Active</p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Clock className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">Member Since</p>
-                  <p className="font-medium">
-                    {partnerData?.createdAt 
-                      ? new Date(partnerData.createdAt).toLocaleDateString('en-US', {
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })
-                      : 'Not available'}
+                  <p className="font-medium text-gray-900">
+                    {partnerData?.isAccountVerified ? 'Verified Account' : 'Pending Verification'}
                   </p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            {/* Account Statistics */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-500">Total Orders</p>
-                <p className="text-2xl font-semibold">{dashboardStats.totalOrders}</p>
+                <p className="text-2xl font-semibold text-gray-900">{dashboardStats.totalOrders}</p>
               </div>
-              <BarChart className="w-8 h-8 text-green-500" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center justify-between">
-              <div>
+              <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-500">Revenue</p>
-                <p className="text-2xl font-semibold">₹{dashboardStats.revenue}</p>
+                <p className="text-2xl font-semibold text-gray-900">₹{dashboardStats.revenue}</p>
               </div>
-              <Wallet className="w-8 h-8 text-green-500" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center justify-between">
-              <div>
+              <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-500">Active Products</p>
-                <p className="text-2xl font-semibold">{dashboardStats.activeProducts}</p>
+                <p className="text-2xl font-semibold text-gray-900">{dashboardStats.activeProducts}</p>
               </div>
-              <Star className="w-8 h-8 text-green-500" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">Verification Status</p>
-                <p className="text-2xl font-semibold text-green-600">
-                  {partnerData?.isAccountVerified ? 'Verified' : 'Pending'}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-500">Account Age</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {partnerData?.createdAt ? 
+                    `${Math.floor((new Date() - new Date(partnerData.createdAt)) / (1000 * 60 * 60 * 24))} days` 
+                    : '0 days'}
                 </p>
               </div>
-              {partnerData?.isAccountVerified ? (
-                <CheckCircle className="w-8 h-8 text-green-500" />
-              ) : (
-                <XCircle className="w-8 h-8 text-yellow-500" />
-              )}
             </div>
           </div>
         </div>
 
         {/* Recent Activity */}
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
           {dashboardStats.recentActivity && dashboardStats.recentActivity.length > 0 ? (
             <div className="space-y-4">
               {dashboardStats.recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between py-2 border-b last:border-0">
+                <div key={index} className="flex items-center justify-between py-3 border-b last:border-0">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                       <Bell className="w-4 h-4 text-green-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium">{activity.description}</p>
+                      <p className="text-sm font-medium text-gray-900">{activity.title}</p>
                       <p className="text-xs text-gray-500">{activity.timestamp}</p>
                     </div>
                   </div>
-                  <span className="text-sm text-gray-500">{activity.type}</span>
+                  <span className="text-sm text-gray-500">{activity.status}</span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-4">No recent activity</p>
+            <p className="text-gray-500 text-sm">No recent activity to display</p>
           )}
         </div>
       </div>
