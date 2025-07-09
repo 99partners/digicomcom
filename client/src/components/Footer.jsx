@@ -11,7 +11,7 @@ import {
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import axios from "axios";
-import { getApiUrl } from "../config/api.config";
+import { API_BASE_URL } from "../config/api.config";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -49,7 +49,7 @@ const Footer = () => {
 
     try {
       const response = await axios.post(
-        getApiUrl("api/newsletter"),
+        `${API_BASE_URL}/api/newsletter`,
         { email },
         {
           headers: {
