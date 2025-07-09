@@ -93,7 +93,7 @@ const Partner = () => {
 
   const fetchAllRequests = async () => {
     try {
-      const response = await axiosInstance.get('/api/partner-requests/my-requests');
+      const response = await axiosInstance.get('/api/partner/my-requests');
       if (response.data.success) {
         setAllRequests(response.data.data);
         setHasCreatedRequest(response.data.data.length > 0);
