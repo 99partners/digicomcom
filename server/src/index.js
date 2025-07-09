@@ -5,7 +5,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const newsletterRoutes = require('./routes/newsletter.routes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
