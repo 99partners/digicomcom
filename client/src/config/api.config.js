@@ -39,6 +39,16 @@ axiosInstance.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${userToken}`;
   }
 
+  // Log request details in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Request config:', {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data
+    });
+  }
+
   // Ensure the URL uses HTTPS in production
   if (process.env.NODE_ENV === 'production') {
     if (config.url && !config.url.startsWith('https://')) {
@@ -63,11 +73,31 @@ axiosInstance.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-// Add response interceptor
+// Add response interceptor with improved error handling
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Log successful responses in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Response:', {
+        url: response.config.url,
+        status: response.status,
+        data: response.data
+      });
+    }
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
+
+    // Log error details in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error('API Error:', {
+        url: originalRequest?.url,
+        method: originalRequest?.method,
+        status: error.response?.status,
+        data: error.response?.data
+      });
+    }
 
     // Handle network errors
     if (!error.response) {
