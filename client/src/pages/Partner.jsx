@@ -307,118 +307,114 @@ const Partner = () => {
 
     return (
       <div className="space-y-6">
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-900">Partner Dashboard</h2>
-          
-          {/* Account Status Section */}
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Status</h3>
-            <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
-              <div className="flex-1">
-                {user?.isAccountVerified ? (
-                  <div className="flex items-center text-green-600">
-                    <CheckCircle className="h-5 w-5 mr-2" />
-                    <span>Email Verified</span>
-                  </div>
+        {/* User Profile Overview */}
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">Profile Overview</h2>
+            {!partnerData?.isAccountVerified && (
+              <button
+                onClick={sendVerificationOtp}
+                disabled={isProfileLoading}
+                className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md"
+              >
+                {isProfileLoading ? (
+                  <>Loading...</>
                 ) : (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-red-600">
-                      <XCircle className="h-5 w-5 mr-2" />
-                      <span>Email Not Verified</span>
-                    </div>
-                    <button
-                      onClick={sendVerificationOtp}
-                      disabled={isProfileLoading}
-                      className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isProfileLoading ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                          Sending...
-                        </>
-                      ) : (
-                        'Verify Now'
-                      )}
-                    </button>
-                  </div>
+                  <>
+                    <Mail className="w-4 h-4 mr-2" />
+                    Verify Email
+                  </>
                 )}
-              </div>
-            </div>
-          </div>
-
-          {/* Profile Section */}
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile</h3>
-            <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0">
-                {user?.profileImage ? (
-                  <img
-                    src={user.profileImage}
-                    alt="Profile"
-                    className="h-16 w-16 rounded-full object-cover border-2 border-green-500"
-                  />
-                ) : (
-                  <div className="h-16 w-16 rounded-full bg-green-100 flex items-center justify-center">
-                    <User className="h-8 w-8 text-green-600" />
-                  </div>
-                )}
-              </div>
-              <div className="flex-1">
-                <h4 className="text-lg font-medium text-gray-900">{user?.name || 'Partner'}</h4>
-                <p className="text-sm text-gray-500">{user?.email}</p>
-                {user?.phone && (
-                  <p className="text-sm text-gray-500">{user.phone}</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Stats Section */}
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium text-gray-500">Total Orders</h4>
-                <BarChart className="h-5 w-5 text-gray-400" />
-              </div>
-              <p className="mt-2 text-2xl font-semibold text-gray-900">{dashboardStats.totalOrders}</p>
-              <p className="text-sm text-gray-500">Total orders processed</p>
-            </div>
-
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium text-gray-500">Revenue</h4>
-                <Wallet className="h-5 w-5 text-gray-400" />
-              </div>
-              <p className="mt-2 text-2xl font-semibold text-gray-900">₹{dashboardStats.revenue}</p>
-              <p className="text-sm text-gray-500">Total revenue earned</p>
-            </div>
-
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium text-gray-500">Active Products</h4>
-                <Star className="h-5 w-5 text-gray-400" />
-              </div>
-              <p className="mt-2 text-2xl font-semibold text-gray-900">{dashboardStats.activeProducts}</p>
-              <p className="text-sm text-gray-500">Products in catalog</p>
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
-            {dashboardStats.recentActivity.length > 0 ? (
-              <div className="space-y-4">
-                {dashboardStats.recentActivity.map((activity, index) => (
-                  <div key={index} className="bg-white p-4 rounded-lg border border-gray-200">
-                    <p className="text-sm text-gray-900">{activity.description}</p>
-                    <p className="text-xs text-gray-500 mt-1">{activity.date}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500">No recent activity to display</p>
+              </button>
             )}
           </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* User Details */}
+            <div className="space-y-4">
+              <div className="flex items-start space-x-4">
+                <User className="w-5 h-5 text-gray-500 mt-1" />
+                <div>
+                  <p className="text-sm text-gray-500">Full Name</p>
+                  <p className="font-medium text-gray-900">{partnerData?.name || 'Not provided'}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <Mail className="w-5 h-5 text-gray-500 mt-1" />
+                <div>
+                  <p className="text-sm text-gray-500">Email</p>
+                  <div className="flex items-center space-x-2">
+                    <p className="font-medium text-gray-900">{partnerData?.email}</p>
+                    {partnerData?.isAccountVerified ? (
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <XCircle className="w-4 h-4 text-red-500" />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <Crown className="w-5 h-5 text-gray-500 mt-1" />
+                <div>
+                  <p className="text-sm text-gray-500">Account Status</p>
+                  <p className="font-medium text-gray-900">
+                    {partnerData?.isAccountVerified ? 'Verified Account' : 'Pending Verification'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Account Statistics */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-500">Total Orders</p>
+                <p className="text-2xl font-semibold text-gray-900">{dashboardStats.totalOrders}</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-500">Revenue</p>
+                <p className="text-2xl font-semibold text-gray-900">₹{dashboardStats.revenue}</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-500">Active Products</p>
+                <p className="text-2xl font-semibold text-gray-900">{dashboardStats.activeProducts}</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-500">Account Age</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {partnerData?.createdAt ? 
+                    `${Math.floor((new Date() - new Date(partnerData.createdAt)) / (1000 * 60 * 60 * 24))} days` 
+                    : '0 days'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+          {dashboardStats.recentActivity && dashboardStats.recentActivity.length > 0 ? (
+            <div className="space-y-4">
+              {dashboardStats.recentActivity.map((activity, index) => (
+                <div key={index} className="flex items-center justify-between py-3 border-b last:border-0">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <Bell className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{activity.title}</p>
+                      <p className="text-xs text-gray-500">{activity.timestamp}</p>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-500">{activity.status}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-sm">No recent activity to display</p>
+          )}
         </div>
       </div>
     );

@@ -5,16 +5,22 @@ export const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://99digicom.com'  // Production URL
   : 'http://localhost:5050';
 
+// Helper function to construct API URLs
+export const getApiUrl = (endpoint) => {
+  // Remove leading slash if present to avoid double slashes
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+  return `${API_BASE_URL}/${cleanEndpoint}`;
+};
+
 // Configure axios defaults
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
-  timeout: 30000, // 30 second timeout for production
+  timeout: process.env.NODE_ENV === 'production' ? 60000 : 30000, // 60 second timeout for production
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    'Origin': window.location.origin
+    'X-Requested-With': 'XMLHttpRequest'
   }
 });
 
@@ -34,8 +40,13 @@ axiosInstance.interceptors.request.use((config) => {
   }
 
   // Ensure the URL uses HTTPS in production
-  if (process.env.NODE_ENV === 'production' && config.url?.startsWith('http:')) {
-    config.url = config.url.replace('http:', 'https:');
+  if (process.env.NODE_ENV === 'production') {
+    if (config.url && !config.url.startsWith('https://')) {
+      config.url = config.url.replace('http://', 'https://');
+    }
+    if (config.baseURL && !config.baseURL.startsWith('https://')) {
+      config.baseURL = config.baseURL.replace('http://', 'https://');
+    }
   }
 
   // Add cache-busting parameter for GET requests
@@ -68,7 +79,11 @@ axiosInstance.interceptors.response.use(
           return await axiosInstance(originalRequest);
         } catch (retryError) {
           console.error('Retry failed:', retryError);
-          return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
+          if (process.env.NODE_ENV === 'production') {
+            return Promise.reject(new Error('Connection failed. Please check your internet connection and try again.'));
+          } else {
+            return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
+          }
         }
       }
     }
@@ -76,7 +91,11 @@ axiosInstance.interceptors.response.use(
     // Handle CORS errors
     if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
       console.error('CORS or network error:', error);
-      return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
+      if (process.env.NODE_ENV === 'production') {
+        return Promise.reject(new Error('Unable to connect to the server. Please refresh the page and try again.'));
+      } else {
+        return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
+      }
     }
 
     // Handle authentication errors
@@ -95,17 +114,28 @@ axiosInstance.interceptors.response.use(
       }
       return Promise.reject(new Error('Your session has expired. Please log in again.'));
     }
-    
+
     // Handle forbidden errors
     if (error.response?.status === 403) {
       console.error('Access forbidden:', error.response.data);
       return Promise.reject(new Error('You do not have permission to perform this action.'));
     }
 
+    // Handle bad request errors
+    if (error.response?.status === 400) {
+      console.error('Bad request:', error.response.data);
+      const message = error.response.data.message || 'Invalid request. Please check your input.';
+      return Promise.reject(new Error(message));
+    }
+
     // Handle server errors
     if (error.response?.status >= 500) {
       console.error('Server error:', error.response.data);
-      return Promise.reject(new Error('Server error occurred. Please try again later.'));
+      if (process.env.NODE_ENV === 'production') {
+        return Promise.reject(new Error('A server error occurred. Our team has been notified and is working on it.'));
+      } else {
+        return Promise.reject(new Error('Server error occurred. Please try again later.'));
+      }
     }
 
     // Handle other errors
@@ -117,19 +147,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-// Helper function to build API URLs
-export const getApiUrl = (endpoint) => {
-  // Remove leading slash if present to avoid double slashes
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-  // Ensure the URL uses HTTPS in production
-  let url = `${API_BASE_URL}/${cleanEndpoint}`;
-  if (process.env.NODE_ENV === 'production' && url.startsWith('http:')) {
-    url = url.replace('http:', 'https:');
-  }
-  // Add cache-busting parameter
-  url += (url.includes('?') ? '&' : '?') + '_t=' + new Date().getTime();
-  return url;
-};
 
 export default axiosInstance;
