@@ -95,12 +95,17 @@ const Partner = () => {
     try {
       const response = await axiosInstance.get('/api/partner-requests/my-requests');
       if (response.data.success) {
-        setAllRequests(response.data.requests);
-        setHasCreatedRequest(response.data.requests.length > 0);
+        setAllRequests(response.data.data);
+        setHasCreatedRequest(response.data.data.length > 0);
       }
     } catch (error) {
       console.error('Error fetching requests:', error);
-      toast.error('Failed to load requests');
+      if (error.response?.status === 401) {
+        toast.error('Please log in again to continue');
+        navigate('/partnerlogin');
+      } else {
+        toast.error('Failed to load requests');
+      }
     }
   };
 
