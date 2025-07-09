@@ -107,3 +107,29 @@ export const checkExistingRequest = async (req, res) => {
         });
     }
 }; 
+
+export const getPartnerRequests = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: 'User not authenticated'
+            });
+        }
+
+        const userId = req.user.id;
+        const requests = await PartnerRequest.find({ userId })
+            .sort({ createdAt: -1 });
+        
+        res.json({
+            success: true,
+            data: requests
+        });
+    } catch (error) {
+        console.error('Error fetching partner requests:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error fetching partner requests'
+        });
+    }
+}; 
