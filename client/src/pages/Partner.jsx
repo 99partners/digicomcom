@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
@@ -42,7 +42,8 @@ const Partner = () => {
     recentActivity: []
   });
   const navigate = useNavigate();
-  const { handleLogout, user, checkAuthStatus } = useAuth();
+  const location = useLocation();
+  const { handleLogout, user } = useAuth();
   const { backendUrl } = useAppContext();
 
   const menuItems = [
@@ -120,8 +121,24 @@ const Partner = () => {
     }
   ];
 
+  useEffect(() => {
+    if (!user) {
+      navigate('/partnerlogin');
+      return;
+    }
+    fetchPartnerData();
+  }, [user]);
+
+  useEffect(() => {
+    // Set initial section from location state if available
+    if (location.state?.section) {
+      setActiveSection(location.state.section);
+    }
+  }, [location]);
+
   const fetchPartnerData = async () => {
     try {
+      setIsLoading(true);
       const response = await axiosInstance.get('/api/user/data');
       if (response.data.success) {
         setPartnerData(response.data.userData);
@@ -135,10 +152,6 @@ const Partner = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchPartnerData();
-  }, []);
 
   useEffect(() => {
     if (user) {
@@ -157,10 +170,8 @@ const Partner = () => {
     try {
       const response = await axiosInstance.get('/api/partner/has-request');
       setHasCreatedRequest(response.data.hasRequest);
-      if (!response.data.hasRequest) {
+      if (!response.data.hasRequest && activeSection !== 'create-user') {
         setActiveSection('create-user');
-      } else {
-        setActiveSection('dashboard');
       }
     } catch (error) {
       console.error('Error checking request status:', error);
@@ -168,6 +179,11 @@ const Partner = () => {
   };
 
   const handleSectionChange = (sectionId) => {
+    // Only allow section change if user has created a request or is trying to create one
+    if (!hasCreatedRequest && sectionId !== 'create-user') {
+      toast.warning('Please complete your partner request first.');
+      return;
+    }
     setActiveSection(sectionId);
   };
 
