@@ -114,7 +114,7 @@ const Home = () => {
             </span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 md:mb-12 text-gray-600 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
-            Setup, manage, advertise, and co-brand across all top marketplaces.
+            Setup, Manage, Advertise, and Co-Brand across all Top marketplaces.
           </p>
           <div className="flex justify-center">
             <Link
