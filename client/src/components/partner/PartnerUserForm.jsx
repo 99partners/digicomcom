@@ -1114,4 +1114,4 @@ const PartnerUserForm = ({ onSubmit, onCancel }) => {
     );
 };
 
-export default PartnerUserForm; 
+export default PartnerUserForm;

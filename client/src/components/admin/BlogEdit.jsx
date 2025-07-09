@@ -18,17 +18,17 @@ const BlogEdit = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-  const fetchBlog = async () => {
-    try {
+    const fetchBlog = async () => {
+      try {
         const response = await axios.get(getApiUrl(`api/blogs/${id}`));
         setFormData(response.data.data);
       } catch (error) {
-      setError('Failed to fetch blog');
+        setError('Failed to fetch blog');
         console.error('Error fetching blog:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchBlog();
   }, [id]);
 
@@ -189,4 +189,4 @@ const BlogEdit = () => {
   );
 };
 
-export default BlogEdit; 
+export default BlogEdit;

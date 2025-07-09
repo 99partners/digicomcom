@@ -33,7 +33,7 @@ const BlogForm = () => {
         getApiUrl('api/blogs'),
         formData,
         {
-        withCredentials: true
+          withCredentials: true
         }
       );
 
@@ -158,4 +158,4 @@ const BlogForm = () => {
   );
 };
 
-export default BlogForm; 
+export default BlogForm;
