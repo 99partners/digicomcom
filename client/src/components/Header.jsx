@@ -280,7 +280,7 @@
 
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu, X, ChevronDown } from "lucide-react"
 import logo from "../assets/99digicom.png"
@@ -349,18 +349,10 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-1 flex-shrink-0 relative z-10">
           {navigation.map((item) => (
-            <div
-              key={item.name}
-              className="relative group"
-              onMouseEnter={() => item.submenu && setActiveDropdown(item.name)}
-              onMouseLeave={() => item.submenu && setActiveDropdown(null)}
-            >
+            <div key={item.name} className="relative group">
               {item.submenu ? (
                 <button
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setActiveDropdown(activeDropdown === item.name ? null : item.name)
-                  }}
+                  onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
                   className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
                     isActive(item.submenu.find(sub => sub.href === pathname)?.href)
                       ? "text-green-700 bg-green-100"
@@ -383,11 +375,7 @@ const Header = () => {
                 </button>
               )}
               {item.submenu && activeDropdown === item.name && (
-                <div
-                  className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
-                  onMouseEnter={() => setActiveDropdown(item.name)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
                   {item.submenu.map((subItem) => (
                     <button
                       key={subItem.name}
