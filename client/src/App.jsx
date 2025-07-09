@@ -4,11 +4,15 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
+
 import Shop from './pages/Shop';
+
 import Blogs from './pages/blogs';  
 import CaseStudies from './pages/caseStudies';
 import GuidesTutorials from './pages/guidesTutorials';
 import Faqs from './pages/faqss';
+
+
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import CustomerLogin from './pages/CutomerLogin';
@@ -18,6 +22,10 @@ import CookiePolicy from './pages/CookiePolicy';
 import CoBrandingPage from './pages/CoBranding';
 import AccountManagementServices from './pages/ams';
 import ECommerce from './pages/eCommerce';
+import PartnerCommitments from './pages/ourPartners';
+import PartnerOnboarding from './pages/partnersOnboarding';
+import PlatformEnablement from './pages/platformEnable';
+import ForProductPartners from './pages/whyPartners';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -35,7 +43,9 @@ const Layout = ({ children }) => {
   
   // Exact routes where we don't want to show header and footer
   const noHeaderFooterRoutes = [
+   
     '/customerlogin',
+   
     '/reset-password',
     '/email-verify',
     '/admin/login',
@@ -68,8 +78,21 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/services/coBranding" element={<CoBrandingPage />} />          
             <Route path="/services/ams" element={<AccountManagementServices />} />
+            <Route path="/services/platformEnable" element={<PlatformEnablement />} />
             <Route path="/services/eCommerce" element={<ECommerce />} />
+            <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
+            <Route path="/partners/whyPartners" element={<ForProductPartners/>} />
+            <Route path="/partners/partnersOnboarding" element={<PartnerOnboarding />} />
+            <Route 
+              path="/partner" 
+              element={
+                <ProtectedRoute key="partner-route">
+                  <Partner />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="/shop" element={<Shop />} />
+            
             <Route path="/resources/blogs" element={<Blogs />} />
             <Route path="/resources/caseStudies" element={<CaseStudies />} />
             <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
@@ -77,6 +100,7 @@ function App() {
             <Route path="resources/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/customerlogin" element={<CustomerLogin />} />
+
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
