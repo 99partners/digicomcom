@@ -9,8 +9,8 @@ router.use((req, res, next) => {
   next();
 });
 
-// Admin login
-router.post('/login', adminLogin);
+// Admin login - using a less blocked endpoint name
+router.post('/auth/verify', adminLogin);
 
 // Protected routes
 router.get('/dashboard-stats', adminAuth, getDashboardStats);
