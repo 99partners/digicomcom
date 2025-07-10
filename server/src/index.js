@@ -7,6 +7,7 @@ const morgan = require('morgan');
 
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/auth', authRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -38,7 +40,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicom')
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 }); 

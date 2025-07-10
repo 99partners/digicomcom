@@ -1,10 +1,10 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
-import axiosInstance from '../config/api.config';
+import axios from 'axios';
 
 export const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAdminVerified } = useAuth();
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isPartnerRoute = location.pathname === '/partner';
@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children }) => {
     const checkPartnerRequest = async () => {
       if (user && isPartnerRoute) {
         try {
-          const response = await axiosInstance.get('/api/partner/has-request');
+          const response = await axios.get('http://localhost:5050/api/partner/has-request');
           setHasPartnerRequest(response.data.hasRequest);
         } catch (error) {
           console.error('Error checking partner request:', error);
@@ -38,11 +38,32 @@ export const ProtectedRoute = ({ children }) => {
     );
   }
 
-  // Handle admin routes
+  // Handle admin routes with enhanced security
   if (isAdminRoute) {
+    // Check if user exists and has admin role
     if (!user || user.role !== 'admin') {
-      return <Navigate to="/admin/login" replace state={{ from: location }} />;
+      return <Navigate 
+        to="/admin/login" 
+        replace 
+        state={{ 
+          from: location,
+          message: "Please log in with admin credentials to access this area."
+        }} 
+      />;
     }
+
+    // Additional check for admin verification
+    if (!isAdminVerified) {
+      return <Navigate 
+        to="/admin/login" 
+        replace 
+        state={{ 
+          from: location,
+          message: "Your admin session has expired. Please log in again."
+        }} 
+      />;
+    }
+
     return children;
   }
 
