@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiService from '../config/api.config';
-import { AUTH_CONFIG } from '../config/auth.config';
+import AUTH_CONFIG from '../config/auth.config';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import NewsletterSubscribers from '../components/admin/NewsletterSubscribers';
+import PartnerRequestManagement from '../components/admin/PartnerRequestManagement';
+import BlogManagement from '../components/admin/BlogManagement';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
