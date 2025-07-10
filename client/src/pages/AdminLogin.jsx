@@ -40,7 +40,7 @@ const AdminLogin = () => {
 
         if (response.success && response.token) {
           localStorage.setItem(AUTH_CONFIG.adminTokenKey, response.token);
-          toast.success('Login successful');
+        toast.success('Login successful');
           navigate('/admin');
         } else {
           toast.error(response.message || 'Login failed');

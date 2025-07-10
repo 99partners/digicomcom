@@ -268,15 +268,15 @@ const CustomerLogin = () => {
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
                         First Name
                       </label>
-                      <input
-                        id="firstName"
+                        <input
+                          id="firstName"
                         type="text"
                         placeholder="John"
-                        value={signupForm.firstName}
+                          value={signupForm.firstName}
                         onChange={(e) => setSignupForm({ ...signupForm, firstName: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                        required
-                      />
+                          required
+                        />
                     </div>
                     <div>
                       <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
