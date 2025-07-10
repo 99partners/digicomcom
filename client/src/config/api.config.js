@@ -4,34 +4,23 @@ export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5050';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
-  return {
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
     'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {})
-  };
-};
-
-const apiService = {
-  post: async (endpoint, data) => {
-    try {
-      const response = await axios.post(`${API_URL}${endpoint}`, data, {
-        headers: getAuthHeaders()
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
   },
+});
 
-  get: async (endpoint) => {
-    try {
-      const response = await axios.get(`${API_URL}${endpoint}`, {
-        headers: getAuthHeaders()
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
-};
+api.interceptors.request.use((config) => {
+  const headers = getAuthHeaders();
+  config.headers = {
+    ...config.headers,
+    ...headers,
+  };
+  return config;
+});
 
-export default apiService;
+export default api;
