@@ -48,7 +48,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const response = await apiService.get('/api/admin/dashboard-stats', {
+        const response = await apiService.get('/management/portal/dashboard-stats', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const response = await apiService.get('/api/admin/users', {
+        const response = await apiService.get('/management/portal/users', {
           headers: {
             Authorization: `Bearer ${token}`
           }
