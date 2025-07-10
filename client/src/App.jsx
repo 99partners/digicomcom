@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from './context/AuthContext';
 
 // Import pages
 import Home from './pages/Home';
@@ -18,6 +19,9 @@ import AdminLogin from './pages/AdminLogin';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
+import DashboardLayout from './components/partner/DashboardLayout';
+import DashboardPanel from './components/partner/DashboardPanel';
+import PartnerDashboard from './pages/PartnerDashboard';
 
 // Import components
 import Header from './components/Header';
@@ -26,12 +30,34 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
+    <AuthProvider>
+      <Router>
         <ToastContainer position="top-right" autoClose={3000} />
-        <Header />
-        <main className="flex-grow">
-          <Routes>
+        <Routes>
+          {/* Dashboard Routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <PartnerDashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/dashboard/*" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Outlet />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Public Routes */}
+          <Route element={
+            <>
+              <Header />
+              <Outlet />
+              <Footer />
+            </>
+          }>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
@@ -54,11 +80,10 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

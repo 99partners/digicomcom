@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiService from '../config/api.config';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { handleLogin } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -26,12 +29,13 @@ const Login = () => {
       const response = await apiService.post('/api/auth/login', formData);
 
       if (response.success) {
-        // Store token in localStorage
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        
+        // Use the auth context to handle login
+        await handleLogin(response.token, response.user);
         toast.success('Login successful');
-        navigate('/dashboard'); // or wherever you want to redirect after login
+        
+        // Redirect to the intended page or dashboard
+        const from = location.state?.from?.pathname || '/dashboard';
+        navigate(from, { replace: true });
       } else {
         toast.error(response.message || 'Login failed');
       }
