@@ -27,8 +27,8 @@ const AdminLogin = () => {
     try {
       // Check for hardcoded credentials
       if (credentials.username === 'admin99' && credentials.password === '99Partnersin') {
-        // Get JWT token from server
-        const response = await apiService.post('/api/admin/login', {
+        // Get JWT token from server using the new endpoint
+        const response = await apiService.post('/api/admin/auth/verify', {
           username: credentials.username,
           password: credentials.password
         });
