@@ -8,11 +8,10 @@ const morgan = require('morgan');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const authRoutes = require('./routes/authRoutes');
-<<<<<<< HEAD
+
 const serviceApplicationRoutes = require('./routes/serviceApplicationRoutes');
-=======
+
 const adminRoutes = require('./routes/adminRoutes');
->>>>>>> c3997cf7adb7e39bc6c9d454ec4d3f7168c44a47
 
 const app = express();
 
@@ -38,7 +37,7 @@ app.use(helmet({
 
 app.use(morgan('dev'));
 
-<<<<<<< HEAD
+
 // Debug middleware to log all requests
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
@@ -65,11 +64,10 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-=======
+
 // Regular routes
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
->>>>>>> c3997cf7adb7e39bc6c9d454ec4d3f7168c44a47
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
@@ -96,7 +94,6 @@ app.use('/management/portal', adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-<<<<<<< HEAD
   console.error('Error details:', {
     message: err.message,
     stack: err.stack,
@@ -108,10 +105,9 @@ app.use((err, req, res, next) => {
     message: 'Something went wrong!',
     error: err.message
   });
-=======
+
   console.error(err.stack);
   res.status(500).json({ success: false, message: 'Something went wrong!' });
->>>>>>> c3997cf7adb7e39bc6c9d454ec4d3f7168c44a47
 });
 
 const PORT = process.env.PORT || 5050;
