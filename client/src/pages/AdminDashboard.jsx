@@ -106,7 +106,7 @@ const AdminDashboard = () => {
           toast.error('Please login again');
           navigate('/admin/login');
         } else {
-          toast.error('Failed to fetch users');
+        toast.error('Failed to fetch users');
         }
       } finally {
         setLoading(false);

@@ -8,9 +8,7 @@ const morgan = require('morgan');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const authRoutes = require('./routes/authRoutes');
-
 const serviceApplicationRoutes = require('./routes/serviceApplicationRoutes');
-
 const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
@@ -35,8 +33,8 @@ app.use(helmet({
   contentSecurityPolicy: false
 }));
 
+// Request logging
 app.use(morgan('dev'));
-
 
 // Debug middleware to log all requests
 app.use((req, res, next) => {
@@ -46,32 +44,31 @@ app.use((req, res, next) => {
   next();
 });
 
-// Test endpoint that doesn't require auth
+// Health check endpoints
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API test endpoint is working' });
 });
 
-// Root route for API health check
 app.get('/', (req, res) => {
   res.json({
     message: 'API is running',
     endpoints: {
       test: '/api/test',
+      auth: '/api/session/user',
       applications: '/api/applications',
-      auth: '/api/auth'
+      newsletter: '/api/newsletter',
+      contact: '/api/contact',
+      admin: '/management/portal'
     }
   });
 });
 
-// Routes
-
-// Regular routes
+// Mount routes
+app.use('/api/session/user', authRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/api/session/user', authRoutes);  // Changed from /api/auth to /api/session/user
-app.use('/api/contact', contactRoutes);
-app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/applications', serviceApplicationRoutes);
+app.use('/management/portal', adminRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -79,7 +76,14 @@ app.use((req, res) => {
     path: req.path,
     method: req.method,
     headers: req.headers,
-    body: req.body
+    body: req.body,
+    availableEndpoints: {
+      auth: '/api/session/user',
+      applications: '/api/applications',
+      newsletter: '/api/newsletter',
+      contact: '/api/contact',
+      admin: '/management/portal'
+    }
   };
   console.log('404 - Route not found:', error);
   res.status(404).json({
@@ -88,9 +92,6 @@ app.use((req, res) => {
     error
   });
 });
-
-// Admin routes with different base URL
-app.use('/management/portal', adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -105,11 +106,9 @@ app.use((err, req, res, next) => {
     message: 'Something went wrong!',
     error: err.message
   });
-
-  console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
+// Database connection and server start
 const PORT = process.env.PORT || 5050;
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicomcom')
