@@ -4,7 +4,7 @@ const env = {
     WEBSITE_URL: 'https://99digicom.com'
   },
   development: {
-    API_URL: 'https://99digicom.com',
+    API_URL: 'http://localhost:5050',
     WEBSITE_URL: 'http://localhost:5173'
   }
 };
