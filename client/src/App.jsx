@@ -23,6 +23,13 @@ import DashboardLayout from './components/partner/DashboardLayout';
 import DashboardPanel from './components/partner/DashboardPanel';
 import PartnerDashboard from './pages/PartnerDashboard';
 
+// Import application components
+import CreateApplication from './components/partner/CreateApplication';
+import PlatformEnablementForm from './components/partner/forms/PlatformEnablementForm';
+import AMSForm from './components/partner/forms/AMSForm';
+import AdvertisingForm from './components/partner/forms/AdvertisingForm';
+import CoBrandingForm from './components/partner/forms/CoBrandingForm';
+
 // Import components
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -48,7 +55,13 @@ function App() {
                 <Outlet />
               </DashboardLayout>
             </ProtectedRoute>
-          } />
+          }>
+            <Route path="create-application" element={<CreateApplication />} />
+            <Route path="create-application/platform" element={<PlatformEnablementForm />} />
+            <Route path="create-application/ams" element={<AMSForm />} />
+            <Route path="create-application/advertising" element={<AdvertisingForm />} />
+            <Route path="create-application/cobranding" element={<CoBrandingForm />} />
+          </Route>
 
           {/* Public Routes */}
           <Route element={
