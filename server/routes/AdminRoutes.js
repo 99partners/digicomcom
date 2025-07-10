@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getDashboardStats, getUsers } = require('../controllers/AdminController');
 const adminAuth = require('../middleware/adminAuth');
-const User = require('../models/User'); // Added missing import for User model
+const User = require('../src/models/User'); // Added missing import for User model
 
 // Debug middleware
 router.use((req, res, next) => {
