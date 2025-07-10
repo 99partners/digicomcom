@@ -34,11 +34,10 @@ const Login = () => {
       navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-      setError(err.message || 'An error occurred during login. Please try again.');
-      
-      // Check if the error might be due to ad blockers
-      if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
+      if (err.message.includes('ERR_BLOCKED_BY_CLIENT')) {
         setError('Login request was blocked. Please disable your ad blocker and try again.');
+      } else {
+        setError(err.message || 'An error occurred during login. Please try again.');
       }
     } finally {
       setLoading(false);

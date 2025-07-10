@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const contactRoutes = require('./routes/contactRoutes');
@@ -13,16 +14,22 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// Middleware
-app.use(express.json());
-
-// CORS configuration
+// Configure CORS
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://99digicom.com'],
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://99digicom.com', 'https://www.99digicom.com']
+    : 'http://localhost:5173',
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+  allowedHeaders: [
+    'Content-Type',
+    'X-Requested-With',
+    'Accept',
+    'X-Custom-Request'
+  ]
 }));
+
+app.use(cookieParser());
+app.use(express.json());
 
 // Add pre-flight response
 app.options('*', cors());

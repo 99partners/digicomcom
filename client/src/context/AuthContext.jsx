@@ -25,6 +25,9 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Session validation error:', error);
+      if (!error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -37,13 +40,20 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch(AUTH_CONFIG.endpoints.logout, {
+      const response = await fetch(AUTH_CONFIG.endpoints.logout, {
         method: 'POST',
         headers: AUTH_CONFIG.headers,
         credentials: 'include'
       });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
     } catch (error) {
       console.error('Logout error:', error);
+      if (error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+        console.warn('Logout request blocked by ad blocker, clearing local state anyway');
+      }
     } finally {
       setUser(null);
     }
