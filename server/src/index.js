@@ -14,39 +14,49 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+
+// CORS configuration
 app.use(cors({
   origin: ['http://localhost:5173', 'https://99digicom.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
+
+// Add pre-flight response
+app.options('*', cors());
+
+// Security headers
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: false
 }));
+
 app.use(morgan('dev'));
 
-// Routes
+// Regular routes
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
+
+// Admin routes with different base URL
+app.use('/management/portal', adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: 'Something went wrong!'
-  });
+  res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicom')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
-// Start server
 const PORT = process.env.PORT || 5050;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-}); 
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicomcom')
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+  }); 
