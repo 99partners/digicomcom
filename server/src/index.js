@@ -8,21 +8,37 @@ const morgan = require('morgan');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const authRoutes = require('./routes/authRoutes');
+<<<<<<< HEAD
 const serviceApplicationRoutes = require('./routes/serviceApplicationRoutes');
+=======
+const adminRoutes = require('./routes/adminRoutes');
+>>>>>>> c3997cf7adb7e39bc6c9d454ec4d3f7168c44a47
 
 const app = express();
 
 // Middleware
 app.use(express.json());
+
+// CORS configuration
 app.use(cors({
   origin: ['http://localhost:5173', 'https://99digicom.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
-app.use(helmet());
+
+// Add pre-flight response
+app.options('*', cors());
+
+// Security headers
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: false
+}));
+
 app.use(morgan('dev'));
 
+<<<<<<< HEAD
 // Debug middleware to log all requests
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
@@ -49,6 +65,11 @@ app.get('/', (req, res) => {
 });
 
 // Routes
+=======
+// Regular routes
+app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/contact', contactRoutes);
+>>>>>>> c3997cf7adb7e39bc6c9d454ec4d3f7168c44a47
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
@@ -70,8 +91,12 @@ app.use((req, res) => {
   });
 });
 
+// Admin routes with different base URL
+app.use('/management/portal', adminRoutes);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
+<<<<<<< HEAD
   console.error('Error details:', {
     message: err.message,
     stack: err.stack,
@@ -83,15 +108,21 @@ app.use((err, req, res, next) => {
     message: 'Something went wrong!',
     error: err.message
   });
+=======
+  console.error(err.stack);
+  res.status(500).json({ success: false, message: 'Something went wrong!' });
+>>>>>>> c3997cf7adb7e39bc6c9d454ec4d3f7168c44a47
 });
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicom')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
-// Start server
 const PORT = process.env.PORT || 5050;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-}); 
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicomcom')
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+  }); 

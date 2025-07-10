@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { AUTH_CONFIG } from '../config/auth.config';
+import apiService from '../config/api.config';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
@@ -12,9 +14,8 @@ const AdminLogin = () => {
 
   // Check if already logged in
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    if (token && user) {
+    const token = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
+    if (token) {
       navigate('/admin');
     }
   }, [navigate]);
@@ -26,17 +27,30 @@ const AdminLogin = () => {
     try {
       // Check for hardcoded credentials
       if (credentials.username === 'admin99' && credentials.password === '99Partnersin') {
-        // Store dummy token and user data
-        localStorage.setItem('token', 'admin-token');
-        localStorage.setItem('user', JSON.stringify({ role: 'admin' }));
-        
-        toast.success('Login successful');
-        navigate('/admin'); // Redirect to admin dashboard
+        // Get JWT token from server using the new management portal endpoint
+        const response = await apiService.post('/management/portal/session/validate', {
+          username: credentials.username,
+          password: credentials.password
+        }, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.success && response.token) {
+          localStorage.setItem(AUTH_CONFIG.adminTokenKey, response.token);
+          toast.success('Login successful');
+          navigate('/admin');
+        } else {
+          toast.error(response.message || 'Login failed');
+        }
       } else {
         toast.error('Invalid credentials');
       }
     } catch (error) {
-      toast.error('Login failed');
+      console.error('Login error:', error);
+      toast.error(error.response?.data?.message || 'Login failed');
     } finally {
       setIsLoading(false);
     }
