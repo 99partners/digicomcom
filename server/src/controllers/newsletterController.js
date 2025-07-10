@@ -1,4 +1,4 @@
-const NewsletterModel = require('../models/newsletterModel');
+const Newsletter = require('../models/Newsletter');
 
 const newsletterController = {
     // Subscribe to newsletter
@@ -14,7 +14,7 @@ const newsletterController = {
             }
 
             // Check if email already exists
-            const existingSubscriber = await NewsletterModel.findOne({ email });
+            const existingSubscriber = await Newsletter.findOne({ email });
             if (existingSubscriber) {
                 if (existingSubscriber.isActive) {
                     return res.status(400).json({
@@ -33,7 +33,7 @@ const newsletterController = {
             }
 
             // Create new subscriber
-            const newSubscriber = new NewsletterModel({ email });
+            const newSubscriber = new Newsletter({ email });
             await newSubscriber.save();
 
             res.status(201).json({
@@ -52,7 +52,7 @@ const newsletterController = {
     // Get all subscribers
     getSubscribers: async (req, res) => {
         try {
-            const subscribers = await NewsletterModel.find()
+            const subscribers = await Newsletter.find()
                 .sort({ subscriptionDate: -1 });
 
             res.status(200).json({
@@ -80,7 +80,7 @@ const newsletterController = {
                 });
             }
 
-            const subscriber = await NewsletterModel.findOne({ email });
+            const subscriber = await Newsletter.findOne({ email });
             if (!subscriber) {
                 return res.status(404).json({
                     success: false,
