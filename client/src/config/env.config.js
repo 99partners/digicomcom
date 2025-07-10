@@ -4,11 +4,16 @@ const env = {
     WEBSITE_URL: 'https://99digicom.com'
   },
   development: {
-    API_URL: 'http://localhost:5000',
+    API_URL: 'https://99digicom.com',
     WEBSITE_URL: 'http://localhost:5173'
   }
 };
 
-const config = env[process.env.NODE_ENV || 'development'];
+const currentEnv = process.env.NODE_ENV || 'development';
+const config = {
+  ...env[currentEnv],
+  isDevelopment: currentEnv === 'development',
+  isProduction: currentEnv === 'production'
+};
 
 export default config; 
