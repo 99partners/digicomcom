@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import api from '../config/api.config';
+import axios from 'axios';
+import { API_URL } from '../config/api.config';
+import { AUTH_CONFIG } from '../config/auth.config';
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
@@ -26,16 +28,22 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await api.post('/api/auth/login', formData);
+      const response = await axios.post(`${API_URL}${AUTH_CONFIG.endpoints.login}`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json'
+        }
+      });
       
-      if (response.success) {
-        await handleLogin(response.token, response.user);
+      if (response.data.success) {
+        await handleLogin(response.data.token, response.data.user);
         toast.success('Login successful');
         // Redirect to the intended page or dashboard
         const from = location.state?.from?.pathname || '/dashboard';
         navigate(from, { replace: true });
       } else {
-        toast.error(response.message || 'Login failed');
+        toast.error(response.data.message || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
