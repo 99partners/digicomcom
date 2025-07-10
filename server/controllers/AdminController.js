@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const Newsletter = require('../models/Newsletter');
+const User = require('../src/models/User');
+const Newsletter = require('../src/models/Newsletter');
 
 // Get dashboard statistics
 const getDashboardStats = async (req, res) => {

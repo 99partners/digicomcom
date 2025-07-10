@@ -5,11 +5,9 @@ const dotenv = require('dotenv');
 
 // Import routes
 const adminRoutes = require('./routes/AdminRoutes');
-const authRoutes = require('./routes/AuthRoutes');
-const blogRoutes = require('./routes/blogRoutes');
-const contactRoutes = require('./routes/contactRoutes');
-const platformAMSRoutes = require('./routes/platformAMSRoutes');
-const coBrandingRoutes = require('./routes/coBrandingRoutes');
+const authRoutes = require('./src/routes/authRoutes');
+const contactRoutes = require('./src/routes/contactRoutes');
+const newsletterRoutes = require('./src/routes/newsletterRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -35,10 +33,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicomco
 // Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/blog', blogRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/api/platform-ams', platformAMSRoutes);
-app.use('/api/co-branding', coBrandingRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // Test route
 app.get('/api/test', (req, res) => {
