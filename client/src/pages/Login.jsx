@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { handleLogin } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -26,15 +26,16 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const result = await login(formData.email, formData.password);
+      const response = await api.post('/api/auth/login', formData);
       
-      if (result.success) {
+      if (response.success) {
+        await handleLogin(response.token, response.user);
         toast.success('Login successful');
         // Redirect to the intended page or dashboard
         const from = location.state?.from?.pathname || '/dashboard';
         navigate(from, { replace: true });
       } else {
-        toast.error(result.error || 'Login failed');
+        toast.error(response.message || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);

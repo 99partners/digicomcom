@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 // Import routes
-const adminRoutes = require('./routes/AdminRoutes');
+const adminRoutes = require('./src/routes/adminRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 const contactRoutes = require('./src/routes/contactRoutes');
 const newsletterRoutes = require('./src/routes/newsletterRoutes');
