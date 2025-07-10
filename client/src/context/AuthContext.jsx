@@ -1,96 +1,60 @@
 
-import React from 'react';
-import { createContext, useContext, useState, useEffect } from 'react';
-import { AUTH_CONFIG } from '../config/auth.config';
-import axios from 'axios';
-import { API_URL } from '../config/api.config';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AUTH_CONFIG from '../config/auth.config';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    checkAuthStatus();
+    validateSession();
   }, []);
 
-  const checkAuthStatus = async () => {
+  const validateSession = async () => {
     try {
-      const token = localStorage.getItem(AUTH_CONFIG.tokenKey);
-
-      if (token) {
-        try {
-          const response = await axios.get(`${API_URL}${AUTH_CONFIG.endpoints.profile}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'X-Requested-With': 'XMLHttpRequest',
-              'Accept': 'application/json'
-            }
-          });
-
-          if (response.data.success) {
-            console.log('Profile data:', response.data);
-            setUser(response.data.user);
-          } else {
-            handleLogout();
-          }
-        } catch (error) {
-          console.error('Auth verification failed:', error);
-          handleLogout();
-        }
-      }
-    } catch (error) {
-      console.error('Auth status check failed:', error);
-      handleLogout();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleLogin = async (token, userData) => {
-    try {
-      localStorage.setItem(AUTH_CONFIG.tokenKey, token);
-      console.log('Login user data:', userData);
-      setUser(userData);
-      
-      // Fetch full profile after login
-      const response = await axios.get(`${API_URL}${AUTH_CONFIG.endpoints.profile}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'X-Requested-With': 'XMLHttpRequest',
-          'Accept': 'application/json'
-        }
+      const response = await fetch(AUTH_CONFIG.endpoints.validateToken, {
+        headers: AUTH_CONFIG.headers,
+        credentials: 'include'
       });
 
-      if (response.data.success) {
-        console.log('Updated profile data:', response.data);
-        setUser(response.data.user);
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
       }
     } catch (error) {
-      console.error('Login error:', error);
-      handleLogout();
-      throw error;
+      console.error('Session validation error:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem(AUTH_CONFIG.tokenKey);
-    setUser(null);
-    setLoading(false);
-    window.location.href = AUTH_CONFIG.loginPath;
+  const login = async (data) => {
+    setUser(data.user);
+    return data;
+  };
+
+  const logout = async () => {
+    try {
+      await fetch(AUTH_CONFIG.endpoints.logout, {
+        method: 'POST',
+        headers: AUTH_CONFIG.headers,
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+    }
   };
 
   const value = {
     user,
     loading,
-    error,
-    handleLogin,
-    handleLogout,
-    checkAuthStatus
+    login,
+    logout,
+    isAuthenticated: !!user
   };
 
   return (
@@ -107,3 +71,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export default AuthContext;
