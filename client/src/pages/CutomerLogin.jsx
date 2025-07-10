@@ -4,7 +4,7 @@ import { ArrowLeft, Mail, Lock, User, Building, Phone, Globe, CheckCircle } from
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { API_URL } from '../config/api.config';
-import { AUTH_CONFIG } from '../config/auth.config';
+import AUTH_CONFIG from '../config/auth.config';
 import { useAuth } from '../context/AuthContext';
 
 const CustomerLogin = () => {
