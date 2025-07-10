@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { AUTH_CONFIG } from '../config/auth.config';
+import AUTH_CONFIG from '../config/auth.config';
 import apiService from '../config/api.config';
 
 const AdminLogin = () => {
