@@ -22,9 +22,13 @@ import CookiePolicy from './pages/CookiePolicy';
 import DashboardLayout from './components/partner/DashboardLayout';
 import PartnerDashboard from './pages/PartnerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import CreateApplication from './pages/CreateApplication';
+import Applications from './pages/Applications';
+import ServiceSelection from './components/partner/ServiceSelection';
+import ServiceForm from './components/partner/ServiceForm';
+import DashboardPanel from './components/partner/DashboardPanel';
 
 // Import application components
-import CreateApplication from './components/partner/CreateApplication';
 import PlatformEnablementForm from './components/partner/forms/PlatformEnablementForm';
 import AMSForm from './components/partner/forms/AMSForm';
 import AdvertisingForm from './components/partner/forms/AdvertisingForm';
@@ -44,10 +48,15 @@ function App() {
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <DashboardLayout>
-                <PartnerDashboard />
+                <Outlet />
               </DashboardLayout>
             </ProtectedRoute>
-          } />
+          }>
+            <Route index element={<DashboardPanel />} />
+            <Route path="create-application" element={<ServiceSelection />} />
+            <Route path="create-application/:serviceType" element={<ServiceForm />} />
+            <Route path="applications" element={<Applications />} />
+          </Route>
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />

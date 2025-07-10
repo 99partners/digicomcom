@@ -261,11 +261,10 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
-// Get User Profile
+// Get user profile
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password -otp -resetPasswordToken -resetPasswordExpires');
-    
+    const user = await User.findById(req.user._id).select('-password -otp');
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -280,9 +279,8 @@ exports.getProfile = async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        isVerified: user.isVerified,
         lastUpdated: user.updatedAt,
-        plan: 'Premium' // You might want to add a plan field to your user model
+        plan: 'Premium'
       }
     });
   } catch (error) {

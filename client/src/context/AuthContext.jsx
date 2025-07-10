@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { AUTH_CONFIG } from '../config/auth.config';
 import axios from 'axios';
@@ -8,6 +10,7 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     checkAuthStatus();
@@ -35,12 +38,12 @@ export const AuthProvider = ({ children }) => {
           console.error('Auth verification failed:', error);
           handleLogout();
         }
-      } else {
-        setLoading(false);
       }
     } catch (error) {
       console.error('Auth status check failed:', error);
       handleLogout();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,6 +67,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Login error:', error);
       handleLogout();
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -79,6 +83,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    error,
     handleLogin,
     handleLogout,
     checkAuthStatus

@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     
     // Add user from payload
-    req.user = decoded;
+    req.user = { _id: decoded.id }; // Changed from decoded to { _id: decoded.id }
     next();
   } catch (error) {
     res.status(401).json({
