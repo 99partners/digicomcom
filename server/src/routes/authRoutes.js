@@ -3,58 +3,23 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const auth = require('../middleware/auth');
 
-// Session management routes
-router.post('/login', authController.login);
-router.get('/login', (req, res) => {
-  res.status(405).json({
-    success: false,
-    message: 'Method not allowed. Please use POST for login.',
-    error: {
-      path: req.path,
-      method: req.method,
-      correctMethod: 'POST',
-      correctEndpoint: '/api/session/user/login',
-      headers: {
-        required: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          'Accept': 'application/json'
-        }
-      }
-    }
-  });
+// Add headers to avoid ad blockers
+router.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('X-Service-Worker', 'script');
+  res.setHeader('X-Custom-Header', 'verification-request');
+  next();
 });
 
-router.post('/signup', authController.signup);
-router.get('/profile', auth, authController.getProfile);
-
-// Password management routes
-router.post('/forgot-password', authController.forgotPassword);
-router.post('/reset-password', authController.resetPassword);
-
-// OTP verification routes
-router.post('/send-otp', authController.sendOTP);
-router.post('/verify-otp', authController.verifyOTP);
-
-// Handle 404 for this router
-router.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route not found: ${req.method} ${req.path}`,
-    error: {
-      path: req.path,
-      method: req.method,
-      availableRoutes: {
-        login: 'POST /login',
-        signup: 'POST /signup',
-        profile: 'GET /profile',
-        forgotPassword: 'POST /forgot-password',
-        resetPassword: 'POST /reset-password',
-        sendOTP: 'POST /send-otp',
-        verifyOTP: 'POST /verify-otp'
-      }
-    }
-  });
-});
+// Authentication routes
+router.post('/session', authController.login);
+router.post('/session/refresh', authController.refreshToken);
+router.post('/session/end', auth, authController.logout);
+router.post('/user/create', authController.register);
+router.post('/user/reset-credentials', authController.forgotPassword);
+router.post('/user/update-credentials', authController.resetPassword);
+router.get('/user/validate', auth, authController.validateToken);
 
 module.exports = router; 
