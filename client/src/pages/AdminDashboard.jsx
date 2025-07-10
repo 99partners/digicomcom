@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiService from '../config/api.config';
 import { AUTH_CONFIG } from '../config/auth.config';
+import ContactSubmissions from '../components/admin/ContactSubmissions';
+import NewsletterSubscribers from '../components/admin/NewsletterSubscribers';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -313,6 +315,20 @@ const AdminDashboard = () => {
                 </div>
               </div>
             )}
+          </div>
+        );
+      case 'contact':
+        return (
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-6">Contact Form Submissions</h1>
+            <ContactSubmissions />
+          </div>
+        );
+      case 'newsletter':
+        return (
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-6">Newsletter Subscribers</h1>
+            <NewsletterSubscribers />
           </div>
         );
       default:
