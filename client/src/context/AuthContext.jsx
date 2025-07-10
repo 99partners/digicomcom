@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { AUTH_CONFIG } from '../config/auth.config';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api.config';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isAdminVerified, setIsAdminVerified] = useState(false);
 
   useEffect(() => {
     checkAuthStatus();
@@ -15,34 +15,26 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const adminToken = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
-      const userToken = localStorage.getItem(AUTH_CONFIG.tokenKey);
+      const token = localStorage.getItem(AUTH_CONFIG.tokenKey);
 
-      if (adminToken) {
-        // Verify admin token with backend
+      if (token) {
         try {
-          const response = await axios.get('http://localhost:5050/api/admin/verify', {
+          const response = await axios.get(`${API_BASE_URL}/api/auth/profile`, {
             headers: {
-              Authorization: `Bearer ${adminToken}`
+              Authorization: `Bearer ${token}`
             }
           });
 
           if (response.data.success) {
-            setUser({ 
-              ...response.data.user,
-              role: 'admin' 
-            });
-            setIsAdminVerified(true);
+            console.log('Profile data:', response.data);
+            setUser(response.data.user);
           } else {
             handleLogout();
           }
         } catch (error) {
-          console.error('Admin verification failed:', error);
+          console.error('Auth verification failed:', error);
           handleLogout();
         }
-      } else if (userToken) {
-        // Handle regular user token
-        setUser({ role: 'user', token: userToken });
       }
     } catch (error) {
       console.error('Auth status check failed:', error);
@@ -52,19 +44,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleLogin = async (token, userData, isAdmin = false) => {
+  const handleLogin = async (token, userData) => {
     try {
-      const tokenKey = isAdmin ? AUTH_CONFIG.adminTokenKey : AUTH_CONFIG.tokenKey;
-      localStorage.setItem(tokenKey, token);
+      localStorage.setItem(AUTH_CONFIG.tokenKey, token);
+      console.log('Login user data:', userData);
+      setUser(userData);
       
-      if (isAdmin) {
-        setIsAdminVerified(true);
-      }
-      
-      setUser({
-        ...userData,
-        token
+      // Fetch full profile after login
+      const response = await axios.get(`${API_BASE_URL}/api/auth/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
+
+      if (response.data.success) {
+        console.log('Updated profile data:', response.data);
+        setUser(response.data.user);
+      }
     } catch (error) {
       console.error('Login error:', error);
       handleLogout();
@@ -73,15 +69,13 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem(AUTH_CONFIG.tokenKey);
-    localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
     setUser(null);
-    setIsAdminVerified(false);
+    window.location.href = AUTH_CONFIG.loginPath;
   };
 
   const value = {
     user,
     loading,
-    isAdminVerified,
     handleLogin,
     handleLogout,
     checkAuthStatus
@@ -89,7 +83,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
