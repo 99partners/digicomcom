@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import apiService from '../config/api.config';
+import api from '../config/api.config';
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
@@ -26,13 +26,11 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await apiService.post('/api/auth/login', formData);
-
+      const response = await api.post('/api/auth/login', formData);
+      
       if (response.success) {
-        // Use the auth context to handle login
         await handleLogin(response.token, response.user);
         toast.success('Login successful');
-        
         // Redirect to the intended page or dashboard
         const from = location.state?.from?.pathname || '/dashboard';
         navigate(from, { replace: true });
@@ -40,6 +38,7 @@ const Login = () => {
         toast.error(response.message || 'Login failed');
       }
     } catch (error) {
+      console.error('Login error:', error);
       toast.error(error.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);

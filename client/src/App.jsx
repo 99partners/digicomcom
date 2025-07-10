@@ -20,8 +20,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import DashboardLayout from './components/partner/DashboardLayout';
-import DashboardPanel from './components/partner/DashboardPanel';
 import PartnerDashboard from './pages/PartnerDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Import application components
 import CreateApplication from './components/partner/CreateApplication';
@@ -33,7 +33,6 @@ import CoBrandingForm from './components/partner/forms/CoBrandingForm';
 // Import components
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -49,11 +48,12 @@ function App() {
               </DashboardLayout>
             </ProtectedRoute>
           } />
-          <Route path="/dashboard/*" element={
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={
             <ProtectedRoute>
-              <DashboardLayout>
-                <Outlet />
-              </DashboardLayout>
+              <AdminDashboard />
             </ProtectedRoute>
           }>
             <Route path="create-application" element={<CreateApplication />} />
@@ -81,15 +81,6 @@ function App() {
             <Route path="/co-branding" element={<CoBranding />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route
-              path="/admin/dashboard/*"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { AUTH_CONFIG } from '../config/auth.config';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api.config';
+import { API_URL } from '../config/api.config';
 
 const AuthContext = createContext(null);
 
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
       if (token) {
         try {
-          const response = await axios.get(`${API_BASE_URL}/api/auth/profile`, {
+          const response = await axios.get(`${API_URL}/api/auth/profile`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -35,12 +35,12 @@ export const AuthProvider = ({ children }) => {
           console.error('Auth verification failed:', error);
           handleLogout();
         }
+      } else {
+        setLoading(false);
       }
     } catch (error) {
       console.error('Auth status check failed:', error);
       handleLogout();
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       
       // Fetch full profile after login
-      const response = await axios.get(`${API_BASE_URL}/api/auth/profile`, {
+      const response = await axios.get(`${API_URL}/api/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -64,12 +64,15 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Login error:', error);
       handleLogout();
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem(AUTH_CONFIG.tokenKey);
     setUser(null);
+    setLoading(false);
     window.location.href = AUTH_CONFIG.loginPath;
   };
 
