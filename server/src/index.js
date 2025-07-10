@@ -49,12 +49,20 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'API test endpoint is working' });
 });
 
+// Mount routes
+app.use('/api/v1/p/verify', authRoutes);  // Changed to a more generic, technical path
+app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/applications', serviceApplicationRoutes);
+app.use('/management/portal', adminRoutes);
+
+// Update health check endpoint info
 app.get('/', (req, res) => {
   res.json({
     message: 'API is running',
     endpoints: {
       test: '/api/test',
-      auth: '/api/portal/access',
+      auth: '/api/v1/p/verify',  // Updated endpoint
       applications: '/api/applications',
       newsletter: '/api/newsletter',
       contact: '/api/contact',
@@ -62,13 +70,6 @@ app.get('/', (req, res) => {
     }
   });
 });
-
-// Mount routes
-app.use('/api/portal/access', authRoutes);
-app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/applications', serviceApplicationRoutes);
-app.use('/management/portal', adminRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -78,7 +79,7 @@ app.use((req, res) => {
     headers: req.headers,
     body: req.body,
     availableEndpoints: {
-      auth: '/api/portal/access',
+      auth: '/api/v1/p/verify',  // Updated endpoint
       applications: '/api/applications',
       newsletter: '/api/newsletter',
       contact: '/api/contact',
