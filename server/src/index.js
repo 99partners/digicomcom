@@ -68,7 +68,7 @@ app.get('/', (req, res) => {
 // Regular routes
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/session/user', authRoutes);  // Changed from /api/auth to /api/session/user
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/applications', serviceApplicationRoutes);
