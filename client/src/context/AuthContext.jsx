@@ -1,91 +1,84 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { AUTH_CONFIG } from '../config/auth.config';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api.config';
+import { API_URL } from '../config/api.config';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    checkAuthStatus();
+    // Check if user is logged in on mount
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUser(token);
+    } else {
+      setLoading(false);
+    }
   }, []);
 
-  const checkAuthStatus = async () => {
+  const fetchUser = async (token) => {
     try {
-      const token = localStorage.getItem(AUTH_CONFIG.tokenKey);
-
-      if (token) {
-        try {
-          const response = await axios.get(`${API_BASE_URL}/api/auth/profile`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-
-          if (response.data.success) {
-            console.log('Profile data:', response.data);
-            setUser(response.data.user);
-          } else {
-            handleLogout();
-          }
-        } catch (error) {
-          console.error('Auth verification failed:', error);
-          handleLogout();
-        }
-      }
+      const response = await axios.get(`${API_URL}/api/auth/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUser(response.data.user);
     } catch (error) {
-      console.error('Auth status check failed:', error);
-      handleLogout();
+      console.error('Error fetching user:', error);
+      localStorage.removeItem('token');
+      setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleLogin = async (token, userData) => {
+  const login = async (email, password) => {
     try {
-      localStorage.setItem(AUTH_CONFIG.tokenKey, token);
-      console.log('Login user data:', userData);
-      setUser(userData);
-      
-      // Fetch full profile after login
-      const response = await axios.get(`${API_BASE_URL}/api/auth/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      setError(null);
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
+        email,
+        password
       });
 
-      if (response.data.success) {
-        console.log('Updated profile data:', response.data);
-        setUser(response.data.user);
-      }
+      const { token, user: userData } = response.data;
+      localStorage.setItem('token', token);
+      setUser(userData);
+      return { success: true };
     } catch (error) {
       console.error('Login error:', error);
-      handleLogout();
+      setError(error.response?.data?.message || 'An error occurred during login');
+      return { success: false, error: error.response?.data?.message || 'Login failed' };
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem(AUTH_CONFIG.tokenKey);
+  const signup = async (userData) => {
+    try {
+      setError(null);
+      const response = await axios.post(`${API_URL}/api/auth/signup`, userData);
+      return { success: true, message: response.data.message };
+    } catch (error) {
+      setError(error.response?.data?.message || 'An error occurred during signup');
+      return { success: false, error: error.response?.data?.message || 'Signup failed' };
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
     setUser(null);
-    window.location.href = AUTH_CONFIG.loginPath;
   };
 
   const value = {
     user,
     loading,
-    handleLogin,
-    handleLogout,
-    checkAuthStatus
+    error,
+    login,
+    signup,
+    logout
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
@@ -95,3 +88,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export default AuthContext;
