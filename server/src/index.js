@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const authRoutes = require('./routes/authRoutes');
+const serviceApplicationRoutes = require('./routes/serviceApplicationRoutes');
 
 const app = express();
 
@@ -22,17 +23,65 @@ app.use(cors({
 app.use(helmet());
 app.use(morgan('dev'));
 
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
+  next();
+});
+
+// Test endpoint that doesn't require auth
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API test endpoint is working' });
+});
+
+// Root route for API health check
+app.get('/', (req, res) => {
+  res.json({
+    message: 'API is running',
+    endpoints: {
+      test: '/api/test',
+      applications: '/api/applications',
+      auth: '/api/auth'
+    }
+  });
+});
+
 // Routes
-app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/applications', serviceApplicationRoutes);
+
+// 404 handler
+app.use((req, res) => {
+  const error = {
+    path: req.path,
+    method: req.method,
+    headers: req.headers,
+    body: req.body
+  };
+  console.log('404 - Route not found:', error);
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.method} ${req.path}`,
+    error
+  });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Error details:', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method
+  });
   res.status(500).json({
     success: false,
-    message: 'Something went wrong!'
+    message: 'Something went wrong!',
+    error: err.message
   });
 });
 

@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
-import { API_URL } from '../config/api.config';
+import api from '../config/api.config';
 
 const AuthContext = createContext(null);
 
@@ -13,17 +12,15 @@ export const AuthProvider = ({ children }) => {
     // Check if user is logged in on mount
     const token = localStorage.getItem('token');
     if (token) {
-      fetchUser(token);
+      fetchUser();
     } else {
       setLoading(false);
     }
   }, []);
 
-  const fetchUser = async (token) => {
+  const fetchUser = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/auth/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/auth/profile');
       setUser(response.data.user);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -37,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setError(null);
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
+      const response = await api.post('/api/auth/login', {
         email,
         password
       });
@@ -56,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     try {
       setError(null);
-      const response = await axios.post(`${API_URL}/api/auth/signup`, userData);
+      const response = await api.post('/api/auth/signup', userData);
       return { success: true, message: response.data.message };
     } catch (error) {
       setError(error.response?.data?.message || 'An error occurred during signup');
