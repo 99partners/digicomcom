@@ -22,9 +22,11 @@ export const AuthProvider = ({ children }) => {
 
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/api/auth/profile`, {
+          const response = await axios.get(`${API_URL}${AUTH_CONFIG.endpoints.profile}`, {
             headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
+              'X-Requested-With': 'XMLHttpRequest',
+              'Accept': 'application/json'
             }
           });
 
@@ -54,9 +56,11 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       
       // Fetch full profile after login
-      const response = await axios.get(`${API_URL}/api/auth/profile`, {
+      const response = await axios.get(`${API_URL}${AUTH_CONFIG.endpoints.profile}`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json'
         }
       });
 
