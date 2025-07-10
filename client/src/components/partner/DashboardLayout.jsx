@@ -28,7 +28,7 @@ import { useAuth } from '../../context/AuthContext';
 const DashboardLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, handleLogout } = useAuth();
+  const { user, logout } = useAuth();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const [showPlanDropdown, setShowPlanDropdown] = useState(false);
@@ -52,6 +52,11 @@ const DashboardLayout = ({ children }) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const getInitials = (name) => {
     return name
@@ -198,31 +203,25 @@ const DashboardLayout = ({ children }) => {
               key={item.label}
               href={item.href}
               onClick={(e) => {
-                if (!item.external) {
-                  e.preventDefault();
-                  navigate(item.href);
-                }
+                e.preventDefault();
+                navigate(item.href);
               }}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm ${
+              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 ${
                 location.pathname === item.href
                   ? 'bg-green-50 text-green-700'
                   : 'text-gray-600 hover:bg-gray-50'
               }`}
             >
-              <item.icon size={20} />
-              <span>{item.label}</span>
-              {item.external && <ExternalLink size={16} className="ml-auto" />}
+              <item.icon size={18} />
+              <span className="text-sm font-medium">{item.label}</span>
             </a>
           ))}
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col ml-64 mt-14">
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-8">
-          {children}
-        </div>
+      <div className="flex-1 ml-64 mt-14 p-6">
+        {children}
       </div>
     </div>
   );
