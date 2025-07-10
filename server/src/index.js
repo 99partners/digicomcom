@@ -22,10 +22,21 @@ app.use(cors({
   credentials: true,
   allowedHeaders: [
     'Content-Type',
+    'Authorization',
     'X-Requested-With',
     'Accept',
-    'X-Custom-Request'
-  ]
+    'X-Custom-Request',
+    'x-custom-request',
+    'Cache-Control',
+    'Pragma'
+  ],
+  exposedHeaders: [
+    'X-Custom-Request',
+    'x-custom-request'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
 app.use(cookieParser());
