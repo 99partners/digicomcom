@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiService from '../config/api.config';
-
 import { useAuth } from '../context/AuthContext';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import NewsletterSubscribers from '../components/admin/NewsletterSubscribers';
@@ -53,9 +52,6 @@ const AdminDashboard = () => {
       try {
         setLoading(true);
         const response = await fetch(`${apiService.baseURL}/management/portal/dashboard-stats`, {
-          headers: {
-            ...AUTH_CONFIG.headers,
-          },
           credentials: 'include'
         });
 
@@ -77,7 +73,11 @@ const AdminDashboard = () => {
         }
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
-        toast.error(error.message || 'Failed to fetch dashboard statistics');
+        if (error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+          toast.error('Request blocked. Please disable your ad blocker for this site.');
+        } else {
+          toast.error(error.message || 'Failed to fetch dashboard statistics');
+        }
       } finally {
         setLoading(false);
       }
@@ -93,9 +93,6 @@ const AdminDashboard = () => {
       try {
         setLoading(true);
         const response = await fetch(`${apiService.baseURL}/management/portal/users`, {
-          headers: {
-            ...AUTH_CONFIG.headers,
-          },
           credentials: 'include'
         });
 
@@ -114,7 +111,11 @@ const AdminDashboard = () => {
         }
       } catch (error) {
         console.error('Error fetching users:', error);
-        toast.error(error.message || 'Failed to fetch users');
+        if (error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+          toast.error('Request blocked. Please disable your ad blocker for this site.');
+        } else {
+          toast.error(error.message || 'Failed to fetch users');
+        }
       } finally {
         setLoading(false);
       }

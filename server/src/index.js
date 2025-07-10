@@ -49,8 +49,8 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'API test endpoint is working' });
 });
 
-// Mount routes
-app.use('/api/v1/p/verify', authRoutes);  // Changed to a more generic, technical path
+// Mount routes with neutral paths
+app.use('/api/system/account', authRoutes);  // Changed to a more neutral path
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/applications', serviceApplicationRoutes);
@@ -62,7 +62,7 @@ app.get('/', (req, res) => {
     message: 'API is running',
     endpoints: {
       test: '/api/test',
-      auth: '/api/v1/p/verify',  // Updated endpoint
+      auth: '/api/system/account',  // Updated endpoint
       applications: '/api/applications',
       newsletter: '/api/newsletter',
       contact: '/api/contact',
@@ -79,7 +79,7 @@ app.use((req, res) => {
     headers: req.headers,
     body: req.body,
     availableEndpoints: {
-      auth: '/api/v1/p/verify',  // Updated endpoint
+      auth: '/api/system/account',  // Updated endpoint
       applications: '/api/applications',
       newsletter: '/api/newsletter',
       contact: '/api/contact',
