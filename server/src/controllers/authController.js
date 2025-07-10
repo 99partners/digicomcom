@@ -98,7 +98,10 @@ exports.login = async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        phone: user.phone,
+        lastUpdated: user.updatedAt,
+        plan: 'Premium' // You might want to add a plan field to your user model
       }
     });
   } catch (error) {
@@ -254,6 +257,39 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to reset password'
+    });
+  }
+};
+
+// Get User Profile
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password -otp -resetPasswordToken -resetPasswordExpires');
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        isVerified: user.isVerified,
+        lastUpdated: user.updatedAt,
+        plan: 'Premium' // You might want to add a plan field to your user model
+      }
+    });
+  } catch (error) {
+    console.error('Get profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch profile'
     });
   }
 }; 

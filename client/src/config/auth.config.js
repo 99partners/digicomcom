@@ -1,10 +1,8 @@
-// Mock auth configuration
 export const AUTH_CONFIG = {
-  mockAuth: true,
-  tokenKey: 'mock_auth_token',
-  adminTokenKey: 'mock_admin_token',
-  defaultRedirect: '/partner',
+  tokenKey: 'auth_token',
+  adminTokenKey: 'admin_token',
+  defaultRedirect: '/dashboard',
   adminRedirect: '/admin/dashboard',
-  loginPath: '/partnerlogin',
-  adminLoginPath: '/adminlogin'
+  loginPath: '/login',
+  adminLoginPath: '/admin/login'
 }; 
