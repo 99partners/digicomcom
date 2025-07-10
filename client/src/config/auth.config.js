@@ -2,12 +2,12 @@ export const AUTH_CONFIG = {
   tokenKey: 'session_token',
   loginPath: '/login',
   endpoints: {
-    login: '/api/session/user/login',
-    signup: '/api/session/user/signup',
-    profile: '/api/session/user/profile',
-    forgotPassword: '/api/session/user/forgot-password',
-    resetPassword: '/api/session/user/reset-password',
-    sendOTP: '/api/session/user/send-otp',
-    verifyOTP: '/api/session/user/verify-otp'
+    login: '/api/portal/access/login',
+    signup: '/api/portal/access/signup',
+    profile: '/api/portal/access/profile',
+    forgotPassword: '/api/portal/access/forgot-password',
+    resetPassword: '/api/portal/access/reset-password',
+    sendOTP: '/api/portal/access/send-otp',
+    verifyOTP: '/api/portal/access/verify-otp'
   }
 }; 

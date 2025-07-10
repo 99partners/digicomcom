@@ -28,13 +28,24 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}${AUTH_CONFIG.endpoints.login}`, formData, {
+      // Create request configuration
+      const config = {
+        method: 'POST',
+        url: `${API_URL}${AUTH_CONFIG.endpoints.login}`,
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
-          'Accept': 'application/json'
-        }
-      });
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'X-Custom-Header': 'portal-access-request'
+        },
+        data: formData,
+        withCredentials: true
+      };
+
+      // Make the request
+      const response = await axios(config);
       
       if (response.data.success) {
         await handleLogin(response.data.token, response.data.user);
@@ -47,7 +58,11 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      toast.error(error.response?.data?.message || 'Login failed');
+      if (error.code === 'ERR_BLOCKED_BY_CLIENT') {
+        toast.error('Request was blocked. Please disable your ad blocker or use a different browser.');
+      } else {
+        toast.error(error.response?.data?.message || 'Login failed');
+      }
     } finally {
       setLoading(false);
     }

@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
     message: 'API is running',
     endpoints: {
       test: '/api/test',
-      auth: '/api/session/user',
+      auth: '/api/portal/access',
       applications: '/api/applications',
       newsletter: '/api/newsletter',
       contact: '/api/contact',
@@ -64,7 +64,7 @@ app.get('/', (req, res) => {
 });
 
 // Mount routes
-app.use('/api/session/user', authRoutes);
+app.use('/api/portal/access', authRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/applications', serviceApplicationRoutes);
@@ -78,7 +78,7 @@ app.use((req, res) => {
     headers: req.headers,
     body: req.body,
     availableEndpoints: {
-      auth: '/api/session/user',
+      auth: '/api/portal/access',
       applications: '/api/applications',
       newsletter: '/api/newsletter',
       contact: '/api/contact',
