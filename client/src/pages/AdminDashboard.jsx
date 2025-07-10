@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiService from '../config/api.config';
+import { AUTH_CONFIG } from '../config/auth.config';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -38,14 +39,18 @@ const AdminDashboard = () => {
     const fetchDashboardStats = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
         
         if (!token) {
           navigate('/admin/login');
           return;
         }
 
-        const response = await apiService.get('/api/admin/dashboard-stats');
+        const response = await apiService.get('/api/admin/dashboard-stats', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         
         if (response.success) {
           setStats(prevStats => ({
@@ -56,6 +61,7 @@ const AdminDashboard = () => {
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
         if (error.response?.status === 401 || error.response?.status === 403) {
+          localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
           toast.error('Please login again');
           navigate('/admin/login');
         } else {
@@ -75,13 +81,31 @@ const AdminDashboard = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await apiService.get('/api/admin/users');
+        const token = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
+        
+        if (!token) {
+          navigate('/admin/login');
+          return;
+        }
+
+        const response = await apiService.get('/api/admin/users', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
         if (response.success) {
           setUsers(response.data || []);
         }
       } catch (error) {
         console.error('Error fetching users:', error);
-        toast.error('Failed to fetch users');
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
+          toast.error('Please login again');
+          navigate('/admin/login');
+        } else {
+          toast.error('Failed to fetch users');
+        }
       } finally {
         setLoading(false);
       }
@@ -90,7 +114,7 @@ const AdminDashboard = () => {
     if (activeSection === 'users') {
       fetchUsers();
     }
-  }, [activeSection]);
+  }, [activeSection, navigate]);
 
   const menuItems = {
     main: [
@@ -104,8 +128,7 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
     navigate('/admin/login');
     toast.success('Logged out successfully');
   };
