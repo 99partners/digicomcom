@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiService from '../../config/api.config';
 import { toast } from 'react-toastify';
+import ADMIN_CONFIG from '../../config/admin.config';
 
 const NewsletterSubscribers = () => {
     const [subscribers, setSubscribers] = useState([]);
@@ -14,14 +15,21 @@ const NewsletterSubscribers = () => {
     const fetchSubscribers = async () => {
         try {
             setLoading(true);
-            const response = await apiService.get('/api/newsletter/subscribers');
+            const response = await apiService.get(ADMIN_CONFIG.endpoints.newsletter);
             if (response.success) {
                 setSubscribers(response.data);
+            } else {
+                throw new Error('Failed to load subscribers');
             }
         } catch (error) {
             console.error('Error fetching subscribers:', error);
-            setError('Failed to load subscribers');
-            toast.error('Failed to load subscribers');
+            if (error.response?.status === 401) {
+                setError('Please log in to view subscribers');
+                toast.error('Authentication required');
+            } else {
+                setError('Failed to load subscribers');
+                toast.error('Failed to load subscribers');
+            }
         } finally {
             setLoading(false);
         }
@@ -71,20 +79,20 @@ const NewsletterSubscribers = () => {
                             </tr>
                         ) : (
                             subscribers.map((subscriber, index) => (
-                                <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                <tr key={subscriber._id || index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {subscriber.email}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {new Date(subscriber.subscriptionDate).toLocaleDateString()}
+                                        {new Date(subscriber.subscribedAt || subscriber.createdAt).toLocaleDateString()}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                            subscriber.isActive 
+                                            subscriber.active 
                                                 ? 'bg-green-100 text-green-800' 
                                                 : 'bg-red-100 text-red-800'
                                         }`}>
-                                            {subscriber.isActive ? 'Active' : 'Inactive'}
+                                            {subscriber.active ? 'Active' : 'Inactive'}
                                         </span>
                                     </td>
                                 </tr>

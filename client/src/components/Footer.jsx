@@ -63,17 +63,16 @@ const Footer = () => {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
-        toast.success("Successfully subscribed to newsletter!", {
-          autoClose: 3000 // Close toast after 3 seconds
-        });
+        toast.success(response.message || "Successfully subscribed to newsletter!");
       } else {
         setError(response.message || "Failed to subscribe. Please try again.");
         toast.error(response.message || "Failed to subscribe. Please try again.");
       }
     } catch (err) {
       console.error("Newsletter subscription error:", err.message);
-      setError("Failed to subscribe. Please try again.");
-      toast.error("Failed to subscribe. Please try again.");
+      const errorMessage = err.response?.data?.message || err.message || "Failed to subscribe. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage);
       setIsSubmitted(false);
     } finally {
       setIsLoading(false);
