@@ -290,4 +290,37 @@ exports.getProfile = async (req, res) => {
       message: 'Failed to fetch profile'
     });
   }
-}; 
+};
+
+// Check Authentication Status
+exports.checkStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password -otp');
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        lastUpdated: user.updatedAt,
+        plan: 'Premium' // You might want to add a plan field to your user model
+      }
+    });
+  } catch (error) {
+    console.error('Check status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check authentication status'
+    });
+  }
+};
+
+module.exports = exports; 

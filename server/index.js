@@ -14,14 +14,24 @@ dotenv.config();
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:5173'  // Development client URL
+        : process.env.CLIENT_URL,  // Production client URL
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'X-Custom-Request']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Debug middleware
 app.use((req, res, next) => {
-    console.log('Request received:', req.method, req.path);
+    console.log('Request received:', req.method, req.path, req.headers);
     next();
 });
 
