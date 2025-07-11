@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AUTH_CONFIG from '../config/auth.config';
 import apiService from '../config/api.config';
+import { useAuth } from '../context/AuthContext';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
@@ -11,6 +12,7 @@ const AdminLogin = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Check if already logged in
   useEffect(() => {
@@ -27,30 +29,29 @@ const AdminLogin = () => {
     try {
       // Check for hardcoded credentials
       if (credentials.username === 'admin99' && credentials.password === '99Partnersin') {
-        // Get JWT token from server using the new management portal endpoint
-        const response = await apiService.post('/management/portal/session/validate', {
+        // Get JWT token from server using the admin login endpoint
+        const response = await apiService.post(AUTH_CONFIG.endpoints.adminLogin, {
           username: credentials.username,
           password: credentials.password
-        }, {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-          }
         });
 
-        if (response.success && response.token) {
-          localStorage.setItem(AUTH_CONFIG.adminTokenKey, response.token);
-        toast.success('Login successful');
+        if (response && response.token) {
+          await login(response);
+          toast.success('Login successful');
           navigate('/admin');
         } else {
-          toast.error(response.message || 'Login failed');
+          toast.error('Invalid credentials or server error');
         }
       } else {
         toast.error('Invalid credentials');
       }
     } catch (error) {
       console.error('Login error:', error);
-      toast.error(error.response?.data?.message || 'Login failed');
+      if (error.code === 'ERR_NETWORK') {
+        toast.error('Unable to connect to server. Please check if the server is running.');
+      } else {
+        toast.error(error.response?.data?.message || 'Login failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

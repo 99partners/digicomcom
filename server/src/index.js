@@ -1,4 +1,9 @@
-require('dotenv').config();
+// Load environment based on NODE_ENV
+const path = require('path');
+require('dotenv').config({
+  path: path.resolve(__dirname, '..', `.env.${process.env.NODE_ENV || 'development'}`)
+});
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -14,12 +19,20 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// Configure CORS
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://99digicom.com', 'https://www.99digicom.com']
-    : 'http://localhost:5173',
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  console.log('Headers:', req.headers);
+  next();
+});
+
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://99digicom.com']
+    : ['http://localhost:5173'],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
     'Content-Type',
     'Authorization',
@@ -30,22 +43,19 @@ app.use(cors({
     'Cache-Control',
     'Pragma'
   ],
-  exposedHeaders: [
-    'X-Custom-Request',
-    'x-custom-request'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-}));
+  exposedHeaders: ['X-Custom-Request', 'x-custom-request']
+};
+
+// Apply CORS with options
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());
 
-// Add pre-flight response
-app.options('*', cors());
-
-// Security headers
+// Security headers with relaxed settings for development
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
   contentSecurityPolicy: false
@@ -53,19 +63,6 @@ app.use(helmet({
 
 // Request logging
 app.use(morgan('dev'));
-
-// Debug middleware to log all requests
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
-  next();
-});
-
-// Health check endpoints
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API test endpoint is working' });
-});
 
 // Mount routes with neutral paths
 app.use('/api/system/account', authRoutes);  // Changed to a more neutral path
@@ -128,15 +125,15 @@ app.use((err, req, res, next) => {
 });
 
 // Database connection and server start
-const PORT = process.env.PORT || 5051;
+const PORT = process.env.PORT || 5050;
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicomcom')
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
     });
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err);
-  }); 
+  });
