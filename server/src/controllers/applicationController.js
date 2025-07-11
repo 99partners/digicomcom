@@ -1,135 +1,101 @@
-const Application = require('../models/Application');
+const Application = require('../models/ApplicationModel');
 
-// Create new application
-exports.createApplication = async (req, res) => {
-  try {
-    const application = new Application({
-      ...req.body,
-      userId: req.user.id
-    });
+// Submit new application
+const submitApplication = async (req, res) => {
+    try {
+        console.log('Received application data:', req.body);
 
-    await application.save();
+        const application = new Application(req.body);
+        await application.save();
 
-    res.status(201).json({
-      success: true,
-      message: 'Application submitted successfully',
-      application
-    });
-  } catch (error) {
-    console.error('Create application error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Failed to submit application'
-    });
-  }
-};
-
-// Get all applications for a user
-exports.getUserApplications = async (req, res) => {
-  try {
-    const applications = await Application.find({ userId: req.user.id })
-      .sort({ createdAt: -1 });
-
-    res.json({
-      success: true,
-      applications
-    });
-  } catch (error) {
-    console.error('Get applications error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Failed to fetch applications'
-    });
-  }
-};
-
-// Get single application
-exports.getApplication = async (req, res) => {
-  try {
-    const application = await Application.findOne({
-      _id: req.params.id,
-      userId: req.user.id
-    });
-
-    if (!application) {
-      return res.status(404).json({
-        success: false,
-        message: 'Application not found'
-      });
+        res.status(201).json({
+            success: true,
+            message: 'Application submitted successfully',
+            data: application
+        });
+    } catch (error) {
+        console.error('Error submitting application:', error);
+        res.status(400).json({
+            success: false,
+            message: error.message || 'Failed to submit application'
+        });
     }
-
-    res.json({
-      success: true,
-      application
-    });
-  } catch (error) {
-    console.error('Get application error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Failed to fetch application'
-    });
-  }
 };
 
-// Update application
-exports.updateApplication = async (req, res) => {
-  try {
-    const application = await Application.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        userId: req.user.id,
-        status: 'pending' // Only allow updates for pending applications
-      },
-      req.body,
-      { new: true, runValidators: true }
-    );
-
-    if (!application) {
-      return res.status(404).json({
-        success: false,
-        message: 'Application not found or cannot be updated'
-      });
+// Get all applications
+const getApplications = async (req, res) => {
+    try {
+        const applications = await Application.find().sort({ createdAt: -1 });
+        res.status(200).json({
+            success: true,
+            data: applications
+        });
+    } catch (error) {
+        console.error('Error fetching applications:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch applications'
+        });
     }
-
-    res.json({
-      success: true,
-      message: 'Application updated successfully',
-      application
-    });
-  } catch (error) {
-    console.error('Update application error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Failed to update application'
-    });
-  }
 };
 
-// Delete application
-exports.deleteApplication = async (req, res) => {
-  try {
-    const application = await Application.findOneAndDelete({
-      _id: req.params.id,
-      userId: req.user.id,
-      status: 'pending' // Only allow deletion of pending applications
-    });
-
-    if (!application) {
-      return res.status(404).json({
-        success: false,
-        message: 'Application not found or cannot be deleted'
-      });
+// Get application by ID
+const getApplicationById = async (req, res) => {
+    try {
+        const application = await Application.findById(req.params.id);
+        if (!application) {
+            return res.status(404).json({
+                success: false,
+                message: 'Application not found'
+            });
+        }
+        res.status(200).json({
+            success: true,
+            data: application
+        });
+    } catch (error) {
+        console.error('Error fetching application:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch application'
+        });
     }
+};
 
-    res.json({
-      success: true,
-      message: 'Application deleted successfully'
-    });
-  } catch (error) {
-    console.error('Delete application error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Failed to delete application'
-    });
-  }
+// Update application status
+const updateApplicationStatus = async (req, res) => {
+    try {
+        const { status } = req.body;
+        const application = await Application.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true }
+        );
+        
+        if (!application) {
+            return res.status(404).json({
+                success: false,
+                message: 'Application not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Application status updated successfully',
+            data: application
+        });
+    } catch (error) {
+        console.error('Error updating application status:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update application status'
+        });
+    }
+};
+
+module.exports = {
+    submitApplication,
+    getApplications,
+    getApplicationById,
+    updateApplicationStatus
 }; 

@@ -1,14 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const newsletterController = require('../controllers/newsletterController');
 
-// Subscribe to newsletter
-router.post('/subscribe', newsletterController.subscribe);
+// Debug middleware
+router.use((req, res, next) => {
+    console.log('Newsletter route accessed:', req.method, req.path);
+    next();
+});
 
-// Get all subscribers
-router.get('/subscribers', newsletterController.getSubscribers);
+// Placeholder newsletter routes
+router.post('/subscribe', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Newsletter subscription endpoint'
+    });
+});
 
-// Unsubscribe from newsletter
-router.post('/unsubscribe', newsletterController.unsubscribe);
+router.post('/unsubscribe', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Newsletter unsubscription endpoint'
+    });
+});
+
+router.get('/subscribers', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Get subscribers endpoint',
+        data: []
+    });
+});
 
 module.exports = router; 
