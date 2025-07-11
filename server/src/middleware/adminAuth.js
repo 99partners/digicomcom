@@ -2,31 +2,48 @@ const jwt = require('jsonwebtoken');
 
 const adminAuth = async (req, res, next) => {
     try {
-        const token = req.headers.authorization?.split(' ')[1];
-        
-        if (!token) {
+        // Get token from header
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({
                 success: false,
                 message: 'No token provided'
             });
         }
 
+        const token = authHeader.split(' ')[1];
+
+        // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-        
-        if (!decoded.isAdmin) {
+
+        // Check if user is admin
+        if (decoded.role !== 'admin') {
             return res.status(403).json({
                 success: false,
-                message: 'Not authorized as admin'
+                message: 'Not authorized'
             });
         }
 
+        // Add user info to request
         req.user = decoded;
         next();
     } catch (error) {
-        console.error('Admin auth error:', error);
-        return res.status(401).json({
+        console.error('Admin auth middleware error:', error);
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid token'
+            });
+        }
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Token expired'
+            });
+        }
+        res.status(500).json({
             success: false,
-            message: 'Invalid token'
+            message: 'Internal server error'
         });
     }
 };

@@ -1,139 +1,104 @@
-// Load environment based on NODE_ENV
-const path = require('path');
-require('dotenv').config({
-  path: path.resolve(__dirname, '..', `.env.${process.env.NODE_ENV || 'development'}`)
-});
-
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 
-const newsletterRoutes = require('./routes/newsletterRoutes');
-const contactRoutes = require('./routes/contactRoutes');
-const authRoutes = require('./routes/authRoutes');
-const serviceApplicationRoutes = require('./routes/serviceApplicationRoutes');
+// Import routes
 const adminRoutes = require('./routes/adminRoutes');
+const authRoutes = require('./routes/authRoutes');
+const contactRoutes = require('./routes/contactRoutes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 
-// Debug middleware to log all requests
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  console.log('Headers:', req.headers);
-  next();
-});
-
-// CORS Configuration
+// CORS configuration
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://99digicom.com']
-    : ['http://localhost:5173'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With',
-    'Accept',
-    'X-Custom-Request',
-    'x-custom-request',
-    'Cache-Control',
-    'Pragma'
-  ],
-  exposedHeaders: ['X-Custom-Request', 'x-custom-request']
+    origin: process.env.NODE_ENV === 'development' 
+        ? ['http://localhost:5173', 'http://127.0.0.1:5173']  // Development client URLs
+        : process.env.CLIENT_URL,  // Production client URL
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'Accept',
+        'X-Custom-Request',
+        'Origin',
+        'Cache-Control',
+        'Pragma'
+    ],
+    exposedHeaders: ['Content-Range', 'X-Content-Range']
 };
 
-// Apply CORS with options
+// Middleware
 app.use(cors(corsOptions));
-
-// Handle preflight requests
-app.options('*', cors(corsOptions));
-
-app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// Security headers with relaxed settings for development
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  contentSecurityPolicy: false
-}));
-
-// Request logging
-app.use(morgan('dev'));
-
-// Mount routes with neutral paths
-app.use('/api/system/account', authRoutes);  // Changed to a more neutral path
-app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/applications', serviceApplicationRoutes);
-app.use('/management/portal', adminRoutes);
-
-// Update health check endpoint info
-app.get('/', (req, res) => {
-  res.json({
-    message: 'API is running',
-    endpoints: {
-      test: '/api/test',
-      auth: '/api/system/account',  // Updated endpoint
-      applications: '/api/applications',
-      newsletter: '/api/newsletter',
-      contact: '/api/contact',
-      admin: '/management/portal'
-    }
-  });
+// Add security headers
+app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    next();
 });
 
-// 404 handler
-app.use((req, res) => {
-  const error = {
-    path: req.path,
-    method: req.method,
-    headers: req.headers,
-    body: req.body,
-    availableEndpoints: {
-      auth: '/api/system/account',  // Updated endpoint
-      applications: '/api/applications',
-      newsletter: '/api/newsletter',
-      contact: '/api/contact',
-      admin: '/management/portal'
-    }
-  };
-  console.log('404 - Route not found:', error);
-  res.status(404).json({
-    success: false,
-    message: `Route not found: ${req.method} ${req.path}`,
-    error
-  });
+// Debug middleware
+app.use((req, res, next) => {
+    console.log('Request received:', {
+        method: req.method,
+        path: req.path,
+        headers: req.headers,
+        body: req.body
+    });
+    next();
+});
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicomcom')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err));
+
+// Routes
+app.use('/api/admin', adminRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/applications', applicationRoutes);
+
+// Test route
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'API is working' });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Error details:', {
-    message: err.message,
-    stack: err.stack,
-    path: req.path,
-    method: req.method
-  });
-  res.status(500).json({
-    success: false,
-    message: 'Something went wrong!',
-    error: err.message
-  });
+    console.error('Error:', err.stack);
+    res.status(500).json({
+        success: false,
+        message: 'Something went wrong!',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
 });
 
-// Database connection and server start
+// 404 handler
+app.use((req, res) => {
+    console.log('404 Not Found:', req.method, req.path);
+    res.status(404).json({
+        success: false,
+        message: 'Route not found'
+    });
+});
+
 const PORT = process.env.PORT || 5050;
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-    });
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
-  });
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+}); 

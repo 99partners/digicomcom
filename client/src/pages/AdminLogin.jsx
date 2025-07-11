@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -28,10 +28,10 @@ const AdminLogin = () => {
 
     try {
       // Check for hardcoded credentials
-      if (credentials.username === 'admin99' && credentials.password === '99Partnersin') {
+      if (credentials.email === 'admin@digicomcom.com' && credentials.password === 'admin123') {
         // Get JWT token from server using the admin login endpoint
         const response = await apiService.post(AUTH_CONFIG.endpoints.adminLogin, {
-          username: credentials.username,
+          email: credentials.email,
           password: credentials.password
         });
 
@@ -67,18 +67,18 @@ const AdminLogin = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
             </label>
             <input
-              id="username"
-              type="text"
+              id="email"
+              type="email"
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-              value={credentials.username}
+              value={credentials.email}
               onChange={(e) => setCredentials({
                 ...credentials,
-                username: e.target.value
+                email: e.target.value
               })}
             />
           </div>

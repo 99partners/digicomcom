@@ -1,25 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
-const auth = require('../middleware/auth');
 
-// Add headers to avoid ad blockers
+// Debug middleware
 router.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('X-Service-Worker', 'script');
-  res.setHeader('X-Custom-Request', 'system-account');
-  next();
+    console.log('Auth route accessed:', req.method, req.path);
+    next();
 });
 
-// Authentication routes with neutral paths
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
-router.post('/send-otp', authController.sendOTP);
-router.post('/verify-otp', authController.verifyOTP);
-router.post('/forgot-password', authController.forgotPassword);
-router.post('/reset-password', authController.resetPassword);
-router.get('/status', auth, authController.checkStatus);
+// Placeholder auth routes
+router.post('/login', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Login endpoint'
+    });
+});
+
+router.post('/register', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Register endpoint'
+    });
+});
+
+router.post('/forgot-password', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Forgot password endpoint'
+    });
+});
 
 module.exports = router; 

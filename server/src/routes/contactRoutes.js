@@ -1,17 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const contactController = require('../controllers/contactController');
 
-// Submit contact form
-router.post('/submit', contactController.submitContact);
+// Debug middleware
+router.use((req, res, next) => {
+    console.log('Contact route accessed:', req.method, req.path);
+    next();
+});
 
-// Get all contact submissions (admin only)
-router.get('/submissions', contactController.getAllContacts);
+// Placeholder contact routes
+router.post('/submit', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Contact form submission endpoint'
+    });
+});
 
-// Update contact status (admin only)
-router.patch('/status/:id', contactController.updateContactStatus);
-
-// Delete contact submission (admin only)
-router.delete('/:id', contactController.deleteContact);
+router.get('/inquiries', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Get inquiries endpoint',
+        data: []
+    });
+});
 
 module.exports = router; 
