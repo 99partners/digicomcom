@@ -14,12 +14,11 @@ router.use((req, res, next) => {
 });
 
 // Authentication routes with neutral paths
+router.post('/signup', authController.signup);
 router.post('/login', authController.login);
-router.post('/register', authController.register);
-router.post('/password/reset-request', authController.forgotPassword);
-router.post('/password/update', authController.resetPassword);
-router.get('/status', auth, authController.validateToken);
-router.post('/refresh', authController.refreshToken);
-router.post('/logout', auth, authController.logout);
+router.post('/send-otp', authController.sendOTP);
+router.post('/verify-otp', authController.verifyOTP);
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
 
 module.exports = router; 

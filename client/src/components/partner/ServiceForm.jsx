@@ -115,25 +115,37 @@ const ServiceForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      console.log('Submitting form data:', formData);
-      const response = await api.post('/api/applications', formData);
-      console.log('Server response:', response.data);
-      toast.success('Application submitted successfully!');
-      navigate('/dashboard/');
+      // Validate required fields
+      if (!formData.serviceType || !formData.marketplaces.length) {
+        throw new Error('Please fill in all required fields');
+      }
+
+      // Clean up form data to match schema
+      const cleanedFormData = {
+        ...formData,
+        isManufacturer: isManufacturer || false,
+        marketplaces: formData.marketplaces.filter(Boolean),
+        marketingServices: formData.marketingServices.filter(Boolean),
+        numberOfProducts: formData.numberOfProducts ? Number(formData.numberOfProducts) : undefined
+      };
+
+      const response = await api.post('/api/applications', cleanedFormData);
+      
+      if (response.success) {
+        toast.success('Application submitted successfully!');
+        navigate('/dashboard/');
+      } else {
+        throw new Error(response.message || 'Failed to submit application');
+      }
     } catch (error) {
       console.error('Submission error details:', {
         message: error.message,
         response: error.response?.data,
-        status: error.response?.status,
-        config: {
-          url: error.config?.url,
-          method: error.config?.method,
-          headers: error.config?.headers
-        }
+        status: error.response?.status
       });
       
-      toast.error(error.response?.data?.message || 'Error submitting application');
-      navigate('/dashboard/');
+      const errorMessage = error.response?.data?.message || error.message || 'Error submitting application';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

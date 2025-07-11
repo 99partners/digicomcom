@@ -51,32 +51,20 @@ const AdminDashboard = () => {
     const fetchDashboardStats = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${apiService.baseURL}/management/portal/dashboard-stats`, {
-          credentials: 'include'
-        });
+        const response = await apiService.get('/management/portal/dashboard-stats');
 
-        if (!response.ok) {
-          if (response.status === 401 || response.status === 403) {
-            await logout();
-            navigate('/admin/login');
-            return;
-          }
-          throw new Error('Failed to fetch dashboard statistics');
-        }
-
-        const data = await response.json();
-        if (data.success) {
+        if (response.data.success) {
           setStats(prevStats => ({
             ...prevStats,
-            ...data.data
+            ...response.data.data
           }));
         }
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
-        if (error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+        if (error.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
           toast.error('Request blocked. Please disable your ad blocker for this site.');
         } else {
-          toast.error(error.message || 'Failed to fetch dashboard statistics');
+          toast.error(error.response?.data?.message || 'Failed to fetch dashboard statistics');
         }
       } finally {
         setLoading(false);
@@ -92,29 +80,17 @@ const AdminDashboard = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${apiService.baseURL}/management/portal/users`, {
-          credentials: 'include'
-        });
+        const response = await apiService.get('/management/portal/users');
 
-        if (!response.ok) {
-          if (response.status === 401 || response.status === 403) {
-            await logout();
-            navigate('/admin/login');
-            return;
-          }
-          throw new Error('Failed to fetch users');
-        }
-
-        const data = await response.json();
-        if (data.success) {
-          setUsers(data.data || []);
+        if (response.data.success) {
+          setUsers(response.data.data || []);
         }
       } catch (error) {
         console.error('Error fetching users:', error);
-        if (error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+        if (error.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
           toast.error('Request blocked. Please disable your ad blocker for this site.');
         } else {
-          toast.error(error.message || 'Failed to fetch users');
+          toast.error(error.response?.data?.message || 'Failed to fetch users');
         }
       } finally {
         setLoading(false);
