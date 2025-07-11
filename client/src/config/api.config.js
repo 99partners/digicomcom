@@ -1,9 +1,11 @@
 import axios from 'axios';
+import AUTH_CONFIG from './auth.config';
 
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5050';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5051';
 export const API_BASE_URL = API_URL;
 
 const getAuthHeaders = (customHeaders = {}) => {
+  const token = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
   return {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
@@ -11,6 +13,7 @@ const getAuthHeaders = (customHeaders = {}) => {
     'X-Custom-Request': 'system-account',
     'Cache-Control': 'no-cache',
     'Pragma': 'no-cache',
+    'Authorization': token ? `Bearer ${token}` : '',
     ...customHeaders
   };
 };

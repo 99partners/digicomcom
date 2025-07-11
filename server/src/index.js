@@ -128,7 +128,7 @@ app.use((err, req, res, next) => {
 });
 
 // Database connection and server start
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 5051;
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/digicomcom')
   .then(() => {
