@@ -3,14 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AUTH_CONFIG from '../config/auth.config';
 import apiService from '../config/api.config';
+import { useAuth } from '../context/AuthContext';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Check if already logged in
   useEffect(() => {
@@ -26,31 +28,30 @@ const AdminLogin = () => {
 
     try {
       // Check for hardcoded credentials
-      if (credentials.username === 'admin99' && credentials.password === '99Partnersin') {
-        // Get JWT token from server using the new management portal endpoint
-        const response = await apiService.post('/management/portal/session/validate', {
-          username: credentials.username,
+      if (credentials.email === 'admin@digicomcom.com' && credentials.password === 'admin123') {
+        // Get JWT token from server using the admin login endpoint
+        const response = await apiService.post(AUTH_CONFIG.endpoints.adminLogin, {
+          email: credentials.email,
           password: credentials.password
-        }, {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-          }
         });
 
-        if (response.success && response.token) {
-          localStorage.setItem(AUTH_CONFIG.adminTokenKey, response.token);
-        toast.success('Login successful');
+        if (response && response.token) {
+          await login(response);
+          toast.success('Login successful');
           navigate('/admin');
         } else {
-          toast.error(response.message || 'Login failed');
+          toast.error('Invalid credentials or server error');
         }
       } else {
         toast.error('Invalid credentials');
       }
     } catch (error) {
       console.error('Login error:', error);
-      toast.error(error.response?.data?.message || 'Login failed');
+      if (error.code === 'ERR_NETWORK') {
+        toast.error('Unable to connect to server. Please check if the server is running.');
+      } else {
+        toast.error(error.response?.data?.message || 'Login failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -66,18 +67,18 @@ const AdminLogin = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
             </label>
             <input
-              id="username"
-              type="text"
+              id="email"
+              type="email"
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-              value={credentials.username}
+              value={credentials.email}
               onChange={(e) => setCredentials({
                 ...credentials,
-                username: e.target.value
+                email: e.target.value
               })}
             />
           </div>

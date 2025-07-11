@@ -1,6 +1,7 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AUTH_CONFIG from '../config/auth.config';
+import apiService from '../config/api.config';
+import { toast } from 'react-toastify';
 
 const AuthContext = createContext(null);
 
@@ -13,19 +14,40 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const validateSession = async () => {
-    try {
-      const response = await fetch(AUTH_CONFIG.endpoints.validateToken, {
-        headers: AUTH_CONFIG.headers,
-        credentials: 'include'
-      });
+    const token = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
+    
+    // If no token exists, don't make the request
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
+    try {
+      const response = await apiService.get('/api/system/account/status');
+
+      if (response.success) {
+        setUser(response.user);
+      } else {
+        // If the response wasn't successful, clear the token
+        localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
+        setUser(null);
       }
     } catch (error) {
       console.error('Session validation error:', error);
-      if (!error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+      
+      // Handle network errors
+      if (error.code === 'ERR_NETWORK') {
+        toast.error('Unable to connect to server. Please check your connection.');
+      } 
+      // Handle unauthorized errors
+      else if (error.response?.status === 401) {
+        localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
+        setUser(null);
+      }
+      // Handle other errors
+      else if (!error.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
+        toast.error('Authentication error. Please try logging in again.');
+        localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
         setUser(null);
       }
     } finally {
@@ -34,27 +56,29 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (data) => {
+    if (data.token) {
+      localStorage.setItem(AUTH_CONFIG.adminTokenKey, data.token);
+    }
     setUser(data.user);
     return data;
   };
 
   const logout = async () => {
     try {
-      const response = await fetch(AUTH_CONFIG.endpoints.logout, {
-        method: 'POST',
-        headers: AUTH_CONFIG.headers,
-        credentials: 'include'
-      });
+      const response = await apiService.post('/api/system/account/logout');
 
-      if (!response.ok) {
+      if (!response.success) {
         throw new Error('Logout failed');
       }
     } catch (error) {
       console.error('Logout error:', error);
-      if (error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+      if (error.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
         console.warn('Logout request blocked by ad blocker, clearing local state anyway');
+      } else {
+        toast.error('Logout failed, but your session will be cleared locally.');
       }
     } finally {
+      localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
       setUser(null);
     }
   };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiService from '../config/api.config';
+import ADMIN_CONFIG from '../config/admin.config';
 import { useAuth } from '../context/AuthContext';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import NewsletterSubscribers from '../components/admin/NewsletterSubscribers';
@@ -51,12 +52,12 @@ const AdminDashboard = () => {
     const fetchDashboardStats = async () => {
       try {
         setLoading(true);
-        const response = await apiService.get('/management/portal/dashboard-stats');
+        const response = await apiService.get(ADMIN_CONFIG.endpoints.dashboardStats);
 
-        if (response.data.success) {
+        if (response.success) {
           setStats(prevStats => ({
             ...prevStats,
-            ...response.data.data
+            ...response.data
           }));
         }
       } catch (error) {
@@ -74,16 +75,16 @@ const AdminDashboard = () => {
     if (activeSection === 'dashboard') {
       fetchDashboardStats();
     }
-  }, [activeSection, navigate, logout]);
+  }, [activeSection]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await apiService.get('/management/portal/users');
+        const response = await apiService.get(ADMIN_CONFIG.endpoints.users);
 
-        if (response.data.success) {
-          setUsers(response.data.data || []);
+        if (response.success) {
+          setUsers(response.data || []);
         }
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -100,7 +101,7 @@ const AdminDashboard = () => {
     if (activeSection === 'users') {
       fetchUsers();
     }
-  }, [activeSection, navigate, logout]);
+  }, [activeSection]);
 
   const menuItems = {
     main: [
@@ -152,6 +153,53 @@ const AdminDashboard = () => {
             </div>
           </div>
         );
+      case 'users':
+        return (
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-6">User Management</h1>
+            <div className="bg-white rounded-lg shadow">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Users</h2>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead>
+                      <tr>
+                        <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Email
+                        </th>
+                        <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {users.map((user, index) => (
+                        <tr key={index}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {user.email}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {user.status}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <button className="text-gray-600 hover:text-gray-900">...</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'blog':
+        return <BlogManagement />;
+      case 'contact':
+        return <ContactSubmissions />;
       case 'partner':
         return (
           <div className="p-6">
@@ -243,90 +291,10 @@ const AdminDashboard = () => {
             </div>
           </div>
         );
-      case 'users':
-        return (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">User Management</h1>
-            
-            {loading ? (
-              <div className="text-center">Loading...</div>
-            ) : (
-              <div className="bg-white rounded-lg shadow overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Name
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Email
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Phone
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Email Verified
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Joined Date
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {users.map((user) => (
-                        <tr key={user._id}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{user.email}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{user.phone || 'N/A'}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              user.isVerified
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-red-100 text-red-800'
-                            }`}>
-                              {user.isVerified ? 'Verified' : 'Not Verified'}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {new Date(user.createdAt).toLocaleDateString()}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      case 'contact':
-        return (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Contact Form Submissions</h1>
-            <ContactSubmissions />
-          </div>
-        );
       case 'newsletter':
-        return (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Newsletter Subscribers</h1>
-            <NewsletterSubscribers />
-          </div>
-        );
+        return <NewsletterSubscribers />;
       default:
-        return (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold">Welcome to Admin Dashboard</h1>
-            <p className="mt-4 text-gray-600">Select a menu item from the sidebar to get started.</p>
-          </div>
-        );
+        return null;
     }
   };
 
@@ -337,29 +305,38 @@ const AdminDashboard = () => {
         <div className="p-6">
           <h1 className="text-2xl font-bold">Admin Panel</h1>
         </div>
-        
-        {/* Main Menu */}
-        <div className="px-4 py-2">
-          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-            MAIN MENU
-          </h2>
+        <nav className="mt-6">
           {menuItems.main.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
-              className={`w-full text-left px-4 py-2 rounded-lg mb-1 ${
-                activeSection === item.id ? 'bg-gray-700' : 'hover:bg-gray-700'
-              } ${item.id === 'partner' ? 'text-blue-400' : ''}`}
+              className={`w-full flex items-center px-6 py-3 text-left ${
+                activeSection === item.id
+                  ? 'bg-[#34495E] text-white'
+                  : 'text-gray-300 hover:bg-[#34495E] hover:text-white'
+              }`}
             >
               {item.label}
             </button>
           ))}
-        </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center px-6 py-3 text-left text-gray-300 hover:bg-[#34495E] hover:text-white mt-4"
+          >
+            Logout
+          </button>
+        </nav>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        {renderContent()}
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        ) : (
+          renderContent()
+        )}
       </div>
     </div>
   );
