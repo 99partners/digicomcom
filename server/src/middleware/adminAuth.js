@@ -17,10 +17,10 @@ const adminAuth = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
 
         // Check if user is admin
-        if (decoded.role !== 'admin') {
+        if (!decoded || decoded.role !== 'admin') {
             return res.status(403).json({
                 success: false,
-                message: 'Not authorized'
+                message: 'Not authorized as admin'
             });
         }
 

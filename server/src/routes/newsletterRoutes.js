@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { subscribe, unsubscribe, getAllSubscribers } = require('../controllers/newsletterController');
+const adminAuth = require('../middleware/adminAuth');
 
 // Debug middleware
 router.use((req, res, next) => {
@@ -7,27 +9,11 @@ router.use((req, res, next) => {
     next();
 });
 
-// Placeholder newsletter routes
-router.post('/subscribe', (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Newsletter subscription endpoint'
-    });
-});
+// Public routes
+router.post('/subscribe', subscribe);
+router.post('/unsubscribe', unsubscribe);
 
-router.post('/unsubscribe', (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Newsletter unsubscription endpoint'
-    });
-});
-
-router.get('/subscribers', (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Get subscribers endpoint',
-        data: []
-    });
-});
+// Admin routes - protected by adminAuth middleware
+router.get('/subscribers', adminAuth, getAllSubscribers);
 
 module.exports = router; 
