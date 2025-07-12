@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 // Ensure HTTPS is always used in production
-export const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://99digicom.com'  // Production URL
-  : 'http://localhost:5050';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Helper function to construct API URLs
 export const getApiUrl = (endpoint) => {
