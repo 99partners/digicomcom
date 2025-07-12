@@ -8,8 +8,8 @@ import {
   MessageCircle,
   Loader2,
 } from 'lucide-react';
-import apiService from '../config/api.config';
-import { toast } from 'react-toastify';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 const Contact = () => {
   useEffect(() => {
@@ -20,7 +20,6 @@ const Contact = () => {
     name: "",
     email: "",
     phone: "",
-    subject: "",
     message: "",
   });
 
@@ -57,31 +56,20 @@ const Contact = () => {
     }
 
     try {
-      const response = await apiService.post('/api/contact/submit', supportForm);
+      const response = await axios.post(getApiUrl('api/contact/submit'), supportForm);
       
-      if (response.success) {
+      if (response.data.success) {
         setSuccess("Your message has been sent successfully! We'll get back to you within 24 hours.");
-        toast.success("Message sent successfully!");
-        setSupportForm({ name: "", email: "", phone: "", subject: "", message: "" });
+        setSupportForm({ name: "", email: "", phone: "", message: "" });
       } else {
-        setError(response.message || "Failed to send message. Please try again.");
-        toast.error(response.message || "Failed to send message");
+        setError(response.data.message || "Something went wrong. Please try again.");
       }
     } catch (error) {
-      console.error("Contact form submission error:", error);
-      setError("Something went wrong. Please try again.");
-      toast.error("Failed to send message");
+      console.error('Error submitting contact form:', error);
+      setError(error.response?.data?.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSupportForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
   };
 
   const offices = [
@@ -208,109 +196,98 @@ const Contact = () => {
                 <form onSubmit={handleSupportSubmit} className="space-y-6">
                   <div>
                     <label
-                      htmlFor="name"
+                      htmlFor="support-name"
                       className="block text-sm sm:text-base font-medium text-gray-700 mb-2"
                     >
                       Full Name *
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
+                      id="support-name"
                       required
                       value={supportForm.name}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      onChange={(e) =>
+                        setSupportForm({ ...supportForm, name: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base"
                       placeholder="Enter your full name"
                     />
                   </div>
 
                   <div>
                     <label
-                      htmlFor="email"
+                      htmlFor="support-email"
                       className="block text-sm sm:text-base font-medium text-gray-700 mb-2"
                     >
                       Email Address *
                     </label>
                     <input
                       type="email"
-                      id="email"
-                      name="email"
+                      id="support-email"
                       required
                       value={supportForm.email}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      onChange={(e) =>
+                        setSupportForm({ ...supportForm, email: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base"
                       placeholder="Enter your email address"
                     />
                   </div>
 
                   <div>
                     <label
-                      htmlFor="phone"
+                      htmlFor="support-phone"
                       className="block text-sm sm:text-base font-medium text-gray-700 mb-2"
                     >
                       Phone Number *
                     </label>
                     <input
                       type="tel"
-                      id="phone"
-                      name="phone"
+                      id="support-phone"
                       required
                       value={supportForm.phone}
-                      onChange={handleInputChange}
+                      onChange={(e) =>
+                        setSupportForm({ ...supportForm, phone: e.target.value })
+                      }
                       onKeyDown={handleKeyDown}
-                      maxLength={10}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      placeholder="Enter your phone number"
+                      maxLength="10"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base"
+                      placeholder="Enter 10-digit phone number"
                     />
                   </div>
 
                   <div>
                     <label
-                      htmlFor="subject"
-                      className="block text-sm sm:text-base font-medium text-gray-700 mb-2"
-                    >
-                      Subject *
-                    </label>
-                    <input
-                      type="text"
-                      id="subject"
-                      name="subject"
-                      required
-                      value={supportForm.subject}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      placeholder="Enter subject"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="message"
+                      htmlFor="support-message"
                       className="block text-sm sm:text-base font-medium text-gray-700 mb-2"
                     >
                       Message *
                     </label>
                     <textarea
-                      id="message"
-                      name="message"
+                      id="support-message"
+                      rows={4}
                       required
                       value={supportForm.message}
-                      onChange={handleInputChange}
-                      rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
-                      placeholder="Enter your message"
+                      onChange={(e) =>
+                        setSupportForm({ ...supportForm, message: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base resize-none"
+                      placeholder="Describe your question or issue in detail"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full sm:w-auto px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className={`w-full inline-flex items-center justify-center px-6 py-3 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 ${
+                      loading
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-green-600 hover:bg-green-700 hover:shadow-lg'
+                    } text-white`}
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                        <Loader2 className="h-5 w-5 mr-2 animate-spin" />
                         Sending...
                       </>
                     ) : (
@@ -328,31 +305,63 @@ const Contact = () => {
       </section>
 
       {/* Office Locations */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 bg-gray-50">
+      <section className="py-12 sm:py-16 md:py-20 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8 sm:mb-12">
-            Our <span className="text-green-600">Offices</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Visit Our Offices
+            </h2>
+            <p className="text-base sm:text-lg md:text-lg text-gray-600 max-w-2xl mx-auto">
+              Meet our team in person at our office locations around the world.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10">
             {offices.map((office, index) => (
-              <a
+              <div
                 key={index}
-                href={office.mapLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white p-4 sm:p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow group"
+                className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-4 sm:p-6"
               >
-                <div className="flex items-start space-x-2">
-                  <MapPin className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
-                      {office.city}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-2">{office.address}</p>
-                    <p className="text-sm text-green-600">{office.email}</p>
+                <div className="flex items-center mb-2 sm:mb-4">
+                  <div className="w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 bg-green-100 rounded-full flex items-center justify-center mr-2 sm:mr-3">
+                    <MapPin className="h-5 sm:h-6 md:h-7 w-5 sm:w-6 md:w-7 text-green-600" />
+                  </div>
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900">
+                    {office.city}
+                  </h3>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="h-4 sm:h-5 w-4 sm:w-5 text-gray-600 mt-0.5 flex-shrink-0" />
+                    <a
+                      href={office.mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:text-green-800 transition-colors text-sm sm:text-base hover:underline"
+                    >
+                      {office.address}
+                    </a>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-4 sm:h-5 w-4 sm:w-5 text-gray-600 flex-shrink-0" />
+                    <a
+                      href={`mailto:${office.email}`}
+                      className="text-green-600 hover:text-green-800 transition-colors text-sm sm:text-base hover:underline"
+                    >
+                      {office.email}
+                    </a>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Clock className="h-4 sm:h-5 w-4 sm:w-5 text-gray-600 flex-shrink-0" />
+                    <span className="text-gray-600 text-sm sm:text-base">
+                      Monday - Friday, 9:00 AM - 6:00 PM
+                    </span>
                   </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { Pencil, Trash2, Plus, X } from 'lucide-react';
-import { simulateApiCall, mockData } from '../../config/mockData';
+import { getApiUrl } from '../../config/api.config';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -24,13 +25,11 @@ const BlogManagement = () => {
 
   const fetchBlogs = async () => {
     try {
-      const { data } = await simulateApiCall({
-        success: true,
-        data: mockData.blogs
+      const response = await axios.get(getApiUrl('api/blogs'), {
+        withCredentials: true
       });
-      
-      if (data.success) {
-        setBlogs(data.data);
+      if (response.data.success) {
+        setBlogs(response.data.data);
       }
     } catch (err) {
       setError('Failed to fetch blogs');
@@ -46,8 +45,10 @@ const BlogManagement = () => {
     }
 
     try {
-      await simulateApiCall({ success: true });
-      setBlogs(blogs.filter(blog => blog.id !== blogId));
+      await axios.delete(getApiUrl(`api/blogs/${blogId}`), {
+        withCredentials: true
+      });
+      fetchBlogs(); // Refresh the list
     } catch (err) {
       setError('Failed to delete blog');
       console.error(err);
@@ -84,31 +85,33 @@ const BlogManagement = () => {
     setError('');
 
     try {
-      const newBlog = {
-        id: editingBlogId || String(Date.now()),
-        ...formData,
-        createdAt: new Date()
-      };
-
-      await simulateApiCall({ success: true, data: newBlog });
-
+      let response;
       if (editingBlogId) {
-        setBlogs(blogs.map(blog => blog.id === editingBlogId ? newBlog : blog));
+        // Update existing blog
+        response = await axios.put(getApiUrl(`api/blogs/${editingBlogId}`), formData, {
+          withCredentials: true
+        });
       } else {
-        setBlogs([...blogs, newBlog]);
+        // Create new blog
+        response = await axios.post(getApiUrl('api/blogs'), formData, {
+          withCredentials: true
+        });
       }
 
-      alert(editingBlogId ? 'Blog updated successfully!' : 'Blog created successfully!');
-      resetForm();
+      if (response.data.success) {
+        alert(editingBlogId ? 'Blog updated successfully!' : 'Blog created successfully!');
+        resetForm();
+        fetchBlogs();
+      }
     } catch (err) {
-      setError('Something went wrong');
+      setError(err.response?.data?.error || 'Something went wrong');
     } finally {
       setLoading(false);
     }
   };
 
   const handleEdit = (blog) => {
-    setEditingBlogId(blog.id);
+    setEditingBlogId(blog._id);
     setFormData({
       title: blog.title,
       excerpt: blog.excerpt,
@@ -274,7 +277,7 @@ const BlogManagement = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {blogs.map((blog) => (
-              <tr key={blog.id}>
+              <tr key={blog._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <img 
                     src={blog.image} 
@@ -304,7 +307,7 @@ const BlogManagement = () => {
                     <Pencil className="h-5 w-5 inline" />
                   </button>
                   <button
-                    onClick={() => handleDelete(blog.id)}
+                    onClick={() => handleDelete(blog._id)}
                     className="text-red-600 hover:text-red-900"
                   >
                     <Trash2 className="h-5 w-5 inline" />
