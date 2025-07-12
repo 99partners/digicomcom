@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { simulateApiCall, mockData } from '../../config/mockData';
+import axios from 'axios';
+import { getApiUrl } from '../../config/api.config';
 
 const BlogEdit = () => {
   const { id } = useParams();
@@ -19,17 +20,8 @@ const BlogEdit = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        // Find the blog in mock data
-        const blog = mockData.blogs.find(b => b.id === id);
-        if (blog) {
-          const { data } = await simulateApiCall({
-            success: true,
-            data: blog
-          });
-          setFormData(data.data);
-        } else {
-          throw new Error('Blog not found');
-        }
+        const response = await axios.get(getApiUrl(`api/blogs/${id}`));
+        setFormData(response.data.data);
       } catch (error) {
         setError('Failed to fetch blog');
         console.error('Error fetching blog:', error);
@@ -53,23 +45,17 @@ const BlogEdit = () => {
     setError('');
 
     try {
-      const updatedBlog = {
-        id,
-        ...formData,
-        updatedAt: new Date()
-      };
+      const response = await axios.put(
+        getApiUrl(`api/blogs/${id}`),
+        formData
+      );
 
-      const { data } = await simulateApiCall({
-        success: true,
-        data: updatedBlog
-      });
-
-      if (data.success) {
+      if (response.data.success) {
         alert('Blog updated successfully!');
         navigate('/admin/blogs');
       }
     } catch (error) {
-      setError('Something went wrong');
+      setError(error.response?.data?.error || 'Something went wrong');
       console.error('Error updating blog:', error);
     } finally {
       setLoading(false);

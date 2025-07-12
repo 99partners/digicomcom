@@ -1,7 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import AUTH_CONFIG from '../config/auth.config';
-import apiService from '../config/api.config';
-import { toast } from 'react-toastify';
+import { createContext, useContext, useState, useEffect } from 'react';
+import axiosInstance, { API_BASE_URL } from '../config/api.config';
 
 const AuthContext = createContext(null);
 
@@ -10,85 +8,94 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    validateSession();
+    // Check for existing auth token in localStorage
+    const token = localStorage.getItem('authToken');
+    const adminToken = localStorage.getItem('adminToken');
+    
+    if (token || adminToken) {
+      checkAuthStatus();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
-  const validateSession = async () => {
-    const token = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
-    
-    // If no token exists, don't make the request
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
+  const checkAuthStatus = async () => {
     try {
-      const response = await apiService.get('/api/system/account/status');
-
-      if (response.success) {
-        setUser(response.user);
-      } else {
-        // If the response wasn't successful, clear the token
-        localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
-        setUser(null);
+      // Check admin auth first
+      const adminToken = localStorage.getItem('adminToken');
+      if (adminToken) {
+        try {
+          const response = await axiosInstance.get('/api/admin/dashboard-stats');
+          if (response.data.success) {
+            setUser({ role: 'admin', ...response.data.admin });
+            setLoading(false);
+            return;
+          }
+        } catch (adminError) {
+          console.error('Admin auth check failed:', adminError);
+          localStorage.removeItem('adminToken');
+        }
       }
-    } catch (error) {
-      console.error('Session validation error:', error);
+
+      // Check regular user auth
+      const userToken = localStorage.getItem('authToken');
+      if (userToken) {
+        try {
+          const response = await axiosInstance.get('/api/user/data');
+          if (response.data.success) {
+            setUser(response.data.userData);
+          } else {
+            handleLogout();
+          }
+        } catch (userError) {
+          console.error('User auth check failed:', userError);
+          handleLogout();
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogin = async (token, userData, isAdmin = false) => {
+    try {
+      if (isAdmin) {
+        localStorage.setItem('adminToken', token);
+      } else {
+        localStorage.setItem('authToken', token);
+      }
       
-      // Handle network errors
-      if (error.code === 'ERR_NETWORK') {
-        toast.error('Unable to connect to server. Please check your connection.');
-      } 
-      // Handle unauthorized errors
-      else if (error.response?.status === 401) {
-        localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
-        setUser(null);
-      }
-      // Handle other errors
-      else if (!error.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
-        toast.error('Authentication error. Please try logging in again.');
-        localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
-        setUser(null);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+      // Update axios instance headers
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      // Set user data
+      setUser(userData);
 
-  const login = async (data) => {
-    if (data.token) {
-      localStorage.setItem(AUTH_CONFIG.adminTokenKey, data.token);
-    }
-    setUser(data.user);
-    return data;
-  };
-
-  const logout = async () => {
-    try {
-      const response = await apiService.post('/api/system/account/logout');
-
-      if (!response.success) {
-        throw new Error('Logout failed');
-      }
+      // Verify the token immediately after login
+      await checkAuthStatus();
+      
+      return true;
     } catch (error) {
-      console.error('Logout error:', error);
-      if (error.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
-        console.warn('Logout request blocked by ad blocker, clearing local state anyway');
-      } else {
-        toast.error('Logout failed, but your session will be cleared locally.');
-      }
-    } finally {
-      localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
-      setUser(null);
+      console.error('Login error:', error);
+      handleLogout();
+      return false;
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('adminToken');
+    delete axiosInstance.defaults.headers.common['Authorization'];
+    setUser(null);
   };
 
   const value = {
     user,
     loading,
-    login,
-    logout,
-    isAuthenticated: !!user
+    handleLogin,
+    handleLogout,
+    isAuthenticated: !!user,
+    checkAuthStatus, // Export this so components can manually check auth status
   };
 
   return (
@@ -105,5 +112,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
-export default AuthContext;

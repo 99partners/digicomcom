@@ -1,121 +1,93 @@
-# DigiComCom Application
+# Project Configuration
 
-## Setup Instructions
+This project is configured to work in both `development` and `production` environments.
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB
-- PM2 (for production)
+## Backend
+
+The backend configuration is located in `server/config/config.js`. This file uses environment variables to configure the application.
+
+### Environment Variables
+
+The backend uses the following environment variables:
+
+*   `NODE_ENV`: The environment to run the application in. Can be `development` or `production`.
+*   `PORT`: The port to run the application on.
+*   `MONGODB_URI`: The connection string for the MongoDB database.
+*   `JWT_SECRET_KEY`: The secret key for signing JWTs.
+*   `SMTP_USER`: The username for the SMTP server.
+*   `SMTP_PASSWORD`: The password for the SMTP server.
+*   `SENDER_EMAIL`: The email address to send emails from.
 
 ### Local Development
 
-1. Install dependencies:
-```bash
-# Install backend dependencies
-cd server
-npm install
+To run the backend in development mode, create a `.env.development` file in the `server` directory with the following variables:
 
-# Install frontend dependencies
-cd client
-npm install
 ```
-
-2. Set up environment files:
-
-Backend (`server/.env.development`):
-```plaintext
-PORT=5050
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/digicomcom
-CORS_ORIGIN=http://localhost:5173
-JWT_SECRET=dev-secret-key
-```
-
-Frontend (`client/.env.development`):
-```plaintext
-VITE_API_URL=http://localhost:5050
-```
-
-3. Start development servers:
-
-```bash
-# Terminal 1 - Backend
-cd server
-npm run dev
-
-# Terminal 2 - Frontend
-cd client
-npm run dev
-```
-
-The application will be available at:
-- Frontend: http://localhost:5173
-- Backend: http://localhost:5050
-
-### Production Deployment
-
-1. Set up environment files:
-
-Backend (`server/.env.production`):
-```plaintext
 PORT=5050
+MONGODB_URI=mongodb://localhost:27017/digicom-db
+JWT_SECRET_KEY='your-secret-key'
+...
+```
+
+Then, run the following command to start the server:
+
+```
+npm run dev
+```
+
+### Production
+
+To run the backend in production mode, create a `.env.production` file in the `server` directory with the following variables:
+
+```
 NODE_ENV=production
-MONGODB_URI=your-production-mongodb-uri
-CORS_ORIGIN=https://99digicom.com,https://www.99digicom.com
-JWT_SECRET=your-production-secret-key
+PORT=5050
+MONGODB_URI='your-production-mongodb-uri'
+JWT_SECRET_KEY='your-production-secret-key'
+...
 ```
 
-Frontend (`client/.env.production`):
-```plaintext
-VITE_API_URL=https://api.99digicom.com
+Then, run the following command to start the server:
+
+```
+npm start
 ```
 
-2. Deploy Backend:
-```bash
-# Install PM2 globally
-npm install -g pm2
+## Frontend
 
-# Start the server
-cd server
-npm run start:pm2
+The frontend configuration is located in `client/src/config/api.config.js`. This file uses environment variables to configure the application.
 
-# Other PM2 commands
-pm2 logs digicomcom-api    # View logs
-pm2 monit                  # Monitor application
-pm2 restart digicomcom-api # Restart application
-pm2 stop digicomcom-api    # Stop application
+### Environment Variables
+
+The frontend uses the following environment variables:
+
+*   `VITE_API_BASE_URL`: The base URL for the backend API.
+
+### Local Development
+
+To run the frontend in development mode, create a `.env.development` file in the `client` directory with the following variable:
+
+```
+VITE_API_BASE_URL=http://localhost:5050
 ```
 
-3. Deploy Frontend:
-```bash
-cd client
+Then, run the following command to start the client:
+
+```
+npm run dev
+```
+
+### Production
+
+To run the frontend in production mode, create a `.env.production` file in the `client` directory with the following variable:
+
+```
+VITE_API_BASE_URL=https://api.99digicom.com
+```
+
+Then, run the following command to build the client:
+
+```
 npm run build
 ```
-
-Deploy the contents of the `dist` directory to your web server.
-
-## Project Structure
-
-```
-digicomcom/
-├── client/              # Frontend React application
-│   ├── src/
-│   ├── .env.development
-│   └── .env.production
-└── server/              # Backend Node.js application
-    ├── src/
-    ├── .env.development
-    └── .env.production
-```
-
-## Environment Variables
-
-### Backend
-- `PORT`: Server port (default: 5050)
-- `NODE_ENV`: Environment (development/production)
-- `MONGODB_URI`: MongoDB connection string
-- `CORS_ORIGIN`: Allowed origins for CORS
-- `JWT_SECRET`: Secret for JWT tokens
-
-### Frontend
-- `VITE_API_URL`: Backend API URL 
