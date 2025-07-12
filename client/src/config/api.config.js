@@ -1,103 +1,151 @@
 import axios from 'axios';
-import AUTH_CONFIG from './auth.config';
 
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5050';
-export const API_BASE_URL = API_URL;
+// Ensure HTTPS is always used in production
+export const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://99digicom.com'  // Production URL
+  : 'http://localhost:5050';
 
-const getAuthHeaders = (customHeaders = {}) => {
-  const token = localStorage.getItem(AUTH_CONFIG.adminTokenKey);
-  return {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    'Accept': 'application/json',
-    'X-Custom-Request': 'system-account',
-    'Cache-Control': 'no-cache',
-    'Pragma': 'no-cache',
-    'Authorization': token ? `Bearer ${token}` : '',
-    ...customHeaders
-  };
+// Helper function to construct API URLs
+export const getApiUrl = (endpoint) => {
+  // Remove leading slash if present to avoid double slashes
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+  return `${API_BASE_URL}/${cleanEndpoint}`;
 };
 
-// Create axios instance with default config
+// Configure axios defaults
 const axiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   withCredentials: true,
-  headers: getAuthHeaders(),
-  timeout: 10000, // 10 second timeout
+  timeout: process.env.NODE_ENV === 'production' ? 60000 : 30000, // 60 second timeout for production
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  }
 });
 
-// Add request interceptor for debugging
-axiosInstance.interceptors.request.use(
-  (config) => {
-    // Ensure CORS credentials are properly set
-    config.withCredentials = true;
-    
-    // Log the request for debugging
-    console.log('Making request to:', config.url, {
-      method: config.method,
-      headers: config.headers,
-      data: config.data
-    });
-    return config;
-  },
-  (error) => {
-    console.error('Request error:', error);
-    return Promise.reject(error);
+// Add request interceptor
+axiosInstance.interceptors.request.use((config) => {
+  // Get both auth tokens from localStorage
+  const userToken = localStorage.getItem('authToken');
+  const adminToken = localStorage.getItem('adminToken');
+  
+  // If admin token exists and the request is to an admin endpoint, use admin token
+  if (adminToken && config.url?.includes('/api/admin')) {
+    config.headers.Authorization = `Bearer ${adminToken}`;
   }
-);
+  // Otherwise, if user token exists, use that
+  else if (userToken) {
+    config.headers.Authorization = `Bearer ${userToken}`;
+  }
 
-// Add response interceptor for handling token expiration and errors
+  // Ensure the URL uses HTTPS in production
+  if (process.env.NODE_ENV === 'production') {
+    if (config.url && !config.url.startsWith('https://')) {
+      config.url = config.url.replace('http://', 'https://');
+    }
+    if (config.baseURL && !config.baseURL.startsWith('https://')) {
+      config.baseURL = config.baseURL.replace('http://', 'https://');
+    }
+  }
+
+  // Add cache-busting parameter for GET requests
+  if (config.method === 'get') {
+    config.params = {
+      ...config.params,
+      _t: new Date().getTime()
+    };
+  }
+
+  return config;
+}, (error) => {
+  console.error('Request configuration error:', error);
+  return Promise.reject(error);
+});
+
+// Add response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.error('Response error:', error);
-    
-    if (error.response?.status === 401) {
-      localStorage.removeItem(AUTH_CONFIG.adminTokenKey);
+    const originalRequest = error.config;
+
+    // Handle network errors
+    if (!error.response) {
+      console.error('Network error occurred:', error);
+      // Only retry once to prevent infinite loops
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          return await axiosInstance(originalRequest);
+        } catch (retryError) {
+          console.error('Retry failed:', retryError);
+          if (process.env.NODE_ENV === 'production') {
+            return Promise.reject(new Error('Connection failed. Please check your internet connection and try again.'));
+          } else {
+            return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
+          }
+        }
+      }
     }
-    
-    // Network error handling
-    if (error.code === 'ERR_NETWORK') {
-      console.error('Network error - Is the server running?', {
-        url: error.config?.url,
-        method: error.config?.method,
-        headers: error.config?.headers
-      });
-      throw new Error('Unable to connect to server. Please check if the server is running.');
+
+    // Handle CORS errors
+    if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
+      console.error('CORS or network error:', error);
+      if (process.env.NODE_ENV === 'production') {
+        return Promise.reject(new Error('Unable to connect to the server. Please refresh the page and try again.'));
+      } else {
+        return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
+      }
+    }
+
+    // Handle authentication errors
+    if (error.response?.status === 401) {
+      // Check if this was an admin request
+      if (originalRequest.url?.includes('/api/admin')) {
+        localStorage.removeItem('adminToken');
+        if (!window.location.pathname.includes('adminlogin')) {
+          window.location.href = '/adminlogin';
+        }
+      } else {
+        localStorage.removeItem('authToken');
+        if (!window.location.pathname.includes('login')) {
+          window.location.href = '/partnerlogin';
+        }
+      }
+      return Promise.reject(new Error('Your session has expired. Please log in again.'));
+    }
+
+    // Handle forbidden errors
+    if (error.response?.status === 403) {
+      console.error('Access forbidden:', error.response.data);
+      return Promise.reject(new Error('You do not have permission to perform this action.'));
+    }
+
+    // Handle bad request errors
+    if (error.response?.status === 400) {
+      console.error('Bad request:', error.response.data);
+      const message = error.response.data.message || 'Invalid request. Please check your input.';
+      return Promise.reject(new Error(message));
+    }
+
+    // Handle server errors
+    if (error.response?.status >= 500) {
+      console.error('Server error:', error.response.data);
+      if (process.env.NODE_ENV === 'production') {
+        return Promise.reject(new Error('A server error occurred. Our team has been notified and is working on it.'));
+      } else {
+        return Promise.reject(new Error('Server error occurred. Please try again later.'));
+      }
+    }
+
+    // Handle other errors
+    if (error.response?.data?.message) {
+      console.error('API Error:', error.response.data.message);
+      return Promise.reject(new Error(error.response.data.message));
     }
 
     return Promise.reject(error);
   }
 );
 
-const apiService = {
-  post: async (endpoint, data = {}, options = {}) => {
-    try {
-      console.log(`Making POST request to ${endpoint}`, { data, options });
-      const response = await axiosInstance.post(endpoint, data, {
-        withCredentials: true,
-        headers: getAuthHeaders(options.headers)
-      });
-      return response.data;
-    } catch (error) {
-      console.error(`Error in POST ${endpoint}:`, error);
-      throw error;
-    }
-  },
-
-  get: async (endpoint, options = {}) => {
-    try {
-      console.log(`Making GET request to ${endpoint}`, { options });
-      const response = await axiosInstance.get(endpoint, {
-        withCredentials: true,
-        headers: getAuthHeaders(options.headers)
-      });
-      return response.data;
-    } catch (error) {
-      console.error(`Error in GET ${endpoint}:`, error);
-      throw error;
-    }
-  }
-};
-
-export default apiService;
+export default axiosInstance;

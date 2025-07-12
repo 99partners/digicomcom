@@ -11,8 +11,6 @@ import ForgotPassword from './pages/ForgotPassword';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Partners from './pages/Partners';
-import CoBranding from './pages/CoBranding';
-import Careers from './pages/Careers';
 import Shop from './pages/Shop';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
@@ -27,12 +25,34 @@ import Applications from './pages/Applications';
 import ServiceSelection from './components/partner/ServiceSelection';
 import ServiceForm from './components/partner/ServiceForm';
 import DashboardPanel from './components/partner/DashboardPanel';
+import CustomerLogin from './pages/CutomerLogin';
+import PartnerLogin from './pages/PartnerLogin';
+
+
+// import from Services Partner Resources
+import ForProductPartners from './pages/whyPartners';
+import PartnerCommitments from './pages/ourPartners';
+import PartnersOnboarding from './pages/partnersOnboarding';
+import PlatformEnablement from './pages/platformEnable';
+import ECommerce from './pages/eCommerce';
+import AccountManagementServices from './pages/ams';
+import Blogs from './pages/blogs';
+import CaseStudies from './pages/caseStudies';
+import GuidesTutorials from './pages/guidesTutorials';
+import Faqs from './pages/faqss';
+import CoBranding from './pages/CoBranding';
+import Careers from './pages/Careers';
+
+
+
 
 // Import application components
 import PlatformEnablementForm from './components/partner/forms/PlatformEnablementForm';
 import AMSForm from './components/partner/forms/AMSForm';
 import AdvertisingForm from './components/partner/forms/AdvertisingForm';
 import CoBrandingForm from './components/partner/forms/CoBrandingForm';
+import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
+
 
 // Import components
 import Header from './components/Header';
@@ -64,6 +84,15 @@ function App() {
             <ProtectedRoute>
               <AdminDashboard />
             </ProtectedRoute>
+          } />
+
+          {/* Partner Routes */}
+          <Route path="/partner" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Outlet />
+              </DashboardLayout>
+            </ProtectedRoute>
           }>
             <Route path="create-application" element={<CreateApplication />} />
             <Route path="create-application/platform" element={<PlatformEnablementForm />} />
@@ -87,12 +116,34 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/partners" element={<Partners />} />
-            <Route path="/co-branding" element={<CoBranding />} />
-            <Route path="/careers" element={<Careers />} />
+            <Route path="/resources/careers" element={<Careers />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/resources/blogs" element={<Blogs />} />
+            <Route path="/resources/caseStudies" element={<CaseStudies />} />
+            <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
+            <Route path="/resources/faqss" element={<Faqs />} />
+            <Route path="/customer-login" element={<CustomerLogin />} />
+            <Route path="/partnerlogin" element={<PartnerLogin />} />
+            <Route path="/customerlogin" element={<CustomerLogin />} />
+            
+            <Route path="/platform-enablement-ams" element={<PlatformEnablementAMS />} />
+            
+
+           {/* routes from Services Partner Resources */}
+
+          <Route path="/partners/whyPartners" element={<ForProductPartners />} />
+            <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
+            <Route path="/partners/partnersOnboarding" element={<PartnersOnboarding />} />
+            <Route path="/services/eCommerce" element={<ECommerce />} />    
+            <Route path="/services/ams" element={<AccountManagementServices />} />
+            <Route path="/services/coBranding" element={<CoBranding />} />
+            <Route path="/services/platformEnable" element={<PlatformEnablement />} />
+
+
+
           </Route>
         </Routes>
       </Router>

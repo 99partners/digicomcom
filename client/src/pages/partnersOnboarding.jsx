@@ -13,7 +13,8 @@ import {
   Rocket,
   Globe
 } from "lucide-react";
-import { simulateApiCall } from '../config/mockData';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 export default function PartnerOnboarding() {
   useEffect(() => {
@@ -36,11 +37,8 @@ export default function PartnerOnboarding() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await simulateApiCall({ 
-        success: true,
-        message: 'Form submitted successfully'
-      });
-      
+      const response = await axios.post(getApiUrl('api/onboarding/submit'), formData);
+      const data = await response.data;
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly to begin onboarding.');
         setFormData({
@@ -56,7 +54,7 @@ export default function PartnerOnboarding() {
           consent: false,
         });
       } else {
-        alert('Error submitting form. Please try again.');
+        alert('Error submitting form: ' + data.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
