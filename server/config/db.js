@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
+import config from './config.js';
 
 export const connectDB = async () => {
     try {
@@ -18,7 +17,7 @@ export const connectDB = async () => {
         });
 
         // Connect with options
-        await mongoose.connect(process.env.MONGODB_URI, {
+        await mongoose.connect(config.db.uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
