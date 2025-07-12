@@ -10,7 +10,8 @@ import {
   Camera,
   ShoppingCart,
 } from "lucide-react";
-import { simulateApiCall } from '../config/mockData';
+import axios from 'axios';
+import { getApiUrl } from '../config/api.config';
 
 export default function ECommerce() {
   useEffect(() => {
@@ -39,11 +40,8 @@ export default function ECommerce() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await simulateApiCall({ 
-        success: true,
-        message: 'Form submitted successfully'
-      });
-      
+      const response = await axios.post(getApiUrl('api/advertising/submit'), formData);
+      const data = await response.data;
       if (data.success) {
         alert('Thank you for your submission! Our team will contact you shortly.');
         setFormData({
@@ -65,7 +63,7 @@ export default function ECommerce() {
           consent: false,
         });
       } else {
-        alert('Error submitting form. Please try again.');
+        alert('Error submitting form: ' + data.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);

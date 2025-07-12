@@ -22,7 +22,7 @@ import {
   Crown
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { assets } from '../../assets/assets';
+import logo from '../../assets/99digicom.png';
 import { useAuth } from '../../context/AuthContext';
 
 const DashboardLayout = ({ children }) => {
@@ -91,7 +91,7 @@ const DashboardLayout = ({ children }) => {
       {/* Top Navbar */}
       <div className="h-14 bg-green-100 shadow-sm flex items-center justify-between px-4 fixed top-0 right-0 left-0 z-10">
         <div className="flex items-center gap-3">
-          <img src={assets.digicomLogo} alt="DigiCom Logo" className="h-14 object-contain" />
+          <img src={logo} alt="DigiCom Logo" className="h-14 object-contain" />
           <span className="text-green-500 font-semibold text-2xl mb-1 ">Partners</span>
         </div>
 

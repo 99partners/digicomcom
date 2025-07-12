@@ -8,4 +8,4 @@ const CreateApplication = () => {
   );
 };
 
-export default CreateApplication; 
+export default CreateApplication;
