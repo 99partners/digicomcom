@@ -1,9 +1,13 @@
 import mongoose from 'mongoose';
+<<<<<<< HEAD
 import dotenv from 'dotenv';
 
 // Load environment variables based on NODE_ENV
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: envFile });
+=======
+import config from './config.js';
+>>>>>>> cba73ca1824c89e14fff35468a7c2685fd25dee0
 
 export const connectDB = async () => {
     try {
@@ -21,7 +25,7 @@ export const connectDB = async () => {
         });
 
         // Connect with options
-        await mongoose.connect(process.env.MONGODB_URI, {
+        await mongoose.connect(config.db.uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: process.env.NODE_ENV === 'production' ? 10000 : 5000, // Longer timeout in production
