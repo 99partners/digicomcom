@@ -25,7 +25,10 @@ const PlatformEnablementForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: Handle form submission
+<<<<<<< HEAD
+=======
     console.log('Form submitted:', formData);
+>>>>>>> cba73ca1824c89e14fff35468a7c2685fd25dee0
   };
 
   return (

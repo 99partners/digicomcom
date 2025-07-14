@@ -1,7 +1,18 @@
 import axios from 'axios';
 
+<<<<<<< HEAD
+// Get environment variables with fallbacks
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
+  (import.meta.env.MODE === 'production' 
+    ? 'https://99digicom.com'  // Production URL
+    : 'http://localhost:5050'); // Development URL
+
+const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT) || 
+  (import.meta.env.MODE === 'production' ? 60000 : 30000);
+=======
 // Ensure HTTPS is always used in production
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+>>>>>>> cba73ca1824c89e14fff35468a7c2685fd25dee0
 
 // Helper function to construct API URLs
 export const getApiUrl = (endpoint) => {
@@ -14,7 +25,7 @@ export const getApiUrl = (endpoint) => {
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
-  timeout: process.env.NODE_ENV === 'production' ? 60000 : 30000, // 60 second timeout for production
+  timeout: API_TIMEOUT,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -38,7 +49,7 @@ axiosInstance.interceptors.request.use((config) => {
   }
 
   // Ensure the URL uses HTTPS in production
-  if (process.env.NODE_ENV === 'production') {
+  if (import.meta.env.MODE === 'production') {
     if (config.url && !config.url.startsWith('https://')) {
       config.url = config.url.replace('http://', 'https://');
     }
@@ -77,7 +88,7 @@ axiosInstance.interceptors.response.use(
           return await axiosInstance(originalRequest);
         } catch (retryError) {
           console.error('Retry failed:', retryError);
-          if (process.env.NODE_ENV === 'production') {
+          if (import.meta.env.MODE === 'production') {
             return Promise.reject(new Error('Connection failed. Please check your internet connection and try again.'));
           } else {
             return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
@@ -89,7 +100,7 @@ axiosInstance.interceptors.response.use(
     // Handle CORS errors
     if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
       console.error('CORS or network error:', error);
-      if (process.env.NODE_ENV === 'production') {
+      if (import.meta.env.MODE === 'production') {
         return Promise.reject(new Error('Unable to connect to the server. Please refresh the page and try again.'));
       } else {
         return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
@@ -129,7 +140,7 @@ axiosInstance.interceptors.response.use(
     // Handle server errors
     if (error.response?.status >= 500) {
       console.error('Server error:', error.response.data);
-      if (process.env.NODE_ENV === 'production') {
+      if (import.meta.env.MODE === 'production') {
         return Promise.reject(new Error('A server error occurred. Our team has been notified and is working on it.'));
       } else {
         return Promise.reject(new Error('Server error occurred. Please try again later.'));
@@ -146,4 +157,5 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+export { API_BASE_URL };
 export default axiosInstance;
