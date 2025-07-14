@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-<<<<<<< HEAD
 // Get environment variables with fallbacks
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
   (import.meta.env.MODE === 'production' 
@@ -9,10 +8,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
 
 const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT) || 
   (import.meta.env.MODE === 'production' ? 60000 : 30000);
-=======
 // Ensure HTTPS is always used in production
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
->>>>>>> cba73ca1824c89e14fff35468a7c2685fd25dee0
+// export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 // Helper function to construct API URLs
 export const getApiUrl = (endpoint) => {
