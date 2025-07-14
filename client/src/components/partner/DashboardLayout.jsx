@@ -22,7 +22,11 @@ import {
   Crown
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
+import { assets } from '../../assets/assets';
+=======
 import logo from '../../assets/99digicom.png';
+>>>>>>> cba73ca1824c89e14fff35468a7c2685fd25dee0
 import { useAuth } from '../../context/AuthContext';
 
 const DashboardLayout = ({ children }) => {
@@ -34,11 +38,14 @@ const DashboardLayout = ({ children }) => {
   const [showPlanDropdown, setShowPlanDropdown] = useState(false);
   const planDropdownRef = useRef(null);
 
+<<<<<<< HEAD
+=======
   // Add debugging log
   useEffect(() => {
     console.log('Current user data:', user);
   }, [user]);
 
+>>>>>>> cba73ca1824c89e14fff35468a7c2685fd25dee0
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -91,7 +98,11 @@ const DashboardLayout = ({ children }) => {
       {/* Top Navbar */}
       <div className="h-14 bg-green-100 shadow-sm flex items-center justify-between px-4 fixed top-0 right-0 left-0 z-10">
         <div className="flex items-center gap-3">
+<<<<<<< HEAD
+          <img src={assets.digicomLogo} alt="DigiCom Logo" className="h-14 object-contain" />
+=======
           <img src={logo} alt="DigiCom Logo" className="h-14 object-contain" />
+>>>>>>> cba73ca1824c89e14fff35468a7c2685fd25dee0
           <span className="text-green-500 font-semibold text-2xl mb-1 ">Partners</span>
         </div>
 
