@@ -128,6 +128,8 @@ import contactRoutes from './routes/contactRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
 import partnerRoutes from './routes/partnerRoutes.js';
 import partnerRequestRoutes from './routes/partnerRequestRoutes.js';
+import amsRoutes from './routes/amsRoutes.js';
+import marketingApplicationRoutes from './routes/marketingApplicationRoutes.js';
 
 // API routes
 app.use('/api/auth', AuthRouter);
@@ -140,6 +142,8 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/partner', partnerRoutes);
 app.use('/api/partner-requests', partnerRequestRoutes);
+app.use('/api/ams', amsRoutes);
+app.use('/api/marketing', marketingApplicationRoutes);
 
 // Basic route to test server
 app.get('/', (req, res) => {
