@@ -19,13 +19,15 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS Configuration
-const allowedDomains = [
-    'https://99digicom.com',
-    'https://api.99digicom.com',
-    'https://www.99digicom.com',
-    'http://localhost:5173',
-    'http://localhost:5050'
-];
+const allowedDomains = process.env.ALLOWED_ORIGINS ? 
+    process.env.ALLOWED_ORIGINS.split(',') : 
+    [
+        'https://99digicom.com',
+        'https://api.99digicom.com',
+        'https://www.99digicom.com',
+        'http://localhost:5173',
+        'http://localhost:5050'
+    ];
 
 // Enable CORS with proper configuration
 app.use(cors({
@@ -37,7 +39,7 @@ app.use(cors({
         if (allowedDomains.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
-            console.warn('Unauthorized access attempt from:', origin);
+            console.warn(`Unauthorized access attempt from: ${origin} [${process.env.NODE_ENV} mode]`);
             callback(new Error('Not allowed by CORS'));
         }
     },
