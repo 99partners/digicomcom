@@ -9,14 +9,34 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
         email: user?.email || '',
         phone: user?.phone || '',
         role: user?.role || 'user',
-        isAccountVerified: user?.isAccountVerified || false
+        isAccountVerified: user?.isAccountVerified || false,
+        services: user?.services || []
     });
+
+    const [newService, setNewService] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleAddService = () => {
+        if (newService.trim()) {
+            setFormData(prev => ({
+                ...prev,
+                services: [...prev.services, newService.trim()]
+            }));
+            setNewService('');
+        }
+    };
+
+    const handleRemoveService = (indexToRemove) => {
+        setFormData(prev => ({
+            ...prev,
+            services: prev.services.filter((_, index) => index !== indexToRemove)
         }));
     };
 
@@ -86,6 +106,42 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Services</label>
+                    <div className="flex gap-2 mt-1">
+                        <input
+                            type="text"
+                            value={newService}
+                            onChange={(e) => setNewService(e.target.value)}
+                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            placeholder="Enter a service"
+                        />
+                        <button
+                            type="button"
+                            onClick={handleAddService}
+                            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                        >
+                            Add
+                        </button>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                        {formData.services.map((service, index) => (
+                            <span
+                                key={index}
+                                className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
+                            >
+                                {service}
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemoveService(index)}
+                                    className="ml-1 text-blue-600 hover:text-blue-800"
+                                >
+                                    ×
+                                </button>
+                            </span>
+                        ))}
+                    </div>
                 </div>
                 <div className="flex items-center">
                     <input

@@ -23,8 +23,8 @@ const allowedDomains = process.env.ALLOWED_ORIGINS ?
     process.env.ALLOWED_ORIGINS.split(',') : 
     [
         'https://99digicom.com',
-        'https://api.99digicom.com',
         'https://www.99digicom.com',
+        'https://api.99digicom.com',
         'http://localhost:5173',
         'http://localhost:5050'
     ];
@@ -41,9 +41,16 @@ const corsOptions = {
             console.log('No origin provided, allowing request');
             return callback(null, true);
         }
+
+        // Check if the origin matches any allowed domain
+        const isAllowed = allowedDomains.some(domain => {
+            // Convert both to lowercase for case-insensitive comparison
+            const lowerOrigin = origin.toLowerCase();
+            const lowerDomain = domain.toLowerCase().trim();
+            return lowerOrigin === lowerDomain;
+        });
         
-        // Check if the origin is allowed
-        if (allowedDomains.some(domain => origin.includes(domain))) {
+        if (isAllowed) {
             console.log('Origin allowed:', origin);
             callback(null, true);
         } else {
@@ -74,14 +81,14 @@ app.options('*', cors(corsOptions));
 
 // Add security headers
 app.use((req, res, next) => {
-    // Add CORS headers
     const origin = req.headers.origin;
-    if (origin && allowedDomains.some(domain => origin.includes(domain))) {
+    // Only set the CORS headers if the origin is allowed
+    if (origin && allowedDomains.some(domain => origin.toLowerCase() === domain.toLowerCase().trim())) {
         res.header('Access-Control-Allow-Origin', origin);
+        res.header('Access-Control-Allow-Credentials', 'true');
+        res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     }
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     next();
 });
 
