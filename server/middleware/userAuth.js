@@ -35,7 +35,17 @@ const userAuth = async(req, res, next) => {
         }
 
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+            // Use JWT_SECRET instead of JWT_SECRET_KEY
+            const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+            if (!jwtSecret) {
+                console.error('JWT secret is not configured');
+                return res.status(500).json({
+                    success: false,
+                    message: "Server configuration error"
+                });
+            }
+
+            const decoded = jwt.verify(token, jwtSecret);
 
             if (!decoded.id) {
                 return res.status(401).json({
