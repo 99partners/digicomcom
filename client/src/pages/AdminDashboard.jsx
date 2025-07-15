@@ -137,12 +137,6 @@ const AdminDashboard = () => {
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-xl font-semibold">User Management</h2>
-                                <button
-                                    onClick={handleCreateUser}
-                                    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-                                >
-                                    Add New User
-                                </button>
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
@@ -151,8 +145,8 @@ const AdminDashboard = () => {
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
@@ -168,19 +162,28 @@ const AdminDashboard = () => {
                                                     <div className="text-sm text-gray-500">{user.phone}</div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                        user.isAccountVerified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                                    }`}>
-                                                        {user.isAccountVerified ? 'Verified' : 'Not Verified'}
-                                                    </span>
+                                                    <div className="text-sm text-gray-500">
+                                                        {user.services?.length > 0 ? (
+                                                            <div className="flex flex-wrap gap-1">
+                                                                {user.services.map((service, index) => (
+                                                                    <span key={index} className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+                                                                        {service}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-gray-400">No services</span>
+                                                        )}
+                                                    </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button 
-                                                        onClick={() => handleEditUser(user)}
-                                                        className="text-blue-600 hover:text-blue-900 mr-3"
-                                                    >
-                                                        Edit
-                                                    </button>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        {user.isAccountVerified ? (
+                                                            <CheckCircle className="w-5 h-5 text-green-500" />
+                                                        ) : (
+                                                            <XCircle className="w-5 h-5 text-red-500" />
+                                                        )}
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}
