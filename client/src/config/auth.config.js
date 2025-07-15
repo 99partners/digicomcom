@@ -1,6 +1,6 @@
 import { API_BASE_URL } from './api.config';
 
-export const AUTH_CONFIG = {
+const AUTH_CONFIG = {
   apiUrl: API_BASE_URL,
   endpoints: {
     login: '/api/auth/login',
@@ -9,8 +9,13 @@ export const AUTH_CONFIG = {
     verify: '/api/auth/verify',
     resetPassword: '/api/auth/reset-password',
     forgotPassword: '/api/auth/forgot-password'
+  },
+  headers: {
+    'Content-Type': 'application/json'
   }
 };
+
+export default AUTH_CONFIG;
 
 // Instructions for setting up Auth0 and Google OAuth:
 /*
