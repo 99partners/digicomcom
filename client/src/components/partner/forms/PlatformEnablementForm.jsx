@@ -115,10 +115,10 @@ const PlatformEnablementForm = () => {
         monthlySales: value || '' // Ensure empty string if no value
       }));
     } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
     }
   };
 
@@ -319,13 +319,13 @@ const PlatformEnablementForm = () => {
               <span className="text-sm font-medium text-gray-600">
                 {Math.round(((currentStep + 1) / formFields.length) * 100)}% Complete
               </span>
-            </div>
+          </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-green-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${((currentStep + 1) / formFields.length) * 100}%` }}
               ></div>
-            </div>
+          </div>
           </div>
 
           {/* Current field */}
@@ -351,12 +351,12 @@ const PlatformEnablementForm = () => {
           </button>
           
           {isLastStep ? (
-            <button
-              type="submit"
-              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+          <button
+            type="submit"
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
               disabled={!isCurrentFieldValid()}
-            >
-              <Save className="w-4 h-4 mr-2" />
+          >
+            <Save className="w-4 h-4 mr-2" />
               Submit Application
             </button>
           ) : (
@@ -368,7 +368,7 @@ const PlatformEnablementForm = () => {
             >
               Next
               <ArrowRightCircle className="w-4 h-4 ml-2" />
-            </button>
+          </button>
           )}
         </div>
       </form>
