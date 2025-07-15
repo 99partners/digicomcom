@@ -1,15 +1,13 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import axios from 'axios';
+import axiosInstance from '../config/api.config';
 import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-    axios.defaults.withCredentials = true;
-
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://99digicom.com";
-    if (!import.meta.env.VITE_BACKEND_URL) {
-        console.warn("⚠️ Warning: VITE_BACKEND_URL is not defined in .env. Falling back to https://99digicom.com");
+    const backendUrl = import.meta.env.VITE_API_URL || "https://api.99digicom.com";
+    if (!import.meta.env.VITE_API_URL) {
+        console.warn("⚠️ Warning: VITE_API_URL is not defined in .env. Falling back to https://api.99digicom.com");
     }
 
     const [isLogin, setIsLogin] = useState(false);
@@ -17,7 +15,7 @@ export const AppContextProvider = ({ children }) => {
 
     const getUserData = async () => {
         try {
-            const { data } = await axios.get(`${backendUrl}/api/user/data`);
+            const { data } = await axiosInstance.get('/api/user/data');
             if (data.success) {
                 setUserData(data.userData);
             }
@@ -31,7 +29,7 @@ export const AppContextProvider = ({ children }) => {
 
     const getAuthStatus = async () => {
         try {
-            const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`);
+            const { data } = await axiosInstance.get('/api/auth/is-auth');
             if (data.success) {
                 setIsLogin(true);
                 getUserData();
