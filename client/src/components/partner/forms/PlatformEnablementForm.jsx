@@ -109,6 +109,11 @@ const PlatformEnablementForm = () => {
         hasGST: value,
         gstNumber: ''
       }));
+    } else if (name === 'monthlySales') {
+      setFormData(prev => ({
+        ...prev,
+        monthlySales: value || '' // Ensure empty string if no value
+      }));
     } else {
       setFormData(prev => ({
         ...prev,
@@ -117,9 +122,36 @@ const PlatformEnablementForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      console.log('Submitting form data:', formData);
+      
+      const response = await fetch('http://localhost:5050/api/platform-ams/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+
+      const responseData = await response.json();
+      console.log('Server response:', responseData);
+
+      if (!response.ok) {
+        throw new Error(responseData.message || 'Failed to submit application');
+      }
+
+      if (responseData.success) {
+        navigate('/dashboard');
+        // You can add a toast notification here if you want
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      console.error('Error details:', error.message);
+      // You can add error handling UI here
+    }
   };
 
   const handleNext = () => {

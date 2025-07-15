@@ -3,21 +3,73 @@ import PlatformAMSForm from '../models/PlatformAMSForm.js';
 // Submit platform AMS form
 export const submitForm = async (req, res) => {
   try {
-    const formData = req.body;
+    console.log('Received form data:', req.body);
+    
+    // Validate required fields
+    const { marketplaces, hasGST } = req.body;
+    
+    if (!marketplaces || typeof marketplaces !== 'object') {
+      return res.status(400).json({
+        success: false,
+        message: 'Marketplaces selection is required'
+      });
+    }
+
+    if (!hasGST || !['yes', 'no'].includes(hasGST)) {
+      return res.status(400).json({
+        success: false,
+        message: 'GST information is required'
+      });
+    }
+
+    // Create form data without userId first
+    const formData = {
+      ...req.body
+    };
+
+    // Only add userId if it exists in the request
+    if (req.user && req.user._id) {
+      formData.userId = req.user._id;
+    }
+    
+    // Validate GST number if hasGST is 'yes'
+    if (formData.hasGST === 'yes') {
+      const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+      if (!gstRegex.test(formData.gstNumber)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid GST number format'
+        });
+      }
+    }
+    
+    console.log('Creating new submission with data:', formData);
     
     // Create new form submission
     const submission = new PlatformAMSForm(formData);
     
     // Save to database
-    await submission.save();
+    const savedSubmission = await submission.save();
+    console.log('Form submission saved successfully:', savedSubmission);
     
     res.status(201).json({
       success: true,
       message: 'Form submitted successfully',
-      data: submission
+      data: savedSubmission
     });
   } catch (error) {
     console.error('Form submission error:', error);
+    
+    // Handle specific MongoDB validation errors
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: Object.values(error.errors).map(err => err.message)
+      });
+    }
+    
+    // Handle other errors
     res.status(500).json({
       success: false,
       message: 'Error submitting form',
@@ -55,7 +107,7 @@ export const updateSubmissionStatus = async (req, res) => {
     const submission = await PlatformAMSForm.findByIdAndUpdate(
       id,
       { status },
-      { new: true }
+      { new: true, runValidators: true }
     );
     
     if (!submission) {
