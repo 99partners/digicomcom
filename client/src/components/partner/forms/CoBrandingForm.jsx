@@ -1,34 +1,261 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 
 const CoBrandingForm = () => {
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
+    isManufacturer: false,
+    establishmentYear: '',
     companyName: '',
-    brandType: '',
-    brandDescription: '',
-    targetMarket: '',
-    proposedCollaboration: '',
-    marketingChannels: '',
-    brandValues: '',
-    budget: '',
-    timeline: '',
-    additionalNotes: ''
+    numberOfProducts: '',
+    productCategories: [],
+    productUSP: '',
+    productDescription: '',
+    panNumber: ''
   });
 
+  const validatePAN = (pan) => {
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    return panRegex.test(pan);
+  };
+
+  // Define form fields configuration
+  const formFields = [
+    {
+      step: 1,
+      title: 'Basic Information',
+      fields: [
+        {
+          name: 'isManufacturer',
+          label: 'Are you a Manufacturer?',
+          type: 'checkbox',
+          required: true
+        },
+        {
+          name: 'establishmentYear',
+          label: 'Year of Establishment',
+          type: 'number',
+          required: true,
+          min: 1900,
+          max: new Date().getFullYear(),
+          showIf: (data) => data.isManufacturer
+        },
+        {
+          name: 'companyName',
+          label: 'Company Name',
+          type: 'text',
+          required: true,
+          showIf: (data) => data.isManufacturer && data.establishmentYear
+        }
+      ]
+    },
+    {
+      step: 2,
+      title: 'Product Information',
+      fields: [
+        {
+          name: 'numberOfProducts',
+          label: 'Number of Products',
+          type: 'number',
+          required: true,
+          min: 1
+        },
+        {
+          name: 'productCategories',
+          label: 'Product Categories',
+          type: 'multiselect',
+          required: true,
+          options: [
+            { value: 'electronics', label: 'Electronics' },
+            { value: 'fashion', label: 'Fashion & Apparel' },
+            { value: 'home', label: 'Home & Living' },
+            { value: 'beauty', label: 'Beauty & Personal Care' },
+            { value: 'food', label: 'Food & Beverages' },
+            { value: 'health', label: 'Health & Wellness' },
+            { value: 'other', label: 'Other' }
+          ]
+        }
+      ]
+    },
+    {
+      step: 3,
+      title: 'Product Details',
+      fields: [
+        {
+          name: 'productUSP',
+          label: 'Product USP',
+          type: 'textarea',
+          required: true,
+          placeholder: 'What makes your products unique?'
+        },
+        {
+          name: 'productDescription',
+          label: 'Product Description',
+          type: 'textarea',
+          required: true,
+          placeholder: 'Describe your key products and their features'
+        }
+      ]
+    },
+    {
+      step: 4,
+      title: 'Business Information',
+      fields: [
+        {
+          name: 'panNumber',
+          label: 'PAN Number',
+          type: 'text',
+          required: true,
+          placeholder: 'Enter PAN number (e.g., ABCDE1234F)'
+        }
+      ]
+    }
+  ];
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'checkbox') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: checked
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleMultiSelect = (name, value) => {
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: prev[name].includes(value)
+        ? prev[name].filter(item => item !== value)
+        : [...prev[name], value]
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Handle form submission
+    console.log('Form submitted:', formData);
+  };
 
+  const isCurrentFieldValid = () => {
+    const currentFields = formFields[currentStep].fields;
+    return currentFields.every(field => {
+      if (!field.required) return true;
+      if (field.showIf && !field.showIf(formData)) return true;
+      
+      if (field.type === 'multiselect') {
+        return formData[field.name].length > 0;
+      }
+      
+      if (field.name === 'panNumber') {
+        return validatePAN(formData[field.name]);
+      }
+      
+      if (field.name === 'establishmentYear') {
+        const year = parseInt(formData[field.name]);
+        return year >= 1900 && year <= new Date().getFullYear();
+      }
+      
+      return !!formData[field.name];
+    });
+  };
+
+  const renderField = (field) => {
+    if (field.showIf && !field.showIf(formData)) return null;
+
+    switch (field.type) {
+      case 'checkbox':
+        return (
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name={field.name}
+              checked={formData[field.name]}
+              onChange={handleChange}
+              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+              required={field.required}
+            />
+            <span className="text-gray-700">{field.label}</span>
+          </label>
+        );
+      case 'number':
+        return (
+          <input
+            type="number"
+            name={field.name}
+            value={formData[field.name]}
+            onChange={handleChange}
+            min={field.min}
+            max={field.max}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            required={field.required}
+            placeholder={field.placeholder}
+          />
+        );
+      case 'multiselect':
+        return (
+          <div className="space-y-2">
+            {field.options.map(option => (
+              <label key={option.value} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={formData[field.name].includes(option.value)}
+                  onChange={() => handleMultiSelect(field.name, option.value)}
+                  className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                />
+                <span className="text-gray-700">{option.label}</span>
+              </label>
+            ))}
+          </div>
+        );
+      case 'select':
+        return (
+          <select
+            name={field.name}
+            value={formData[field.name]}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            required={field.required}
+          >
+            {field.options.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        );
+      case 'textarea':
+        return (
+          <textarea
+            name={field.name}
+            value={formData[field.name]}
+            onChange={handleChange}
+            rows={4}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            required={field.required}
+            placeholder={field.placeholder}
+          />
+        );
+      default:
+        return (
+          <input
+            type="text"
+            name={field.name}
+            value={formData[field.name]}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            required={field.required}
+            placeholder={field.placeholder}
+          />
+        );
+    }
   };
 
   return (
@@ -43,180 +270,82 @@ const CoBrandingForm = () => {
         <h1 className="text-2xl font-semibold text-gray-800">Co-Branding Application</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Company Name
-            </label>
-            <input
-              type="text"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Brand Type
-            </label>
-            <select
-              name="brandType"
-              value={formData.brandType}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            >
-              <option value="">Select brand type</option>
-              <option value="product">Product Brand</option>
-              <option value="service">Service Brand</option>
-              <option value="retail">Retail Brand</option>
-              <option value="technology">Technology Brand</option>
-              <option value="lifestyle">Lifestyle Brand</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Brand Description
-            </label>
-            <textarea
-              name="brandDescription"
-              value={formData.brandDescription}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your brand identity, values, and market position"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Target Market
-            </label>
-            <textarea
-              name="targetMarket"
-              value={formData.targetMarket}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your target market demographics and characteristics"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Proposed Collaboration
-            </label>
-            <textarea
-              name="proposedCollaboration"
-              value={formData.proposedCollaboration}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your vision for the co-branding partnership"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Marketing Channels
-            </label>
-            <textarea
-              name="marketingChannels"
-              value={formData.marketingChannels}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="List your primary marketing channels and reach"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Brand Values & Guidelines
-            </label>
-            <textarea
-              name="brandValues"
-              value={formData.brandValues}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your brand values, guidelines, and non-negotiables"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Budget Range
-            </label>
-            <select
-              name="budget"
-              value={formData.budget}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            >
-              <option value="">Select budget range</option>
-              <option value="small">$10,000 - $25,000</option>
-              <option value="medium">$25,000 - $50,000</option>
-              <option value="large">$50,000 - $100,000</option>
-              <option value="enterprise">$100,000+</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Preferred Timeline
-            </label>
-            <input
-              type="text"
-              name="timeline"
-              value={formData.timeline}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="e.g., 6 months, 1 year, ongoing"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Additional Notes
-            </label>
-            <textarea
-              name="additionalNotes"
-              value={formData.additionalNotes}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            />
-          </div>
+      <div className="mb-6">
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div
+            className="bg-green-600 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${((currentStep + 1) / formFields.length) * 100}%` }}
+          />
         </div>
+        <div className="text-sm text-gray-600 mt-2">
+          Step {currentStep + 1} of {formFields.length}
+        </div>
+      </div>
 
-        <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard/create-application')}
-            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            Save Application
-          </button>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+          <div className="mb-4">
+            <h2 className="text-xl font-medium text-gray-800 mb-4">
+              {formFields[currentStep].title}
+            </h2>
+            <div className="space-y-6">
+              {formFields[currentStep].fields.map((field, index) => (
+                <div key={field.name} className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    {field.label}
+                    {field.required && <span className="text-red-500 ml-1">*</span>}
+                  </label>
+                  {renderField(field)}
+                  {field.name === 'panNumber' && formData[field.name] && !validatePAN(formData[field.name]) && (
+                    <p className="mt-1 text-sm text-red-600">
+                      Please enter a valid PAN number (e.g., ABCDE1234F)
+                    </p>
+                  )}
+                  {field.name === 'establishmentYear' && formData[field.name] && 
+                    (formData[field.name] < 1900 || formData[field.name] > new Date().getFullYear()) && (
+                    <p className="mt-1 text-sm text-red-600">
+                      Please enter a valid year between 1900 and {new Date().getFullYear()}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center mt-8">
+            <button
+              type="button"
+              onClick={() => setCurrentStep(prev => prev - 1)}
+              className={`px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center ${
+                currentStep === 0 ? 'invisible' : ''
+              }`}
+              disabled={currentStep === 0}
+            >
+              <ArrowLeftCircle className="w-4 h-4 mr-2" />
+              Back
+            </button>
+
+            {currentStep === formFields.length - 1 ? (
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                disabled={!isCurrentFieldValid()}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Submit Application
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setCurrentStep(prev => prev + 1)}
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                disabled={!isCurrentFieldValid()}
+              >
+                Next
+                <ArrowRightCircle className="w-4 h-4 ml-2" />
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>

@@ -23,7 +23,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import CreateApplication from './pages/CreateApplication';
 import Applications from './pages/Applications';
 import ServiceSelection from './components/partner/ServiceSelection';
-import ServiceForm from './components/partner/ServiceForm';
 import DashboardPanel from './components/partner/DashboardPanel';
 import CustomerLogin from './pages/CutomerLogin';
 import PartnerLogin from './pages/PartnerLogin';
@@ -74,7 +73,6 @@ function App() {
           }>
             <Route index element={<DashboardPanel />} />
             <Route path="create-application" element={<ServiceSelection />} />
-            <Route path="create-application/:serviceType" element={<ServiceForm />} />
             <Route path="applications" element={<Applications />} />
           </Route>
 
@@ -94,7 +92,6 @@ function App() {
               </DashboardLayout>
             </ProtectedRoute>
           }>
-            <Route path="create-application" element={<CreateApplication />} />
             <Route path="create-application/platform" element={<PlatformEnablementForm />} />
             <Route path="create-application/ams" element={<AMSForm />} />
             <Route path="create-application/advertising" element={<AdvertisingForm />} />
