@@ -77,10 +77,8 @@ const DashboardLayout = ({ children }) => {
   };
 
   const menuItems = [
-    { icon: Edit, label: 'Create Application', href: '/dashboard/create-application' },
-    { icon: FileText, label: 'Your Applications', href: '/dashboard/applications' },
-    { icon: Briefcase, label: 'Partnership Opportunities', href: '/dashboard/opportunities' },
     { icon: User, label: 'Profile', href: '/dashboard/profile' },
+    { icon: Edit, label: 'Create Application', href: '/dashboard/create-application' },
     { icon: Bell, label: 'Notifications', href: '/dashboard/notifications' },
     { icon: Bookmark, label: 'Subscriptions', href: '/dashboard/subscriptions' },
     { icon: HelpCircle, label: 'FAQ', href: '/dashboard/faq' },
