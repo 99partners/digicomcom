@@ -28,6 +28,7 @@ const CoBrandingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: Handle form submission
+
   };
 
   return (
