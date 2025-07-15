@@ -1,31 +1,284 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 
 const AMSForm = () => {
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
-    companyName: '',
-    serviceType: '',
-    applicationDetails: '',
-    supportRequirements: '',
-    currentChallenges: '',
-    serviceLevel: '',
-    teamSize: '',
-    additionalNotes: ''
+    marketplaces: {
+      ondc: false,
+      amazon: false,
+      flipkart: false,
+      meesho: false,
+      jiomart: false,
+      indiamart: false,
+      snapdeal: false
+    },
+    serviceAccountNumber: '',
+    hasGST: '',
+    gstNumber: '',
+    monthlySales: ''
   });
 
+  const validateGSTNumber = (gstNumber) => {
+    // GST format: 2 digits state code + 10 digits PAN + 1 digit entity number + 1 digit check sum
+    const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+    return gstRegex.test(gstNumber);
+  };
+
+  // Define form fields configuration
+  const formFields = [
+    {
+      name: 'marketplaces',
+      label: 'Select Your Target Marketplaces',
+      type: 'checkboxGroup',
+      required: true,
+      options: [
+        { 
+          value: 'ondc', 
+          label: 'ONDC',
+          description: 'Open Network for Digital Commerce'
+        },
+        { 
+          value: 'amazon', 
+          label: 'Amazon',
+          description: 'India\'s largest e-commerce platform'
+        },
+        { 
+          value: 'flipkart', 
+          label: 'Flipkart',
+          description: 'Leading Indian marketplace'
+        },
+        { 
+          value: 'meesho', 
+          label: 'Meesho',
+          description: 'Social commerce platform'
+        },
+        { 
+          value: 'jiomart', 
+          label: 'JioMart',
+          description: 'Reliance\'s digital marketplace'
+        },
+        { 
+          value: 'indiamart', 
+          label: 'IndiaMart',
+          description: 'B2B marketplace leader'
+        },
+        { 
+          value: 'snapdeal', 
+          label: 'Snapdeal',
+          description: 'Value-focused marketplace'
+        }
+      ]
+    },
+    {
+      name: 'serviceAccountNumber',
+      label: 'Service Account Number',
+      type: 'text',
+      required: true,
+      placeholder: 'Enter your service account number'
+    },
+    {
+      name: 'gstInfo',
+      label: 'GST Information',
+      type: 'gstGroup',
+      required: true
+    },
+    {
+      name: 'monthlySales',
+      label: 'Monthly Online Sales Volume (Optional)',
+      type: 'select',
+      required: false,
+      options: [
+        { value: '', label: 'Select monthly sales volume' },
+        { value: 'less_50k', label: 'Less than ₹50,000' },
+        { value: '50k_2L', label: '₹50,000 – ₹2,00,000' },
+        { value: '2L_5L', label: '₹2,00,000 – ₹5,00,000' },
+        { value: 'above_5L', label: '₹5,00,000+' }
+      ]
+    }
+  ];
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'checkbox') {
+      const marketplace = e.target.value;
+      setFormData(prev => ({
+        ...prev,
+        marketplaces: {
+          ...prev.marketplaces,
+          [marketplace]: checked
+        }
+      }));
+    } else if (name === 'hasGST' && value === 'no') {
+      setFormData(prev => ({
+        ...prev,
+        hasGST: value,
+        gstNumber: '' // Clear GST number if user selects "No"
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: Handle form submission
+    console.log('Form submitted:', formData);
+  };
+
+  const isCurrentFieldValid = () => {
+    if (!formFields[currentStep].required) return true;
+    
+    if (formFields[currentStep].name === 'marketplaces') {
+      return Object.values(formData.marketplaces).some(value => value);
+    }
+    
+    if (formFields[currentStep].name === 'gstInfo') {
+      if (!formData.hasGST) return false;
+      if (formData.hasGST === 'yes') {
+        return validateGSTNumber(formData.gstNumber);
+      }
+      return true;
+    }
+    
+    return !!formData[formFields[currentStep].name];
+  };
+
+  const goToNextStep = () => {
+    if (currentStep < formFields.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const goToPreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const renderField = (field) => {
+    switch (field.type) {
+      case 'checkboxGroup':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {field.options.map(option => (
+              <div 
+                key={option.value}
+                className={`relative bg-white rounded-lg p-6 border-2 transition-colors hover:shadow-md ${
+                  formData.marketplaces[option.value] 
+                    ? 'border-green-500 shadow-md' 
+                    : 'border-gray-200 hover:border-green-300'
+                }`}
+              >
+                <label className="flex flex-col cursor-pointer">
+                  <div className="flex items-center mb-4">
+                    <input
+                      type="checkbox"
+                      value={option.value}
+                      checked={formData.marketplaces[option.value]}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-3 text-lg font-medium text-gray-900">{option.label}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3">{option.description}</p>
+                </label>
+              </div>
+            ))}
+          </div>
+        );
+      case 'gstGroup':
+        return (
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <div className="font-medium text-gray-700 mb-2">Do you have GST number?</div>
+              <div className="flex space-x-4">
+                <label className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    name="hasGST"
+                    value="yes"
+                    checked={formData.hasGST === 'yes'}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    name="hasGST"
+                    value="no"
+                    checked={formData.hasGST === 'no'}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+            
+            {formData.hasGST === 'yes' && (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  GST Number
+                  <span className="text-red-500 ml-1">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="gstNumber"
+                  value={formData.gstNumber}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                    formData.gstNumber && !validateGSTNumber(formData.gstNumber)
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  }`}
+                  required={formData.hasGST === 'yes'}
+                  placeholder="Enter your GST number"
+                />
+                {formData.gstNumber && !validateGSTNumber(formData.gstNumber) && (
+                  <p className="mt-1 text-sm text-red-500">Please enter a valid GST number</p>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      case 'select':
+        return (
+          <select
+            name={field.name}
+            value={formData[field.name]}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            required={field.required}
+          >
+            {field.options.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        );
+      default:
+        return (
+          <input
+            type="text"
+            name={field.name}
+            value={formData[field.name]}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            required={field.required}
+            placeholder={field.placeholder}
+          />
+        );
+    }
   };
 
   return (
@@ -40,147 +293,64 @@ const AMSForm = () => {
         <h1 className="text-2xl font-semibold text-gray-800">AMS Application</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Company Name
-            </label>
-            <input
-              type="text"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Service Type
-            </label>
-            <select
-              name="serviceType"
-              value={formData.serviceType}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            >
-              <option value="">Select service type</option>
-              <option value="fullManaged">Full Managed Service</option>
-              <option value="partialManaged">Partial Managed Service</option>
-              <option value="monitoring">Monitoring Only</option>
-              <option value="maintenance">Maintenance & Updates</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Application Details
-            </label>
-            <textarea
-              name="applicationDetails"
-              value={formData.applicationDetails}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your application architecture, technology stack, etc."
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Support Requirements
-            </label>
-            <textarea
-              name="supportRequirements"
-              value={formData.supportRequirements}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your support needs, including hours of coverage, response times, etc."
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Current Challenges
-            </label>
-            <textarea
-              name="currentChallenges"
-              value={formData.currentChallenges}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Service Level Required
-            </label>
-            <select
-              name="serviceLevel"
-              value={formData.serviceLevel}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            >
-              <option value="">Select service level</option>
-              <option value="basic">Basic (9x5)</option>
-              <option value="standard">Standard (16x5)</option>
-              <option value="premium">Premium (24x7)</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Required Team Size
-            </label>
-            <input
-              type="number"
-              name="teamSize"
-              value={formData.teamSize}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              min="1"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Additional Notes
-            </label>
-            <textarea
-              name="additionalNotes"
-              value={formData.additionalNotes}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            />
-          </div>
+      <div className="mb-6">
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div
+            className="bg-green-600 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${((currentStep + 1) / formFields.length) * 100}%` }}
+          />
         </div>
+        <div className="text-sm text-gray-600 mt-2">
+          Step {currentStep + 1} of {formFields.length}
+        </div>
+      </div>
 
-        <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard/create-application')}
-            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            Save Application
-          </button>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+          <div className="mb-4">
+            <label className="block text-lg font-medium text-gray-700 mb-2">
+              {formFields[currentStep].label}
+              {formFields[currentStep].required && formFields[currentStep].type !== 'gstGroup' && (
+                <span className="text-red-500 ml-1">*</span>
+              )}
+            </label>
+            {renderField(formFields[currentStep])}
+          </div>
+
+          <div className="flex justify-between items-center mt-8">
+            <button
+              type="button"
+              onClick={goToPreviousStep}
+              className={`px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center ${
+                currentStep === 0 ? 'invisible' : ''
+              }`}
+              disabled={currentStep === 0}
+            >
+              <ArrowLeftCircle className="w-4 h-4 mr-2" />
+              Back
+            </button>
+
+            {currentStep === formFields.length - 1 ? (
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                disabled={!isCurrentFieldValid()}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Submit Application
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={goToNextStep}
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                disabled={!isCurrentFieldValid()}
+              >
+                Next
+                <ArrowRightCircle className="w-4 h-4 ml-2" />
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>

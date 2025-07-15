@@ -1,11 +1,14 @@
-import ServiceForm from '../components/partner/ServiceForm';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CreateApplication = () => {
-  return (
-    <div className="container mx-auto py-6">
-      <ServiceForm />
-    </div>
-  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/dashboard/create-application');
+  }, [navigate]);
+
+  return null;
 };
 
 export default CreateApplication;
