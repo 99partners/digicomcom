@@ -28,10 +28,7 @@ const CoBrandingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: Handle form submission
-<<<<<<< HEAD
-    console.log('Form submitted:', formData);
-=======
->>>>>>> b3c58a645f2be9394f7e729893652c84f0fb46bc
+
   };
 
   return (
