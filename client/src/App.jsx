@@ -26,6 +26,10 @@ import ServiceSelection from './components/partner/ServiceSelection';
 import DashboardPanel from './components/partner/DashboardPanel';
 import CustomerLogin from './pages/CutomerLogin';
 import PartnerLogin from './pages/PartnerLogin';
+import FAQ from './pages/dashboard/FAQ';
+import Profile from './pages/dashboard/Profile';
+import Notifications from './pages/dashboard/Notifications';
+import Subscriptions from './pages/dashboard/Subscriptions';
 
 
 // import from Services Partner Resources
@@ -74,6 +78,10 @@ function App() {
             <Route index element={<DashboardPanel />} />
             <Route path="create-application" element={<ServiceSelection />} />
             <Route path="applications" element={<Applications />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="subscriptions" element={<Subscriptions />} />
           </Route>
 
           {/* Admin Routes */}
