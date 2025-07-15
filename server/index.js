@@ -43,14 +43,7 @@ const corsOptions = {
         }
 
         // Check if the origin matches any allowed domain
-        const isAllowed = allowedDomains.some(domain => {
-            // Convert both to lowercase for case-insensitive comparison
-            const lowerOrigin = origin.toLowerCase();
-            const lowerDomain = domain.toLowerCase().trim();
-            return lowerOrigin === lowerDomain;
-        });
-        
-        if (isAllowed) {
+        if (allowedDomains.includes(origin)) {
             console.log('Origin allowed:', origin);
             callback(null, true);
         } else {
