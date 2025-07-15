@@ -3,7 +3,7 @@ import axios from 'axios';
 // Get environment variables with fallbacks
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
   (import.meta.env.MODE === 'production' 
-    ? 'https://99digicom.com'  // Production URL
+    ? 'https://api.99digicom.com'  // Production URL
     : 'http://localhost:5050'); // Development URL
 
 const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT) || 
