@@ -1,36 +1,254 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, Target, Brain, BarChart3, Image, Briefcase, Phone } from 'lucide-react';
 
 const AdvertisingForm = () => {
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
-    companyName: '',
-    campaignType: '',
-    targetAudience: '',
-    marketingGoals: '',
-    budget: '',
-    timeline: '',
-    brandGuidelines: '',
-    existingAssets: '',
-    additionalNotes: ''
+    services: {
+      sponsoredAds: false,
+      seasonalCampaigns: false,
+      platformPromotions: false,
+      socialMedia: false,
+      creativeDesign: false
+    },
+    selectedPlan: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  // Define form fields configuration
+  const formFields = [
+    {
+      name: 'services',
+      label: 'What We Offer',
+      type: 'serviceOfferings',
+      required: true,
+      sections: [
+        {
+          id: 'sponsoredAds',
+          title: 'Sponsored Ad Campaigns (PPC)',
+          icon: <Target className="w-5 h-5" />,
+          features: [
+            'Create and manage product ads on Amazon, Flipkart, Meesho, Jiomart, and more',
+            'Keyword research and targeting',
+            'Ad budget optimization for maximum ROI',
+            'A/B testing and performance tracking'
+          ]
+        },
+        {
+          id: 'seasonalCampaigns',
+          title: 'Seasonal & Festival Campaigns',
+          icon: <CheckCircle2 className="w-5 h-5" />,
+          features: [
+            'Diwali, Holi, Republic Day, New Year, Raksha Bandhan, etc.',
+            'Custom promotions and product bundling',
+            'Sale event calendar planning'
+          ]
+        },
+        {
+          id: 'platformPromotions',
+          title: 'Platform-Specific Promotions',
+          icon: <CheckCircle2 className="w-5 h-5" />,
+          features: [
+            'Participation in Lightning Deals, Big Billion Day, Amazon Prime Day, Flipkart Big Savings, etc.',
+            'Exclusive offers and banner placements',
+            'Pricing strategy for offer periods'
+          ]
+        },
+        {
+          id: 'socialMedia',
+          title: 'Social Media & Off-Platform Promotions',
+          icon: <CheckCircle2 className="w-5 h-5" />,
+          features: [
+            'Targeted ads on Meta (Facebook/Instagram), Google, YouTube',
+            'Influencer collaborations & affiliate campaigns',
+            'Landing pages & conversion tracking'
+          ]
+        },
+        {
+          id: 'creativeDesign',
+          title: 'Creative & Content Design',
+          icon: <CheckCircle2 className="w-5 h-5" />,
+          features: [
+            'Ad banners, creatives, product videos, short reels',
+            'Enhanced brand content (A+ Content on Amazon)',
+            'Product infographics and storytelling visuals'
+          ]
+        }
+      ]
+    },
+    {
+      name: 'selectedPlan',
+      label: 'Platform-Specific Advertising Expertise',
+      type: 'platformSelection',
+      required: true,
+      platforms: [
+        {
+          id: 'amazon',
+          title: 'Amazon',
+          features: [
+            'Sponsored Products',
+            'Sponsored Brands',
+            'Brand Store Ads',
+            'A+ Content Optimization'
+          ]
+        },
+        {
+          id: 'flipkart',
+          title: 'Flipkart',
+          features: [
+            'Product Listing Ads (PLA)',
+            'Brand Store Management',
+            'Flipkart Ads Dashboard',
+            'Performance Optimization'
+          ]
+        },
+        {
+          id: 'meesho',
+          title: 'Meesho',
+          features: [
+            'Catalog Optimization',
+            'Sponsored Listings',
+            'Flash Sale Strategy',
+            'Discount Management'
+          ]
+        },
+        {
+          id: 'jiomart',
+          title: 'JioMart',
+          features: [
+            'Homepage Banners',
+            'Coupon Offers',
+            'Deal Days',
+            'Category Promotions'
+          ]
+        },
+        {
+          id: 'ondc',
+          title: 'ONDC',
+          features: [
+            'Buyer-side Visibility',
+            'Network Integration',
+            'Partner App Campaigns',
+            'Price Strategy'
+          ]
+        },
+        {
+          id: 'zomato',
+          title: 'Zomato',
+          features: [
+            'Sponsored Listings',
+            'Discount Campaigns',
+            'Regional Targeting',
+            'Performance Analytics'
+          ]
+        }
+      ]
+    }
+  ];
+
+  const handleChange = (e, section = null) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'checkbox' && section) {
+      setFormData(prev => ({
+        ...prev,
+        services: {
+          ...prev.services,
+          [section]: checked
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: Handle form submission
+    console.log('Form submitted:', formData);
+  };
+
+  const isCurrentFieldValid = () => {
+    if (!formFields[currentStep].required) return true;
+    
+    if (formFields[currentStep].name === 'services') {
+      return Object.values(formData.services).some(value => value);
+    }
+    
+    if (formFields[currentStep].name === 'selectedPlan') {
+      return !!formData.selectedPlan;
+    }
+    
+    return true;
+  };
+
+  const renderField = (field) => {
+    switch (field.type) {
+      case 'serviceOfferings':
+        return (
+          <div className="space-y-6">
+            {field.sections.map(section => (
+              <div key={section.id} className="bg-white rounded-lg p-4 border border-gray-200 hover:border-green-500 transition-colors">
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.services[section.id]}
+                    onChange={(e) => handleChange(e, section.id)}
+                    className="h-4 w-4 mt-1 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2">
+                      {section.icon}
+                      <span className="font-medium text-gray-900">{section.title}</span>
+                    </div>
+                    <ul className="mt-2 space-y-1 text-sm text-gray-600">
+                      {section.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center space-x-2">
+                          <span>•</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </label>
+              </div>
+            ))}
+          </div>
+        );
+      case 'platformSelection':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {field.platforms.map(platform => (
+              <div key={platform.id} 
+                className={`relative bg-white rounded-lg p-4 border-2 transition-colors cursor-pointer ${
+                  formData.selectedPlan === platform.id ? 'border-green-500' : 'border-gray-200 hover:border-green-300'
+                }`}
+                onClick={() => handleChange({ target: { name: 'selectedPlan', value: platform.id } })}
+              >
+                <div className="text-lg font-semibold text-gray-900 mb-3">{platform.title}</div>
+                <ul className="space-y-2 text-sm">
+                  {platform.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center space-x-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center mb-6">
         <button
           onClick={() => navigate('/dashboard/create-application')}
@@ -38,170 +256,98 @@ const AdvertisingForm = () => {
         >
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
-        <h1 className="text-2xl font-semibold text-gray-800">Advertising & Marketing Application</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">Marketing & Advertising Application</h1>
+      </div>
+
+      <div className="mb-6">
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div
+            className="bg-green-600 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${((currentStep + 1) / formFields.length) * 100}%` }}
+          />
+        </div>
+        <div className="text-sm text-gray-600 mt-2">
+          Step {currentStep + 1} of {formFields.length}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Company Name
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+          <div className="mb-4">
+            <label className="block text-lg font-medium text-gray-700 mb-4">
+              {formFields[currentStep].label}
+              {formFields[currentStep].required && <span className="text-red-500 ml-1">*</span>}
             </label>
-            <input
-              type="text"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            />
+            {renderField(formFields[currentStep])}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Campaign Type
-            </label>
-            <select
-              name="campaignType"
-              value={formData.campaignType}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
+          <div className="flex justify-between items-center mt-8">
+            <button
+              type="button"
+              onClick={() => setCurrentStep(prev => prev - 1)}
+              className={`px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center ${
+                currentStep === 0 ? 'invisible' : ''
+              }`}
+              disabled={currentStep === 0}
             >
-              <option value="">Select campaign type</option>
-              <option value="digital">Digital Marketing</option>
-              <option value="social">Social Media Marketing</option>
-              <option value="content">Content Marketing</option>
-              <option value="email">Email Marketing</option>
-              <option value="seo">SEO</option>
-              <option value="ppc">PPC Advertising</option>
-            </select>
-          </div>
+              <ArrowLeftCircle className="w-4 h-4 mr-2" />
+              Back
+            </button>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Target Audience
-            </label>
-            <textarea
-              name="targetAudience"
-              value={formData.targetAudience}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your target audience demographics, interests, and behaviors"
-            />
+            {currentStep === formFields.length - 1 ? (
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                disabled={!isCurrentFieldValid()}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Submit Application
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setCurrentStep(prev => prev + 1)}
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                disabled={!isCurrentFieldValid()}
+              >
+                Next
+                <ArrowRightCircle className="w-4 h-4 ml-2" />
+              </button>
+            )}
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Marketing Goals
-            </label>
-            <textarea
-              name="marketingGoals"
-              value={formData.marketingGoals}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your marketing objectives and KPIs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Budget Range
-            </label>
-            <select
-              name="budget"
-              value={formData.budget}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            >
-              <option value="">Select budget range</option>
-              <option value="small">$5,000 - $10,000</option>
-              <option value="medium">$10,000 - $25,000</option>
-              <option value="large">$25,000 - $50,000</option>
-              <option value="enterprise">$50,000+</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Campaign Timeline
-            </label>
-            <input
-              type="text"
-              name="timeline"
-              value={formData.timeline}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="e.g., 3 months, 6 months, 1 year"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Brand Guidelines
-            </label>
-            <textarea
-              name="brandGuidelines"
-              value={formData.brandGuidelines}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-              placeholder="Describe your brand guidelines, tone of voice, and visual requirements"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Existing Marketing Assets
-            </label>
-            <textarea
-              name="existingAssets"
-              value={formData.existingAssets}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="List any existing marketing materials, brand assets, or content that can be utilized"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Additional Notes
-            </label>
-            <textarea
-              name="additionalNotes"
-              value={formData.additionalNotes}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-
-        <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard/create-application')}
-            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            Save Application
-          </button>
         </div>
       </form>
+
+      {/* Why Choose Us Section */}
+      <div className="mt-8 bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Why Choose 99digicom?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="flex items-center space-x-3">
+            <Brain className="w-5 h-5 text-green-600" />
+            <span>Platform-specific ad specialists</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <BarChart3 className="w-5 h-5 text-green-600" />
+            <span>Weekly performance reports</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Image className="w-5 h-5 text-green-600" />
+            <span>Creative support for banners, videos & reels</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Briefcase className="w-5 h-5 text-green-600" />
+            <span>Campaigns tailored to your product category</span>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center">
+          <div className="flex items-center justify-center space-x-2 text-gray-600">
+            <Phone className="w-5 h-5" />
+            <span>Ready to Advertise Smarter?</span>
+          </div>
+          <p className="mt-2 text-gray-600">Let us help you run targeted campaigns that deliver real results.</p>
+        </div>
+      </div>
     </div>
   );
 };
