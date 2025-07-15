@@ -57,7 +57,7 @@ const coBrandingSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { timestamps: true });
 
 const CoBranding = mongoose.model("CoBranding", coBrandingSchema);
 export default CoBranding;
