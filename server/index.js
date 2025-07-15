@@ -1,14 +1,14 @@
 import express from 'express';
+import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
-import config from './config/config.js';
 
 const app = express();
-const PORT = config.app.port;
+const PORT = process.env.PORT || 5050;
 
 // Get __dirname in ES module scope
 const __filename = fileURLToPath(import.meta.url);
@@ -19,8 +19,28 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS Configuration
+const allowedDomains = [
+    'https://99digicom.com',
+    'https://api.99digicom.com',
+    'https://www.99digicom.com',
+    'http://localhost:5173',
+    'http://localhost:5050'
+];
+
+// Enable CORS with proper configuration
 app.use(cors({
-    origin: config.cors.origin,
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, Postman or curl requests)
+        if (!origin) return callback(null, true);
+        
+        // Check if the origin is allowed
+        if (allowedDomains.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            console.warn('Unauthorized access attempt from:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: [
         'Content-Type',
