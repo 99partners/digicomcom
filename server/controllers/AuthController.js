@@ -96,25 +96,36 @@ export const login = async(req, res)=>{
             return res.json({success:false, message:"Invalid Password"})
         }
 
-        //if password is Matched then generate token.
-         //we are send this token using cookie.
+        // Use consistent JWT secret
+        const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+        if (!jwtSecret) {
+            console.error('JWT secret is not configured');
+            return res.status(500).json({
+                success: false,
+                message: "Server configuration error"
+            });
+        }
 
+        const token = jwt.sign({id: user._id}, jwtSecret, {expiresIn: '1d'})
 
-         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
-
-        res.cookie('token', token, {
+        // Set cookie with proper domain in production
+        const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            maxAge: 1*24*60*60*1000
-        });
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined
+        };
+
+        res.cookie('token', token, cookieOptions);
 
         // Return user data and token
         const userData = {
             id: user._id,
             name: user.name,
             email: user.email,
-            phone: user.phone
+            phone: user.phone,
+            isAccountVerified: user.isAccountVerified
         };
 
         return res.json({
@@ -124,20 +135,25 @@ export const login = async(req, res)=>{
         });
 
     } catch(err) {
-        res.json({success:false, messsage: err.message}) 
+        console.error('Login error:', err);
+        res.status(500).json({success:false, message: err.message}) 
     }
 }
 
 export const logout = (req, res)=>{
     try {
-        res.clearCookie('token',{
+        const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-        });
-        return res.json({success:true, message:"Logged Out"})
-    }catch (err) {
-        res.json({success:false, messsage: err.message})
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined
+        };
+
+        res.clearCookie('token', cookieOptions);
+        return res.json({success:true, message:"Logged Out Successfully"});
+    } catch (err) {
+        console.error('Logout error:', err);
+        res.status(500).json({success:false, message: err.message});
     }
 }
 
