@@ -29,14 +29,22 @@ const allowedDomains = process.env.ALLOWED_ORIGINS ?
         'http://localhost:5050'
     ];
 
+console.log('Allowed CORS origins:', allowedDomains);
+
 // Enable CORS with proper configuration
-app.use(cors({
+const corsOptions = {
     origin: function (origin, callback) {
+        console.log('Request origin:', origin);
+        
         // Allow requests with no origin (like mobile apps, Postman or curl requests)
-        if (!origin) return callback(null, true);
+        if (!origin) {
+            console.log('No origin provided, allowing request');
+            return callback(null, true);
+        }
         
         // Check if the origin is allowed
-        if (allowedDomains.indexOf(origin) !== -1) {
+        if (allowedDomains.some(domain => origin.includes(domain))) {
+            console.log('Origin allowed:', origin);
             callback(null, true);
         } else {
             console.warn(`Unauthorized access attempt from: ${origin} [${process.env.NODE_ENV} mode]`);
@@ -56,14 +64,23 @@ app.use(cors({
     exposedHeaders: ['Content-Range', 'X-Content-Range'],
     credentials: true,
     maxAge: 86400 // 24 hours
-}));
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
 // Handle preflight requests for all routes
-app.options('*', cors());
+app.options('*', cors(corsOptions));
 
 // Add security headers
 app.use((req, res, next) => {
+    // Add CORS headers
+    const origin = req.headers.origin;
+    if (origin && allowedDomains.some(domain => origin.includes(domain))) {
+        res.header('Access-Control-Allow-Origin', origin);
+    }
     res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     next();
 });
