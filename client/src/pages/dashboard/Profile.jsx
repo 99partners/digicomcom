@@ -106,12 +106,7 @@ const Profile = () => {
                                     </div>
                                 </div>
                             </div>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                className="px-4 py-2 bg-white text-green-700 rounded-lg shadow-sm hover:shadow transition-all duration-200"
-                            >
-                                Edit Profile
-                            </motion.button>
+                          
                         </div>
                     </div>
                 </motion.div>
