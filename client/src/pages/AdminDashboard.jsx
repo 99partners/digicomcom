@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
-import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock } from 'lucide-react';
+import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
 import UserForm from '../components/admin/UserForm';
 import PartnerRequestManagement from '../components/admin/PartnerRequestManagement';
+import NotificationManagement from '../components/admin/NotificationManagement';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
@@ -96,6 +97,7 @@ const AdminDashboard = () => {
         { id: 'blogs', label: 'Blog Management', icon: BookOpen },
         { id: 'contacts', label: 'Contact Messages', icon: MessageSquare },
         { id: 'partner-requests', label: 'Partner Requests', icon: Handshake },
+        { id: 'notifications', label: 'Notifications', icon: Bell },
     ];
 
     const contentItems = [
@@ -239,6 +241,9 @@ const AdminDashboard = () => {
 
             case 'partner-requests':
                 return <PartnerRequestManagement />;
+
+            case 'notifications':
+                return <NotificationManagement />;
 
             case 'settings':
                 return (
