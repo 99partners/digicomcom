@@ -45,6 +45,8 @@ import GuidesTutorials from './pages/guidesTutorials';
 import Faqs from './pages/faqss';
 import CoBranding from './pages/CoBranding';
 import Careers from './pages/Careers';
+import EmailVerify from './components/EmailVerify';
+import ResetPassword from './components/ResetPassword';
 
 
 
@@ -118,6 +120,10 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/email-verify" element={<EmailVerify />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
+
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/partners" element={<Partners />} />
