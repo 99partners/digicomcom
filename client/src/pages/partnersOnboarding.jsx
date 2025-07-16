@@ -8,13 +8,13 @@ import {
   BarChart3,
   MessageSquare,
   FileText,
-  Image,
+  Image as ImageIcon,
   Tag,
   Rocket,
-  Globe
+  Globe,
 } from "lucide-react";
-import axios from 'axios';
-import { getApiUrl } from '../config/api.config';
+import axios from "axios";
+import { getApiUrl } from "../config/api.config";
 
 export default function PartnerOnboarding() {
   useEffect(() => {
@@ -37,10 +37,10 @@ export default function PartnerOnboarding() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(getApiUrl('api/onboarding/submit'), formData);
+      const response = await axios.post(getApiUrl("api/onboarding/submit"), formData);
       const data = await response.data;
       if (data.success) {
-        alert('Thank you for your submission! Our team will contact you shortly to begin onboarding.');
+        alert("Thank you for your submission! Our team will contact you shortly to begin onboarding.");
         setFormData({
           brandName: "",
           contactPerson: "",
@@ -54,11 +54,11 @@ export default function PartnerOnboarding() {
           consent: false,
         });
       } else {
-        alert('Error submitting form: ' + data.message);
+        alert("Error submitting form: " + data.message);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Error submitting form. Please try again.');
+      console.error("Error submitting form:", error);
+      alert("Error submitting form. Please try again.");
     }
   };
 
@@ -91,9 +91,7 @@ export default function PartnerOnboarding() {
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Start your journey with a growing network of digital-first brands. Simple, structured, and supportive onboarding to help you sell, scale, and succeed.
           </p>
-          <div className="flex justify-center space-x-4">
-            
-          </div>
+          <div className="flex justify-center space-x-4"></div>
         </div>
       </section>
 
@@ -111,36 +109,48 @@ export default function PartnerOnboarding() {
               {
                 step: "Step 1: Fill the Partner Interest Form",
                 desc: "Tell us about your brand, products, and goals.",
-                
-                icon: <FileText className="h-6 w-6 text-green-600" />,
+                image: "https://bing.com/th/id/BCO.fbad3f5c-cb1f-49ac-85f9-1da9cd5102d7.png", // Form or document
               },
               {
                 step: "Step 2: Consultation & Category Assessment",
                 desc: "Our team will connect to understand your business model, product category, and recommend platforms like ONDC, Amazon, Flipkart, Meesho, Jiomart, Zomato, or Swiggy.",
-                icon: <MessageSquare className="h-6 w-6 text-green-600" />,
+                image: "https://bing.com/th/id/BCO.dee11a37-a1d8-45f0-b31f-a0b89fdecb1c.png", // Phone or meeting
               },
               {
                 step: "Step 3: Documentation & Seller Account Setup",
                 desc: "We assist with GST, bank details, FSSAI (for food products), and brand certificates, handling seller account creation for selected platforms.",
-                icon: <CheckCircle className="h-6 w-6 text-green-600" />,
+                image: "https://bing.com/th/id/BCO.9d7c3c7c-ec25-4ec4-b0b9-e6c1d24cc355.png", // Documents or setup
               },
               {
                 step: "Step 4: Catalog, Content & Pricing",
                 desc: "Our team helps with product listings (titles, descriptions, images), pricing, inventory, brand store setup, and packaging/shipping settings.",
-                icon: <Image className="h-6 w-6 text-green-600" />,
+                image: "https://bing.com/th/id/BCO.bbd3c196-ab81-422d-b246-5d3e1109e9d5.png", // Product or camera
               },
               {
                 step: "Step 5: Go Live & Start Selling",
                 desc: "Once active, we guide you through your first orders, provide co-branding opportunities, performance marketing options, and account management tools.",
-                icon: <Rocket className="h-6 w-6 text-green-600" />,
+                image: "https://bing.com/th/id/BCO.89bd33dc-5892-4671-8720-b4527b09e780.png", // Launch or success
               },
             ].map((step, index) => (
-              <div key={index} className="flex items-start space-x-4 bg-white rounded-lg shadow-lg p-6">
-                <div className="flex-shrink-0">{step.icon}</div>
-                <div>
+              <div
+                key={index}
+                className={`flex items-center justify-between p-6 bg-white rounded-lg shadow-lg ${
+                  index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                }`}
+              >
+                <div className="w-1/2 p-4">
+                  <img
+                    src={step.image}
+                    alt={`${step.step} illustration`}
+                    className="w-80 h-80 rounded-lg object-contain shadow-md"
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                    }}
+                  />
+                </div>
+                <div className="w-1/2 p-4 bg-green-50 rounded-lg shadow-inner">
                   <h4 className="text-lg font-semibold text-gray-900 mb-2">{step.step}</h4>
-                  <p className="text-gray-600 text-sm mb-4">{step.desc}</p>
-                  {step.cta}
+                  <p className="text-gray-600 text-sm">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -227,11 +237,6 @@ export default function PartnerOnboarding() {
           </div>
         </div>
       </section>
-
-      
-      
-
-
     </div>
   );
 }
