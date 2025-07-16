@@ -1,22 +1,16 @@
 import express from 'express';
-import {
-    createCoBrandingApplication,
-    getAllCoBrandingApplications,
-    getCoBrandingApplicationById,
-    updateCoBrandingApplication,
-    deleteCoBrandingApplication
-} from '../controllers/CoBrandingController.js';
-import adminAuth from '../middleware/adminAuth.js';
+import { submitCoBrandingForm } from '../controllers/CoBrandingController.js';
+import userAuth from '../middleware/userAuth.js';
 
 const router = express.Router();
 
-// Public routes
-router.post('/submit', createCoBrandingApplication);
+// Log incoming requests
+router.use((req, res, next) => {
+    console.log('Co-Branding Route accessed:', req.method, req.path);
+    next();
+});
 
-// Admin protected routes
-router.get('/', adminAuth, getAllCoBrandingApplications);
-router.get('/:id', adminAuth, getCoBrandingApplicationById);
-router.put('/:id', adminAuth, updateCoBrandingApplication);
-router.delete('/:id', adminAuth, deleteCoBrandingApplication);
+// Submit co-branding form
+router.post('/submit', userAuth, submitCoBrandingForm);
 
 export default router; 

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
+import { useAuth } from '../../../context/AuthContext';
 
 const CoBrandingForm = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     isManufacturer: false,
@@ -139,9 +141,57 @@ const CoBrandingForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    
+    // Only submit if we're on the last step
+    if (currentStep !== formFields.length - 1) {
+      return;
+    }
+
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      console.log('Submitting form data:', formData);
+      
+      const token = localStorage.getItem('authToken');
+      const response = await fetch('http://localhost:5050/api/co-branding/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+
+      const responseData = await response.json();
+      console.log('Server response:', responseData);
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          navigate('/login');
+          return;
+        }
+        throw new Error(responseData.message || 'Failed to submit application');
+      }
+
+      // If submission is successful, navigate to dashboard
+      if (responseData.success) {
+        console.log('Form submitted successfully, redirecting to dashboard...');
+        navigate('/dashboard', { replace: true });
+      } else {
+        throw new Error('Failed to store data in database');
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      console.error('Error details:', error.message);
+      alert('Failed to submit form. Please try again.');
+    }
   };
 
   const isCurrentFieldValid = () => {
