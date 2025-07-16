@@ -100,6 +100,7 @@ const DashboardLayout = ({ children }) => {
 
   const menuItems = [
     { icon: User, label: 'Profile', href: '/dashboard/profile' },
+    { icon: FileText, label: 'My Applications', href: '/dashboard/my-applications' },
     { icon: Edit, label: 'Create Application', href: '/dashboard/create-application' },
     { icon: Bell, label: 'Notifications', href: '/dashboard/notifications' },
     { icon: Bookmark, label: 'Subscriptions', href: '/dashboard/subscriptions' },

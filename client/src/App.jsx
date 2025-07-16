@@ -14,18 +14,15 @@ import Partners from './pages/Partners';
 import Shop from './pages/Shop';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
-
-
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import FAQ from './pages/dashboard/FAQ';
+import MyApplications from './pages/dashboard/MyApplications';
 
 import DashboardLayout from './components/partner/DashboardLayout';
 import PartnerDashboard from './pages/PartnerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
-import CreateApplication from './pages/CreateApplication';
-import Applications from './pages/Applications';
 import ServiceSelection from './components/partner/ServiceSelection';
 import DashboardPanel from './components/partner/DashboardPanel';
 import CustomerLogin from './pages/CutomerLogin';
@@ -35,8 +32,7 @@ import Profile from './pages/dashboard/Profile';
 import Notifications from './pages/dashboard/Notifications';
 import Subscriptions from './pages/dashboard/Subscriptions';
 
-
-// import from Services Partner Resources
+// Import from Services Partner Resources
 import ForProductPartners from './pages/whyPartners';
 import PartnerCommitments from './pages/ourPartners';
 import PartnersOnboarding from './pages/partnersOnboarding';
@@ -52,16 +48,12 @@ import Careers from './pages/Careers';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 
-
-
-
 // Import application components
 import PlatformEnablementForm from './components/partner/forms/PlatformEnablementForm';
 import AMSForm from './components/partner/forms/AMSForm';
 import AdvertisingForm from './components/partner/forms/AdvertisingForm';
 import CoBrandingForm from './components/partner/forms/CoBrandingForm';
 import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
-
 
 // Import components
 import Header from './components/Header';
@@ -86,7 +78,7 @@ function App() {
           }>
             <Route index element={<DashboardPanel />} />
             <Route path="create-application" element={<ServiceSelection />} />
-            <Route path="applications" element={<Applications />} />
+            <Route path="my-applications" element={<MyApplications />} />
             <Route path="faq" element={<FAQ />} />
             <Route path="profile" element={<Profile />} />
             <Route path="notifications" element={<Notifications />} />
@@ -130,19 +122,16 @@ function App() {
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
-
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/resources/careers" element={<Careers />} />
             <Route path="/shop" element={<Shop />} />
-
             
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
             <Route path="/faqss" element={<Faqs />} />
-
 
             <Route path="/resources/blogs" element={<Blogs />} />
             <Route path="/resources/blogs/:id" element={<BlogDetails />} />
@@ -154,20 +143,15 @@ function App() {
             <Route path="/customerlogin" element={<CustomerLogin />} />
             
             <Route path="/platform-enablement-ams" element={<PlatformEnablementAMS />} />
-            
 
-           {/* routes from Services Partner Resources */}
-
-          <Route path="/partners/whyPartners" element={<ForProductPartners />} />
+            {/* routes from Services Partner Resources */}
+            <Route path="/partners/whyPartners" element={<ForProductPartners />} />
             <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
             <Route path="/partners/partnersOnboarding" element={<PartnersOnboarding />} />
             <Route path="/services/eCommerce" element={<ECommerce />} />    
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/coBranding" element={<CoBranding />} />
             <Route path="/services/platformEnable" element={<PlatformEnablement />} />
-
-
-
           </Route>
         </Routes>
       </Router>
