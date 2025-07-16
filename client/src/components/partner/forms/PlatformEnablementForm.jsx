@@ -124,6 +124,11 @@ const PlatformEnablementForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Only submit if we're on the last step
+    if (currentStep !== formFields.length - 1) {
+      return;
+    }
+
     try {
       console.log('Submitting form data:', formData);
       
@@ -143,14 +148,18 @@ const PlatformEnablementForm = () => {
         throw new Error(responseData.message || 'Failed to submit application');
       }
 
+      // Only navigate if data was successfully stored
       if (responseData.success) {
-        navigate('/dashboard');
-        // You can add a toast notification here if you want
+        console.log('Form submitted successfully');
+        // Ensure we wait for the navigation
+        await navigate('/dashboard');
+      } else {
+        throw new Error('Failed to store data in database');
       }
     } catch (error) {
       console.error('Error submitting application:', error);
       console.error('Error details:', error.message);
-      // You can add error handling UI here
+      alert('Failed to submit form. Please try again.');
     }
   };
 
@@ -351,12 +360,13 @@ const PlatformEnablementForm = () => {
           </button>
           
           {isLastStep ? (
-          <button
-            type="submit"
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
               disabled={!isCurrentFieldValid()}
-          >
-            <Save className="w-4 h-4 mr-2" />
+            >
+              <Save className="w-4 h-4 mr-2" />
               Submit Application
             </button>
           ) : (
@@ -368,7 +378,7 @@ const PlatformEnablementForm = () => {
             >
               Next
               <ArrowRightCircle className="w-4 h-4 ml-2" />
-          </button>
+            </button>
           )}
         </div>
       </form>
