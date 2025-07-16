@@ -60,12 +60,7 @@ const DashboardLayout = ({ children }) => {
       href: '/dashboard/my-applications',
       description: 'View your submitted applications'
     },
-    { 
-      icon: Briefcase, 
-      label: 'Partnership Opportunities', 
-      href: '/dashboard/opportunities',
-      description: 'Explore collaboration options'
-    },
+ 
     { 
       icon: User, 
       label: 'Profile', 
