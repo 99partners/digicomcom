@@ -455,12 +455,12 @@ const PartnerRequestManagement = () => {
                         ) : (
                             filteredSubmissions.map((submission) => (
                                 <li key={submission._id}>
-                                    <div className="px-4 py-4 sm:px-6">
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center justify-between">
+                                <div className="px-4 py-4 sm:px-6">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center justify-between">
                                                     <div className="flex items-center space-x-3">
-                                                        <div>
+                                                <div>
                                                             <div className="flex items-center space-x-2">
                                                                 {getFormTypeBadge(submission.formType)}
                                                                 {getStatusBadge(submission.status)}
@@ -477,23 +477,23 @@ const PartnerRequestManagement = () => {
                                                             )}
                                                         </div>
                                                     </div>
-                                                </div>
                                             </div>
-                                            <button
-                                                onClick={() => setExpandedSubmission(expandedSubmission === submission._id ? null : submission._id)}
-                                                className="ml-4 text-gray-400 hover:text-gray-500"
-                                            >
-                                                {expandedSubmission === submission._id ? (
-                                                    <ChevronUp className="h-5 w-5" />
-                                                ) : (
-                                                    <ChevronDown className="h-5 w-5" />
-                                                )}
-                                            </button>
                                         </div>
+                                        <button
+                                                onClick={() => setExpandedSubmission(expandedSubmission === submission._id ? null : submission._id)}
+                                            className="ml-4 text-gray-400 hover:text-gray-500"
+                                        >
+                                                {expandedSubmission === submission._id ? (
+                                                <ChevronUp className="h-5 w-5" />
+                                            ) : (
+                                                <ChevronDown className="h-5 w-5" />
+                                            )}
+                                        </button>
+                                    </div>
 
                                         {expandedSubmission === submission._id && renderSubmissionDetails(submission)}
-                                    </div>
-                                </li>
+                                </div>
+                            </li>
                             ))
                         )}
                     </ul>
