@@ -24,11 +24,12 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/99digicom.png';
 import { useAuth } from '../../context/AuthContext';
+import axiosInstance from '../../config/api.config';
 
 const DashboardLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, handleLogout } = useAuth();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const [showPlanDropdown, setShowPlanDropdown] = useState(false);
@@ -53,9 +54,30 @@ const DashboardLayout = ({ children }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const onLogout = async () => {
+    try {
+      // First attempt to notify the server
+      await axiosInstance.post('/api/auth/logout');
+      
+      // Then clear local state and auth
+      handleLogout();
+      
+      // Clear any local state
+      setShowProfileDropdown(false);
+      setShowPlanDropdown(false);
+      
+      // Navigate to home page
+      navigate('/', { replace: true });
+      
+      // Force a page reload to clear all state
+      // window.location.reload();
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Even if server request fails, clear local state and redirect
+      handleLogout();
+      navigate('/', { replace: true });
+      // window.location.reload();
+    }
   };
 
   const getInitials = (name) => {
@@ -177,7 +199,7 @@ const DashboardLayout = ({ children }) => {
                     {/* Actions */}
                     <div className="px-2 py-2">
                       <button 
-                        onClick={handleLogout}
+                        onClick={onLogout}
                         className="w-full flex items-center space-x-3 px-2 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
                       >
                         <LogOut size={16} />
