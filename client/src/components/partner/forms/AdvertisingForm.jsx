@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, Target, Brain, BarChart3, Image, Briefcase, Phone } from 'lucide-react';
+import { useAuth } from '../../../context/AuthContext';
 
 const AdvertisingForm = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     services: {
@@ -166,10 +168,56 @@ const AdvertisingForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log('Form submitted:', formData);
+    // Only submit if we're on the last step
+    if (currentStep !== formFields.length - 1) {
+      return;
+    }
+
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      console.log('Submitting form data:', formData);
+      
+      const token = localStorage.getItem('authToken');
+      const response = await fetch('http://localhost:5050/api/advertising/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+
+      const responseData = await response.json();
+      console.log('Server response:', responseData);
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          navigate('/login');
+          return;
+        }
+        throw new Error(responseData.message || 'Failed to submit application');
+      }
+
+      // If submission is successful, navigate to dashboard
+      if (responseData.success) {
+        console.log('Form submitted successfully, redirecting to dashboard...');
+        navigate('/dashboard', { replace: true });
+      } else {
+        throw new Error('Failed to store data in database');
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      console.error('Error details:', error.message);
+      alert('Failed to submit form. Please try again.');
+    }
   };
 
   const isCurrentFieldValid = () => {
@@ -296,7 +344,8 @@ const AdvertisingForm = () => {
 
             {currentStep === formFields.length - 1 ? (
               <button
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
                 disabled={!isCurrentFieldValid()}
               >
