@@ -167,6 +167,185 @@ export const getAllPartnerRequests = async (req, res) => {
     }
 };
 
+// Get all form submissions from all collections
+export const getAllFormSubmissions = async (req, res) => {
+    try {
+        // Import all models
+        const PlatformAMSForm = (await import('../models/PlatformAMSForm.js')).default;
+        const AMSForm = (await import('../models/AMSForm.js')).default;
+        const AdvertisingModel = (await import('../models/AdvertisingModel.js')).default;
+        const CoBrandingModel = (await import('../models/CoBrandingModel.js')).default;
+
+        // Fetch data from all collections
+        const [platformAMSForms, amsForms, advertisingForms, coBrandingForms] = await Promise.all([
+            PlatformAMSForm.find().populate('userId', 'name email phone').sort({ createdAt: -1 }),
+            AMSForm.find().populate('userId', 'name email phone').sort({ createdAt: -1 }),
+            AdvertisingModel.find().populate('userId', 'name email phone').sort({ createdAt: -1 }),
+            CoBrandingModel.find().populate('userId', 'name email phone').sort({ createdAt: -1 })
+        ]);
+
+        // Transform data to unified format
+        const unifiedData = [
+            ...platformAMSForms.map(form => ({
+                _id: form._id,
+                formType: 'platformams',
+                serviceType: 'platform',
+                status: form.status,
+                createdAt: form.createdAt,
+                updatedAt: form.updatedAt,
+                user: form.userId,
+                data: {
+                    marketplaces: form.marketplaces,
+                    hasGST: form.hasGST,
+                    gstNumber: form.gstNumber,
+                    monthlySales: form.monthlySales,
+                    submittedAt: form.submittedAt
+                }
+            })),
+            ...amsForms.map(form => ({
+                _id: form._id,
+                formType: 'ams',
+                serviceType: 'ams',
+                status: form.status,
+                createdAt: form.createdAt,
+                updatedAt: form.updatedAt,
+                user: form.userId,
+                data: {
+                    marketplaces: form.marketplaces,
+                    serviceAccountNumber: form.serviceAccountNumber,
+                    hasGST: form.hasGST,
+                    gstNumber: form.gstNumber,
+                    monthlySales: form.monthlySales,
+                    submittedAt: form.submittedAt
+                }
+            })),
+            ...advertisingForms.map(form => ({
+                _id: form._id,
+                formType: 'advertising',
+                serviceType: 'marketing',
+                status: form.status,
+                createdAt: form.createdAt,
+                updatedAt: form.updatedAt,
+                user: form.userId,
+                data: {
+                    services: form.services,
+                    selectedPlan: form.selectedPlan
+                }
+            })),
+            ...coBrandingForms.map(form => ({
+                _id: form._id,
+                formType: 'cobranding',
+                serviceType: 'cobranding',
+                status: form.status,
+                createdAt: form.createdAt,
+                updatedAt: form.updatedAt,
+                user: form.userId,
+                data: {
+                    isManufacturer: form.isManufacturer,
+                    establishmentYear: form.establishmentYear,
+                    companyName: form.companyName,
+                    numberOfProducts: form.numberOfProducts,
+                    productCategories: form.productCategories,
+                    productUSP: form.productUSP,
+                    productDescription: form.productDescription,
+                    panNumber: form.panNumber
+                }
+            }))
+        ];
+
+        // Sort by creation date (newest first)
+        unifiedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        res.json({
+            success: true,
+            data: unifiedData,
+            stats: {
+                total: unifiedData.length,
+                platformAMS: platformAMSForms.length,
+                ams: amsForms.length,
+                advertising: advertisingForms.length,
+                cobranding: coBrandingForms.length
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching form submissions:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching form submissions',
+            error: error.message
+        });
+    }
+};
+
+// Update form submission status
+export const updateFormSubmissionStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status, formType } = req.body;
+
+        if (!['pending', 'approved', 'rejected', 'in_review'].includes(status)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid status value'
+            });
+        }
+
+        let updatedForm;
+        let Model;
+
+        // Select the appropriate model based on formType
+        switch (formType) {
+            case 'platformams':
+                Model = (await import('../models/PlatformAMSForm.js')).default;
+                break;
+            case 'ams':
+                Model = (await import('../models/AMSForm.js')).default;
+                break;
+            case 'advertising':
+                Model = (await import('../models/AdvertisingModel.js')).default;
+                break;
+            case 'cobranding':
+                Model = (await import('../models/CoBrandingModel.js')).default;
+                break;
+            default:
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid form type'
+                });
+        }
+
+        // Update the form status
+        updatedForm = await Model.findByIdAndUpdate(
+            id,
+            { 
+                status,
+                updatedAt: new Date()
+            },
+            { new: true }
+        ).populate('userId', 'name email phone');
+
+        if (!updatedForm) {
+            return res.status(404).json({
+                success: false,
+                message: 'Form submission not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: `Form submission ${status} successfully`,
+            data: updatedForm
+        });
+    } catch (error) {
+        console.error('Error updating form submission status:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error updating form submission status',
+            error: error.message
+        });
+    }
+};
+
 // Update partner request status (admin)
 export const updatePartnerRequestStatus = async (req, res) => {
     try {

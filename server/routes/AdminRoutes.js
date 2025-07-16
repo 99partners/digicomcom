@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminLogin, adminLogout, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact } from '../controllers/AdminController.js';
+import { adminLogin, adminLogout, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact, getAllFormSubmissions, updateFormSubmissionStatus } from '../controllers/AdminController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import PartnerRequest from '../models/PartnerRequestModel.js';
 
@@ -143,5 +143,9 @@ router.get('/partner-request-stats', adminAuth, async (req, res) => {
 // Partner Request Management Routes
 router.get('/partner-requests', adminAuth, getAllPartnerRequests);
 router.put('/partner-requests/:id/status', adminAuth, updatePartnerRequestStatus);
+
+// Form Submissions Management Routes
+router.get('/form-submissions', adminAuth, getAllFormSubmissions);
+router.put('/form-submissions/:id/status', adminAuth, updateFormSubmissionStatus);
 
 export default router; 
