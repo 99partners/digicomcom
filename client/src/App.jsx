@@ -67,6 +67,9 @@ import PlatformEnablementAMS from './pages/PlatformEnablementAMS';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+// Import BlogDetails
+import BlogDetails from './pages/BlogDetails';
+
 function App() {
   return (
     <AuthProvider>
@@ -142,6 +145,7 @@ function App() {
 
 
             <Route path="/resources/blogs" element={<Blogs />} />
+            <Route path="/resources/blogs/:id" element={<BlogDetails />} />
             <Route path="/resources/caseStudies" element={<CaseStudies />} />
             <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
             <Route path="/resources/faqss" element={<Faqs />} />
