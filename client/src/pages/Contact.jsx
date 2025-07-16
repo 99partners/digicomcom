@@ -99,27 +99,6 @@ const Contact = () => {
     },
   ];
 
-  const contactMethods = [
-    {
-      icon: Mail,
-      title: "Email Support",
-      value: "support@99digicom.com",
-      description: "For general inquiries and support",
-    },
-    {
-      icon: Phone,
-      title: "Phone Support",
-      value: "+91 123 456 7890",
-      description: "Monday to Friday, 9 AM - 6 PM IST",
-    },
-    {
-      icon: MessageCircle,
-      title: "Live Chat",
-      value: "Available 9 AM–6 PM IST",
-      description: "Instant support via our website",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Hero Section */}
@@ -128,44 +107,14 @@ const Contact = () => {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">
             Get in <span className="text-green-600">Touch</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-8 max-w-2xl mx-auto">
+          {/* <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-8 max-w-2xl mx-auto">
             Ready to transform your business? Have questions about our services? We're here to help you succeed.
-          </p>
-        </div>
-      </section>
-
-      {/* Contact Methods */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 bg-green-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-            {contactMethods.map((method, index) => {
-              const IconComponent = method.icon;
-              return (
-                <div
-                  key={index}
-                  className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <div className="w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4 md:mb-4">
-                    <IconComponent className="h-5 sm:h-6 md:h-7 w-5 sm:w-6 md:w-7 text-green-600" />
-                  </div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2">
-                    {method.title}
-                  </h3>
-                  <p className="text-base sm:text-lg md:text-xl font-bold text-green-600 mb-2">
-                    {method.value}
-                  </p>
-                  <p className="text-sm sm:text-base md:text-sm text-gray-600">
-                    {method.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+          </p> */}
         </div>
       </section>
 
       {/* Customer Support Form */}
-      <section className="py-12 sm:py-16 md:py-20 px-4">
+      <section className="py-12 sm:py-16 md:py-20 px-4 -mt-20">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
