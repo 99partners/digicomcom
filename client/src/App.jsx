@@ -14,9 +14,13 @@ import Partners from './pages/Partners';
 import Shop from './pages/Shop';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+
+
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
+import FAQ from './pages/dashboard/FAQ';
+
 import DashboardLayout from './components/partner/DashboardLayout';
 import PartnerDashboard from './pages/PartnerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -26,7 +30,7 @@ import ServiceSelection from './components/partner/ServiceSelection';
 import DashboardPanel from './components/partner/DashboardPanel';
 import CustomerLogin from './pages/CutomerLogin';
 import PartnerLogin from './pages/PartnerLogin';
-import FAQ from './pages/dashboard/FAQ';
+
 import Profile from './pages/dashboard/Profile';
 import Notifications from './pages/dashboard/Notifications';
 import Subscriptions from './pages/dashboard/Subscriptions';
@@ -129,9 +133,14 @@ function App() {
             <Route path="/partners" element={<Partners />} />
             <Route path="/resources/careers" element={<Careers />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
+
+            
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="/termsofservice" element={<TermsOfService />} />
+            <Route path="/cookiepolicy" element={<CookiePolicy />} />
+            <Route path="/faqss" element={<Faqs />} />
+
+
             <Route path="/resources/blogs" element={<Blogs />} />
             <Route path="/resources/caseStudies" element={<CaseStudies />} />
             <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
