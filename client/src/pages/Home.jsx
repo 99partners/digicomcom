@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Puzzle,
@@ -9,13 +10,33 @@ import {
   Headset,
   Trophy,
   Star,
+  Calendar,
+  ArrowRight,
 } from "lucide-react";
-import { useEffect } from "react";
+import axios from "axios";
+import { getApiUrl } from '../config/api.config';
 
 const Home = () => {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchLatestBlogs();
   }, []);
+
+  const fetchLatestBlogs = async () => {
+    try {
+      const response = await axios.get(getApiUrl('api/blogs'));
+      if (response.data.success) {
+        setBlogs(response.data.data.slice(0, 3)); // Get only the latest 3 blogs
+      }
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const testimonials = [
     {
@@ -162,7 +183,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials Section */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-12 md:mb-16">
@@ -193,6 +214,70 @@ const Home = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Blogs Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Latest Insights</h2>
+            <p className="text-lg text-gray-600">
+              Stay ahead with the latest in digital commerce and business growth strategies.
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="text-center text-gray-600">Loading blogs...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blogs.map((blog) => (
+                <article
+                  key={blog._id}
+                  className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <div className="relative">
+                    <img
+                      src={blog.image || "/placeholder.svg"}
+                      alt={blog.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                        {blog.category}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Calendar className="h-4 w-4 text-green-600 mr-1" />
+                      <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                      <span className="mx-2">•</span>
+                      <span>{blog.readTime}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">{blog.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{blog.excerpt}</p>
+                    <Link
+                      to={`/resources/blogs/${blog._id}`}
+                      className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
+                    >
+                      Read More
+                      <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+
+          <div className="text-center mt-12">
+            <Link
+              to="/resources/blogs"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold rounded-lg transition-all duration-300"
+            >
+              View All Articles
+            </Link>
           </div>
         </div>
       </section>
