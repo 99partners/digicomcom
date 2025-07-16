@@ -46,9 +46,10 @@ export const AppContextProvider = ({ children }) => {
         }
     };
 
-    useEffect(() => {
-        getAuthStatus();
-    }, []);
+    // Removed automatic auth check on mount to prevent conflicts with AuthContext
+    // useEffect(() => {
+    //     getAuthStatus();
+    // }, []);
 
     const value = {
         backendUrl,

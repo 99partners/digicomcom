@@ -115,7 +115,11 @@ axiosInstance.interceptors.response.use(
         }
       } else {
         localStorage.removeItem('authToken');
-        if (!window.location.pathname.includes('login')) {
+        // Only redirect to partnerlogin if we're not on a public page
+        const publicPaths = ['/', '/about', '/contact', '/partners', '/services', '/resources', '/signup', '/login', '/forgot-password', '/privacypolicy', '/termsofservice', '/cookiepolicy', '/faqss', '/platform-enablement-ams'];
+        const isPublicPath = publicPaths.some(path => window.location.pathname === path || window.location.pathname.startsWith(path + '/'));
+        
+        if (!isPublicPath && !window.location.pathname.includes('login')) {
           window.location.href = '/partnerlogin';
         }
       }
