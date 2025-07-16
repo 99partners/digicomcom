@@ -1,4 +1,8 @@
 import PartnerRequest from '../models/PartnerRequestModel.js';
+import PlatformAMSForm from '../models/PlatformAMSForm.js';
+import AMSForm from '../models/AMSForm.js';
+import AdvertisingModel from '../models/AdvertisingModel.js';
+import CoBrandingModel from '../models/CoBrandingModel.js';
 
 export const createRequest = async (req, res) => {
     try {
@@ -130,6 +134,83 @@ export const getPartnerRequests = async (req, res) => {
         res.status(500).json({
             success: false,
             message: error.message || 'Error fetching partner requests'
+        });
+    }
+}; 
+
+export const getUserApplications = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: 'User not authenticated'
+            });
+        }
+
+        const userId = req.user.id;
+
+        // Fetch applications from all form types
+        const [platformAMSForms, amsForms, advertisingForms, coBrandingForms] = await Promise.all([
+            PlatformAMSForm.find({ userId }).sort({ createdAt: -1 }),
+            AMSForm.find({ userId }).sort({ createdAt: -1 }),
+            AdvertisingModel.find({ userId }).sort({ createdAt: -1 }),
+            CoBrandingModel.find({ userId }).sort({ createdAt: -1 })
+        ]);
+
+        // Transform and combine all applications
+        const allApplications = [
+            ...platformAMSForms.map(form => ({
+                _id: form._id,
+                serviceType: 'Platform Enablement',
+                status: form.status,
+                description: `Platform enablement application for ${Object.entries(form.marketplaces)
+                    .filter(([_, value]) => value)
+                    .map(([key]) => key)
+                    .join(', ')}`,
+                createdAt: form.createdAt
+            })),
+            ...amsForms.map(form => ({
+                _id: form._id,
+                serviceType: 'Account Management Services',
+                status: form.status,
+                description: `AMS application for ${Object.entries(form.marketplaces)
+                    .filter(([_, value]) => value)
+                    .map(([key]) => key)
+                    .join(', ')}`,
+                createdAt: form.createdAt
+            })),
+            ...advertisingForms.map(form => ({
+                _id: form._id,
+                serviceType: 'Marketing Services',
+                status: form.status,
+                description: `Marketing services application with ${Object.entries(form.services)
+                    .filter(([_, value]) => value)
+                    .map(([key]) => key)
+                    .join(', ')}`,
+                createdAt: form.createdAt
+            })),
+            ...coBrandingForms.map(form => ({
+                _id: form._id,
+                serviceType: 'Co-Branding Partnership',
+                status: form.status,
+                description: `Co-branding application for ${form.companyName || 'company'}`,
+                createdAt: form.createdAt
+            }))
+        ];
+
+        // Sort by creation date (newest first)
+        allApplications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        res.json({
+            success: true,
+            applications: allApplications
+        });
+    } catch (error) {
+        console.error('Error fetching user applications:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching applications',
+            error: error.message
         });
     }
 }; 
