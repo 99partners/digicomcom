@@ -1,4 +1,62 @@
-import CoBranding from '../models/CoBrandingModel.js';
+import CoBrandingModel from '../models/CoBrandingModel.js';
+
+export const submitCoBrandingForm = async (req, res) => {
+    try {
+        console.log('Received co-branding form submission:', req.body);
+        
+        const {
+            isManufacturer,
+            establishmentYear,
+            companyName,
+            numberOfProducts,
+            productCategories,
+            productUSP,
+            productDescription,
+            panNumber
+        } = req.body;
+
+        const userId = req.user.id; // From userAuth middleware
+
+        // Validate required fields
+        if (!numberOfProducts || !productCategories || !productUSP || !productDescription || !panNumber) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing required fields'
+            });
+        }
+
+        // Create new co-branding application
+        const newApplication = new CoBrandingModel({
+            userId,
+            isManufacturer,
+            establishmentYear,
+            companyName,
+            numberOfProducts,
+            productCategories,
+            productUSP,
+            productDescription,
+            panNumber,
+            status: 'pending' // Default status
+        });
+
+        // Save to database
+        await newApplication.save();
+        console.log('Co-branding application saved:', newApplication);
+
+        res.status(200).json({
+            success: true,
+            message: 'Co-branding application submitted successfully',
+            data: newApplication
+        });
+    } catch (error) {
+        console.error('Error in submitCoBrandingForm:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to submit co-branding application',
+            error: error.message
+        });
+    }
+};
 
 // Create a new co-branding application
 export const createCoBrandingApplication = async (req, res) => {
@@ -33,7 +91,7 @@ export const createCoBrandingApplication = async (req, res) => {
         console.log('- targetAudience:', targetAudience);
         console.log('- consent:', consent);
 
-        const application = new CoBranding({
+        const application = new CoBrandingModel({
             brandName,
             website,
             registeredName,
@@ -95,7 +153,7 @@ export const createCoBrandingApplication = async (req, res) => {
 // Get all co-branding applications
 export const getAllCoBrandingApplications = async (req, res) => {
     try {
-        const applications = await CoBranding.find().sort({ submittedAt: -1 });
+        const applications = await CoBrandingModel.find().sort({ submittedAt: -1 });
         res.status(200).json({
             success: true,
             data: applications
@@ -113,7 +171,7 @@ export const getAllCoBrandingApplications = async (req, res) => {
 // Get a single co-branding application by ID
 export const getCoBrandingApplicationById = async (req, res) => {
     try {
-        const application = await CoBranding.findById(req.params.id);
+        const application = await CoBrandingModel.findById(req.params.id);
         if (!application) {
             return res.status(404).json({
                 success: false,
@@ -137,7 +195,7 @@ export const getCoBrandingApplicationById = async (req, res) => {
 // Update a co-branding application
 export const updateCoBrandingApplication = async (req, res) => {
     try {
-        const application = await CoBranding.findByIdAndUpdate(
+        const application = await CoBrandingModel.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true, runValidators: true }
@@ -166,7 +224,7 @@ export const updateCoBrandingApplication = async (req, res) => {
 // Delete a co-branding application
 export const deleteCoBrandingApplication = async (req, res) => {
     try {
-        const application = await CoBranding.findByIdAndDelete(req.params.id);
+        const application = await CoBrandingModel.findByIdAndDelete(req.params.id);
         if (!application) {
             return res.status(404).json({
                 success: false,
