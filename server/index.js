@@ -91,28 +91,6 @@ app.use(cors(corsOptions));
 // Handle preflight requests for all routes
 app.options('*', cors(corsOptions));
 
-// Enhanced security headers middleware
-app.use((req, res, next) => {
-    // Set strict CORS headers in production
-    if (process.env.NODE_ENV === 'production') {
-        const origin = req.headers.origin;
-        if (origin && allowedDomains.some(domain => origin.toLowerCase() === domain.toLowerCase().trim())) {
-            res.header('Access-Control-Allow-Origin', origin);
-            res.header('Access-Control-Allow-Credentials', 'true');
-            res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-        }
-    } else {
-        // In development, be more permissive
-        res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-        res.header('Access-Control-Allow-Credentials', 'true');
-        res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    }
-    
-    next();
-});
-
 // Global error handler middleware
 app.use((err, req, res, next) => {
     console.error('Global error handler caught:', err);
@@ -179,43 +157,7 @@ app.use('/api/notifications', notificationRoutes);
 
 // Basic route to test server
 app.get('/', (req, res) => {
-    res.json({ 
-        message: 'Server is running successfully!',
-        environment: process.env.NODE_ENV,
-        timestamp: new Date().toISOString(),
-        version: '1.0.0'
-    });
-});
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-    res.status(200).json({
-        status: 'healthy',
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV,
-        cors: {
-            allowedOrigins: allowedDomains,
-            currentOrigin: req.headers.origin
-        }
-    });
-});
-
-// API info endpoint
-app.get('/api', (req, res) => {
-    res.json({
-        message: 'API is running',
-        environment: process.env.NODE_ENV,
-        version: '1.0.0',
-        endpoints: [
-            '/api/auth',
-            '/api/user',
-            '/api/admin',
-            '/api/partner',
-            '/api/blogs',
-            '/api/contact'
-        ]
-    });
+    res.json({ message: 'Server is running successfully!' });
 });
 
 // Error handling for unhandled routes
