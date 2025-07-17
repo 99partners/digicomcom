@@ -150,33 +150,37 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white" role="contentinfo">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10">
           {/* Left Column */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2 group">
-              <img
-                src={logo || "/placeholder.svg"}
-                alt="Digicom Logo"
-                className="h-12 w-auto object-contain sm:h-16"
-              />
+              <Link to="/" aria-label="99Digicom - Home">
+                <img
+                  src={logo || "/placeholder.svg"}
+                  alt="99Digicom Logo"
+                  className="h-12 w-auto object-contain sm:h-16"
+                  width="64"
+                  height="64"
+                  loading="lazy"
+                />
+              </Link>
               <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
                 Digicom
               </span>
             </div>
             <p className="text-xs sm:text-sm text-gray-400 max-w-md">
               Setup, Manage, Advertise, and Co-Brand across all Top marketplaces.
-
-
             </p>
 
             <div className="text-xs sm:text-sm text-gray-400 space-y-3">
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" aria-hidden="true" />
                 <a
                   href="mailto:support@99digicom.com"
                   className="hover:text-white transition-colors"
+                  aria-label="Email us at support@99digicom.com"
                 >
                   support@99digicom.com
                 </a>
@@ -189,8 +193,9 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 hover:text-red-300 transition-colors text-gray-300 bg-gray-800/50 px-3 py-1.5 rounded-md text-xs sm:text-sm w-full sm:w-auto"
+                    aria-label={`Visit our office in ${address.details}`}
                   >
-                    <MapPin className="w-4 h-4 text-red-400" />
+                    <MapPin className="w-4 h-4 text-red-400" aria-hidden="true" />
                     <span className="truncate">{address.details}</span>
                   </a>
                 ))}
@@ -201,10 +206,10 @@ const Footer = () => {
           {/* Right Column */}
           <div className="flex flex-col sm:grid sm:grid-cols-2 gap-6 sm:gap-8">
             <div className="space-y-6">
-              <div>
-                <h3 className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
+              <nav aria-label="Quick links">
+                <p className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
                   Quick Links
-                </h3>
+                </p>
                 <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
                   {quickLinks.map((link, i) => (
                     <li key={i}>
@@ -217,11 +222,11 @@ const Footer = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </nav>
               <div>
-                <h3 className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
+                <p className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
                   Our Domains
-                </h3>
+                </p>
                 <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
                   {domains.map((domain, i) => (
                     <li key={i}>
@@ -240,10 +245,10 @@ const Footer = () => {
             </div>
 
             <div className="space-y-6">
-              <div>
-                <h3 className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
+              <nav aria-label="Help and support">
+                <p className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
                   Help & Support
-                </h3>
+                </p>
                 <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
                   {helpLinks.map((link, i) => (
                     <li key={i}>
@@ -256,51 +261,61 @@ const Footer = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </nav>
 
               <div className="space-y-4">
-                <h3 className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
+                <p className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
                   Stay Connected
-                </h3>
+                </p>
                 <p className="text-xs sm:text-sm text-gray-300">
-                  Subscribe to our newsletter for updates on new partnerships
-                  and opportunities.
+                  Subscribe to our newsletter for updates on new partnerships and opportunities.
                 </p>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-xs sm:text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-green-500 transition-colors"
-                  />
-                  <button
-                    onClick={handleSubmit}
-                    className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white text-xs sm:text-sm rounded-md hover:bg-green-700 transition-colors"
-                  >
-                    Subscribe
-                  </button>
-                </div>
+                <form onSubmit={handleSubmit} className="space-y-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
+                    <label className="sr-only" htmlFor="newsletter-email">
+                      Email address
+                    </label>
+                    <input
+                      type="email"
+                      id="newsletter-email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-xs sm:text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-green-500 transition-colors"
+                      aria-label="Email address for newsletter"
+                      aria-invalid={error ? "true" : "false"}
+                      aria-describedby={error ? "newsletter-error" : undefined}
+                    />
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white text-xs sm:text-sm rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      aria-label="Subscribe to newsletter"
+                    >
+                      {isLoading ? "Subscribing..." : "Subscribe"}
+                    </button>
+                  </div>
 
-                {isSubmitted && !error && (
-                  <p
-                    className={`text-green-400 text-xs sm:text-sm mt-1 ${
-                      error ? "text-red-400" : ""
-                    }`}
-                  >
-                    Subscribed successfully!
-                  </p>
-                )}
+                  {isSubmitted && !error && (
+                    <p className="text-green-400 text-xs sm:text-sm mt-1" role="status">
+                      Subscribed successfully!
+                    </p>
+                  )}
 
-                {error && (
-                  <p className="text-red-400 text-xs sm:text-sm mt-1">
-                    {error}
-                  </p>
-                )}
+                  {error && (
+                    <p 
+                      id="newsletter-error" 
+                      className="text-red-400 text-xs sm:text-sm mt-1" 
+                      role="alert"
+                    >
+                      {error}
+                    </p>
+                  )}
+                </form>
 
                 <div>
-                  <h4 className="text-sm font-semibold mb-2">Follow Us</h4>
+                  <p className="text-sm font-semibold mb-2">Follow Us</p>
                   <div className="flex flex-wrap justify-center sm:justify-start gap-3">
                     {socialLinks.map(({ icon: Icon, url, label }, i) => (
                       <a
@@ -311,7 +326,7 @@ const Footer = () => {
                         aria-label={label}
                         className="w-9 h-9 bg-gray-800 rounded-md flex items-center justify-center hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 transition-transform hover:scale-110"
                       >
-                        <Icon className="w-4 h-4 text-white" />
+                        <Icon className="w-4 h-4 text-white" aria-hidden="true" />
                       </a>
                     ))}
                   </div>
@@ -322,7 +337,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-700 text-center text-xs sm:text-sm text-gray-400">
-          ©️ {currentYear} 99digicom.com. All rights reserved.
+          <p>©️ {currentYear} 99digicom.com. All rights reserved.</p>
         </div>
       </div>
     </footer>
