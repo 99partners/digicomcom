@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
-<<<<<<< HEAD
 import SuccessMessage from '../../SuccessMessage';
-=======
+
 import axiosInstance from '../../../config/api.config';
->>>>>>> 9e852ac275fe25ea994824843117cb13eca600be
+
 
 const CoBrandingForm = () => {
   const navigate = useNavigate();
@@ -167,27 +166,9 @@ const CoBrandingForm = () => {
       const response = await axiosInstance.post('/api/co-branding/submit', formData);
       console.log('Server response:', response.data);
 
-<<<<<<< HEAD
-      const responseData = await response.json();
-      console.log('Server response:', responseData);
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          navigate('/login');
-          return;
-        }
-        throw new Error(responseData.message || 'Failed to submit application');
-      }
-
-      // If submission is successful, show success message
-      if (responseData.success) {
-        console.log('Form submitted successfully, showing success message...');
-        setShowSuccess(true);
-=======
       if (response.data.success) {
         console.log('Form submitted successfully');
-        navigate('/dashboard/my-applications', { replace: true });
->>>>>>> 9e852ac275fe25ea994824843117cb13eca600be
+        setShowSuccess(true);
       } else {
         throw new Error('Failed to store data in database');
       }
