@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-    const backendUrl = import.meta.env.VITE_API_URL || "https://api.99digicom.com";
+    const backendUrl = import.meta.env.VITE_API_BASE_URL|| "https://api.99digicom.com";
     if (!import.meta.env.VITE_API_URL) {
         console.warn("⚠️ Warning: VITE_API_URL is not defined in .env. Falling back to https://api.99digicom.com");
     }
