@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet"
 import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 
@@ -109,62 +110,123 @@ const Faqs = () => {
     setFilteredFAQs(filtered);
   };
 
+  // Schema markup for FAQs
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.flatMap(category => 
+      category.questions.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    )
+  };
+
   return (
-    <section className="py-20 bg-white text-gray-800">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-green-700 mb-4">Frequently Asked Questions</h2>
-          <p className="text-lg text-gray-600">Get answers to common questions about our platform and services.</p>
-        </div>
+    <>
+      <Helmet>
+        <title>Frequently Asked Questions | 99DigiCom Digital Commerce Solutions</title>
+        <meta name="description" content="Find answers to common questions about our digital commerce services, platform enablement, account management, co-branding partnerships, and marketing solutions." />
+        <meta name="keywords" content="digital commerce FAQ, ecommerce questions, ONDC help, marketplace management FAQ" />
+        <link rel="canonical" href={window.location.href} />
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
 
-        {/* Search Bar */}
-        <div className="mb-12 sticky top-0 z-10 bg-white py-4">
-          <input
-            type="text"
-            placeholder="🔎 Type your question here..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 text-lg"
-          />
-          {searchTerm && (
-            <div className="mt-2 bg-gray-50 rounded-lg p-4">
-              {filteredFAQs.flatMap((category) => category.questions).length === 0 ? (
-                <p className="text-gray-600">No results found.</p>
-              ) : (
-                <ul className="list-disc pl-5 text-gray-600">
-                  {filteredFAQs
-                    .flatMap((category) => category.questions)
-                    .slice(0, 5)
-                    .map((faq, index) => (
-                      <li key={index} className="py-1">{faq.question}</li>
-                    ))}
-                </ul>
-              )}
-            </div>
-          )}
-        </div>
+      <main className="py-20 bg-white text-gray-800">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl font-bold text-green-700 mb-4">Frequently Asked Questions</h1>
+            <p className="text-lg text-gray-600">Get answers to common questions about our platform and services.</p>
+          </div>
 
-        {/* Accordion Layout */}
-        <div className="space-y-12">
-          {filteredFAQs.map((category, catIndex) => (
-            <div key={catIndex}>
-              <h3 className="text-2xl font-semibold text-green-700 mb-4">{category.category}</h3>
-              <div className="space-y-4">
-                {category.questions.map((faq, index) => (
-                  <details key={index} className="bg-gray-50 rounded-lg p-6 group border border-green-100">
-                    <summary className="flex items-center justify-between cursor-pointer font-medium text-gray-900 text-lg">
-                      <span>{faq.question}</span>
-                      <Plus className="h-5 w-5 text-green-600 group-open:rotate-45 transition-transform duration-300" />
-                    </summary>
-                    <div className="mt-4 text-gray-600 leading-relaxed">{faq.answer}</div>
-                  </details>
-                ))}
+          {/* Search Bar */}
+          <div className="mb-12 sticky top-0 z-10 bg-white py-4">
+            <label className="sr-only" htmlFor="faq-search">Search FAQs</label>
+            <input
+              type="search"
+              id="faq-search"
+              placeholder="🔎 Type your question here..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 text-lg"
+              aria-label="Search frequently asked questions"
+              role="searchbox"
+            />
+            {searchTerm && (
+              <div 
+                className="mt-2 bg-gray-50 rounded-lg p-4"
+                role="region"
+                aria-live="polite"
+                aria-label="Search results"
+              >
+                {filteredFAQs.flatMap((category) => category.questions).length === 0 ? (
+                  <p className="text-gray-600">No results found.</p>
+                ) : (
+                  <ul className="list-disc pl-5 text-gray-600" role="list">
+                    {filteredFAQs
+                      .flatMap((category) => category.questions)
+                      .slice(0, 5)
+                      .map((faq, index) => (
+                        <li key={index} className="py-1">{faq.question}</li>
+                      ))}
+                  </ul>
+                )}
               </div>
-            </div>
-          ))}
+            )}
+          </div>
+
+          {/* Accordion Layout */}
+          <div className="space-y-12">
+            {filteredFAQs.map((category, catIndex) => (
+              <section 
+                key={catIndex}
+                aria-labelledby={`category-${catIndex}`}
+              >
+                <h2 
+                  id={`category-${catIndex}`}
+                  className="text-2xl font-semibold text-green-700 mb-4"
+                >
+                  {category.category}
+                </h2>
+                <div className="space-y-4">
+                  {category.questions.map((faq, index) => (
+                    <details 
+                      key={index} 
+                      className="bg-gray-50 rounded-lg p-6 group border border-green-100"
+                      id={`faq-${catIndex}-${index}`}
+                    >
+                      <summary 
+                        className="flex items-center justify-between cursor-pointer font-medium text-gray-900 text-lg"
+                        aria-label={faq.question}
+                      >
+                        <span>{faq.question}</span>
+                        <Plus 
+                          className="h-5 w-5 text-green-600 group-open:rotate-45 transition-transform duration-300"
+                          aria-hidden="true"
+                        />
+                      </summary>
+                      <div 
+                        className="mt-4 text-gray-600 leading-relaxed"
+                        role="region"
+                        aria-labelledby={`faq-${catIndex}-${index}`}
+                      >
+                        {faq.answer}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </main>
+    </>
   );
 };
 
