@@ -1,5 +1,6 @@
 import express from 'express';
-import { adminLogin, adminLogout, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact } from '../controllers/AdminController.js';
+import { adminLogin, adminLogout, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact, getAllFormSubmissions, updateFormSubmissionStatus } from '../controllers/AdminController.js';
+import { createNotification, getAllNotifications, getNotificationById, updateNotification, deleteNotification, toggleNotificationStatus, getNotificationStats } from '../controllers/NotificationController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import PartnerRequest from '../models/PartnerRequestModel.js';
 
@@ -143,5 +144,18 @@ router.get('/partner-request-stats', adminAuth, async (req, res) => {
 // Partner Request Management Routes
 router.get('/partner-requests', adminAuth, getAllPartnerRequests);
 router.put('/partner-requests/:id/status', adminAuth, updatePartnerRequestStatus);
+
+// Form Submissions Management Routes
+router.get('/form-submissions', adminAuth, getAllFormSubmissions);
+router.put('/form-submissions/:id/status', adminAuth, updateFormSubmissionStatus);
+
+// Notification Management Routes
+router.post('/notifications', adminAuth, createNotification);
+router.get('/notifications', adminAuth, getAllNotifications);
+router.get('/notifications/stats', adminAuth, getNotificationStats);
+router.get('/notifications/:id', adminAuth, getNotificationById);
+router.put('/notifications/:id', adminAuth, updateNotification);
+router.delete('/notifications/:id', adminAuth, deleteNotification);
+router.patch('/notifications/:id/toggle-status', adminAuth, toggleNotificationStatus);
 
 export default router; 
