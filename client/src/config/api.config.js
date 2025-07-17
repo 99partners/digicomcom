@@ -30,8 +30,8 @@ const API_CONFIG = {
   production: {
     baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://api.99digicom.com',
     fallbackUrls: [
-      'https://99digicom.com/api',
-      'https://www.99digicom.com/api'
+      'https://99digicom.com',
+      'https://www.99digicom.com'
     ],
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 60000,
     enableLogs: false,
