@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -12,9 +12,13 @@ import {
   Shield,
   ShoppingCart,
 } from "lucide-react";
-import axios from 'axios';
-import { getApiUrl } from '../config/api.config';
-import SEO from '../components/SEO';
+import axios from "axios";
+import { getApiUrl } from "../config/api.config";
+import SEO from "../components/SEO";
+import PE1 from "../assets/PE1.png";
+import PE2 from "../assets/PE2.png";
+import PE3 from "../assets/PE3.png";
+import PE4 from "../assets/PE4.png";
 
 export default function PlatformEnablement() {
   useEffect(() => {
@@ -44,10 +48,15 @@ export default function PlatformEnablement() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(getApiUrl('api/platform-enable/submit'), formData);
+      const response = await axios.post(
+        getApiUrl("api/platform-enable/submit"),
+        formData
+      );
       const data = await response.data;
       if (data.success) {
-        alert('Thank you for your submission! Our team will contact you shortly.');
+        alert(
+          "Thank you for your submission! Our team will contact you shortly."
+        );
         setFormData({
           businessName: "",
           contactPerson: "",
@@ -68,18 +77,20 @@ export default function PlatformEnablement() {
           consent: false,
         });
       } else {
-        alert('Error submitting form: ' + data.message);
+        alert("Error submitting form: " + data.message);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Error submitting form. Please try again.');
+      console.error("Error submitting form:", error);
+      alert("Error submitting form. Please try again.");
     }
   };
 
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: checked ? [...prev[field], value] : prev[field].filter((item) => item !== value),
+      [field]: checked
+        ? [...prev[field], value]
+        : prev[field].filter((item) => item !== value),
     }));
   };
 
@@ -106,8 +117,12 @@ export default function PlatformEnablement() {
               <Store className="h-4 w-4" aria-hidden="true" />
               <span>Seller Account Setup</span>
             </div>
-            <h1 id="hero-heading" className="text-5xl font-bold text-gray-900 mb-6">
-              Launch Your Online Store on <span className="text-green-600">Amazon, Flipkart & More</span>
+            <h1
+              id="hero-heading"
+              className="text-5xl font-bold text-gray-900 mb-6"
+            >
+              Launch Your Online Store on{" "}
+              <span className="text-green-600">Amazon, Flipkart & More</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Get expert help to go live within days.
@@ -124,42 +139,66 @@ export default function PlatformEnablement() {
         </section>
 
         {/* Why Choose Us */}
-        <section className="py-16 px-4 bg-white" aria-labelledby="why-choose-heading">
+        <section
+          className="py-16 px-4 bg-white"
+          aria-labelledby="why-choose-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="why-choose-heading" className="text-3xl font-bold text-gray-900 mb-4">Why Choose 99digicom for Account Setup?</h2>
+              <h2
+                id="why-choose-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Why Choose 99digicom for Account Setup?
+              </h2>
               <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Start selling online quickly and confidently with our expert support.
+                Start selling online quickly and confidently with our expert
+                support.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-6" role="list">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6" role="list">
               {[
                 {
                   title: "Hassle-Free Setup Process",
-                  description: "Seamless onboarding on top platforms."
+                  description: "Seamless onboarding on top platforms.",
+                  image: PE1,
                 },
                 {
                   title: "Quick Turnaround",
-                  description: "Get live in 3–5 days."
+                  description: "Get live in 3–5 days.",
+                  image: PE2,
                 },
                 {
                   title: "Expert Support",
-                  description: "Guidance for documentation and approvals."
+                  description: "Guidance for documentation and approvals.",
+                  image: PE3,
                 },
                 {
                   title: "Avoid Mistakes",
-                  description: "Prevent common seller errors."
-                }
+                  description: "Prevent common seller errors.",
+                  image: PE4,
+                },
               ].map((benefit, index) => (
-                <div 
+                <div
                   key={index}
                   className="flex items-start space-x-4 p-6 bg-green-50 rounded-lg"
                   role="listitem"
                 >
-                  <CheckCircle className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />
+                  <img
+                    src={benefit.image}
+                    alt={benefit.title}
+                    className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-md flex-shrink-0 mt-1"
+                    onError={() =>
+                      console.error(`Failed to load image: ${benefit.image}`)
+                    }
+                  />
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                    <p className="text-gray-600 text-sm">{benefit.description}</p>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {benefit.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -168,10 +207,18 @@ export default function PlatformEnablement() {
         </section>
 
         {/* What's Included */}
-        <section className="py-16 px-4 bg-green-50" aria-labelledby="whats-included-heading">
+        <section
+          className="py-16 px-4 bg-green-50"
+          aria-labelledby="whats-included-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="whats-included-heading" className="text-3xl font-bold text-gray-900 mb-4">What's Included</h2>
+              <h2
+                id="whats-included-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                What's Included
+              </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Everything you need to start selling online.
               </p>
@@ -182,54 +229,72 @@ export default function PlatformEnablement() {
                   {
                     icon: FileText,
                     title: "Business Account Creation",
-                    description: "Set up your seller account on one platform."
+                    description: "Set up your seller account on one platform.",
                   },
                   {
                     icon: Shield,
                     title: "GST, PAN, Bank Details Verification",
-                    description: "Ensure compliance with platform requirements."
+                    description:
+                      "Ensure compliance with platform requirements.",
                   },
                   {
                     icon: Package,
                     title: "Product Category Approval Assistance",
-                    description: "Get your products approved for listing."
+                    description: "Get your products approved for listing.",
                   },
                   {
                     icon: Building,
                     title: "5 Product Listings",
-                    description: "Create five sample product listings to get started."
+                    description:
+                      "Create five sample product listings to get started.",
                   },
                   {
                     icon: CheckCircle,
                     title: "7 Days Post-Setup Support",
-                    description: "Ongoing guidance after setup."
-                  }
+                    description: "Ongoing guidance after setup.",
+                  },
                 ].map((service, index) => (
-                  <div 
+                  <div
                     key={index}
                     className="flex items-start space-x-4"
                     role="listitem"
                   >
-                    <service.icon className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />
+                    <service.icon
+                      className="h-6 w-6 text-green-600 mt-1 flex-shrink-0"
+                      aria-hidden="true"
+                    />
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{service.title}</h3>
-                      <p className="text-gray-600 text-sm">{service.description}</p>
+                      <h3 className="font-semibold text-gray-900 mb-2">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        {service.description}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Onboarding Checklist</h3>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                  Onboarding Checklist
+                </h3>
                 <ul className="space-y-2 text-gray-600" role="list">
                   {[
                     "Account registration completed",
                     "KYC and documentation verified",
                     "Store profile setup",
                     "Product listings created",
-                    "Ready to sell!"
+                    "Ready to sell!",
                   ].map((item, index) => (
-                    <li key={index} className="flex items-center" role="listitem">
-                      <CheckCircle className="h-4 w-4 text-green-600 mr-2" aria-hidden="true" />
+                    <li
+                      key={index}
+                      className="flex items-center"
+                      role="listitem"
+                    >
+                      <CheckCircle
+                        className="h-4 w-4 text-green-600 mr-2"
+                        aria-hidden="true"
+                      />
                       {item}
                     </li>
                   ))}
@@ -240,29 +305,51 @@ export default function PlatformEnablement() {
         </section>
 
         {/* Supported Platforms */}
-        <section className="py-16 px-4 bg-white" aria-labelledby="platforms-heading">
+        <section
+          className="py-16 px-4 bg-white"
+          aria-labelledby="platforms-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="platforms-heading" className="text-3xl font-bold text-gray-900 mb-4">Supported Marketplaces</h2>
+              <h2
+                id="platforms-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Supported Marketplaces
+              </h2>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
+            <div
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+              role="list"
+            >
               {[
                 { name: "Amazon", desc: "World's largest e-commerce platform" },
-                { name: "Flipkart", desc: "India's leading e-commerce marketplace" },
+                {
+                  name: "Flipkart",
+                  desc: "India's leading e-commerce marketplace",
+                },
                 { name: "Meesho", desc: "Social commerce platform" },
-                { name: "Jiomart", desc: "Reliance's digital commerce platform" },
-                { name: "IndiaMART", desc: "B2B marketplace for Indian businesses" },
+                {
+                  name: "Jiomart",
+                  desc: "Reliance's digital commerce platform",
+                },
+                {
+                  name: "IndiaMART",
+                  desc: "B2B marketplace for Indian businesses",
+                },
                 { name: "Snapdeal", desc: "Popular e-commerce platform" },
               ].map((platform, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6"
                   role="listitem"
                 >
                   <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <ShoppingCart className="h-6 w-6" aria-hidden="true" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{platform.name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {platform.name}
+                  </h3>
                   <p className="text-gray-600 text-sm">{platform.desc}</p>
                 </div>
               ))}
@@ -271,28 +358,39 @@ export default function PlatformEnablement() {
         </section>
 
         {/* Client Testimonials */}
-        <section className="py-16 px-4 bg-green-50" aria-labelledby="testimonials-heading">
+        <section
+          className="py-16 px-4 bg-green-50"
+          aria-labelledby="testimonials-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="testimonials-heading" className="text-3xl font-bold text-gray-900 mb-4">Client Testimonials</h2>
+              <h2
+                id="testimonials-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Client Testimonials
+              </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Hear from small business owners who launched successfully with us.
+                Hear from small business owners who launched successfully with
+                us.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-6" role="list">
               {[
                 {
-                  quote: "99digicom made our Amazon store setup a breeze. We were live in just 4 days!",
+                  quote:
+                    "99digicom made our Amazon store setup a breeze. We were live in just 4 days!",
                   author: "Priya S.",
-                  company: "EcoTrendy Crafts"
+                  company: "EcoTrendy Crafts",
                 },
                 {
-                  quote: "Their team handled all our documentation and approvals, saving us weeks of hassle.",
+                  quote:
+                    "Their team handled all our documentation and approvals, saving us weeks of hassle.",
                   author: "Rajesh K.",
-                  company: "HomeVibe Decor"
-                }
+                  company: "HomeVibe Decor",
+                },
               ].map((testimonial, index) => (
-                <div 
+                <div
                   key={index}
                   className="bg-white rounded-lg shadow-lg p-6"
                   role="listitem"
