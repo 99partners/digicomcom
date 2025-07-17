@@ -6,13 +6,29 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables based on NODE_ENV
-const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
-dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
+// Load environment variables with fallback strategy
+const loadEnvironmentVariables = () => {
+    // First try to load from .env file
+    dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+    
+    // Then try environment-specific files
+    const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+    dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
+};
+
+loadEnvironmentVariables();
 
 export const connectDB = async () => {
     try {
-        const mongoURI = process.env.MONGODB_URI;
+        // MongoDB URI with fallback for production
+        const mongoURI = process.env.MONGODB_URI || 
+                         'mongodb+srv://99partnersin:99Partnersin@digicom.epvwtpt.mongodb.net/digicom-db?retryWrites=true&w=majority&appName=digicom';
+        
+        console.log('🔧 Database Configuration:', {
+            environment: process.env.NODE_ENV,
+            mongoURI: mongoURI ? 'Connected' : 'Not Found',
+            uriLength: mongoURI ? mongoURI.length : 0
+        });
         
         if (!mongoURI) {
             throw new Error('MongoDB URI is not defined in environment variables');
