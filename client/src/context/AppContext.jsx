@@ -1,13 +1,25 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import axiosInstance from '../config/api.config';
+import axiosInstance, { getEnvironmentInfo, testApiConnection } from '../config/api.config';
 import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-    const backendUrl = import.meta.env.VITE_API_BASE_URL|| "https://api.99digicom.com";
+    const envInfo = getEnvironmentInfo();
+    const backendUrl = envInfo.config.baseUrl;
+    
+    // Enhanced debugging for API configuration
+    if (envInfo.isDevelopment) {
+        console.log("🔧 API Context Info:", {
+            backendUrl,
+            environment: envInfo.environment,
+            isProduction: envInfo.isProduction,
+            hasViteApiBaseUrl: !!import.meta.env.VITE_API_BASE_URL
+        });
+    }
+    
     if (!import.meta.env.VITE_API_BASE_URL) {
-        console.warn("⚠️ Warning: VITE_API_BASE_URL is not defined in .env. Falling back to https://api.99digicom.com");
+        console.warn("⚠️ Warning: VITE_API_BASE_URL is not defined in .env. Using auto-detected configuration:", backendUrl);
     }
 
     const [isLogin, setIsLogin] = useState(false);
@@ -58,6 +70,8 @@ export const AppContextProvider = ({ children }) => {
         userData,
         setUserData,
         getUserData,
+        testApiConnection,
+        getEnvironmentInfo: () => envInfo,
     };
 
     return (
