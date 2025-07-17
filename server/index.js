@@ -19,35 +19,37 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS Configuration
-const allowedDomains = process.env.ALLOWED_ORIGINS ? 
-    process.env.ALLOWED_ORIGINS.split(',') : 
+const allowedDomains = process.env.NODE_ENV === 'production' ?
     [
         'https://99digicom.com',
         'https://www.99digicom.com',
-        'https://api.99digicom.com',
+        'http://99digicom.com',
+        'http://www.99digicom.com'
+    ] :
+    [
         'http://localhost:5173',
-        'http://localhost:5050'
+        'http://localhost:5050',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:5050'
     ];
 
+console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedDomains);
 
 // Enable CORS with proper configuration
 const corsOptions = {
     origin: function (origin, callback) {
-        console.log('Request origin:', origin);
-        
-        // Allow requests with no origin (like mobile apps, Postman or curl requests)
-        if (!origin) {
-            console.log('No origin provided, allowing request');
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin || process.env.NODE_ENV !== 'production') {
             return callback(null, true);
         }
 
         // Check if the origin matches any allowed domain
-        if (allowedDomains.includes(origin)) {
-            console.log('Origin allowed:', origin);
+        const normalizedOrigin = origin.toLowerCase().trim();
+        if (allowedDomains.some(domain => normalizedOrigin === domain.toLowerCase().trim())) {
             callback(null, true);
         } else {
-            console.warn(`Unauthorized access attempt from: ${origin} [${process.env.NODE_ENV} mode]`);
+            console.warn(`Unauthorized access attempt from: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -74,10 +76,18 @@ app.options('*', cors(corsOptions));
 
 // Add security headers
 app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    // Only set the CORS headers if the origin is allowed
-    if (origin && allowedDomains.some(domain => origin.toLowerCase() === domain.toLowerCase().trim())) {
-        res.header('Access-Control-Allow-Origin', origin);
+    // Set strict CORS headers in production
+    if (process.env.NODE_ENV === 'production') {
+        const origin = req.headers.origin;
+        if (origin && allowedDomains.some(domain => origin.toLowerCase() === domain.toLowerCase().trim())) {
+            res.header('Access-Control-Allow-Origin', origin);
+            res.header('Access-Control-Allow-Credentials', 'true');
+            res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        }
+    } else {
+        // In development, be more permissive
+        res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
         res.header('Access-Control-Allow-Credentials', 'true');
         res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
