@@ -222,7 +222,7 @@ const AMSForm = () => {
 
       if (responseData.success) {
         console.log('Form submitted successfully');
-        await navigate('/dashboard');
+        await navigate('/dashboard/my-applications');
       } else {
         throw new Error('Failed to store data in database');
       }

@@ -180,10 +180,10 @@ const CoBrandingForm = () => {
         throw new Error(responseData.message || 'Failed to submit application');
       }
 
-      // If submission is successful, navigate to dashboard
+      // If submission is successful, navigate to my applications
       if (responseData.success) {
-        console.log('Form submitted successfully, redirecting to dashboard...');
-        navigate('/dashboard', { replace: true });
+        console.log('Form submitted successfully, redirecting to my applications...');
+        navigate('/dashboard/my-applications', { replace: true });
       } else {
         throw new Error('Failed to store data in database');
       }
