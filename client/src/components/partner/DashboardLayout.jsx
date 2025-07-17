@@ -48,6 +48,13 @@ const DashboardLayout = ({ children }) => {
   };
 
   const menuItems = [
+     
+    { 
+      icon: User, 
+      label: 'Profile', 
+      href: '/dashboard/profile',
+      description: 'Manage your account'
+    },
     { 
       icon: PenTool, 
       label: 'Create Application', 
@@ -59,13 +66,6 @@ const DashboardLayout = ({ children }) => {
       label: 'Your Applications', 
       href: '/dashboard/my-applications',
       description: 'View your submitted applications'
-    },
- 
-    { 
-      icon: User, 
-      label: 'Profile', 
-      href: '/dashboard/profile',
-      description: 'Manage your account'
     },
     { 
       icon: Bell, 
