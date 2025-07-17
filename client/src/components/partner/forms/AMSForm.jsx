@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, ShoppingCart, CreditCard, Clock, Calculator, Check, AlertCircle, Info } from 'lucide-react';
+import axiosInstance from '../../../config/api.config';
 
 const AMSForm = () => {
   const navigate = useNavigate();
@@ -204,23 +205,10 @@ const AMSForm = () => {
         paymentOption: formData.paymentOption
       };
 
-      const response = await fetch('http://localhost:5050/api/ams/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(submitData)
-      });
+      const response = await axiosInstance.post('/api/ams/submit', submitData);
+      console.log('Server response:', response.data);
 
-      const responseData = await response.json();
-      console.log('Server response:', responseData);
-
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Failed to submit AMS application');
-      }
-
-      if (responseData.success) {
+      if (response.data.success) {
         console.log('Form submitted successfully');
         await navigate('/dashboard/my-applications');
       } else {

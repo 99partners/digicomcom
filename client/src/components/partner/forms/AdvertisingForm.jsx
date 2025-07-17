@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, Target, Brain, BarChart3, Image, Briefcase, Phone, CreditCard, Clock, DollarSign, Calculator } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
+import axiosInstance from '../../../config/api.config';
 
 const AdvertisingForm = () => {
   const navigate = useNavigate();
@@ -77,39 +78,18 @@ const AdvertisingForm = () => {
         totalAmount: calculateTotalPrice(),
         paymentOption: formData.paymentOption
       };
-      
-      const token = localStorage.getItem('authToken');
-      const response = await fetch('http://localhost:5050/api/advertising/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        credentials: 'include',
-        body: JSON.stringify(submitData)
-      });
 
-      const responseData = await response.json();
-      console.log('Server response:', responseData);
+      const response = await axiosInstance.post('/api/advertising/submit', submitData);
+      console.log('Server response:', response.data);
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          navigate('/login');
-          return;
-        }
-        throw new Error(responseData.message || 'Failed to submit application');
-      }
-
-      // If submission is successful, navigate to my applications
-      if (responseData.success) {
-        console.log('Form submitted successfully, redirecting to my applications...');
+      if (response.data.success) {
+        console.log('Form submitted successfully');
         navigate('/dashboard/my-applications', { replace: true });
       } else {
         throw new Error('Failed to store data in database');
       }
     } catch (error) {
       console.error('Error submitting application:', error);
-      console.error('Error details:', error.message);
       alert('Failed to submit form. Please try again.');
     }
   };
