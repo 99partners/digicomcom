@@ -36,12 +36,24 @@ const allowedDomains = process.env.NODE_ENV === 'production' ?
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedDomains);
 
-// Enable CORS with proper configuration
+// CORS options
 const corsOptions = {
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin || process.env.NODE_ENV !== 'production') {
             return callback(null, true);
+        }
+
+        // In development, be more permissive with localhost variations
+        if (process.env.NODE_ENV !== 'production') {
+            const isLocalhost = origin.includes('localhost') || 
+                              origin.includes('127.0.0.1') || 
+                              origin.includes('0.0.0.0');
+            
+            if (isLocalhost) {
+                console.log('✅ Localhost origin allowed:', origin);
+                return callback(null, true);
+            }
         }
 
         // Check if the origin matches any allowed domain
@@ -74,7 +86,7 @@ app.use(cors(corsOptions));
 // Handle preflight requests for all routes
 app.options('*', cors(corsOptions));
 
-// Add security headers
+// Enhanced security headers middleware
 app.use((req, res, next) => {
     // Set strict CORS headers in production
     if (process.env.NODE_ENV === 'production') {
@@ -89,9 +101,10 @@ app.use((req, res, next) => {
         // In development, be more permissive
         res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
         res.header('Access-Control-Allow-Credentials', 'true');
-        res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+        res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     }
+    
     next();
 });
 

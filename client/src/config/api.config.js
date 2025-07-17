@@ -1,20 +1,51 @@
 import axios from 'axios';
 
-// Environment-specific configuration
-const ENV = import.meta.env.VITE_ENV || 'development';
+// Enhanced environment detection
+const isProduction = () => {
+  // Check multiple indicators for production environment
+  return (
+    import.meta.env.PROD || 
+    import.meta.env.VITE_ENV === 'production' ||
+    window.location.hostname !== 'localhost' &&
+    window.location.hostname !== '127.0.0.1' &&
+    !window.location.hostname.includes('local')
+  );
+};
+
+const isDevelopment = () => {
+  return !isProduction();
+};
+
+// Environment-specific configuration with fallbacks
+const ENV = import.meta.env.VITE_ENV || (isProduction() ? 'production' : 'development');
+
 const API_CONFIG = {
   development: {
     baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 30000,
+    enableLogs: true,
+    enableRetry: true,
   },
   production: {
     baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://api.99digicom.com',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 60000,
+    enableLogs: false,
+    enableRetry: true,
   }
 };
 
 // Get current environment configuration
 const currentConfig = API_CONFIG[ENV] || API_CONFIG.development;
+
+// Log environment info (only in development)
+if (isDevelopment()) {
+  console.log('🔧 API Configuration:', {
+    environment: ENV,
+    baseUrl: currentConfig.baseUrl,
+    hostname: window.location.hostname,
+    isProduction: isProduction()
+  });
+}
 
 // Helper function to construct API URLs
 export const getApiUrl = (endpoint) => {
@@ -57,7 +88,9 @@ axiosInstance.interceptors.request.use((config) => {
 
 // Add response interceptor with improved error handling
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
@@ -91,7 +124,7 @@ axiosInstance.interceptors.response.use(
         const isPublicPath = publicPaths.some(path => window.location.pathname === path || window.location.pathname.startsWith(path + '/'));
         
         if (!isPublicPath && !window.location.pathname.includes('login')) {
-          window.location.href = '/partnerlogin';
+          window.location.href = '/partner-login';
         }
       }
       throw new Error('Your session has expired. Please log in again.');
@@ -106,6 +139,16 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Export environment info for debugging
+export const getEnvironmentInfo = () => ({
+  environment: ENV,
+  isProduction: isProduction(),
+  isDevelopment: isDevelopment(),
+  config: currentConfig,
+  hostname: window.location.hostname,
+  origin: window.location.origin
+});
 
 export { currentConfig as API_CONFIG };
 export default axiosInstance;
