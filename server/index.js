@@ -19,19 +19,22 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS Configuration
-const allowedDomains = process.env.NODE_ENV === 'production' ?
-    [
-        'https://99digicom.com',
-        'https://www.99digicom.com',
-        'http://99digicom.com',
-        'http://www.99digicom.com'
-    ] :
-    [
-        'http://localhost:5173',
-        'http://localhost:5050',
-        'http://127.0.0.1:5173',
-        'http://127.0.0.1:5050'
-    ];
+const allowedDomains = process.env.ALLOWED_ORIGINS ? 
+    process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim()) : 
+    (process.env.NODE_ENV === 'production' ?
+        [
+            'https://99digicom.com',
+            'https://www.99digicom.com',
+            'https://api.99digicom.com',
+            'http://99digicom.com',
+            'http://www.99digicom.com'
+        ] :
+        [
+            'http://localhost:5173',
+            'http://localhost:5050',
+            'http://127.0.0.1:5173',
+            'http://127.0.0.1:5050'
+        ]);
 
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedDomains);
