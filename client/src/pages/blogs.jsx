@@ -86,7 +86,7 @@ const Blogs = () => {
                     <h3 className="text-xl font-semibold text-gray-900 mb-3">{blog.title}</h3>
                     <p className="text-gray-600 text-sm mb-4">{blog.excerpt}</p>
                     <Link
-                      to={`/blog/${blog._id}`}
+                      to={`/resources/blogs/${blog._id}`}
                       className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
                     >
                       Read More

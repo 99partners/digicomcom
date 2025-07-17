@@ -1,13 +1,22 @@
 import express from 'express';
 import { submitForm, getAllSubmissions, updateSubmissionStatus } from '../controllers/PlatformAMSController.js';
+import userAuth from '../middleware/userAuth.js';
+import adminAuth from '../middleware/adminAuth.js';
 
 const router = express.Router();
 
-// Public route for form submission
-router.post('/submit', submitForm);
+// Middleware to log request details
+const logRequest = (req, res, next) => {
+  console.log('Request Body:', req.body);
+  console.log('Request Headers:', req.headers);
+  next();
+};
+
+// Submit platform AMS form
+router.post('/submit', userAuth, logRequest, submitForm);
 
 // Admin routes (protected)
-router.get('/submissions', getAllSubmissions);
-router.patch('/submissions/:id/status', updateSubmissionStatus);
+router.get('/submissions', adminAuth, getAllSubmissions);
+router.patch('/submissions/:id/status', adminAuth, updateSubmissionStatus);
 
 export default router; 

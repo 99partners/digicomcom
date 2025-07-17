@@ -71,17 +71,45 @@ const Header = () => {
           {navigation.map((item) => (
             <div key={item.name} className="relative group">
               {item.submenu ? (
-                <button
-                  onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
-                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
-                    isActive(item.submenu.find(sub => sub.href === pathname)?.href)
-                      ? "text-green-700 bg-green-100"
-                      : "text-gray-600 hover:text-green-700 hover:bg-green-50"
-                  } flex items-center`}
-                >
-                  {item.name}
-                  <ChevronDown className="ml-1 h-4 w-4" />
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
+                    onMouseEnter={() => setActiveDropdown(item.name)}
+                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
+                      isActive(item.submenu.find(sub => sub.href === pathname)?.href) || activeDropdown === item.name
+                        ? "text-green-700 bg-green-100"
+                        : "text-gray-600 hover:text-green-700 hover:bg-green-50"
+                    } flex items-center`}
+                  >
+                    {item.name}
+                    <ChevronDown className={`ml-1 h-4 w-4 transition-transform duration-200 ${activeDropdown === item.name ? 'rotate-180' : ''}`} />
+                  </button>
+                  <div 
+                    onMouseLeave={() => setActiveDropdown(null)}
+                    className={`absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 transition-all duration-200 ${
+                      activeDropdown === item.name 
+                      ? 'opacity-100 visible translate-y-0' 
+                      : 'opacity-0 invisible -translate-y-2'
+                    }`}
+                  >
+                    {item.submenu.map((subItem) => (
+                      <button
+                        key={subItem.name}
+                        onClick={() => {
+                          handleNavigation(subItem.href)
+                          setActiveDropdown(null)
+                        }}
+                        className={`w-full text-left px-4 py-2 text-sm transition-colors duration-200 ${
+                          isActive(subItem.href)
+                            ? "text-green-700 bg-green-100"
+                            : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                        }`}
+                      >
+                        {subItem.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ) : (
                 <button
                   onClick={() => handleNavigation(item.href)}
@@ -93,23 +121,6 @@ const Header = () => {
                 >
                   {item.name}
                 </button>
-              )}
-              {item.submenu && activeDropdown === item.name && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                  {item.submenu.map((subItem) => (
-                    <button
-                      key={subItem.name}
-                      onClick={() => handleNavigation(subItem.href)}
-                      className={`w-full text-left px-4 py-2 text-sm ${
-                        isActive(subItem.href)
-                          ? "text-green-700 bg-green-100"
-                          : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                      }`}
-                    >
-                      {subItem.name}
-                    </button>
-                  ))}
-                </div>
               )}
             </div>
           ))}
@@ -152,36 +163,43 @@ const Header = () => {
                 <div>
                   <button
                     onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
-                    className={`w-full text-left px-4 py-2 rounded-lg text-base flex items-center ${
+                    className={`w-full text-left px-4 py-2 rounded-lg text-base flex items-center justify-between ${
                       isActive(item.submenu.find(sub => sub.href === pathname)?.href)
                         ? "text-green-700 bg-green-100"
                         : "text-gray-700 hover:bg-green-50 hover:text-green-700"
                     }`}
                   >
                     {item.name}
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${activeDropdown === item.name ? 'rotate-180' : ''}`} />
                   </button>
-                  {activeDropdown === item.name && (
-                    <div className="ml-4 mt-2 space-y-1">
-                      {item.submenu.map((subItem) => (
-                        <button
-                          key={subItem.name}
-                          onClick={() => handleNavigation(subItem.href)}
-                          className={`w-full text-left px-4 py-2 rounded-lg text-sm ${
-                            isActive(subItem.href)
-                              ? "text-green-700 bg-green-100"
-                              : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                          }`}
-                        >
-                          {subItem.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                  <div className={`ml-4 mt-2 space-y-1 transition-all duration-200 ${
+                    activeDropdown === item.name ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                  }`}>
+                    {item.submenu.map((subItem) => (
+                      <button
+                        key={subItem.name}
+                        onClick={() => {
+                          handleNavigation(subItem.href)
+                          setActiveDropdown(null)
+                          setIsMenuOpen(false)
+                        }}
+                        className={`w-full text-left px-4 py-2 rounded-lg text-sm ${
+                          isActive(subItem.href)
+                            ? "text-green-700 bg-green-100"
+                            : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                        }`}
+                      >
+                        {subItem.name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <button
-                  onClick={() => handleNavigation(item.href)}
+                  onClick={() => {
+                    handleNavigation(item.href)
+                    setIsMenuOpen(false)
+                  }}
                   className={`w-full text-left px-4 py-2 rounded-lg text-base ${
                     isActive(item.href)
                       ? "text-green-700 bg-green-100"
