@@ -1,5 +1,6 @@
 "use client"
 
+import { Helmet } from "react-helmet"
 import { useState } from "react"
 import { FileText, Download, Video, List, Instagram } from "lucide-react"
 
@@ -144,77 +145,140 @@ const GuidesTutorials = () => {
     }))
     .filter((section) => section.content.length > 0)
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            <span className="text-green-600">Guides</span> & Tutorials
-          </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Everything you need to sell smarter. Browse step-by-step guides, platform-specific tutorials, and downloadable resources to help you set up, manage, and grow your digital commerce presence.
-          </p>
-        </div>
-      </section>
+  // Schema markup for learning resources
+  const learningResourceSchema = {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    "name": "Digital Commerce Guides & Tutorials",
+    "description": "Comprehensive guides and tutorials for digital commerce success across multiple platforms including ONDC, Amazon, Flipkart, and more.",
+    "provider": {
+      "@type": "Organization",
+      "name": "99DigiCom"
+    },
+    "learningResourceType": "Guide",
+    "teaches": platforms.join(", "),
+    "hasPart": guides.map(section => ({
+      "@type": "CreativeWork",
+      "name": section.section,
+      "hasPart": section.content.flatMap(content => 
+        content.items.map(item => ({
+          "@type": "LearningResource",
+          "name": item.name,
+          "learningResourceType": item.type
+        }))
+      )
+    }))
+  }
 
-      {/* Guides Section */}
-      <section className="py-16 px-4 bg-green-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Learn with Us</h2>
+  return (
+    <>
+      <Helmet>
+        <title>Digital Commerce Guides & Tutorials | 99DigiCom Learning Center</title>
+        <meta name="description" content="Master digital commerce with comprehensive guides, tutorials, and downloadable resources for ONDC, Amazon, Flipkart, and more platforms. Step-by-step instructions for sellers." />
+        <meta name="keywords" content="digital commerce tutorials, seller guides, ONDC guide, Amazon seller tutorial, Flipkart seller guide" />
+        <link rel="canonical" href={window.location.href} />
+        <script type="application/ld+json">
+          {JSON.stringify(learningResourceSchema)}
+        </script>
+      </Helmet>
+
+      <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+        {/* Hero Section */}
+        <section className="pt-24 pb-16 px-4" aria-labelledby="hero-heading">
+          <div className="max-w-7xl mx-auto text-center">
+            <h1 id="hero-heading" className="text-5xl font-bold text-gray-900 mb-6">
+              <span className="text-green-600">Guides</span> & Tutorials
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Master digital commerce with our comprehensive resources.
+              Everything you need to sell smarter. Browse step-by-step guides, platform-specific tutorials, and downloadable resources to help you set up, manage, and grow your digital commerce presence.
             </p>
           </div>
+        </section>
 
-          {/* Platform Filters */}
-          <div className="mb-12 flex flex-wrap justify-center gap-2">
-            {platforms.map((platform) => (
-              <button
-                key={platform}
-                onClick={() => setActivePlatform(platform)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  activePlatform === platform
-                    ? "bg-green-600 text-white"
-                    : "bg-white text-gray-600 hover:bg-green-50 hover:text-green-700"
-                }`}
-              >
-                {platform}
-              </button>
-            ))}
-          </div>
+        {/* Guides Section */}
+        <section className="py-16 px-4 bg-green-50" aria-labelledby="guides-heading">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="guides-heading" className="text-3xl font-bold text-gray-900 mb-4">Learn with Us</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Master digital commerce with our comprehensive resources.
+              </p>
+            </div>
 
-          {/* Main Content */}
-          <div>
-            {filteredGuides.map((section) => (
-              <div key={section.section} className="mb-6">
+            {/* Platform Filters */}
+            <div 
+              className="mb-12 flex flex-wrap justify-center gap-2"
+              role="tablist"
+              aria-label="Filter guides by platform"
+            >
+              {platforms.map((platform) => (
                 <button
-                  onClick={() =>
-                    setActiveAccordion(activeAccordion === section.section ? null : section.section)
-                  }
-                  className="w-full text-left bg-white rounded-lg shadow-lg p-6 flex justify-between items-center"
+                  key={platform}
+                  onClick={() => setActivePlatform(platform)}
+                  role="tab"
+                  aria-selected={activePlatform === platform}
+                  aria-controls={`${platform}-content`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    activePlatform === platform
+                      ? "bg-green-600 text-white"
+                      : "bg-white text-gray-600 hover:bg-green-50 hover:text-green-700"
+                  }`}
                 >
-                  <h3 className="text-xl font-semibold text-gray-900">{section.section}</h3>
-                  <span>{activeAccordion === section.section ? "−" : "+"}</span>
+                  {platform}
                 </button>
-                {(activeAccordion === section.section || section.expandedByDefault) && (
-                  <div className="mt-4 space-y-6">
+              ))}
+            </div>
+
+            {/* Main Content */}
+            <div>
+              {filteredGuides.map((section) => (
+                <div key={section.section} className="mb-6">
+                  <button
+                    onClick={() =>
+                      setActiveAccordion(activeAccordion === section.section ? null : section.section)
+                    }
+                    aria-expanded={activeAccordion === section.section}
+                    aria-controls={`section-${section.section}`}
+                    className="w-full text-left bg-white rounded-lg shadow-lg p-6 flex justify-between items-center"
+                  >
+                    <h3 className="text-xl font-semibold text-gray-900">{section.section}</h3>
+                    <span aria-hidden="true">{activeAccordion === section.section ? "−" : "+"}</span>
+                  </button>
+                  <div 
+                    id={`section-${section.section}`}
+                    className={`mt-4 space-y-6 ${(activeAccordion === section.section || section.expandedByDefault) ? '' : 'hidden'}`}
+                  >
                     {section.content.map((content, index) => (
-                      <div key={index} className="bg-white rounded-lg shadow-lg p-6">
-                        <h4 className="text-lg font-semibold text-gray-900 mb-4">{content.title}</h4>
-                        <ul className="space-y-4">
+                      <div 
+                        key={index} 
+                        className="bg-white rounded-lg shadow-lg p-6"
+                        role="region"
+                        aria-labelledby={`content-${section.section}-${index}`}
+                      >
+                        <h4 id={`content-${section.section}-${index}`} className="text-lg font-semibold text-gray-900 mb-4">
+                          {content.title}
+                        </h4>
+                        <ul className="space-y-4" role="list">
                           {content.items.map((item, itemIndex) => (
-                            <li key={itemIndex} className="flex items-start">
+                            <li 
+                              key={itemIndex} 
+                              className="flex items-start"
+                              aria-labelledby={`item-${section.section}-${index}-${itemIndex}`}
+                            >
                               <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-4">
-                                <item.icon className="h-5 w-5 text-green-600" />
+                                <item.icon className="h-5 w-5 text-green-600" aria-hidden="true" />
                               </div>
                               <div>
-                                <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                                <p id={`item-${section.section}-${index}-${itemIndex}`} className="text-sm font-medium text-gray-900">
+                                  {item.name}
+                                </p>
                                 <p className="text-sm text-gray-600">{item.type}</p>
                                 {item.download && (
-                                  <button className="inline-flex items-center text-green-600 hover:text-green-800 mt-2">
-                                    <Download className="h-4 w-4 mr-1" />
+                                  <button 
+                                    className="inline-flex items-center text-green-600 hover:text-green-800 mt-2"
+                                    aria-label={`Download ${item.name}`}
+                                  >
+                                    <Download className="h-4 w-4 mr-1" aria-hidden="true" />
                                     Download Now
                                   </button>
                                 )}
@@ -225,57 +289,78 @@ const GuidesTutorials = () => {
                       </div>
                     ))}
                   </div>
-                )}
+                </div>
+              ))}
+            </div>
+
+            {/* Downloadable Resource Library */}
+            <div className="mt-12" aria-labelledby="resources-heading">
+              <h3 id="resources-heading" className="text-3xl font-bold text-gray-900 mb-6 text-center">
+                Downloadable Resource Library
+              </h3>
+              <div 
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                role="list"
+              >
+                {downloadableResources
+                  .filter((resource) => activePlatform === "All" || resource.platforms.includes(activePlatform))
+                  .map((resource, index) => (
+                    <div 
+                      key={index} 
+                      className="bg-white rounded-lg shadow-lg p-6 flex items-start"
+                      role="listitem"
+                    >
+                      <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-4">
+                        <resource.icon className="h-5 w-5 text-green-600" aria-hidden="true" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{resource.name}</p>
+                        <p className="text-sm text-gray-600">{resource.type}</p>
+                        <button 
+                          className="inline-flex items-center text-green-600 hover:text-green-800 mt-2"
+                          aria-label={`Download ${resource.name}`}
+                        >
+                          <Download className="h-4 w-4 mr-1" aria-hidden="true" />
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  ))}
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Downloadable Resource Library */}
-          <div className="mt-12">
-            <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">Downloadable Resource Library</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {downloadableResources
-                .filter((resource) => activePlatform === "All" || resource.platforms.includes(activePlatform))
-                .map((resource, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-lg p-6 flex items-start">
-                    <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-4">
-                      <resource.icon className="h-5 w-5 text-green-600" />
+            {/* Video Tutorials */}
+            <div className="mt-12" aria-labelledby="videos-heading">
+              <h3 id="videos-heading" className="text-3xl font-bold text-gray-900 mb-6 text-center">
+                Video Tutorials (Coming Soon)
+              </h3>
+              <div 
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                role="list"
+              >
+                {videoTutorials
+                  .filter((video) => activePlatform === "All" || video.platforms.includes(activePlatform))
+                  .map((video, index) => (
+                    <div 
+                      key={index} 
+                      className="bg-white rounded-lg shadow-lg p-6 flex items-start"
+                      role="listitem"
+                    >
+                      <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-4">
+                        <Video className="h-5 w-5 text-green-600" aria-hidden="true" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{video.name}</p>
+                        <p className="text-sm text-gray-600">{video.duration}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{resource.name}</p>
-                      <p className="text-sm text-gray-600">{resource.type}</p>
-                      <button className="inline-flex items-center text-green-600 hover:text-green-800 mt-2">
-                        <Download className="h-4 w-4 mr-1" />
-                        Download
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
           </div>
-
-          {/* Video Tutorials */}
-          <div className="mt-12">
-            <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">Video Tutorials (Coming Soon)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {videoTutorials
-                .filter((video) => activePlatform === "All" || video.platforms.includes(activePlatform))
-                .map((video, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-lg p-6 flex items-start">
-                    <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mr-4">
-                      <Video className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{video.name}</p>
-                      <p className="text-sm text-gray-600">{video.duration}</p>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </main>
+    </>
   )
 }
 

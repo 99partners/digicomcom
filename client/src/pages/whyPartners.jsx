@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import axios from 'axios';
 import { getApiUrl } from '../config/api.config';
+import { Helmet } from 'react-helmet';
 
 export default function ForProductPartners() {
   useEffect(() => {
@@ -80,149 +81,158 @@ export default function ForProductPartners() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <Handshake className="h-4 w-4" />
-            <span>For Product Partners</span>
-          </div>
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Why Partner with <span className="text-green-600">99digicom?</span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            We don’t just offer a platform — we build partnerships to help your brand thrive in India’s digital commerce landscape.
-          </p>
-          <div className="flex justify-center space-x-4">
-            
-          </div>
-        </div>
-      </section>
+    <>
+      <Helmet>
+        <title>Why Partner with 99digicom | Digital Commerce Solutions</title>
+        <meta name="description" content="Partner with 99digicom to scale your brand across multiple e-commerce platforms. Get end-to-end support, strategic co-branding, and performance marketing expertise." />
+        <meta name="keywords" content="e-commerce partnership, brand collaboration, digital commerce, multi-platform selling, ONDC partner" />
+        <link rel="canonical" href="https://99digicom.com/why-partners" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "name": "99digicom Partner Program",
+              "provider": {
+                "@type": "Organization",
+                "name": "99digicom"
+              },
+              "description": "End-to-end digital commerce enablement and marketing services for product partners",
+              "serviceType": "E-commerce Partnership",
+              "offers": {
+                "@type": "Offer",
+                "description": "Multi-platform presence on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato"
+              }
+            }
+          `}
+        </script>
+      </Helmet>
 
-      {/* Benefits of Partnering */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Benefits of Partnering with Us</h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-              Empower your brand with tools, visibility, and support to succeed.
+      <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+        {/* Hero Section */}
+        <section aria-labelledby="hero-heading" className="pt-24 pb-16 px-4">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6" role="text">
+              <Handshake className="h-4 w-4" aria-hidden="true" />
+              <span>For Product Partners</span>
+            </div>
+            <h1 id="hero-heading" className="text-5xl font-bold text-gray-900 mb-6">
+              Why Partner with <span className="text-green-600">99digicom?</span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              We don't just offer a platform — we build partnerships to help your brand thrive in India's digital commerce landscape.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <Globe className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Multi-Platform Presence</h4>
-                  <p className="text-gray-600 text-sm">
-                    Sell on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato with one unified enablement process.
-                  </p>
-                </div>
+        </section>
+
+        {/* Benefits of Partnering */}
+        <section aria-labelledby="benefits-heading" className="py-16 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="benefits-heading" className="text-3xl font-bold text-gray-900 mb-4">Benefits of Partnering with Us</h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+                Empower your brand with tools, visibility, and support to succeed.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8" role="list">
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: <Globe className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "Multi-Platform Presence",
+                    description: "Sell on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato with one unified enablement process."
+                  },
+                  {
+                    icon: <Settings className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "End-to-End Support",
+                    description: "From account setup and catalog creation to order fulfillment and returns, we handle it all."
+                  },
+                  {
+                    icon: <Handshake className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "Strategic Co-Branding",
+                    description: "Unlock new audiences with joint promotions, bundle offerings, and festive campaigns."
+                  },
+                  {
+                    icon: <Megaphone className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "Performance Marketing Expertise",
+                    description: "Data-driven ad campaigns on e-commerce and social media with clear ROI tracking."
+                  }
+                ].map((benefit, index) => (
+                  <div key={index} className="flex items-start space-x-4" role="listitem">
+                    {benefit.icon}
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                      <p className="text-gray-600 text-sm">{benefit.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-start space-x-4">
-                <Settings className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">End-to-End Support</h4>
-                  <p className="text-gray-600 text-sm">
-                    From account setup and catalog creation to order fulfillment and returns, we handle it all.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <Handshake className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Strategic Co-Branding</h4>
-                  <p className="text-gray-600 text-sm">
-                    Unlock new audiences with joint promotions, bundle offerings, and festive campaigns.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <Megaphone className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Performance Marketing Expertise</h4>
-                  <p className="text-gray-600 text-sm">
-                    Data-driven ad campaigns on e-commerce and social media with clear ROI tracking.
-                  </p>
-                </div>
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: <Clock className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "Fast Onboarding",
+                    description: "Go live in 3–7 business days with our streamlined onboarding process."
+                  },
+                  {
+                    icon: <DollarSign className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "Affordable & Transparent Pricing",
+                    description: "Tailored plans for startups and scale-ups with no hidden costs or long-term contracts."
+                  },
+                  {
+                    icon: <BarChart3 className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "Analytics & Insights",
+                    description: "Regular reports with sales, ad performance, and platform insights for informed decisions."
+                  },
+                  {
+                    icon: <Users className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
+                    title: "Dedicated Partner Success Team",
+                    description: "Personalized support with a dedicated relationship manager for your business."
+                  }
+                ].map((benefit, index) => (
+                  <div key={index} className="flex items-start space-x-4" role="listitem">
+                    {benefit.icon}
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                      <p className="text-gray-600 text-sm">{benefit.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <Clock className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Fast Onboarding</h4>
-                  <p className="text-gray-600 text-sm">
-                    Go live in 3–7 business days with our streamlined onboarding process.
-                  </p>
+          </div>
+        </section>
+
+        {/* Who Should Partner */}
+        <section aria-labelledby="partner-types-heading" className="py-16 px-4 bg-green-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="partner-types-heading" className="text-3xl font-bold text-gray-900 mb-4">Who Should Partner With Us?</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Our services are tailored for brands ready to scale in the digital commerce ecosystem.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
+              {[
+                { name: "D2C Brands", desc: "Looking to scale across multiple platforms" },
+                { name: "Manufacturers", desc: "Seeking digital reach and co-branding support" },
+                { name: "Artisan Sellers", desc: "Offering handmade or unique products" },
+                { name: "Lifestyle Brands", desc: "Organic, spiritual, fashion, or wellness products" },
+                { name: "F&B Vendors", desc: "Targeting Swiggy/Zomato buyers" },
+                { name: "Early-Stage Brands", desc: "Needing e-commerce marketing expertise" },
+              ].map((partner, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6" role="listitem">
+                  <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2" aria-hidden="true">
+                    <ShoppingCart className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">{partner.name}</h3>
+                  <p className="text-gray-600 text-sm">{partner.desc}</p>
                 </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <DollarSign className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Affordable & Transparent Pricing</h4>
-                  <p className="text-gray-600 text-sm">
-                    Tailored plans for startups and scale-ups with no hidden costs or long-term contracts.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <BarChart3 className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Analytics & Insights</h4>
-                  <p className="text-gray-600 text-sm">
-                    Regular reports with sales, ad performance, and platform insights for informed decisions.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <Users className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Dedicated Partner Success Team</h4>
-                  <p className="text-gray-600 text-sm">
-                    Personalized support with a dedicated relationship manager for your business.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Who Should Partner */}
-      <section className="py-16 px-4 bg-green-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Who Should Partner With Us?</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our services are tailored for brands ready to scale in the digital commerce ecosystem.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { name: "D2C Brands", desc: "Looking to scale across multiple platforms" },
-              { name: "Manufacturers", desc: "Seeking digital reach and co-branding support" },
-              { name: "Artisan Sellers", desc: "Offering handmade or unique products" },
-              { name: "Lifestyle Brands", desc: "Organic, spiritual, fashion, or wellness products" },
-              { name: "F&B Vendors", desc: "Targeting Swiggy/Zomato buyers" },
-              { name: "Early-Stage Brands", desc: "Needing e-commerce marketing expertise" },
-            ].map((partner, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6">
-                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2">
-                  <ShoppingCart className="h-6 w-6" />
-                </div>
-                <h4 className="text-lg font-semibold text-gray-900">{partner.name}</h4>
-                <p className="text-gray-600 text-sm">{partner.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
- 
-      
-      
-    </div>
+        </section>
+      </main>
+    </>
   );
 }
