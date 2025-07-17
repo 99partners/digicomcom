@@ -28,8 +28,8 @@ export const submitForm = async (req, res) => {
     };
 
     // Only add userId if it exists in the request
-    if (req.user && req.user._id) {
-      formData.userId = req.user._id;
+    if (req.user && req.user.id) {
+      formData.userId = req.user.id;
     }
     
     // Validate GST number if hasGST is 'yes'
