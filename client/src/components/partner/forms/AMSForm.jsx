@@ -391,7 +391,7 @@ const AMSForm = () => {
                       <CheckCircle2 className="w-6 h-6 text-green-500" />
                     )}
                   </div>
-                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{option.label}</h3>
+                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{option.label}</h3>
                    <p className="text-sm text-gray-600 mb-3">{option.description}</p>
                    <div className="text-sm font-medium text-green-600">
                      ₹{PRICE_PER_MARKETPLACE.toLocaleString()}
@@ -543,7 +543,7 @@ const AMSForm = () => {
             </div>
 
             <div className="text-center mt-6">
-              <button
+              {/* <button
                 type="button"
                 onClick={() => handleMonthlySalesSelection('')}
                 className={`px-6 py-2 rounded-lg border-2 transition-all ${
@@ -553,7 +553,7 @@ const AMSForm = () => {
                 }`}
               >
                 Skip this step
-              </button>
+              </button> */}
             </div>
           </div>
         );
