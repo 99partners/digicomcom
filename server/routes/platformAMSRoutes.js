@@ -12,8 +12,8 @@ const logRequest = (req, res, next) => {
   next();
 };
 
-// Temporarily remove userAuth for testing
-router.post('/submit', logRequest, submitForm);
+// Submit platform AMS form
+router.post('/submit', userAuth, logRequest, submitForm);
 
 // Admin routes (protected)
 router.get('/submissions', adminAuth, getAllSubmissions);
