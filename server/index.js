@@ -6,9 +6,29 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 const app = express();
 const PORT = process.env.PORT || 5050;
+
+// Enhanced production logging
+console.log('🚀 Starting server with configuration:', {
+    environment: process.env.NODE_ENV,
+    port: PORT,
+    hostname: process.env.HOSTNAME || 'localhost',
+    timestamp: new Date().toISOString()
+});
+
+// Set production environment variables if not set
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'production';
+}
+
+// Production JWT secret fallback
+if (!process.env.JWT_SECRET && !process.env.JWT_SECRET_KEY) {
+    process.env.JWT_SECRET = 'sbdhsbd#2oj23j2j3j2j3j2j3j2j3j2j3j2j3';
+    console.log('⚠️ Using fallback JWT secret for production');
+}
 
 // Get __dirname in ES module scope
 const __filename = fileURLToPath(import.meta.url);
@@ -157,7 +177,48 @@ app.use('/api/notifications', notificationRoutes);
 
 // Basic route to test server
 app.get('/', (req, res) => {
-    res.json({ message: 'Server is running successfully!' });
+    res.json({ 
+        message: 'Server is running successfully!',
+        environment: process.env.NODE_ENV,
+        timestamp: new Date().toISOString(),
+        version: '1.0.0',
+        port: PORT
+    });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'healthy',
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV,
+        port: PORT,
+        cors: {
+            allowedOrigins: allowedDomains,
+            currentOrigin: req.headers.origin
+        },
+        database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    });
+});
+
+// API info endpoint
+app.get('/api', (req, res) => {
+    res.json({
+        message: 'API is running',
+        environment: process.env.NODE_ENV,
+        version: '1.0.0',
+        endpoints: [
+            '/api/auth',
+            '/api/user',
+            '/api/admin',
+            '/api/partner',
+            '/api/blogs',
+            '/api/contact',
+            '/api/newsletter'
+        ],
+        timestamp: new Date().toISOString()
+    });
 });
 
 // Error handling for unhandled routes
@@ -171,15 +232,47 @@ app.use((req, res) => {
 // Initialize server
 const startServer = async () => {
     try {
+        console.log('🔄 Initializing server...');
+        
         // Connect to MongoDB
+        console.log('🔄 Connecting to database...');
         await connectDB();
+        console.log('✅ Database connected successfully');
         
         // Start listening only after successful DB connection
-        app.listen(PORT, '0.0.0.0', () => {
-            console.log(`🚀 Server running on http://localhost:${PORT}`);
+        const server = app.listen(PORT, '0.0.0.0', () => {
+            console.log(`🚀 Server running successfully!`);
+            console.log(`📍 Local: http://localhost:${PORT}`);
+            console.log(`🌐 Network: http://0.0.0.0:${PORT}`);
+            console.log(`🔧 Environment: ${process.env.NODE_ENV}`);
+            console.log(`📊 Health check: http://localhost:${PORT}/health`);
+            console.log(`🔗 API info: http://localhost:${PORT}/api`);
         });
+
+        // Handle server errors
+        server.on('error', (err) => {
+            console.error('Server error:', err);
+            if (err.code === 'EADDRINUSE') {
+                console.error(`Port ${PORT} is already in use`);
+                process.exit(1);
+            }
+        });
+
+        // Graceful shutdown
+        process.on('SIGTERM', () => {
+            console.log('SIGTERM received, shutting down gracefully');
+            server.close(() => {
+                console.log('Server closed');
+                mongoose.connection.close(() => {
+                    console.log('Database connection closed');
+                    process.exit(0);
+                });
+            });
+        });
+        
     } catch (error) {
-        console.error('Failed to start server:', error);
+        console.error('❌ Failed to start server:', error);
+        console.error('Error details:', error.message);
         process.exit(1); // Exit if we can't connect to the database
     }
 };
