@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, Target, Brain, BarChart3, Image, Briefcase, Phone, CreditCard, Clock, DollarSign, Calculator } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
+import SuccessMessage from '../../SuccessMessage';
 
 const AdvertisingForm = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const AdvertisingForm = () => {
     selectedPlan: '',
     paymentOption: ''
   });
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const PRICE_PER_MARKETPLACE = 4999;
 
@@ -100,10 +102,10 @@ const AdvertisingForm = () => {
         throw new Error(responseData.message || 'Failed to submit application');
       }
 
-      // If submission is successful, navigate to my applications
+      // If submission is successful, show success message
       if (responseData.success) {
-        console.log('Form submitted successfully, redirecting to my applications...');
-        navigate('/dashboard/my-applications', { replace: true });
+        console.log('Form submitted successfully, showing success message...');
+        setShowSuccess(true);
       } else {
         throw new Error('Failed to store data in database');
       }
@@ -447,6 +449,11 @@ const AdvertisingForm = () => {
     }
   };
 
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
+    navigate('/dashboard/my-applications', { replace: true });
+  };
+
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center mb-6">
@@ -564,6 +571,15 @@ const AdvertisingForm = () => {
           <p className="mt-2 text-gray-600">Let us help you run targeted campaigns that deliver real results.</p>
         </div>
       </div>
+
+      {/* Success Message */}
+      {showSuccess && (
+        <SuccessMessage
+          message="Your marketing & advertising application has been submitted successfully! Our team will review your application and contact you soon."
+          onClose={handleSuccessClose}
+          redirectPath="/dashboard/my-applications"
+        />
+      )}
     </div>
   );
 };
