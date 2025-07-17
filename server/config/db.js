@@ -6,12 +6,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables
-dotenv.config();
+// Load environment variables based on NODE_ENV
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
 
 export const connectDB = async () => {
     try {
-        const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/digicomcom';
+        const mongoURI = process.env.MONGODB_URI;
         
         if (!mongoURI) {
             throw new Error('MongoDB URI is not defined in environment variables');

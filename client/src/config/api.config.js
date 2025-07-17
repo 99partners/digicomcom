@@ -1,29 +1,32 @@
 import axios from 'axios';
 
-// Get environment variables with fallbacks
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
-  (import.meta.env.MODE === 'production' 
-    ? 'https://api.99digicom.com'  // Production URL
-    : 'http://localhost:5050'); // Development URL
+// Environment-specific configuration
+const ENV = import.meta.env.VITE_ENV || 'development';
+const API_CONFIG = {
+  development: {
+    baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050',
+    timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 30000,
+  },
+  production: {
+    baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://api.99digicom.com',
+    timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 60000,
+  }
+};
 
-const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT) || 
-  (import.meta.env.MODE === 'production' ? 60000 : 30000);
-// Ensure HTTPS is always used in production
-// export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+// Get current environment configuration
+const currentConfig = API_CONFIG[ENV] || API_CONFIG.development;
 
 // Helper function to construct API URLs
 export const getApiUrl = (endpoint) => {
-  // Remove leading slash if present to avoid double slashes
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-  return `${API_BASE_URL}/${cleanEndpoint}`;
+  return `${currentConfig.baseUrl}/${cleanEndpoint}`;
 };
 
 // Configure axios defaults
 const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: currentConfig.baseUrl,
   withCredentials: true,
-  timeout: API_TIMEOUT,
+  timeout: currentConfig.timeout,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -47,7 +50,7 @@ axiosInstance.interceptors.request.use((config) => {
   }
 
   // Ensure the URL uses HTTPS in production
-  if (import.meta.env.MODE === 'production') {
+  if (ENV === 'production') {
     if (config.url && !config.url.startsWith('https://')) {
       config.url = config.url.replace('http://', 'https://');
     }
@@ -86,11 +89,7 @@ axiosInstance.interceptors.response.use(
           return await axiosInstance(originalRequest);
         } catch (retryError) {
           console.error('Retry failed:', retryError);
-          if (import.meta.env.MODE === 'production') {
-            return Promise.reject(new Error('Connection failed. Please check your internet connection and try again.'));
-          } else {
-            return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
-          }
+          return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
         }
       }
     }
@@ -98,11 +97,7 @@ axiosInstance.interceptors.response.use(
     // Handle CORS errors
     if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
       console.error('CORS or network error:', error);
-      if (import.meta.env.MODE === 'production') {
-        return Promise.reject(new Error('Unable to connect to the server. Please refresh the page and try again.'));
-      } else {
-        return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
-      }
+      return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
     }
 
     // Handle authentication errors
@@ -142,11 +137,7 @@ axiosInstance.interceptors.response.use(
     // Handle server errors
     if (error.response?.status >= 500) {
       console.error('Server error:', error.response.data);
-      if (import.meta.env.MODE === 'production') {
-        return Promise.reject(new Error('A server error occurred. Our team has been notified and is working on it.'));
-      } else {
-        return Promise.reject(new Error('Server error occurred. Please try again later.'));
-      }
+      return Promise.reject(new Error('A server error occurred. Please try again later.'));
     }
 
     // Handle other errors
@@ -159,5 +150,5 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export { API_BASE_URL };
+export { currentConfig as API_CONFIG };
 export default axiosInstance;
