@@ -18,37 +18,101 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cookieParser());
 
-// CORS Configuration
-const allowedDomains = process.env.ALLOWED_ORIGINS ? 
-    process.env.ALLOWED_ORIGINS.split(',') : 
-    [
+// Environment detection
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = !isProduction;
+
+// Enhanced CORS Configuration for multiple environments
+const getDefaultAllowedOrigins = () => {
+    const defaultOrigins = [
         'https://99digicom.com',
         'https://www.99digicom.com',
-        'https://api.99digicom.com',
-        'http://localhost:5173',
-        'http://localhost:5050'
+        'https://api.99digicom.com'
     ];
 
-console.log('Allowed CORS origins:', allowedDomains);
+    // Add development origins if not in production
+    if (isDevelopment) {
+        defaultOrigins.push(
+            'http://localhost:5173',
+            'http://localhost:5174',
+            'http://localhost:3000',
+            'http://localhost:5050',
+            'http://127.0.0.1:5173',
+            'http://127.0.0.1:5174'
+        );
+    }
 
-// Enable CORS with proper configuration
+    return defaultOrigins;
+};
+
+const allowedDomains = process.env.ALLOWED_ORIGINS ? 
+    process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim()) : 
+    getDefaultAllowedOrigins();
+
+console.log('🌐 CORS Configuration:', {
+    environment: process.env.NODE_ENV || 'development',
+    allowedOrigins: allowedDomains,
+    isDevelopment,
+    isProduction
+});
+
+// Enhanced CORS options
 const corsOptions = {
     origin: function (origin, callback) {
-        console.log('Request origin:', origin);
+        // Log origin in development mode
+        if (isDevelopment) {
+            console.log('🔍 Request origin:', origin);
+        }
         
-        // Allow requests with no origin (like mobile apps, Postman or curl requests)
+        // Allow requests with no origin (like mobile apps, Postman, or curl requests)
         if (!origin) {
-            console.log('No origin provided, allowing request');
+            if (isDevelopment) {
+                console.log('✅ No origin provided, allowing request');
+            }
             return callback(null, true);
         }
 
+        // In development, be more permissive with localhost variations
+        if (isDevelopment) {
+            const isLocalhost = origin.includes('localhost') || 
+                              origin.includes('127.0.0.1') || 
+                              origin.includes('0.0.0.0');
+            
+            if (isLocalhost) {
+                console.log('✅ Localhost origin allowed:', origin);
+                return callback(null, true);
+            }
+        }
+
         // Check if the origin matches any allowed domain
-        if (allowedDomains.includes(origin)) {
-            console.log('Origin allowed:', origin);
+        const isAllowed = allowedDomains.some(domain => {
+            // Exact match
+            if (domain === origin) return true;
+            
+            // Wildcard subdomain support (e.g., *.99digicom.com)
+            if (domain.startsWith('*.')) {
+                const baseDomain = domain.slice(2);
+                return origin.endsWith(baseDomain);
+            }
+            
+            return false;
+        });
+
+        if (isAllowed) {
+            if (isDevelopment) {
+                console.log('✅ Origin allowed:', origin);
+            }
             callback(null, true);
         } else {
-            console.warn(`Unauthorized access attempt from: ${origin} [${process.env.NODE_ENV} mode]`);
-            callback(new Error('Not allowed by CORS'));
+            console.warn(`❌ Unauthorized access attempt from: ${origin} [${process.env.NODE_ENV || 'development'} mode]`);
+            if (isDevelopment) {
+                // In development, log more details for debugging
+                console.warn('Available allowed origins:', allowedDomains);
+                // Allow it anyway in development for easier debugging
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
@@ -72,16 +136,39 @@ app.use(cors(corsOptions));
 // Handle preflight requests for all routes
 app.options('*', cors(corsOptions));
 
-// Add security headers
+// Enhanced security headers middleware
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    // Only set the CORS headers if the origin is allowed
-    if (origin && allowedDomains.some(domain => origin.toLowerCase() === domain.toLowerCase().trim())) {
+    
+    // Set security headers based on environment
+    if (isProduction) {
+        res.header('X-Content-Type-Options', 'nosniff');
+        res.header('X-Frame-Options', 'DENY');
+        res.header('X-XSS-Protection', '1; mode=block');
+        res.header('Referrer-Policy', 'strict-origin-when-cross-origin');
+        res.header('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+    }
+    
+    // Set CORS headers if origin is allowed
+    const isOriginAllowed = origin && (
+        allowedDomains.some(domain => {
+            if (domain === origin) return true;
+            if (domain.startsWith('*.')) {
+                const baseDomain = domain.slice(2);
+                return origin.endsWith(baseDomain);
+            }
+            return false;
+        }) ||
+        (isDevelopment && (origin.includes('localhost') || origin.includes('127.0.0.1')))
+    );
+    
+    if (isOriginAllowed) {
         res.header('Access-Control-Allow-Origin', origin);
         res.header('Access-Control-Allow-Credentials', 'true');
-        res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+        res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     }
+    
     next();
 });
 
