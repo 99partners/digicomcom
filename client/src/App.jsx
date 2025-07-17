@@ -76,7 +76,7 @@ function App() {
               </DashboardLayout>
             </ProtectedRoute>
           }>
-            <Route index element={<DashboardPanel />} />
+            <Route index element={<Profile />} />
             <Route path="create-application" element={<ServiceSelection />} />
             <Route path="my-applications" element={<MyApplications />} />
             <Route path="faq" element={<FAQ />} />
