@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, ShoppingCart, CreditCard, Clock, Calculator, Check, AlertCircle, Info } from 'lucide-react';
+import SuccessMessage from '../../SuccessMessage';
 
 const AMSForm = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const AMSForm = () => {
     monthlySales: '',
     paymentOption: '' // 'guide' or 'payment'
   });
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const PLATFORM_ENABLEMENT_FEE = 4999;
   const PRICE_PER_MARKETPLACE = 4999;
@@ -222,7 +224,7 @@ const AMSForm = () => {
 
       if (responseData.success) {
         console.log('Form submitted successfully');
-        await navigate('/dashboard/my-applications');
+        setShowSuccess(true);
       } else {
         throw new Error('Failed to store data in database');
       }
@@ -280,6 +282,11 @@ const AMSForm = () => {
     }
     console.log(`Step ${currentStep} validation:`, isValid, 'formData:', formData);
     return isValid;
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
+    navigate('/dashboard/my-applications', { replace: true });
   };
 
   const renderStep = () => {
@@ -806,6 +813,15 @@ const AMSForm = () => {
           )}
         </div>
       </form>
+
+      {/* Success Message */}
+      {showSuccess && (
+        <SuccessMessage
+          message="Your Account Management Services application has been submitted successfully! Our team will review your application and contact you soon."
+          onClose={handleSuccessClose}
+          redirectPath="/dashboard/my-applications"
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, ShoppingCart, CreditCard, Clock, DollarSign, Calculator, Check, AlertCircle, Info } from 'lucide-react';
+import SuccessMessage from '../../SuccessMessage';
 
 const PlatformEnablementForm = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const PlatformEnablementForm = () => {
     monthlySales: '',
     paymentOption: '' // Will be set to 'guide' or 'payment' in step 4
   });
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const PRICE_PER_MARKETPLACE = 4999;
 
@@ -190,7 +192,7 @@ const PlatformEnablementForm = () => {
 
       if (responseData.success) {
         console.log('Form submitted successfully');
-        await navigate('/dashboard/my-applications');
+        setShowSuccess(true);
       } else {
         throw new Error('Failed to store data in database');
       }
@@ -242,6 +244,11 @@ const PlatformEnablementForm = () => {
     }
     console.log(`Step ${currentStep} validation:`, isValid, 'formData:', formData);
     return isValid;
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
+    navigate('/dashboard/my-applications', { replace: true });
   };
 
   const renderStep = () => {
@@ -675,6 +682,15 @@ const PlatformEnablementForm = () => {
           )}
         </div>
       </form>
+
+      {/* Success Message */}
+      {showSuccess && (
+        <SuccessMessage
+          message="Your Platform Enablement application has been submitted successfully! Our team will review your application and contact you soon."
+          onClose={handleSuccessClose}
+          redirectPath="/dashboard/my-applications"
+        />
+      )}
     </div>
   );
 };
