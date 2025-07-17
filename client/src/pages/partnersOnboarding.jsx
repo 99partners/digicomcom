@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   ArrowRight,
@@ -83,7 +82,7 @@ export default function PartnerOnboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white overflow-x-hidden">
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
@@ -97,7 +96,6 @@ export default function PartnerOnboarding() {
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Start your journey with a growing network of digital-first brands. Simple, structured, and supportive onboarding to help you sell, scale, and succeed.
           </p>
-          <div className="flex justify-center space-x-4"></div>
         </div>
       </section>
 
@@ -110,52 +108,20 @@ export default function PartnerOnboarding() {
               Our streamlined process gets you ready to sell quickly.
             </p>
           </div>
-          <div className="flex flex-row justify-center space-x-8">
-            <img
-              src={step1}
-              alt="Step 1: Fill the Partner Interest Form illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step1}`);
-              }}
-            />
-            <img
-              src={step2}
-              alt="Step 2: Consultation & Category Assessment illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step2}`);
-              }}
-            />
-            <img
-              src={step3}
-              alt="Step 3: Documentation & Seller Account Setup illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step3}`);
-              }}
-            />
-            <img
-              src={step4}
-              alt="Step 4: Catalog, Content & Pricing illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step4}`);
-              }}
-            />
-            <img
-              src={step5}
-              alt="Step 5: Go Live & Start Selling illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step5}`);
-              }}
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 justify-items-center">
+            {[step1, step2, step3, step4, step5].map((step, index) => (
+              <div key={index} className="w-full flex justify-center">
+                <img
+                  src={step}
+                  alt={`Step ${index + 1}`}
+                  className="w-full max-w-[220px] h-auto rounded-lg object-contain shadow-md"
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                    console.error(`Image failed to load: step${index + 1}`);
+                  }}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
