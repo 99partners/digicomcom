@@ -177,7 +177,43 @@ app.use('/api/notifications', notificationRoutes);
 
 // Basic route to test server
 app.get('/', (req, res) => {
-    res.json({ message: 'Server is running successfully!' });
+    res.json({ 
+        message: 'Server is running successfully!',
+        environment: process.env.NODE_ENV,
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
+    });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'healthy',
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV,
+        cors: {
+            allowedOrigins: allowedDomains,
+            currentOrigin: req.headers.origin
+        }
+    });
+});
+
+// API info endpoint
+app.get('/api', (req, res) => {
+    res.json({
+        message: 'API is running',
+        environment: process.env.NODE_ENV,
+        version: '1.0.0',
+        endpoints: [
+            '/api/auth',
+            '/api/user',
+            '/api/admin',
+            '/api/partner',
+            '/api/blogs',
+            '/api/contact'
+        ]
+    });
 });
 
 // Error handling for unhandled routes
