@@ -8,7 +8,7 @@ const API_CONFIG = {
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 30000,
   },
   production: {
-    baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://99digicom.com/api',
+    baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://api.99digicom.com',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 60000,
   }
 };
