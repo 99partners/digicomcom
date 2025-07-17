@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   ArrowRight,
@@ -84,122 +83,82 @@ export default function PartnerOnboarding() {
   };
 
   return (
-    <>
-      <Helmet>
-        <title>Partner Onboarding Process | Join 99digicom in 5 Easy Steps</title>
-        <meta name="description" content="Start your journey with 99digicom's simple 5-step onboarding process. Get access to multiple e-commerce platforms, expert support, and powerful tools to grow your business." />
-        <meta name="keywords" content="partner onboarding, e-commerce partnership, digital commerce, seller onboarding, marketplace integration" />
-        <link rel="canonical" href="https://99digicom.com/partners/onboarding" />
-        <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              "name": "Partner Onboarding Process",
-              "description": "How to become a 99digicom partner in 5 easy steps",
-              "step": [
-                {
-                  "@type": "HowToStep",
-                  "name": "Fill Partner Interest Form",
-                  "text": "Complete the initial application form with your business details"
-                },
-                {
-                  "@type": "HowToStep",
-                  "name": "Consultation & Category Assessment",
-                  "text": "Meet with our team to assess your business needs and opportunities"
-                },
-                {
-                  "@type": "HowToStep",
-                  "name": "Documentation & Account Setup",
-                  "text": "Submit required documents and set up your seller accounts"
-                },
-                {
-                  "@type": "HowToStep",
-                  "name": "Catalog & Content Setup",
-                  "text": "Upload your product catalog and optimize content"
-                },
-                {
-                  "@type": "HowToStep",
-                  "name": "Go Live & Start Selling",
-                  "text": "Launch your products across selected platforms"
-                }
-              ],
-              "totalTime": "P7D"
-            }
-          `}
-        </script>
-      </Helmet>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      {/* Hero Section */}
+      <section className="pt-24 pb-16 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <Rocket className="h-4 w-4" />
+            <span>Partner Onboarding</span>
+          </div>
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            Join <span className="text-green-600">99digicom</span> in 5 Easy Steps
+          </h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Start your journey with a growing network of digital-first brands. Simple, structured, and supportive onboarding to help you sell, scale, and succeed.
+          </p>
+          <div className="flex justify-center space-x-4"></div>
+        </div>
+      </section>
 
-      <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-        {/* Hero Section */}
-        <section aria-labelledby="hero-heading" className="pt-24 pb-16 px-4">
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6" role="text">
-              <Rocket className="h-4 w-4" aria-hidden="true" />
-              <span>Partner Onboarding</span>
-            </div>
-            <h1 id="hero-heading" className="text-5xl font-bold text-gray-900 mb-6">
-              Join <span className="text-green-600">99digicom</span> in 5 Easy Steps
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Start your journey with a growing network of digital-first brands. Simple, structured, and supportive onboarding to help you sell, scale, and succeed.
+      {/* Onboarding Steps */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Join 99digicom in 5 Easy Steps</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our streamlined process gets you ready to sell quickly.
             </p>
           </div>
-        </section>
-
-        {/* Onboarding Steps */}
-        <section aria-labelledby="onboarding-steps-heading" className="py-16 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="onboarding-steps-heading" className="text-3xl font-bold text-gray-900 mb-4">How to Join 99digicom in 5 Easy Steps</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Our streamlined process gets you ready to sell quickly.
-              </p>
-            </div>
-            <div className="flex flex-row justify-center space-x-8" role="list">
-              {[
-                {
-                  image: step1,
-                  alt: "Step 1: Fill the Partner Interest Form illustration",
-                  step: 1
-                },
-                {
-                  image: step2,
-                  alt: "Step 2: Consultation & Category Assessment illustration",
-                  step: 2
-                },
-                {
-                  image: step3,
-                  alt: "Step 3: Documentation & Seller Account Setup illustration",
-                  step: 3
-                },
-                {
-                  image: step4,
-                  alt: "Step 4: Catalog, Content & Pricing illustration",
-                  step: 4
-                },
-                {
-                  image: step5,
-                  alt: "Step 5: Go Live & Start Selling illustration",
-                  step: 5
-                }
-              ].map((step, index) => (
-                <div key={index} role="listitem" className="relative">
-                  <img
-                    src={step.image}
-                    alt={step.alt}
-                    className="w-96 h-96 rounded-lg object-contain shadow-md"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                      console.error(`Image failed to load: ${step.image}`);
-                    }}
-                  />
-                  <span className="sr-only">Step {step.step}</span>
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-row justify-center space-x-8">
+            <img
+              src={step1}
+              alt="Step 1: Fill the Partner Interest Form illustration"
+              className="w-96 h-96 rounded-lg object-contain shadow-md"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                console.error(`Image failed to load: ${step1}`);
+              }}
+            />
+            <img
+              src={step2}
+              alt="Step 2: Consultation & Category Assessment illustration"
+              className="w-96 h-96 rounded-lg object-contain shadow-md"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                console.error(`Image failed to load: ${step2}`);
+              }}
+            />
+            <img
+              src={step3}
+              alt="Step 3: Documentation & Seller Account Setup illustration"
+              className="w-96 h-96 rounded-lg object-contain shadow-md"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                console.error(`Image failed to load: ${step3}`);
+              }}
+            />
+            <img
+              src={step4}
+              alt="Step 4: Catalog, Content & Pricing illustration"
+              className="w-96 h-96 rounded-lg object-contain shadow-md"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                console.error(`Image failed to load: ${step4}`);
+              }}
+            />
+            <img
+              src={step5}
+              alt="Step 5: Go Live & Start Selling illustration"
+              className="w-96 h-96 rounded-lg object-contain shadow-md"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                console.error(`Image failed to load: ${step5}`);
+              }}
+            />
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* Partner Dashboard */}
         <section aria-labelledby="dashboard-features-heading" className="py-16 px-4 bg-green-50">
