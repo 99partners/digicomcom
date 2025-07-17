@@ -239,7 +239,6 @@ export default function PartnerOnboarding() {
             </div>
           </div>
         </section>
-      </main>
-    </>
+      </div>
   );
 }
