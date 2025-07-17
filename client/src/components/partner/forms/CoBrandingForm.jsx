@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
+import SuccessMessage from '../../SuccessMessage';
 
 const CoBrandingForm = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const CoBrandingForm = () => {
     productDescription: '',
     panNumber: ''
   });
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const validatePAN = (pan) => {
     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
@@ -180,10 +182,10 @@ const CoBrandingForm = () => {
         throw new Error(responseData.message || 'Failed to submit application');
       }
 
-      // If submission is successful, navigate to my applications
+      // If submission is successful, show success message
       if (responseData.success) {
-        console.log('Form submitted successfully, redirecting to my applications...');
-        navigate('/dashboard/my-applications', { replace: true });
+        console.log('Form submitted successfully, showing success message...');
+        setShowSuccess(true);
       } else {
         throw new Error('Failed to store data in database');
       }
@@ -192,6 +194,11 @@ const CoBrandingForm = () => {
       console.error('Error details:', error.message);
       alert('Failed to submit form. Please try again.');
     }
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
+    navigate('/dashboard/my-applications', { replace: true });
   };
 
   const isCurrentFieldValid = () => {
@@ -398,6 +405,15 @@ const CoBrandingForm = () => {
           </div>
         </div>
       </form>
+
+      {/* Success Message */}
+      {showSuccess && (
+        <SuccessMessage
+          message="Your Co-Branding Partnership application has been submitted successfully! Our team will review your application and contact you soon."
+          onClose={handleSuccessClose}
+          redirectPath="/dashboard/my-applications"
+        />
+      )}
     </div>
   );
 };
