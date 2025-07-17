@@ -6,9 +6,10 @@ const isProduction = () => {
   return (
     import.meta.env.PROD || 
     import.meta.env.VITE_ENV === 'production' ||
-    window.location.hostname !== 'localhost' &&
+    (window.location.hostname !== 'localhost' &&
     window.location.hostname !== '127.0.0.1' &&
-    !window.location.hostname.includes('local')
+    !window.location.hostname.includes('local') &&
+    !window.location.hostname.includes('dev'))
   );
 };
 
@@ -28,6 +29,10 @@ const API_CONFIG = {
   },
   production: {
     baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://api.99digicom.com',
+    fallbackUrls: [
+      'https://99digicom.com/api',
+      'https://www.99digicom.com/api'
+    ],
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 60000,
     enableLogs: false,
     enableRetry: true,
@@ -94,9 +99,36 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Handle network errors with improved retry logic
-    if (!error.response || error.code === 'ERR_NETWORK') {
-      console.error('Network error occurred:', error);
+    // Handle network errors with improved retry logic and fallback
+    if (!error.response || error.code === 'ERR_NETWORK' || error.code === 'ERR_FAILED') {
+      console.error('Network error occurred:', {
+        code: error.code,
+        message: error.message,
+        url: originalRequest.url,
+        baseURL: originalRequest.baseURL
+      });
+      
+      // Try fallback URLs in production
+      if (ENV === 'production' && currentConfig.fallbackUrls && !originalRequest._fallbackTried) {
+        originalRequest._fallbackTried = true;
+        
+        for (const fallbackUrl of currentConfig.fallbackUrls) {
+          try {
+            console.log('Trying fallback URL:', fallbackUrl);
+            const fallbackConfig = {
+              ...originalRequest,
+              baseURL: fallbackUrl,
+              url: originalRequest.url.replace(originalRequest.baseURL, '')
+            };
+            
+            const response = await axios(fallbackConfig);
+            console.log('Fallback URL successful:', fallbackUrl);
+            return response;
+          } catch (fallbackError) {
+            console.error('Fallback URL failed:', fallbackUrl, fallbackError.message);
+          }
+        }
+      }
       
       // Only retry GET requests and only once
       if (!originalRequest._retry && originalRequest.method === 'get') {
@@ -110,6 +142,12 @@ axiosInstance.interceptors.response.use(
           throw new Error('Network connection failed. Please check your internet connection and try again.');
         }
       }
+      
+      // Provide more specific error messages
+      if (error.code === 'ERR_FAILED') {
+        throw new Error('Server connection failed. The API server may be temporarily unavailable. Please try again later.');
+      }
+      
       throw new Error('Unable to connect to the server. Please check your internet connection and try again.');
     }
 
@@ -139,6 +177,56 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Connectivity test function
+export const testApiConnection = async () => {
+  const testResults = {
+    mainUrl: null,
+    fallbackUrls: [],
+    environment: ENV,
+    hostname: window.location.hostname
+  };
+
+  // Test main URL
+  try {
+    const response = await axios.get(`${currentConfig.baseUrl}/health`, { timeout: 10000 });
+    testResults.mainUrl = {
+      url: currentConfig.baseUrl,
+      status: 'success',
+      response: response.data
+    };
+  } catch (error) {
+    testResults.mainUrl = {
+      url: currentConfig.baseUrl,
+      status: 'failed',
+      error: error.message,
+      code: error.code
+    };
+  }
+
+  // Test fallback URLs in production
+  if (ENV === 'production' && currentConfig.fallbackUrls) {
+    for (const fallbackUrl of currentConfig.fallbackUrls) {
+      try {
+        const response = await axios.get(`${fallbackUrl}/health`, { timeout: 10000 });
+        testResults.fallbackUrls.push({
+          url: fallbackUrl,
+          status: 'success',
+          response: response.data
+        });
+      } catch (error) {
+        testResults.fallbackUrls.push({
+          url: fallbackUrl,
+          status: 'failed',
+          error: error.message,
+          code: error.code
+        });
+      }
+    }
+  }
+
+  return testResults;
+};
 
 // Export environment info for debugging
 export const getEnvironmentInfo = () => ({
