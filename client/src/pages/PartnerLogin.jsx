@@ -53,10 +53,17 @@ const PartnerLogin = () => {
         await handleLogin(data.token, data.user)
         
         if (state === "Sign Up") {
-          toast.success("Account created successfully!")
-          // For new registrations, always redirect to create partner request
-          navigate("/partner")
+          toast.success("Account created successfully! Please verify your email.")
+          // For new registrations, redirect to email verification
+          navigate("/email-verify")
         } else {
+          // For login, check if user is verified first
+          if (!data.user.isAccountVerified) {
+            toast.info("Please verify your email first")
+            navigate("/email-verify")
+            return
+          }
+
           // For login, check if user has existing partner request
           const hasRequest = await checkPartnerRequest(data.token)
           toast.success("Login successful!")

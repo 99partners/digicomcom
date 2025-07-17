@@ -11,6 +11,9 @@ import {
   Gift,
   Users,
   ShoppingCart,
+  Zap,
+  Target,
+  Share2,
 } from "lucide-react";
 
 export default function CoBranding() {
@@ -101,140 +104,127 @@ export default function CoBranding() {
             <span>Co-Branding Solutions</span>
           </div>
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Collaborate With Us to <span className="text-green-600">Reach New Audiences</span>
+            Unlock New Growth Opportunities Through <span className="text-green-600">Brand Collaboration</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Join hands with 99digicom and be part of high-visibility campaigns.
+            Collaborate with our network of digital-first brands to create mutual value and reach wider audiences.
           </p>
           <a
             href="#get-started"
             className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
           >
-            Explore Plans from ₹24,999/year
+            Start Collaborating
             <ArrowRight className="ml-2 h-5 w-5" />
           </a>
         </div>
       </section>
 
-      {/* Why Co-Branding */}
+      {/* Brand Collaborations Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Co-Branding with 99digicom?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Brand Collaborations & Co-Marketing</h2>
             <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-              Amplify your brand through strategic partnerships that deliver results.
+              We bring brands together to do more.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
-              <Globe className="h-8 w-8 text-green-600 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Wider Reach</h3>
-              <p className="text-gray-600 text-sm">Tap into our network to reach new audiences.</p>
+              <Gift className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Niche Product Collaborations</h3>
+              <p className="text-gray-600 text-sm">Create unique product offerings through strategic partnerships.</p>
             </div>
             <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
-              <TrendingUp className="h-8 w-8 text-green-600 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Increased Sales</h3>
-              <p className="text-gray-600 text-sm">Boost revenue with co-branded campaigns.</p>
+              <Users className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Shared Loyalty Programs</h3>
+              <p className="text-gray-600 text-sm">Build customer loyalty across complementary brands.</p>
             </div>
             <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
-              <Heart className="h-8 w-8 text-green-600 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Build Trust</h3>
-              <p className="text-gray-600 text-sm">Leverage our reputation for credibility.</p>
+              <ShoppingCart className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Co-branded Storefronts</h3>
+              <p className="text-gray-600 text-sm">Create unified digital shopping experiences.</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
+              <Share2 className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Co-created Content</h3>
+              <p className="text-gray-600 text-sm">Develop engaging campaigns that resonate with both audiences.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Co-Branding Plans */}
+      {/* Features Section */}
       <section className="py-16 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Co-Branding Plans</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Features of Co-Branding Solution</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Choose a plan that fits your brand’s goals and budget.
+              Our co-branding solution is designed to deliver maximum value for your brand.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Basic</h3>
-              <p className="text-2xl font-bold text-green-600 mb-4">₹24,999/year</p>
-              <ul className="text-gray-600 text-sm space-y-2 mb-6">
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Co-branded social media posts
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  1 co-branded campaign
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Basic analytics report
-                </li>
-              </ul>
-              <a
-                href="#get-started"
-                className="inline-flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-              >
-                Choose Basic
-              </a>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-lg p-6">
+              <Users className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Shared Customer Bases</h3>
+              <p className="text-gray-600">Tap into partner audiences and expand your market reach effectively.</p>
             </div>
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center border-2 border-green-400">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Growth</h3>
-              <p className="text-2xl font-bold text-green-600 mb-4">₹49,999/year</p>
-              <ul className="text-gray-600 text-sm space-y-2 mb-6">
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Everything in Basic
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  3 co-branded campaigns
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Dedicated campaign manager
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Detailed analytics report
-                </li>
-              </ul>
-              <a
-                href="#get-started"
-                className="inline-flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-              >
-                Choose Growth
-              </a>
+            <div className="bg-white rounded-lg p-6">
+              <Zap className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Joint Promotions</h3>
+              <p className="text-gray-600">Create bundled products or run festive campaigns together for maximum impact.</p>
             </div>
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Premium</h3>
-              <p className="text-2xl font-bold text-green-600 mb-4">₹99,999/year</p>
-              <ul className="text-gray-600 text-sm space-y-2 mb-6">
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Everything in Growth
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  5 co-branded campaigns
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Custom creative assets
-                </li>
-                <li className="flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                  Priority support
-                </li>
-              </ul>
-              <a
-                href="#get-started"
-                className="inline-flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-              >
-                Choose Premium
-              </a>
+            <div className="bg-white rounded-lg p-6">
+              <Globe className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Cross-platform Exposure</h3>
+              <p className="text-gray-600">Get visibility across partner marketplaces and marketing channels.</p>
             </div>
+            <div className="bg-white rounded-lg p-6">
+              <Target className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Mutual Brand Lift</h3>
+              <p className="text-gray-600">Strengthen trust and relevance through strategic brand associations.</p>
+            </div>
+          </div>
+          <div className="mt-8 bg-white rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">Use Case Example</h3>
+            <p className="text-gray-600">
+              A spiritual brand partnering with an organic food brand to launch a "Wellness Hamper" during Diwali, combining wellness products with festive treats.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Apply Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Apply for Co-Branding</h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            Interested in exploring a co-branding opportunity? Fill out our quick form to tell us about your brand, target audience, and collaboration goals. Our team will get in touch to explore the best-fit opportunities for you.
+          </p>
+          <a
+            href="#get-started"
+            className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Start Application
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </a>
+        </div>
+      </section>
+
+      {/* Application Form */}
+      <section className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Apply for Co-Branding</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              Interested in exploring a co-branding opportunity? Fill out our quick form to tell us about your brand, target audience, and collaboration goals. Our team will get in touch to explore the best-fit opportunities for you.
+            </p>
+            <a
+              href="#get-started"
+              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+            >
+              Start Application
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </a>
           </div>
         </div>
       </section>

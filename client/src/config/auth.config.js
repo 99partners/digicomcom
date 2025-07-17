@@ -1,7 +1,7 @@
-import { API_BASE_URL } from './api.config';
+import { API_CONFIG } from './api.config';
 
 const AUTH_CONFIG = {
-  apiUrl: API_BASE_URL,
+  apiUrl: API_CONFIG.baseUrl,
   endpoints: {
     login: '/api/auth/login',
     register: '/api/auth/register',

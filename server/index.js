@@ -1,5 +1,5 @@
-import 'dotenv/config';
 import express from 'express';
+import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import multer from 'multer';
@@ -128,6 +128,10 @@ import contactRoutes from './routes/contactRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
 import partnerRoutes from './routes/partnerRoutes.js';
 import partnerRequestRoutes from './routes/partnerRequestRoutes.js';
+import amsRoutes from './routes/amsRoutes.js';
+import marketingApplicationRoutes from './routes/marketingApplicationRoutes.js';
+import advertisingRoutes from './routes/advertisingRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 // API routes
 app.use('/api/auth', AuthRouter);
@@ -140,6 +144,10 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/partner', partnerRoutes);
 app.use('/api/partner-requests', partnerRequestRoutes);
+app.use('/api/ams', amsRoutes);
+app.use('/api/marketing', marketingApplicationRoutes);
+app.use('/api/advertising', advertisingRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Basic route to test server
 app.get('/', (req, res) => {

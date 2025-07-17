@@ -6,22 +6,21 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment-specific variables
+// Load environment variables based on NODE_ENV
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
-dotenv.config({ path: path.join(__dirname, '..', envFile) });
-
-// Fallback to .env if specific environment file is not found
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
 
 export const connectDB = async () => {
     try {
-        if (!process.env.MONGODB_URI) {
+        const mongoURI = process.env.MONGODB_URI;
+        
+        if (!mongoURI) {
             throw new Error('MongoDB URI is not defined in environment variables');
         }
 
         // Add connection event listeners
         mongoose.connection.on('connected', () => {
-            console.log(`MongoDB Connected Successfully [${process.env.NODE_ENV} mode]`);
+            console.log('MongoDB Connected Successfully');
         });
 
         mongoose.connection.on('error', (err) => {
@@ -33,23 +32,18 @@ export const connectDB = async () => {
         });
 
         // Connect with options
-        await mongoose.connect(process.env.MONGODB_URI, {
+        await mongoose.connect(mongoURI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
-            autoIndex: true, // Build indexes
-            maxPoolSize: 10, // Maintain up to 10 socket connections
-            family: 4 // Use IPv4, skip trying IPv6
+            serverSelectionTimeoutMS: 5000,
+            family: 4
         });
 
-        // Test the connection by making a simple query
-        await mongoose.connection.db.admin().ping();
-        console.log(`Database connection test successful [${process.env.NODE_ENV} mode]`);
+        console.log('Database connection successful');
 
     } catch (error) {
         console.error('Failed to connect to MongoDB:', error);
-        // Throw the error to be handled by the caller
-        throw error;
+        process.exit(1);
     }
 };
 

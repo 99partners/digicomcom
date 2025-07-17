@@ -1,78 +1,52 @@
 import mongoose from 'mongoose';
 
 const platformAMSFormSchema = new mongoose.Schema({
-  businessName: {
-    type: String,
-    required: true,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
-  contactPerson: {
-    type: String,
-    required: true,
+  marketplaces: {
+    ondc: { type: Boolean, default: false },
+    amazon: { type: Boolean, default: false },
+    flipkart: { type: Boolean, default: false },
+    meesho: { type: Boolean, default: false },
+    jiomart: { type: Boolean, default: false },
+    indiamart: { type: Boolean, default: false },
+    snapdeal: { type: Boolean, default: false }
   },
-  email: {
+  hasGST: {
     type: String,
-    required: true,
+    enum: ['yes', 'no'],
+    required: true
   },
-  phone: {
+  gstNumber: {
     type: String,
-    required: true,
+    required: function() {
+      return this.hasGST === 'yes';
+    },
+    validate: {
+      validator: function(v) {
+        if (this.hasGST === 'yes') {
+          return /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(v);
+        }
+        return true;
+      },
+      message: 'Invalid GST number format'
+    }
   },
-  website: {
+  monthlySales: {
     type: String,
-  },
-  businessType: {
-    type: String,
-    required: true,
-    enum: ['individual', 'pvt-ltd', 'partnership', 'llp', 'startup', 'other'],
-  },
-  servicesNeeded: [{
-    type: String,
-    enum: [
-      'Setting Up Seller Account',
-      'Account Management Services (AMS)',
-      'eCommerce Advertising & Marketing',
-      'Product Listing Optimization',
-      'Inventory Management',
-      'Order & Return Management',
-      'Performance Analytics',
-      'Platform Compliance Support',
-    ],
-  }],
-  platforms: [{
-    type: String,
-    enum: [
-      'ONDC',
-      'Amazon',
-      'Flipkart',
-      'Meesho',
-      'Jiomart',
-      'Zomato',
-      'Swiggy',
-      'Myntra',
-      'Nykaa',
-      'Custom Website',
-      'Other',
-    ],
-  }],
-  currentSalesVolume: {
-    type: String,
-    enum: ['0', 'less-1l', '1l-5l', '5l-10l', '10l-plus'],
-  },
-  additionalNotes: {
-    type: String,
-  },
-  consent: {
-    type: Boolean,
-    required: true,
-  },
-  submittedAt: {
-    type: Date,
-    default: Date.now,
+    enum: ['', 'less_50k', '50k_2L', '2L_5L', 'above_5L']
   },
   status: {
     type: String,
-    enum: ['pending', 'contacted', 'in-progress', 'completed', 'rejected'],
-    default: 'pending',
+    enum: ['pending', 'in_review', 'approved', 'rejected'],
+    default: 'pending'
+  },
+  submittedAt: {
+    type: Date,
+    default: Date.now
   }
 }, {
   timestamps: true

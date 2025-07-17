@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
-import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock } from 'lucide-react';
+import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
 import UserForm from '../components/admin/UserForm';
 import PartnerRequestManagement from '../components/admin/PartnerRequestManagement';
+import NotificationManagement from '../components/admin/NotificationManagement';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
@@ -96,6 +97,7 @@ const AdminDashboard = () => {
         { id: 'blogs', label: 'Blog Management', icon: BookOpen },
         { id: 'contacts', label: 'Contact Messages', icon: MessageSquare },
         { id: 'partner-requests', label: 'Partner Requests', icon: Handshake },
+        { id: 'notifications', label: 'Notifications', icon: Bell },
     ];
 
     const contentItems = [
@@ -240,6 +242,9 @@ const AdminDashboard = () => {
             case 'partner-requests':
                 return <PartnerRequestManagement />;
 
+            case 'notifications':
+                return <NotificationManagement />;
+
             case 'settings':
                 return (
                     <div className="bg-white rounded-lg shadow p-6">
@@ -265,7 +270,7 @@ const AdminDashboard = () => {
         <div className="min-h-screen bg-gray-100">
             <div className="flex">
                 {/* Sidebar */}
-                <div className="w-64 bg-white shadow-lg min-h-screen">
+                <div className="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0 overflow-y-auto">
                     <div className="p-6">
                         <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
                     </div>
@@ -295,7 +300,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 ml-64">
                     {renderContent()}
                 </div>
             </div>
