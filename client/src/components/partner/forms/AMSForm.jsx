@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, ArrowLeftCircle, ArrowRightCircle, CheckCircle2, ShoppingCart, CreditCard, Clock, Calculator, Check, AlertCircle, Info } from 'lucide-react';
-<<<<<<< HEAD
+
 import SuccessMessage from '../../SuccessMessage';
-=======
 import axiosInstance from '../../../config/api.config';
->>>>>>> 9e852ac275fe25ea994824843117cb13eca600be
+
 
 const AMSForm = () => {
   const navigate = useNavigate();
