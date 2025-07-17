@@ -26,6 +26,8 @@ const allowedDomains = process.env.ALLOWED_ORIGINS ?
             'https://99digicom.com',
             'https://www.99digicom.com',
             'https://api.99digicom.com',
+            'https://99partners.in',
+            'https://www.99partners.in',
             'http://99digicom.com',
             'http://www.99digicom.com'
         ] :
