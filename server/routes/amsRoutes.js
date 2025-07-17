@@ -12,8 +12,8 @@ const logRequest = (req, res, next) => {
   next();
 };
 
-// Submit AMS form (temporarily without auth for testing)
-router.post('/submit', logRequest, submitForm);
+// Submit AMS form
+router.post('/submit', userAuth, logRequest, submitForm);
 
 // Admin routes (protected)
 router.get('/submissions', adminAuth, getAllSubmissions);
