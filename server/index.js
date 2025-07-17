@@ -26,6 +26,8 @@ const allowedDomains = process.env.ALLOWED_ORIGINS ?
             'https://99digicom.com',
             'https://www.99digicom.com',
             'https://api.99digicom.com',
+            'https://99partners.in',
+            'https://www.99partners.in',
             'http://99digicom.com',
             'http://www.99digicom.com'
         ] :
@@ -88,28 +90,6 @@ app.use(cors(corsOptions));
 
 // Handle preflight requests for all routes
 app.options('*', cors(corsOptions));
-
-// Enhanced security headers middleware
-app.use((req, res, next) => {
-    // Set strict CORS headers in production
-    if (process.env.NODE_ENV === 'production') {
-        const origin = req.headers.origin;
-        if (origin && allowedDomains.some(domain => origin.toLowerCase() === domain.toLowerCase().trim())) {
-            res.header('Access-Control-Allow-Origin', origin);
-            res.header('Access-Control-Allow-Credentials', 'true');
-            res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-        }
-    } else {
-        // In development, be more permissive
-        res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-        res.header('Access-Control-Allow-Credentials', 'true');
-        res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    }
-    
-    next();
-});
 
 // Global error handler middleware
 app.use((err, req, res, next) => {
