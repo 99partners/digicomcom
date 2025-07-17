@@ -270,7 +270,7 @@ const AdminDashboard = () => {
         <div className="min-h-screen bg-gray-100">
             <div className="flex">
                 {/* Sidebar */}
-                <div className="w-64 bg-white shadow-lg min-h-screen">
+                <div className="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0 overflow-y-auto">
                     <div className="p-6">
                         <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
                     </div>
@@ -300,7 +300,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 ml-64">
                     {renderContent()}
                 </div>
             </div>
