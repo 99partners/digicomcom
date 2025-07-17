@@ -8,7 +8,7 @@ const API_CONFIG = {
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 30000,
   },
   production: {
-    baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://api.99digicom.com',
+    baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://99digicom.com/api',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 60000,
   }
 };
@@ -49,68 +49,44 @@ axiosInstance.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${userToken}`;
   }
 
-  // Ensure the URL uses HTTPS in production
-  if (ENV === 'production') {
-    if (config.url && !config.url.startsWith('https://')) {
-      config.url = config.url.replace('http://', 'https://');
-    }
-    if (config.baseURL && !config.baseURL.startsWith('https://')) {
-      config.baseURL = config.baseURL.replace('http://', 'https://');
-    }
-  }
-
-  // Add cache-busting parameter for GET requests
-  if (config.method === 'get') {
-    config.params = {
-      ...config.params,
-      _t: new Date().getTime()
-    };
-  }
-
   return config;
 }, (error) => {
   console.error('Request configuration error:', error);
   return Promise.reject(error);
 });
 
-// Add response interceptor
+// Add response interceptor with improved error handling
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Handle network errors
-    if (!error.response) {
+    // Handle network errors with improved retry logic
+    if (!error.response || error.code === 'ERR_NETWORK') {
       console.error('Network error occurred:', error);
-      // Only retry once to prevent infinite loops
-      if (!originalRequest._retry) {
+      
+      // Only retry GET requests and only once
+      if (!originalRequest._retry && originalRequest.method === 'get') {
         originalRequest._retry = true;
         try {
+          // Add a small delay before retry
+          await new Promise(resolve => setTimeout(resolve, 1000));
           return await axiosInstance(originalRequest);
         } catch (retryError) {
           console.error('Retry failed:', retryError);
-          return Promise.reject(new Error('Network connection failed. Please check your internet connection.'));
+          throw new Error('Network connection failed. Please check your internet connection and try again.');
         }
       }
-    }
-
-    // Handle CORS errors
-    if (error.response?.status === 0 || error.code === 'ERR_NETWORK') {
-      console.error('CORS or network error:', error);
-      return Promise.reject(new Error('Unable to connect to the server. Please try again later.'));
+      throw new Error('Unable to connect to the server. Please check your internet connection and try again.');
     }
 
     // Handle authentication errors
     if (error.response?.status === 401) {
-      // Check if this was an admin request
       if (originalRequest.url?.includes('/api/admin')) {
         localStorage.removeItem('adminToken');
-        if (!window.location.pathname.includes('adminlogin')) {
-          window.location.href = '/adminlogin';
-        }
+        window.location.href = '/adminlogin';
       } else {
         localStorage.removeItem('authToken');
-        // Only redirect to partnerlogin if we're not on a public page
         const publicPaths = ['/', '/about', '/contact', '/partners', '/services', '/resources', '/signup', '/login', '/forgot-password', '/privacypolicy', '/termsofservice', '/cookiepolicy', '/faqss', '/platform-enablement-ams'];
         const isPublicPath = publicPaths.some(path => window.location.pathname === path || window.location.pathname.startsWith(path + '/'));
         
@@ -118,32 +94,13 @@ axiosInstance.interceptors.response.use(
           window.location.href = '/partnerlogin';
         }
       }
-      return Promise.reject(new Error('Your session has expired. Please log in again.'));
+      throw new Error('Your session has expired. Please log in again.');
     }
 
-    // Handle forbidden errors
-    if (error.response?.status === 403) {
-      console.error('Access forbidden:', error.response.data);
-      return Promise.reject(new Error('You do not have permission to perform this action.'));
-    }
-
-    // Handle bad request errors
-    if (error.response?.status === 400) {
-      console.error('Bad request:', error.response.data);
-      const message = error.response.data.message || 'Invalid request. Please check your input.';
-      return Promise.reject(new Error(message));
-    }
-
-    // Handle server errors
-    if (error.response?.status >= 500) {
-      console.error('Server error:', error.response.data);
-      return Promise.reject(new Error('A server error occurred. Please try again later.'));
-    }
-
-    // Handle other errors
-    if (error.response?.data?.message) {
-      console.error('API Error:', error.response.data.message);
-      return Promise.reject(new Error(error.response.data.message));
+    // Handle other status codes
+    if (error.response) {
+      const message = error.response.data?.message || 'An error occurred. Please try again.';
+      throw new Error(message);
     }
 
     return Promise.reject(error);
