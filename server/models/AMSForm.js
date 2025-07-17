@@ -4,7 +4,7 @@ const amsFormSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: false // Make userId optional for now
+    required: true
   },
   marketplaces: {
     ondc: { type: Boolean, default: false },
