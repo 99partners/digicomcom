@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import {
   Settings,
-  CheckCircle,
   ArrowRight,
   Search,
   BarChart3,
@@ -15,7 +14,10 @@ import {
 import axios from 'axios';
 import { getApiUrl } from '../config/api.config';
 import SEO from '../components/SEO';
-
+import AMS1 from '../assets/AMS1.png';
+import AMS2 from '../assets/AMS2.png'; 
+import AMS3 from '../assets/AMS3.png';
+import AMS4 from '../assets/AMS4.png';
 export default function AccountManagementServices() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -317,28 +319,41 @@ export default function AccountManagementServices() {
               {[
                 {
                   title: "Hassle-Free Management",
-                  description: "Effortless order and inventory management."
+                  description: "Effortless order and inventory management.",
+                  image: AMS1
                 },
                 {
                   title: "Timely Updates",
-                  description: "Keep your product listings fresh and competitive."
+                  description: "Keep your product listings fresh and competitive.",
+                  image: AMS2
                 },
                 {
                   title: "Performance-Driven Support",
-                  description: "Data-backed strategies to boost sales."
+                  description: "Data-backed strategies to boost sales.",
+                  image: AMS3
                 },
                 {
                   title: "Dedicated Coordination",
-                  description: "Stay connected via WhatsApp for real-time updates."
+                  description: "Stay connected via WhatsApp for real-time updates.",
+                  image: AMS4
                 }
               ].map((benefit, index) => (
                 <div 
                   key={index} 
-                  className="flex items-start space-x-4 p-6 bg-green-50 rounded-lg"
+                  className="flex flex-col items-center p-6 bg-green-50 rounded-lg"
                   role="listitem"
                 >
-                  <CheckCircle className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />
-                  <div>
+                  <img 
+                    src={benefit.image} 
+                    alt={benefit.title} 
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${benefit.image}`);
+                      e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
+                    }}
+                    style={{ maxWidth: '40%', height: 'auto' }}
+                  />
+                  <div className="text-center">
                     <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
                     <p className="text-gray-600 text-sm">{benefit.description}</p>
                   </div>
