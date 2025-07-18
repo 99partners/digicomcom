@@ -5,7 +5,7 @@ import { connectDB } from './config/db.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import cors from 'cors';
+import cors from 'cors'; // Available but using custom CORS implementation
 import mongoose from 'mongoose';
 
 const app = express();
@@ -38,78 +38,56 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cookieParser());
 
-// CORS Configuration
-const allowedDomains = process.env.ALLOWED_ORIGINS ? 
-    process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim()) : 
-    (process.env.NODE_ENV === 'production' ?
-        [
-            'https://99digicom.com',
-            'https://www.99digicom.com',
-            'https://api.99digicom.com',
-            'https://99partners.in',
-            'https://www.99partners.in',
-            'http://99digicom.com',
-            'http://www.99digicom.com'
-        ] :
-        [
-            'http://localhost:5173',
-            'http://localhost:5050',
-            'http://127.0.0.1:5173',
-            'http://127.0.0.1:5050'
-        ]);
+// CORS Configuration - Manual implementation to prevent duplicate headers
+const allowedOrigins = [
+    'https://99digicom.com',
+    'https://www.99digicom.com',
+    'https://api.99digicom.com',
+    'https://99partners.in',
+    'https://www.99partners.in',
+    ...(process.env.NODE_ENV !== 'production' ? [
+        'http://localhost:5173',
+        'http://localhost:5050',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:5050'
+    ] : [])
+];
 
 console.log('Current environment:', process.env.NODE_ENV);
-console.log('Allowed CORS origins:', allowedDomains);
+console.log('Allowed CORS origins:', allowedOrigins);
 
-// CORS options
-const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin || process.env.NODE_ENV !== 'production') {
-            return callback(null, true);
+// Custom CORS middleware to ensure single headers
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    
+    console.log('🔍 Request from origin:', origin, 'Method:', req.method);
+    
+    // Check if origin is allowed
+    if (!origin || allowedOrigins.includes(origin)) {
+        // Set CORS headers only once
+        if (origin) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+            console.log('✅ Origin allowed:', origin);
         }
-
-        // In development, be more permissive with localhost variations
-        if (process.env.NODE_ENV !== 'production') {
-            const isLocalhost = origin.includes('localhost') || 
-                              origin.includes('127.0.0.1') || 
-                              origin.includes('0.0.0.0');
-            
-            if (isLocalhost) {
-                console.log('✅ Localhost origin allowed:', origin);
-                return callback(null, true);
-            }
+        
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+        
+        // Handle preflight requests
+        if (req.method === 'OPTIONS') {
+            console.log('🔍 Handling preflight request');
+            res.status(200).end();
+            return;
         }
-
-        // Check if the origin matches any allowed domain
-        const normalizedOrigin = origin.toLowerCase().trim();
-        if (allowedDomains.some(domain => normalizedOrigin === domain.toLowerCase().trim())) {
-            callback(null, true);
-        } else {
-            console.warn(`Unauthorized access attempt from: ${origin}`);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: [
-        'Content-Type',
-        'Authorization',
-        'X-Requested-With',
-        'Accept',
-        'Origin',
-        'Access-Control-Request-Method',
-        'Access-Control-Request-Headers'
-    ],
-    exposedHeaders: ['Content-Range', 'X-Content-Range'],
-    credentials: true,
-    maxAge: 86400 // 24 hours
-};
-
-// Apply CORS middleware
-app.use(cors(corsOptions));
-
-// Handle preflight requests for all routes
-app.options('*', cors(corsOptions));
+    } else {
+        console.warn('❌ Origin blocked:', origin);
+        res.status(403).json({ error: 'Not allowed by CORS' });
+        return;
+    }
+    
+    next();
+});
 
 // Global error handler middleware
 app.use((err, req, res, next) => {
@@ -195,7 +173,7 @@ app.get('/health', (req, res) => {
         environment: process.env.NODE_ENV,
         port: PORT,
         cors: {
-            allowedOrigins: allowedDomains,
+            allowedOrigins: allowedOrigins,
             currentOrigin: req.headers.origin
         },
         database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
