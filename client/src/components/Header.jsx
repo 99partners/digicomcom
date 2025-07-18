@@ -610,118 +610,129 @@ const Header = () => {
         {/* Mobile Navigation */}
         <div
           id="mobile-menu"
-          className={`lg:hidden bg-white shadow-md px-4 pt-4 pb-6 space-y-2 ${
+          className={`lg:hidden bg-white shadow-md overflow-y-auto max-h-[calc(100vh-4rem)] ${
             isMenuOpen ? "block" : "hidden"
           }`}
           role="navigation"
           aria-label="Mobile navigation"
         >
-          {navigation.map((item) => (
-            <div key={item.name}>
-              {item.submenu ? (
-                <div>
-                  <button
-                    onClick={() =>
-                      setActiveDropdown(
-                        activeDropdown === item.name ? null : item.name
-                      )
-                    }
-                    className={`w-full text-left px-4 py-2 rounded-lg text-base flex items-center justify-between ${
-                      isActive(
-                        item.submenu.find((sub) => sub.href === pathname)?.href
-                      )
-                        ? "text-green-700 bg-green-100"
-                        : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+          <div className="p-4 space-y-1">
+            {navigation.map((item) => (
+              <div key={item.name}>
+                {item.submenu ? (
+                  <div className="mb-1">
+                    {/* Main Menu Item */}
+                    <button
+                      onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
+                      className={`w-full text-left px-4 py-2.5 rounded-lg text-base flex items-center justify-between ${
+                        isActive(item.submenu.find((sub) => sub.href === pathname)?.href)
+                          ? "text-green-700 bg-green-100 font-medium"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {item.name}
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform duration-200 ${
+                          activeDropdown === item.name ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {/* First Level Submenu */}
+                    <div
+                      className={`overflow-hidden transition-all duration-200 ${
+                        activeDropdown === item.name ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      {item.submenu.map((subItem) => (
+                        <div key={subItem.name}>
+                          {subItem.hasMarketplaces ? (
+                            <>
+                              {/* Our Partners Button */}
+                              <button
+                                onClick={() => setActiveMarketplace(activeMarketplace === subItem.name ? null : subItem.name)}
+                                className={`w-full text-left pl-8 pr-4 py-2.5 text-base flex items-center justify-between ${
+                                  isActive(subItem.href) ? "text-green-700 font-medium" : "text-gray-700"
+                                }`}
+                              >
+                                {subItem.name}
+                                <ChevronDown
+                                  className={`h-4 w-4 transition-transform duration-200 ${
+                                    activeMarketplace === subItem.name ? "rotate-180" : ""
+                                  }`}
+                                />
+                              </button>
+
+                              {/* Marketplaces List */}
+                              <div
+                                className={`overflow-hidden transition-all duration-200 ${
+                                  activeMarketplace === subItem.name ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+                                }`}
+                              >
+                                {Object.entries(marketplaces).map(([key, marketplace]) => (
+                                  <Link
+                                    key={key}
+                                    to={marketplace.href}
+                                    onClick={() => {
+                                      setActiveDropdown(null);
+                                      setActiveMarketplace(null);
+                                      setIsMenuOpen(false);
+                                    }}
+                                    className="block pl-12 pr-4 py-2.5 text-base text-gray-700"
+                                  >
+                                    {marketplace.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </>
+                          ) : (
+                            // Regular Submenu Item
+                            <Link
+                              to={subItem.href}
+                              onClick={() => {
+                                setActiveDropdown(null);
+                                setIsMenuOpen(false);
+                              }}
+                              className={`block pl-8 pr-4 py-2.5 text-base ${
+                                isActive(subItem.href) ? "text-green-700 font-medium" : "text-gray-700"
+                              }`}
+                            >
+                              {subItem.name}
+                            </Link>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  // Regular Menu Item
+                  <Link
+                    to={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`block px-4 py-2.5 text-base ${
+                      isActive(item.href) ? "text-green-700 font-medium" : "text-gray-700"
                     }`}
-                    aria-expanded={activeDropdown === item.name}
-                    aria-controls={`mobile-dropdown-${item.name}`}
                   >
                     {item.name}
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-200 ${
-                        activeDropdown === item.name ? "rotate-180" : ""
-                      }`}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  <div
-                    id={`mobile-dropdown-${item.name}`}
-                    className={`ml-4 mt-2 space-y-1 transition-all duration-200 ${
-                      activeDropdown === item.name
-                        ? "max-h-[1000px] opacity-100"
-                        : "max-h-0 opacity-0 overflow-hidden"
-                    }`}
-                  >
-                    {item.submenu.map((subItem) => (
-                      <div key={subItem.name}>
-                        <Link
-                          to={subItem.href}
-                          onClick={() => {
-                            setActiveDropdown(null);
-                            setIsMenuOpen(false);
-                          }}
-                          className={`block w-full text-left px-4 py-2 rounded-lg text-sm ${
-                            isActive(subItem.href)
-                              ? "text-green-700 bg-green-100"
-                              : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                          }`}
-                        >
-                          {subItem.name}
-                        </Link>
-                        {subItem.hasMarketplaces && (
-                          <div className="ml-4 mt-2 space-y-1">
-                            {Object.entries(marketplaces).map(
-                              ([key, marketplace]) => (
-                                <Link
-                                  key={key}
-                                  to={marketplace.href}
-                                  onClick={() => {
-                                    setActiveDropdown(null);
-                                    setIsMenuOpen(false);
-                                  }}
-                                  className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-green-700"
-                                >
-                                  {marketplace.name}
-                                </Link>
-                              )
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  to={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block w-full text-left px-4 py-2 rounded-lg text-base ${
-                    isActive(item.href)
-                      ? "text-green-700 bg-green-100"
-                      : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              )}
-            </div>
-          ))}
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
 
           {/* Mobile Action Buttons */}
-          <div className="mt-4 space-y-2">
+          <div className="p-4 space-y-2 border-t border-gray-100">
             <Link
               to="/shop"
               onClick={() => setIsMenuOpen(false)}
-              className="block w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 text-sm"
-              aria-label="Visit our shop"
+              className="block w-full px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200"
             >
               Shop
             </Link>
             <Link
               to="/partnerlogin"
               onClick={() => setIsMenuOpen(false)}
-              className="block w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 text-sm"
-              aria-label="Partner login or signup"
+              className="block w-full px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200"
             >
               Join Us
             </Link>
