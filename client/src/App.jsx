@@ -61,6 +61,11 @@ import Footer from './components/Footer';
 
 // Import BlogDetails
 import BlogDetails from './pages/BlogDetails';
+import Amazon from './pages/marketplaces/Amazon';
+import Flipkart from './pages/marketplaces/Flipkart';
+import ONDC from './pages/marketplaces/ONDC';
+import JioMart from './pages/marketplaces/JioMart';
+import Meesho from './pages/marketplaces/Meesho';
 
 function App() {
   return (
@@ -148,6 +153,11 @@ function App() {
             <Route path="/partners/whyPartners" element={<ForProductPartners />} />
             <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
             <Route path="/partners/partnersOnboarding" element={<PartnersOnboarding />} />
+            <Route path="/partners/marketplaces/amazon" element={<Amazon />} />
+            <Route path="/partners/marketplaces/flipkart" element={<Flipkart />} />
+            <Route path="/partners/marketplaces/ondc" element={<ONDC />} />
+            <Route path="/partners/marketplaces/jiomart" element={<JioMart />} />
+            <Route path="/partners/marketplaces/meesho" element={<Meesho />} />
             <Route path="/services/advertising_marketing" element={<AdvertisingMarketing />} />    
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/coBranding" element={<CoBranding />} />
