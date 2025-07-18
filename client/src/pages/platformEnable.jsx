@@ -1,4 +1,3 @@
-"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -181,18 +180,19 @@ export default function PlatformEnablement() {
               ].map((benefit, index) => (
                 <div
                   key={index}
-                  className="flex items-start space-x-4 p-6 bg-green-50 rounded-lg"
+                  className="flex flex-col items-center p-6 bg-green-50 rounded-lg"
                   role="listitem"
                 >
                   <img
                     src={benefit.image}
                     alt={benefit.title}
-                    className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-md flex-shrink-0 mt-1"
-                    onError={() =>
-                      console.error(`Failed to load image: ${benefit.image}`)
-                    }
+                    className="w-52 h-52 sm:w-56 sm:h-56 object-contain rounded-md mb-4 bg-white p-2"
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${benefit.image}`);
+                      e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
+                    }}
                   />
-                  <div>
+                  <div className="text-center">
                     <h3 className="font-semibold text-gray-900 mb-2">
                       {benefit.title}
                     </h3>
