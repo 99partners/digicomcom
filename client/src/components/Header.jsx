@@ -1,9 +1,38 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, Component } from "react"
 import { useNavigate, useLocation, Link } from "react-router-dom"
 import { Menu, X, ChevronDown } from "lucide-react"
 import logo from "../assets/99digicom.png"
+import amazonLogo from "../assets/Amazon.png"
+import flipkartLogo from "../assets/Flipkart.png"
+import ondcLogo from "../assets/ONDC.png"
+import jiomartLogo from "../assets/Jiomart.png"
+import meeshoLogo from "../assets/Meesho.png"
+import indiamartLogo from "../assets/Indiamart.png"
+import snapdealLogo from "../assets/Snapdeal.png"
+
+// Error Boundary Component
+class ErrorBoundary extends Component {
+  state = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="bg-red-100 text-red-700 p-4 text-center">
+          <h2>Error in Header Component</h2>
+          <p>{this.state.error?.message || "An unexpected error occurred."}</p>
+          <p>Please check the console for details and ensure all images are in public/assets/.</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,6 +42,17 @@ const Header = () => {
   const pathname = location.pathname
   const navigate = useNavigate()
   const megaMenuRef = useRef(null)
+
+  // Mapping object for marketplace keys to image imports
+  const imageMap = {
+    amazon: amazonLogo,
+    flipkart: flipkartLogo,
+    ondc: ondcLogo,
+    jiomart: jiomartLogo,
+    meesho: meeshoLogo,
+    indiamart: indiamartLogo,
+    snapdeal: snapdealLogo,
+  }
 
   const marketplaces = {
     amazon: {
@@ -261,335 +301,349 @@ const Header = () => {
   if (pathname === "/customerlogin" || pathname === "/partnerlogin") return null
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100" role="banner">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 min-w-0">
-        {/* Logo */}
-        <div className="flex-shrink-0">
-          <Link 
-            to="/" 
-            className="flex items-center space-x-2 group"
-            aria-label="99Digicom - Home"
-          >
-            <img 
-              src={logo || "/placeholder.svg"} 
-              alt="99Digicom Logo" 
-              className="h-12 w-auto object-contain sm:h-14 lg:h-16"
-              width="64"
-              height="64"
-            />
-            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
-              Digicom
-            </span>
-          </Link>
-        </div>
+    <ErrorBoundary>
+      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100" role="banner">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 min-w-0">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link 
+              to="/" 
+              className="flex items-center space-x-2 group"
+              aria-label="99Digicom - Home"
+            >
+              <img 
+                src={logo} 
+                alt="99Digicom Logo" 
+                className="h-12 w-auto object-contain sm:h-14 lg:h-16"
+                width="64"
+                height="64"
+                onError={(e) => {
+                  console.error(`Failed to load 99digicom logo at ${new Date().toISOString()}`);
+                  e.target.src = "/assets/fallback.png";
+                }}
+              />
+              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
+                Digicom
+              </span>
+            </Link>
+          </div>
 
-        {/* Desktop Navigation */}
-        <nav 
-          className="hidden lg:flex items-center space-x-1 flex-shrink-0 relative z-10"
-          role="navigation"
-          aria-label="Main navigation"
-        >
-          {navigation.map((item) => (
-            <div key={item.name} className="relative group">
-              {item.submenu ? (
-                <div className="relative">
-                  <button
-                    onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
-                    onMouseEnter={() => setActiveDropdown(item.name)}
+          {/* Desktop Navigation */}
+          <nav 
+            className="hidden lg:flex items-center space-x-1 flex-shrink-0 relative z-10"
+            role="navigation"
+            aria-label="Main navigation"
+          >
+            {navigation.map((item) => (
+              <div key={item.name} className="relative group">
+                {item.submenu ? (
+                  <div className="relative">
+                    <button
+                      onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
+                      onMouseEnter={() => setActiveDropdown(item.name)}
+                      className={`px-4 py-2 rounded-full text-sm px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
+                        isActive(item.submenu.find(sub => sub.href === pathname)?.href) || activeDropdown === item.name
+                          ? "text-green-700 bg-green-100"
+                          : "text-gray-600 hover:text-green-700 hover:bg-green-50"
+                      } flex items-center min-w-[160px] justify-between`}
+                      aria-expanded={activeDropdown === item.name}
+                      aria-controls={`dropdown-${item.name}`}
+                      aria-haspopup="true"
+                    >
+                      {item.name}
+                      <ChevronDown 
+                        className={`ml-1 h-4 w-4 transition-transform duration-200 ${activeDropdown === item.name ? 'rotate-180' : ''}`}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to={item.href}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
-                      isActive(item.submenu.find(sub => sub.href === pathname)?.href) || activeDropdown === item.name
+                      isActive(item.href)
                         ? "text-green-700 bg-green-100"
                         : "text-gray-600 hover:text-green-700 hover:bg-green-50"
-                    } flex items-center min-w-[160px] justify-between`}
+                    } flex items-center`}
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </div>
+            ))}
+          </nav>
+
+          {/* Desktop Right Section */}
+          <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
+            <Link
+              to="/shop"
+              className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
+              aria-label="Visit our shop"
+            >
+              Shop
+            </Link>
+            <Link
+              to="/partnerlogin"
+              className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
+              aria-label="Partner login or signup"
+            >
+              Join Us
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden p-2 text-gray-600 hover:text-green-700"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6" aria-hidden="true" />
+            ) : (
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            )}
+          </button>
+        </div>
+
+        {/* Mega Menu */}
+        {activeDropdown && (
+          <div
+            ref={megaMenuRef}
+            className="fixed top-16 left-0 right-0 bg-white shadow-xl border-b border-gray-100 z-50 transition-all duration-300"
+            onMouseLeave={handleHeaderMouseLeave}
+          >
+            <div className="max-w-8xl mx-auto px-6 py-8">
+              {activeDropdown === "Partners" ? (
+                <div>
+                  {/* Top Row - Main Menu Items */}
+                  <div className="flex gap-6 mb-8">
+                    {navigation.find(item => item.name === activeDropdown)?.submenu.map((subItem) => (
+                      <Link
+                        key={subItem.name}
+                        to={subItem.href}
+                        onClick={() => handleMenuItemClick(subItem.href)}
+                        className={`block px-6 py-4 rounded-lg transition-all duration-200 ${
+                          isActive(subItem.href)
+                            ? "text-green-700 bg-green-100"
+                            : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                        }`}
+                      >
+                        <h3 className="text-lg font-semibold">{subItem.name}</h3>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Marketplace Content */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Left Column - Marketplace List */}
+                    <div className="md:col-span-1">
+                      <div className="space-y-1 pl-4">
+                        {Object.entries(marketplaces).map(([key, marketplace]) => (
+                          <div
+                            key={key}
+                            onMouseEnter={() => handleMarketplaceHover(key)}
+                            onClick={() => handleMenuItemClick(marketplace.href)}
+                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                              activeMarketplace === key
+                                ? "bg-green-100 text-green-700 shadow-sm"
+                                : "hover:bg-green-50 hover:text-green-600"
+                            }`}
+                          >
+                            <span className="font-medium">{marketplace.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Right Column - Marketplace Details */}
+                    <div className={`md:col-span-2 transition-all duration-300 ${
+                      activeMarketplace ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                    }`}>
+                      {activeMarketplace && imageMap[activeMarketplace] && marketplaces[activeMarketplace] ? (
+                        <div className="bg-gray-50 rounded-lg p-8">
+                          {/* Marketplace Logo */}
+                          <div className="mb-8 flex justify-center">
+                            <img 
+                              src={imageMap[activeMarketplace]} 
+                              alt={`${marketplaces[activeMarketplace].name} logo`}
+                              className="h-24 w-auto object-contain"
+                              onError={(e) => {
+                                console.error(`Failed to load image for ${marketplaces[activeMarketplace].name} at ${new Date().toISOString()}`);
+                                e.target.src = "/assets/fallback.png";
+                              }}
+                            />
+                          </div>
+                          
+                          {/* Services Grid */}
+                          <div className="grid grid-cols-3 gap-8">
+                            {marketplaces[activeMarketplace].services.map((service, index) => (
+                              <Link
+                                key={index}
+                                to={marketplaces[activeMarketplace].href}
+                                onClick={() => handleMenuItemClick(marketplaces[activeMarketplace].href)}
+                                className="block p-6 rounded-lg bg-white hover:shadow-lg transition-all duration-300 group text-center h-full border border-gray-100 hover:border-green-100"
+                              >
+                                <h4 className="font-semibold text-gray-900 group-hover:text-green-700 mb-3 text-lg">
+                                  {service.title}
+                                </h4>
+                                <p className="text-sm text-gray-600 group-hover:text-green-600">
+                                  {service.description}
+                                </p>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-gray-50 rounded-lg p-8 text-center text-gray-600">
+                          Select a marketplace to view details
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {navigation.find(item => item.name === activeDropdown)?.submenu.map((subItem) => (
+                    <div key={subItem.name} className="group">
+                      <Link
+                        to={subItem.href}
+                        onClick={() => {
+                          setActiveDropdown(null)
+                          handleNavigation(subItem.href)
+                        }}
+                        className={`block w-full text-left p-4 rounded-lg transition-all duration-200 ${
+                          isActive(subItem.href)
+                            ? "text-green-700 bg-green-100"
+                            : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                        }`}
+                      >
+                        <h3 className="text-lg font-semibold mb-2">{subItem.name}</h3>
+                        <p className="text-sm text-gray-600 group-hover:text-green-700 transition-colors">
+                          Explore our {subItem.name.toLowerCase()}
+                        </p>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Navigation */}
+        <div
+          id="mobile-menu"
+          className={`lg:hidden bg-white shadow-md px-4 pt-4 pb-6 space-y-2 ${
+            isMenuOpen ? 'block' : 'hidden'
+          }`}
+          role="navigation"
+          aria-label="Mobile navigation"
+        >
+          {navigation.map((item) => (
+            <div key={item.name}>
+              {item.submenu ? (
+                <div>
+                  <button
+                    onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
+                    className={`w-full text-left px-4 py-2 rounded-lg text-base flex items-center justify-between ${
+                      isActive(item.submenu.find(sub => sub.href === pathname)?.href)
+                        ? "text-green-700 bg-green-100"
+                        : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                    }`}
                     aria-expanded={activeDropdown === item.name}
-                    aria-controls={`dropdown-${item.name}`}
-                    aria-haspopup="true"
+                    aria-controls={`mobile-dropdown-${item.name}`}
                   >
                     {item.name}
                     <ChevronDown 
-                      className={`ml-1 h-4 w-4 transition-transform duration-200 ${activeDropdown === item.name ? 'rotate-180' : ''}`}
+                      className={`h-4 w-4 transition-transform duration-200 ${
+                        activeDropdown === item.name ? 'rotate-180' : ''
+                      }`}
                       aria-hidden="true"
                     />
                   </button>
+                  <div
+                    id={`mobile-dropdown-${item.name}`}
+                    className={`ml-4 mt-2 space-y-1 transition-all duration-200 ${
+                      activeDropdown === item.name ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                    }`}
+                  >
+                    {item.submenu.map((subItem) => (
+                      <div key={subItem.name}>
+                        <Link
+                          to={subItem.href}
+                          onClick={() => {
+                            setActiveDropdown(null)
+                            setIsMenuOpen(false)
+                          }}
+                          className={`block w-full text-left px-4 py-2 rounded-lg text-sm ${
+                            isActive(subItem.href)
+                              ? "text-green-700 bg-green-100"
+                              : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                          }`}
+                        >
+                          {subItem.name}
+                        </Link>
+                        {subItem.hasMarketplaces && (
+                          <div className="ml-4 mt-2 space-y-1">
+                            {Object.entries(marketplaces).map(([key, marketplace]) => (
+                              <Link
+                                key={key}
+                                to={marketplace.href}
+                                onClick={() => {
+                                  setActiveDropdown(null)
+                                  setIsMenuOpen(false)
+                                }}
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-green-700"
+                              >
+                                {marketplace.name}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <Link
                   to={item.href}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap relative z-10 ${
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block w-full text-left px-4 py-2 rounded-lg text-base ${
                     isActive(item.href)
                       ? "text-green-700 bg-green-100"
-                      : "text-gray-600 hover:text-green-700 hover:bg-green-50"
-                  } flex items-center`}
+                      : "text-gray-700 hover:bg-green-50 hover:text-green-700"
+                  }`}
                 >
                   {item.name}
                 </Link>
               )}
             </div>
           ))}
-        </nav>
-
-        {/* Desktop Right Section */}
-        <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
-          <Link
-            to="/shop"
-            className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
-            aria-label="Visit our shop"
-          >
-            Shop
-          </Link>
-          <Link
-            to="/partnerlogin"
-            className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
-            aria-label="Partner login or signup"
-          >
-            Join Us
-          </Link>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="lg:hidden p-2 text-gray-600 hover:text-green-700"
-          aria-expanded={isMenuOpen}
-          aria-controls="mobile-menu"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        >
-          {isMenuOpen ? (
-            <X className="h-6 w-6" aria-hidden="true" />
-          ) : (
-            <Menu className="h-6 w-6" aria-hidden="true" />
-          )}
-        </button>
-      </div>
-
-      {/* Mega Menu */}
-      {activeDropdown && (
-        <div
-          ref={megaMenuRef}
-          className="fixed top-16 left-0 right-0 bg-white shadow-xl border-b border-gray-100 z-50 transition-all duration-300"
-          onMouseLeave={handleHeaderMouseLeave}
-        >
-          <div className="max-w-8xl mx-auto px-6 py-8">
-            {activeDropdown === "Partners" ? (
-              <div>
-                {/* Top Row - Main Menu Items */}
-                <div className="flex gap-6 mb-8">
-                  {navigation.find(item => item.name === activeDropdown)?.submenu.map((subItem) => (
-                    <Link
-                      key={subItem.name}
-                      to={subItem.href}
-                      onClick={() => handleMenuItemClick(subItem.href)}
-                      className={`block px-6 py-4 rounded-lg transition-all duration-200 ${
-                        isActive(subItem.href)
-                          ? "text-green-700 bg-green-100"
-                          : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                      }`}
-                    >
-                      <h3 className="text-lg font-semibold">{subItem.name}</h3>
-                    </Link>
-                  ))}
-                </div>
-
-                {/* Marketplace Content */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {/* Left Column - Marketplace List */}
-                  <div className="md:col-span-1">
-                    <div className="space-y-1 pl-4">
-                      {Object.entries(marketplaces).map(([key, marketplace]) => (
-                        <div
-                          key={key}
-                          onMouseEnter={() => handleMarketplaceHover(key)}
-                          onClick={() => handleMenuItemClick(marketplace.href)}
-                          className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                            activeMarketplace === key
-                              ? "bg-green-100 text-green-700 shadow-sm"
-                              : "hover:bg-green-50 hover:text-green-600"
-                          }`}
-                        >
-                          <span className="font-medium">{marketplace.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Right Column - Marketplace Details */}
-                  <div className={`md:col-span-2 transition-all duration-300 ${
-                    activeMarketplace ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
-                  }`}>
-                    {activeMarketplace && (
-                      <div className="bg-gray-50 rounded-lg p-8">
-                        {/* Marketplace Logo */}
-                        <div className="mb-8 flex justify-center">
-                          <img 
-                            src={`/marketplace-logos/${activeMarketplace}.png`} 
-                            alt={`${marketplaces[activeMarketplace].name} logo`}
-                            className="h-16 object-contain"
-                          />
-                        </div>
-                        
-                        {/* Services Grid */}
-                        <div className="grid grid-cols-3 gap-8">
-                          {marketplaces[activeMarketplace].services.map((service, index) => (
-                            <Link
-                              key={index}
-                              to={marketplaces[activeMarketplace].href}
-                              onClick={() => handleMenuItemClick(marketplaces[activeMarketplace].href)}
-                              className="block p-6 rounded-lg bg-white hover:shadow-lg transition-all duration-300 group text-center h-full border border-gray-100 hover:border-green-100"
-                            >
-                              <h4 className="font-semibold text-gray-900 group-hover:text-green-700 mb-3 text-lg">
-                                {service.title}
-                              </h4>
-                              <p className="text-sm text-gray-600 group-hover:text-green-600">
-                                {service.description}
-                              </p>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {navigation.find(item => item.name === activeDropdown)?.submenu.map((subItem) => (
-                  <div key={subItem.name} className="group">
-                    <Link
-                      to={subItem.href}
-                      onClick={() => {
-                        setActiveDropdown(null)
-                        handleNavigation(subItem.href)
-                      }}
-                      className={`block w-full text-left p-4 rounded-lg transition-all duration-200 ${
-                        isActive(subItem.href)
-                          ? "text-green-700 bg-green-100"
-                          : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                      }`}
-                    >
-                      <h3 className="text-lg font-semibold mb-2">{subItem.name}</h3>
-                      <p className="text-sm text-gray-600 group-hover:text-green-700 transition-colors">
-                        Explore our {subItem.name.toLowerCase()}
-                      </p>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            )}
+          
+          {/* Mobile Action Buttons */}
+          <div className="mt-4 space-y-2">
+            <Link
+              to="/shop"
+              onClick={() => setIsMenuOpen(false)}
+              className="block w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 text-sm"
+              aria-label="Visit our shop"
+            >
+              Shop
+            </Link>
+            <Link
+              to="/partnerlogin"
+              onClick={() => setIsMenuOpen(false)}
+              className="block w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 text-sm"
+              aria-label="Partner login or signup"
+            >
+              Join Us
+            </Link>
           </div>
         </div>
-      )}
-
-      {/* Mobile Navigation */}
-      <div
-        id="mobile-menu"
-        className={`lg:hidden bg-white shadow-md px-4 pt-4 pb-6 space-y-2 ${
-          isMenuOpen ? 'block' : 'hidden'
-        }`}
-        role="navigation"
-        aria-label="Mobile navigation"
-      >
-        {navigation.map((item) => (
-          <div key={item.name}>
-            {item.submenu ? (
-              <div>
-                <button
-                  onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
-                  className={`w-full text-left px-4 py-2 rounded-lg text-base flex items-center justify-between ${
-                    isActive(item.submenu.find(sub => sub.href === pathname)?.href)
-                      ? "text-green-700 bg-green-100"
-                      : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                  }`}
-                  aria-expanded={activeDropdown === item.name}
-                  aria-controls={`mobile-dropdown-${item.name}`}
-                >
-                  {item.name}
-                  <ChevronDown 
-                    className={`h-4 w-4 transition-transform duration-200 ${
-                      activeDropdown === item.name ? 'rotate-180' : ''
-                    }`}
-                    aria-hidden="true"
-                  />
-                </button>
-                <div
-                  id={`mobile-dropdown-${item.name}`}
-                  className={`ml-4 mt-2 space-y-1 transition-all duration-200 ${
-                    activeDropdown === item.name ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-                  }`}
-                >
-                  {item.submenu.map((subItem) => (
-                    <div key={subItem.name}>
-                      <Link
-                        to={subItem.href}
-                        onClick={() => {
-                          setActiveDropdown(null)
-                          setIsMenuOpen(false)
-                        }}
-                        className={`block w-full text-left px-4 py-2 rounded-lg text-sm ${
-                          isActive(subItem.href)
-                            ? "text-green-700 bg-green-100"
-                            : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                        }`}
-                      >
-                        {subItem.name}
-                      </Link>
-                      {subItem.hasMarketplaces && (
-                        <div className="ml-4 mt-2 space-y-1">
-                          {Object.entries(marketplaces).map(([key, marketplace]) => (
-                            <Link
-                              key={key}
-                              to={marketplace.href}
-                              onClick={() => {
-                                setActiveDropdown(null)
-                                setIsMenuOpen(false)
-                              }}
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-green-700"
-                            >
-                              {marketplace.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <Link
-                to={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block w-full text-left px-4 py-2 rounded-lg text-base ${
-                  isActive(item.href)
-                    ? "text-green-700 bg-green-100"
-                    : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                }`}
-              >
-                {item.name}
-              </Link>
-            )}
-          </div>
-        ))}
-        
-        {/* Mobile Action Buttons */}
-        <div className="mt-4 space-y-2">
-          <Link
-            to="/shop"
-            onClick={() => setIsMenuOpen(false)}
-            className="block w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 text-sm"
-            aria-label="Visit our shop"
-          >
-            Shop
-          </Link>
-          <Link
-            to="/partnerlogin"
-            onClick={() => setIsMenuOpen(false)}
-            className="block w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 text-sm"
-            aria-label="Partner login or signup"
-          >
-            Join Us
-          </Link>
-        </div>
-      </div>
-    </header>
+      </header>
+    </ErrorBoundary>
   )
 }
 
