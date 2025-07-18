@@ -120,6 +120,66 @@ const Header = () => {
           description: "Boost Your Business with Effective Review Management"
         }
       ]
+    },
+    indiamart: {
+      name: "IndiaMART",
+      href: "/partners/marketplaces/indiamart",
+      services: [
+        {
+          title: "Account Management",
+          description: "Comprehensive B2B account management and optimization services"
+        },
+        {
+          title: "Lead Management",
+          description: "Advanced lead tracking, qualification, and response management system"
+        },
+        {
+          title: "Catalog Optimization",
+          description: "Professional product catalog creation and optimization for B2B visibility"
+        },
+        {
+          title: "Buy Lead Subscription",
+          description: "Strategic management of buy leads and subscription optimization"
+        },
+        {
+          title: "Premium Listing",
+          description: "Enhanced visibility with premium listing and category-specific optimization"
+        },
+        {
+          title: "Business Analytics",
+          description: "Detailed analytics and insights for better business decision making"
+        }
+      ]
+    },
+    snapdeal: {
+      name: "Snapdeal",
+      href: "/partners/marketplaces/snapdeal",
+      services: [
+        {
+          title: "Account Management",
+          description: "Complete Snapdeal seller account setup and management"
+        },
+        {
+          title: "Catalog Management",
+          description: "Professional product listing and catalog optimization"
+        },
+        {
+          title: "Order Processing",
+          description: "Streamlined order management and fulfillment services"
+        },
+        {
+          title: "Performance Marketing",
+          description: "Targeted advertising and promotion strategies"
+        },
+        {
+          title: "Analytics & Reporting",
+          description: "Comprehensive performance tracking and business insights"
+        },
+        {
+          title: "Competitor Analysis",
+          description: "Detailed market research and competitive positioning"
+        }
+      ]
     }
   }
 
