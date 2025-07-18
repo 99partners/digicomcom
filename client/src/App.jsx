@@ -66,6 +66,8 @@ import Flipkart from './pages/marketplaces/Flipkart';
 import ONDC from './pages/marketplaces/ONDC';
 import JioMart from './pages/marketplaces/JioMart';
 import Meesho from './pages/marketplaces/Meesho';
+import IndiaMART from './pages/marketplaces/IndiaMART';
+import Snapdeal from './pages/marketplaces/Snapdeal';
 
 function App() {
   return (
@@ -158,6 +160,8 @@ function App() {
             <Route path="/partners/marketplaces/ondc" element={<ONDC />} />
             <Route path="/partners/marketplaces/jiomart" element={<JioMart />} />
             <Route path="/partners/marketplaces/meesho" element={<Meesho />} />
+            <Route path="/partners/marketplaces/indiamart" element={<IndiaMART />} />
+            <Route path="/partners/marketplaces/snapdeal" element={<Snapdeal />} />
             <Route path="/services/advertising_marketing" element={<AdvertisingMarketing />} />    
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/coBranding" element={<CoBranding />} />
