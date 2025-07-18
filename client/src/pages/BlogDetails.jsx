@@ -130,7 +130,7 @@ const BlogDetails = () => {
 
             {/* Content */}
             <article 
-              className="prose prose-lg max-w-none prose-green"
+              className="prose prose-lg max-w-none prose-green prose-p:my-4 prose-p:text-gray-700 prose-headings:text-gray-900 prose-img:rounded-lg prose-img:shadow-md"
               itemScope
               itemType="http://schema.org/BlogPosting"
             >
@@ -140,7 +140,12 @@ const BlogDetails = () => {
               <meta itemProp="image" content={blog.image} />
               <div 
                 itemProp="articleBody"
-                dangerouslySetInnerHTML={{ __html: blog.content }} 
+                className="blog-content"
+                dangerouslySetInnerHTML={{ 
+                  __html: blog.content.split('\n').map(paragraph => 
+                    paragraph.trim() ? `<p>${paragraph}</p>` : ''
+                  ).join('')
+                }} 
               />
             </article>
           </div>
