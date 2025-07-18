@@ -418,7 +418,7 @@ const Header = () => {
               {activeDropdown === "Partners" ? (
                 <div>
                   {/* Top Row - Main Menu Items */}
-                  <div className="flex gap-6 mb-8">
+                  <div className="grid grid-cols-3 gap-8">
                     {navigation.find(item => item.name === activeDropdown)?.submenu.map((subItem) => (
                       <Link
                         key={subItem.name}
@@ -430,7 +430,10 @@ const Header = () => {
                             : "text-gray-700 hover:bg-green-50 hover:text-green-700"
                         }`}
                       >
-                        <h3 className="text-lg font-semibold">{subItem.name}</h3>
+                        <h3 className="font-semibold text-gray-900 group-hover:text-green-700 mb-3 text-lg">{subItem.name}</h3>
+                        <p className="text-sm text-gray-600 group-hover:text-green-700 transition-colors">
+                          Explore our {subItem.name.toLowerCase()}
+                        </p>
                       </Link>
                     ))}
                   </div>
@@ -485,9 +488,9 @@ const Header = () => {
                                 onClick={() => handleMenuItemClick(marketplaces[activeMarketplace].href)}
                                 className="block p-6 rounded-lg bg-white hover:shadow-lg transition-all duration-300 group text-center h-full border border-gray-100 hover:border-green-100"
                               >
-                                <h4 className="font-semibold text-gray-900 group-hover:text-green-700 mb-3 text-lg">
+                                <h3 className="font-semibold text-gray-900 group-hover:text-green-700 mb-3 text-lg">
                                   {service.title}
-                                </h4>
+                                </h3>
                                 <p className="text-sm text-gray-600 group-hover:text-green-600">
                                   {service.description}
                                 </p>
