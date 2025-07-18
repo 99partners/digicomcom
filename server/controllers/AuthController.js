@@ -77,7 +77,7 @@ export const register = async (req, res)=>{
     }
 }
 
-export const login = async(req, res)=>{
+export const login = async(req, res) => {
     const {email, password} = req.body;
 
     if(!email || !password){
@@ -108,13 +108,14 @@ export const login = async(req, res)=>{
 
         const token = jwt.sign({id: user._id}, jwtSecret, {expiresIn: '1d'})
 
-        // Set cookie with proper domain in production
+        // Set cookie with proper settings for cross-origin
         const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             maxAge: 24 * 60 * 60 * 1000, // 1 day
-            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined
+            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined,
+            path: '/'
         };
 
         res.cookie('token', token, cookieOptions);
@@ -140,20 +141,21 @@ export const login = async(req, res)=>{
     }
 }
 
-export const logout = (req, res)=>{
+export const logout = (req, res) => {
     try {
         const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined
+            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined,
+            path: '/'
         };
 
         res.clearCookie('token', cookieOptions);
-        return res.json({success:true, message:"Logged Out Successfully"});
+        return res.json({success: true, message: "Logged Out Successfully"});
     } catch (err) {
         console.error('Logout error:', err);
-        res.status(500).json({success:false, message: err.message});
+        res.status(500).json({success: false, message: err.message});
     }
 }
 
@@ -281,13 +283,101 @@ export const verifyEmail = async(req, res)=>{
 
 
 //check user is Authenticated or not.
-export const isAuthenticated = async(req, res)=>{
+export const isAuthenticated = async(req, res) => {
     try {
-        return res.json({success:true})
-    }catch(error) {
-        return res.json({success:false, message: error.message})
+        // Get user from token (set by userAuth middleware)
+        const user = await userModel.findById(req.user.id).select('-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt');
+        
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.json({
+            success: true,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                isAccountVerified: user.isAccountVerified
+            }
+        });
+    } catch(error) {
+        console.error('Auth check error:', error);
+        return res.status(401).json({
+            success: false,
+            message: error.message
+        });
     }
 }
+
+export const isAuth = async (req, res) => {
+    try {
+        // Check for token in Authorization header first
+        const authHeader = req.headers.authorization;
+        let token;
+
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            token = authHeader.split(' ')[1];
+        } else {
+            token = req.cookies.token;
+        }
+
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: "Not authenticated"
+            });
+        }
+
+        // Use consistent JWT secret
+        const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+        if (!jwtSecret) {
+            console.error('JWT secret is not configured');
+            return res.status(500).json({
+                success: false,
+                message: "Server configuration error"
+            });
+        }
+
+        const decoded = jwt.verify(token, jwtSecret);
+        const user = await userModel.findById(decoded.id).select('-password');
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.json({
+            success: true,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                isAccountVerified: user.isAccountVerified
+            }
+        });
+
+    } catch (error) {
+        console.error('Auth check error:', error);
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid or expired token"
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            message: "Server error during authentication check"
+        });
+    }
+};
 
 //send RESET PASSWORD OTP to user email
 export const sendRestOtp = async(req, res)=>{
