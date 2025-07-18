@@ -37,8 +37,8 @@ import ForProductPartners from './pages/whyPartners';
 import PartnerCommitments from './pages/ourPartners';
 import PartnersOnboarding from './pages/partnersOnboarding';
 import PlatformEnablement from './pages/platformEnable';
-import ECommerce from './pages/eCommerce';
 import AccountManagementServices from './pages/ams';
+import AdvertisingMarketing from './pages/advertising_marketing';
 import Blogs from './pages/blogs';
 import CaseStudies from './pages/caseStudies';
 import GuidesTutorials from './pages/guidesTutorials';
@@ -148,7 +148,7 @@ function App() {
             <Route path="/partners/whyPartners" element={<ForProductPartners />} />
             <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
             <Route path="/partners/partnersOnboarding" element={<PartnersOnboarding />} />
-            <Route path="/services/eCommerce" element={<ECommerce />} />    
+            <Route path="/services/advertising_marketing" element={<AdvertisingMarketing />} />    
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/coBranding" element={<CoBranding />} />
             <Route path="/services/platformEnable" element={<PlatformEnablement />} />
