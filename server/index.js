@@ -43,8 +43,6 @@ const allowedOrigins = [
     'https://99digicom.com',
     'https://www.99digicom.com',
     'https://api.99digicom.com',
-    'https://99partners.in',
-    'https://www.99partners.in',
     ...(process.env.NODE_ENV !== 'production' ? [
         'http://localhost:5173',
         'http://localhost:5050',
