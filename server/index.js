@@ -41,8 +41,8 @@ app.use(cookieParser());
 // CORS Configuration - Manual implementation to prevent duplicate headers
 const allowedOrigins = [
     'https://99digicom.com',
-    'https://www.99digicom.com',
-    'https://api.99digicom.com',
+    // 'https://www.99digicom.com',
+    // 'https://api.99digicom.com',
     ...(process.env.NODE_ENV !== 'production' ? [
         'http://localhost:5173',
         'http://localhost:5050',
