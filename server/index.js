@@ -41,8 +41,8 @@ app.use(cookieParser());
 // CORS Configuration - Manual implementation to prevent duplicate headers
 const allowedOrigins = [
     'https://99digicom.com',
-    // 'https://www.99digicom.com',
-    // 'https://api.99digicom.com',
+    'https://www.99digicom.com',
+    'https://api.99digicom.com',
     ...(process.env.NODE_ENV !== 'production' ? [
         'http://localhost:5173',
         'http://localhost:5050',
@@ -61,20 +61,14 @@ app.use((req, res, next) => {
     console.log('🔍 Request from origin:', origin, 'Method:', req.method);
     
     // Check if origin is allowed
-    if (!origin || allowedOrigins.includes(origin)) {
-        // Set CORS headers only once
-        if (origin) {
-            res.setHeader('Access-Control-Allow-Origin', origin);
-            console.log('✅ Origin allowed:', origin);
-        }
-        
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
         
         // Handle preflight requests
         if (req.method === 'OPTIONS') {
-            console.log('🔍 Handling preflight request');
             res.status(200).end();
             return;
         }
