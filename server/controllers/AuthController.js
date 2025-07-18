@@ -283,36 +283,77 @@ export const verifyEmail = async(req, res)=>{
 
 
 //check user is Authenticated or not.
-export const isAuthenticated = async(req, res) => {
-    try {
-        // Get user from token (set by userAuth middleware)
-        const user = await userModel.findById(req.user.id).select('-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt');
+// export const isAuthenticated = async(req, res) => {
+//     try {
+//         // Get user from token (set by userAuth middleware)
+//         const user = await userModel.findById(req.user.id).select('-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt');
         
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: "User not found"
-            });
-        }
+//         if (!user) {
+//             return res.status(401).json({
+//                 success: false,
+//                 message: "User not found"
+//             });
+//         }
 
-        return res.json({
-            success: true,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                phone: user.phone,
-                isAccountVerified: user.isAccountVerified
-            }
-        });
-    } catch(error) {
-        console.error('Auth check error:', error);
+//         return res.json({
+//             success: true,
+//             user: {
+//                 id: user._id,
+//                 name: user.name,
+//                 email: user.email,
+//                 phone: user.phone,
+//                 isAccountVerified: user.isAccountVerified
+//             }
+//         });
+//     } catch(error) {
+//         console.error('Auth check error:', error);
+//         return res.status(401).json({
+//             success: false,
+//             message: error.message
+//         });
+//     }
+// }
+
+export const isAuthenticated = async (req, res) => {
+    try {
+      if (!req.user || !req.user.id) {
+        console.warn('Unauthorized access attempt - missing req.user');
         return res.status(401).json({
-            success: false,
-            message: error.message
+          success: false,
+          message: 'Unauthorized - token missing or invalid',
         });
+      }
+  
+      const user = await userModel
+        .findById(req.user.id)
+        .select('-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt');
+  
+      if (!user) {
+        console.warn('User not found for ID:', req.user.id);
+        return res.status(404).json({
+          success: false,
+          message: 'User not found',
+        });
+      }
+  
+      return res.json({
+        success: true,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          isAccountVerified: user.isAccountVerified,
+        },
+      });
+    } catch (error) {
+      console.error('Auth check error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error during auth check',
+      });
     }
-}
+  };
 
 export const isAuth = async (req, res) => {
     try {
