@@ -16,6 +16,10 @@ import {
   Share2,
 } from "lucide-react";
 import { Helmet } from 'react-helmet';
+import COB1 from "../assets/COB1.png";
+import COB2 from "../assets/COB2.png";
+import COB3 from "../assets/COB3.png";
+import COB4 from "../assets/COB4.png";
 
 export default function CoBranding() {
   useEffect(() => {
@@ -157,28 +161,37 @@ export default function CoBranding() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
               {[
                 {
-                  icon: <Gift className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />,
                   title: "Niche Product Collaborations",
-                  description: "Create unique product offerings through strategic partnerships."
+                  description: "Create unique product offerings through strategic partnerships.",
+                  image: COB1
                 },
                 {
-                  icon: <Users className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />,
                   title: "Shared Loyalty Programs",
-                  description: "Build customer loyalty across complementary brands."
+                  description: "Build customer loyalty across complementary brands.",
+                  image: COB2
                 },
                 {
-                  icon: <ShoppingCart className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />,
                   title: "Co-branded Storefronts",
-                  description: "Create unified digital shopping experiences."
+                  description: "Create unified digital shopping experiences.",
+                  image: COB3
                 },
                 {
-                  icon: <Share2 className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />,
                   title: "Co-created Content",
-                  description: "Develop engaging campaigns that resonate with both audiences."
+                  description: "Develop engaging campaigns that resonate with both audiences.",
+                  image: COB4
                 }
               ].map((item, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6" role="listitem">
-                  {item.icon}
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${item.image}`);
+                      e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
+                    }}
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
                   <p className="text-gray-600 text-sm">{item.description}</p>
                 </div>

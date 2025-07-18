@@ -18,6 +18,7 @@ import AMS1 from '../assets/AMS1.png';
 import AMS2 from '../assets/AMS2.png'; 
 import AMS3 from '../assets/AMS3.png';
 import AMS4 from '../assets/AMS4.png';
+
 export default function AccountManagementServices() {
   useEffect(() => {
     window.scrollTo(0, 0);
