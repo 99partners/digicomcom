@@ -19,7 +19,7 @@ const Header = () => {
       name: "Services",
       submenu: [
         { name: "Platform Enablement", href: "/services/platformEnable" },
-        { name: "AMS", href: "/services/ams" },
+        { name: "Account Management Service", href: "/services/ams" },
         { name: "Advertising & Marketing", href: "/services/advertising_marketing" },
         { name: "Co-Branding", href: "/services/coBranding" },
       ],
@@ -28,7 +28,7 @@ const Header = () => {
       name: "Partners",
       submenu: [
         { name: "Our Partners", href: "/partners/ourPartners" },
-        { name: "Why Partners", href: "/partners/whyPartners" },
+        { name: "Why Partners With Us?", href: "/partners/whyPartners" },
         { name: "Partners Onboarding", href: "/partners/partnersOnboarding" },
       ],
     },
