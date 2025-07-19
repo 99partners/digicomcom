@@ -153,7 +153,10 @@ axiosInstance.interceptors.response.use(
 
     // Handle authentication errors
     if (error.response?.status === 401) {
-      if (originalRequest.url?.includes('/api/admin')) {
+      // Check if this is an admin route or admin user context
+      const isAdminRoute = originalRequest.url?.includes('/api/admin') || window.location.pathname.startsWith('/admin');
+      
+      if (isAdminRoute) {
         localStorage.removeItem('adminToken');
         // Only redirect if not already on admin login page
         if (!window.location.pathname.includes('/admin/login')) {

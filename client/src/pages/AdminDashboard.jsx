@@ -3,6 +3,7 @@ import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
 import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
 import BlogManagement from '../components/admin/BlogManagement';
 import BlogForm from '../components/admin/BlogForm';
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [showUserForm, setShowUserForm] = useState(false);
     const navigate = useNavigate();
+    const { handleLogout: authLogout } = useAuth();
 
     useEffect(() => {
         console.log('AdminDashboard mounted, fetching data...');
@@ -63,10 +65,30 @@ const AdminDashboard = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post('/api/admin/logout');
-            navigate('/admin/login');
+            // Clear authentication state first
+            authLogout();
+            
+            // Clear admin token from localStorage
+            localStorage.removeItem('adminToken');
+            
+            // Call logout API (this may fail if token is already invalid, but that's okay)
+            try {
+                await axiosInstance.post('/api/admin/logout');
+            } catch (apiError) {
+                // API logout failed, but we've already cleared local state
+                console.log('Admin logout API call failed, but local logout completed');
+            }
+            
+            // Navigate to admin login page
+            navigate('/', { replace: true });
+            toast.success('Logged out successfully');
         } catch (error) {
-            toast.error('Logout failed');
+            console.error('Logout error:', error);
+            // Even if there's an error, clear local state and redirect
+            authLogout();
+            localStorage.removeItem('adminToken');
+            navigate('/admin/login', { replace: true });
+            toast.error('Logout completed with errors');
         }
     };
 
