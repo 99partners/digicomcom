@@ -431,46 +431,7 @@ export default function AdvertisingMarketing() {
           </div>
         </section>
 
-        {/* Call to Action */}
-        <section className="py-16 px-4 bg-white">
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-green-50 rounded-lg p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Start Your Campaign Today – ₹4,999
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Ready to drive sales? Get started with our tailored
-                  advertising campaigns designed for e-commerce success.
-                </p>
-                <a
-                  href="#get-started"
-                  className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-                >
-                  Get Started Now
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
-              </div>
-              <div className="bg-green-50 rounded-lg p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Free Consultation
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Unsure where to start? Book a free consultation with our
-                  experts and discover the best strategy for your business.
-                </p>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-                >
-                  Book Consultation
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
+    
         {/* FAQs with Expandable Sections */}
         <section className="py-16 px-4 bg-green-50">
           <div className="max-w-3xl mx-auto">
