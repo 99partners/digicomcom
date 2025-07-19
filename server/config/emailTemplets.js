@@ -475,3 +475,243 @@ export const sendEmail = async (transporter, mailOptions) => {
     }
 };
 
+export const SERVICE_APPROVAL_TEMPLATE = `
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>Service Application Approved</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: #E5E5E5;
+    }
+
+    table, td {
+      border-collapse: collapse;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #22D172 0%, #1ea565 100%);
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .main-content {
+      padding: 40px 30px;
+      color: #333333;
+    }
+
+    .approval-badge {
+      background: #22D172;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .service-details {
+      background: #f8f9fa;
+      border-left: 4px solid #22D172;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .next-steps {
+      background: #e7f3ff;
+      border: 1px solid #b3d9ff;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .contact-section {
+      background: #fff8e1;
+      border: 1px solid #ffcc02;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .button {
+      background: #22D172;
+      color: #ffffff;
+      text-decoration: none;
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .footer {
+      background: #f8f9fa;
+      padding: 30px;
+      text-align: center;
+      color: #666666;
+      font-size: 14px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .contact-info {
+      margin: 15px 0;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e9ecef;
+      margin: 25px 0;
+    }
+
+    @media only screen and (max-width: 480px) {
+      .container {
+        width: 95% !important;
+        margin: 10px auto;
+      }
+      
+      .main-content {
+        padding: 20px 15px;
+      }
+      
+      .header {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" bgcolor="#E5E5E5">
+    <tbody>
+      <tr>
+        <td valign="top" align="center" style="padding: 20px;">
+          <table class="container" cellspacing="0" cellpadding="0" border="0">
+            <!-- Header -->
+            <tbody>
+              <tr>
+                <td class="header">
+                  <h1>🎉 Application Approved!</h1>
+                </td>
+              </tr>
+              
+              <!-- Main Content -->
+              <tr>
+                <td class="main-content">
+                  <div class="approval-badge">✅ APPROVED</div>
+                  
+                  <h2 style="margin: 0 0 15px; color: #333; font-size: 20px;">
+                    Congratulations {{userName}}!
+                  </h2>
+                  
+                  <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6;">
+                    Great news! Your <strong>{{serviceType}}</strong> application has been <strong style="color: #22D172;">approved</strong> by our team.
+                  </p>
+
+                  <div class="service-details">
+                    <h3 style="margin: 0 0 15px; color: #22D172; font-size: 16px;">
+                      📋 Approved Application Details
+                    </h3>
+                    <p style="margin: 0 0 8px;"><strong>Service Type:</strong> {{serviceType}}</p>
+                    <p style="margin: 0 0 8px;"><strong>Application ID:</strong> {{applicationId}}</p>
+                    <p style="margin: 0 0 8px;"><strong>Approved On:</strong> {{approvalDate}}</p>
+                    <p style="margin: 0;"><strong>Status:</strong> <span style="color: #22D172; font-weight: 600;">Approved</span></p>
+                  </div>
+
+                  <div class="next-steps">
+                    <h3 style="margin: 0 0 15px; color: #0066cc; font-size: 16px;">
+                      🚀 What Happens Next?
+                    </h3>
+                    <ul style="margin: 0; padding-left: 20px; line-height: 1.8;">
+                      <li>Our onboarding team will contact you within <strong>24 hours</strong></li>
+                      <li>You'll receive detailed setup instructions and documentation</li>
+                      <li>A dedicated account manager will be assigned to your project</li>
+                      <li>We'll schedule a kickoff meeting to discuss implementation</li>
+                      <li>You'll get access to our partner portal and resources</li>
+                    </ul>
+                  </div>
+
+                  <div class="contact-section">
+                    <h3 style="margin: 0 0 15px; color: #d68910; font-size: 16px;">
+                      📞 Get Ready for Next Steps
+                    </h3>
+                    <p style="margin: 0 0 10px; line-height: 1.6;">
+                      Our team will reach out to you shortly to begin the onboarding process. In the meantime:
+                    </p>
+                    <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+                      <li>Keep your contact information updated</li>
+                      <li>Prepare any additional documentation we might need</li>
+                      <li>Check your email regularly for updates</li>
+                    </ul>
+                  </div>
+
+                  <div class="divider"></div>
+
+                  <p style="margin: 0 0 20px; font-size: 14px; line-height: 1.6; color: #666;">
+                    Thank you for choosing 99DigiCom as your digital commerce partner. We're excited to help you grow your business!
+                  </p>
+
+                  <div style="text-align: center;">
+                    <a href="https://99digicom.com/dashboard" class="button">
+                      📊 View Dashboard
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              
+              <!-- Footer -->
+              <tr>
+                <td class="footer">
+                  <div class="contact-info">
+                    <p style="margin: 0 0 10px; font-weight: 600;">Questions? We're Here to Help!</p>
+                    <p style="margin: 0 0 5px;">📧 Email: <a href="mailto:support@99digicom.com" style="color: #22D172;">support@99digicom.com</a></p>
+                    <p style="margin: 0 0 5px;">📞 Phone: +91-XXXXXXXXXX</p>
+                    <p style="margin: 0 0 5px;">🌐 Website: <a href="https://99digicom.com" style="color: #22D172;">99digicom.com</a></p>
+                  </div>
+                  
+                  <div class="divider"></div>
+                  
+                  <p style="margin: 0; font-size: 12px; color: #999;">
+                    © 2024 99DigiCom. All rights reserved.<br>
+                    This email was sent to {{userEmail}} regarding your service application.
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
+`
+
