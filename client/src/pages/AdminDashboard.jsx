@@ -148,7 +148,10 @@ const AdminDashboard = () => {
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
+                                            <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Platform Enable</th>
+                                            <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">AMS</th>
+                                            <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Marketing Services</th>
+                                            <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Co-branding</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified</th>
                                         </tr>
                                     </thead>
@@ -164,20 +167,41 @@ const AdminDashboard = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-500">{user.phone}</div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-500">
-                                                        {user.services?.length > 0 ? (
-                                                            <div className="flex flex-wrap gap-1">
-                                                                {user.services.map((service, index) => (
-                                                                    <span key={index} className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
-                                                                        {service}
-                                                                    </span>
-                                                                ))}
-                                                            </div>
-                                                        ) : (
-                                                            <span className="text-gray-400">No services</span>
-                                                        )}
-                                                    </div>
+                                                <td className="px-3 py-4 whitespace-nowrap text-center">
+                                                    <span className={`inline-flex items-center justify-center w-8 h-8 text-sm font-semibold rounded-full ${
+                                                        user.serviceCounts?.platformEnable > 0 
+                                                            ? 'bg-blue-100 text-blue-800' 
+                                                            : 'bg-gray-100 text-gray-500'
+                                                    }`}>
+                                                        {user.serviceCounts?.platformEnable || 0}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 py-4 whitespace-nowrap text-center">
+                                                    <span className={`inline-flex items-center justify-center w-8 h-8 text-sm font-semibold rounded-full ${
+                                                        user.serviceCounts?.ams > 0 
+                                                            ? 'bg-green-100 text-green-800' 
+                                                            : 'bg-gray-100 text-gray-500'
+                                                    }`}>
+                                                        {user.serviceCounts?.ams || 0}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 py-4 whitespace-nowrap text-center">
+                                                    <span className={`inline-flex items-center justify-center w-8 h-8 text-sm font-semibold rounded-full ${
+                                                        user.serviceCounts?.marketing > 0 
+                                                            ? 'bg-purple-100 text-purple-800' 
+                                                            : 'bg-gray-100 text-gray-500'
+                                                    }`}>
+                                                        {user.serviceCounts?.marketing || 0}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 py-4 whitespace-nowrap text-center">
+                                                    <span className={`inline-flex items-center justify-center w-8 h-8 text-sm font-semibold rounded-full ${
+                                                        user.serviceCounts?.coBranding > 0 
+                                                            ? 'bg-orange-100 text-orange-800' 
+                                                            : 'bg-gray-100 text-gray-500'
+                                                    }`}>
+                                                        {user.serviceCounts?.coBranding || 0}
+                                                    </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
