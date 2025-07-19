@@ -1,4 +1,7 @@
 import CoBrandingModel from '../models/CoBrandingModel.js';
+import userModel from '../models/UserModel.js';
+import transporter from '../config/nodemailer.js';
+import { SERVICE_FORM_CONFIRMATION_TEMPLATE } from '../config/emailTemplets.js';
 
 export const submitCoBrandingForm = async (req, res) => {
     try {
@@ -42,6 +45,54 @@ export const submitCoBrandingForm = async (req, res) => {
         // Save to database
         await newApplication.save();
         console.log('Co-branding application saved:', newApplication);
+
+        // Send confirmation email to user
+        try {
+            const user = await userModel.findById(userId);
+            if (user) {
+                // Create service-specific details for Co-branding
+                const productCategoriesText = Array.isArray(productCategories) ? 
+                    productCategories.join(', ') : 
+                    (productCategories || 'Not specified');
+
+                const serviceSpecificDetails = `
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e9ecef;">
+                        <p style="margin: 0 0 8px;"><strong>Manufacturer:</strong> ${isManufacturer ? 'Yes' : 'No'}</p>
+                        ${establishmentYear ? `<p style="margin: 0 0 8px;"><strong>Establishment Year:</strong> ${establishmentYear}</p>` : ''}
+                        ${companyName ? `<p style="margin: 0 0 8px;"><strong>Company Name:</strong> ${companyName}</p>` : ''}
+                        <p style="margin: 0 0 8px;"><strong>Number of Products:</strong> ${numberOfProducts}</p>
+                        <p style="margin: 0 0 8px;"><strong>Product Categories:</strong> ${productCategoriesText}</p>
+                        ${panNumber ? `<p style="margin: 0;"><strong>PAN Number:</strong> ${panNumber}</p>` : ''}
+                    </div>`;
+
+                const emailContent = SERVICE_FORM_CONFIRMATION_TEMPLATE
+                    .replace(/{{userName}}/g, user.name)
+                    .replace(/{{userEmail}}/g, user.email)
+                    .replace(/{{serviceType}}/g, 'Co-Branding Partnership')
+                    .replace(/{{applicationId}}/g, newApplication._id.toString())
+                    .replace(/{{submissionDate}}/g, new Date().toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }))
+                    .replace(/{{serviceSpecificDetails}}/g, serviceSpecificDetails);
+
+                const mailOptions = {
+                    from: process.env.SENDER_EMAIL,
+                    to: user.email,
+                    subject: '✅ Co-Branding Application Received - Next Steps Inside',
+                    html: emailContent
+                };
+
+                await transporter.sendMail(mailOptions);
+                console.log('Co-branding confirmation email sent to:', user.email);
+            }
+        } catch (emailError) {
+            console.error('Error sending co-branding confirmation email:', emailError);
+            // Don't fail the whole request if email fails
+        }
 
         res.status(200).json({
             success: true,
