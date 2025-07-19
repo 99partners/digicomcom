@@ -335,10 +335,10 @@ import SEO from '../components/SEO';
 import amazonLogo from '../assets/Amazon.png';
 import flipkartLogo from '../assets/Flipkart.png';
 import jiomartLogo from '../assets/Jiomart.png';
-import zeptoLogo from '../assets/Indiamart.png';
-import blinkitLogo from '../assets/Indiamart.png';
-import swiggyLogo from '../assets/Indiamart.png';
-import zomatoLogo from '../assets/Indiamart.png';
+import zeptoLogo from '../assets/Zepto.png';
+import blinkitLogo from '../assets/Blinkit.png';
+import swiggyLogo from '../assets/Swiggy.png';
+import zomatoLogo from '../assets/Meesho1.png';
 
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
@@ -465,12 +465,12 @@ const Home = () => {
                 {[...marketplaceLogos, ...marketplaceLogos].map((logo, index) => (
                   <div
                     key={`${logo.name}-${index}`}
-                    className="flex-shrink-0 mx-2 sm:mx-3 flex items-center justify-center bg-white p-3 sm:p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+                    className="flex-shrink-0 mx-2 xl:mx-3 flex items-center justify-center bg-white p-3 sm:p-4 hover:shadow-lg transition-shadow duration-300"
                   >
                     <img
                       src={logo.src}
                       alt={logo.alt}
-                      className="h-12 w-12 sm:h-16 sm:w-16 object-contain"
+                      className="h-40 w-40 sm:h-16 sm:w-16 object-contain"
                       loading="lazy"
                     />
                   </div>
