@@ -28,6 +28,15 @@ const Notifications = () => {
         fetchNotifications();
     }, [page, filter]);
 
+    // Auto-refresh notifications every 30 seconds to show scheduled notifications
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchNotifications();
+        }, 30000);
+
+        return () => clearInterval(interval);
+    }, [page, filter]);
+
     const fetchNotifications = async () => {
         try {
             setLoading(true);
@@ -37,6 +46,7 @@ const Notifications = () => {
             if (response.data.success) {
                 setNotifications(response.data.data);
                 setTotalPages(response.data.pagination.totalPages);
+                console.log('Fetched notifications:', response.data.data.length);
             }
         } catch (error) {
             console.error('Error fetching notifications:', error);
