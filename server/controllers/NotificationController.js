@@ -22,6 +22,59 @@ export const createNotification = async (req, res) => {
             });
         }
 
+        // Validate action URL and action text
+        if (metadata?.actionUrl && !metadata?.actionText) {
+            return res.status(400).json({
+                success: false,
+                message: 'Action text is required when providing an action URL'
+            });
+        }
+
+        if (metadata?.actionText && !metadata?.actionUrl) {
+            return res.status(400).json({
+                success: false,
+                message: 'Action URL is required when providing action text'
+            });
+        }
+
+        // Validate action URL format
+        if (metadata?.actionUrl) {
+            try {
+                new URL(metadata.actionUrl);
+            } catch (error) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid action URL format'
+                });
+            }
+        }
+
+        // Validate scheduling
+        if (scheduledAt) {
+            const scheduledDate = new Date(scheduledAt);
+            const now = new Date();
+            
+            if (scheduledDate < now) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Scheduled time cannot be in the past'
+                });
+            }
+        }
+
+        // Validate expiry date
+        if (expiresAt) {
+            const expiryDate = new Date(expiresAt);
+            const scheduledDate = scheduledAt ? new Date(scheduledAt) : new Date();
+            
+            if (expiryDate <= scheduledDate) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Expiry time must be after the scheduled time'
+                });
+            }
+        }
+
         const notification = new Notification({
             title,
             message,
@@ -142,6 +195,59 @@ export const updateNotification = async (req, res) => {
         delete updateData.createdAt;
         delete updateData.updatedAt;
 
+        // Validate action URL and action text
+        if (updateData.metadata?.actionUrl && !updateData.metadata?.actionText) {
+            return res.status(400).json({
+                success: false,
+                message: 'Action text is required when providing an action URL'
+            });
+        }
+
+        if (updateData.metadata?.actionText && !updateData.metadata?.actionUrl) {
+            return res.status(400).json({
+                success: false,
+                message: 'Action URL is required when providing action text'
+            });
+        }
+
+        // Validate action URL format
+        if (updateData.metadata?.actionUrl) {
+            try {
+                new URL(updateData.metadata.actionUrl);
+            } catch (error) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid action URL format'
+                });
+            }
+        }
+
+        // Validate scheduling
+        if (updateData.scheduledAt) {
+            const scheduledDate = new Date(updateData.scheduledAt);
+            const now = new Date();
+            
+            if (scheduledDate < now) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Scheduled time cannot be in the past'
+                });
+            }
+        }
+
+        // Validate expiry date
+        if (updateData.expiresAt) {
+            const expiryDate = new Date(updateData.expiresAt);
+            const scheduledDate = updateData.scheduledAt ? new Date(updateData.scheduledAt) : new Date();
+            
+            if (expiryDate <= scheduledDate) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Expiry time must be after the scheduled time'
+                });
+            }
+        }
+
         const notification = await Notification.findByIdAndUpdate(
             id,
             updateData,
@@ -246,14 +352,20 @@ export const getUserNotifications = async (req, res) => {
         const filter = {
             isActive: true,
             scheduledAt: { $lte: currentDate },
-            $or: [
-                { expiresAt: null },
-                { expiresAt: { $gt: currentDate } }
-            ],
-            $or: [
-                { targetAudience: 'all' },
-                { targetAudience: 'partners' }, // Assuming all users are partners for now
-                { targetUserIds: userId }
+            $and: [
+                {
+                    $or: [
+                        { expiresAt: null },
+                        { expiresAt: { $gt: currentDate } }
+                    ]
+                },
+                {
+                    $or: [
+                        { targetAudience: 'all' },
+                        { targetAudience: 'partners' }, // Assuming all users are partners for now
+                        { targetUserIds: userId }
+                    ]
+                }
             ]
         };
 
@@ -393,4 +505,49 @@ export const getNotificationStats = async (req, res) => {
             error: error.message
         });
     }
-}; 
+};
+
+// Get all users for notification targeting (admin only)
+export const getAllUsersForNotifications = async (req, res) => {
+    try {
+        const { search = '', page = 1, limit = 50 } = req.query;
+        
+        // Build search filter
+        const searchFilter = {};
+        if (search) {
+            searchFilter.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } }
+            ];
+        }
+        
+        const skip = (page - 1) * limit;
+        
+        const users = await User.find(searchFilter, 'name email phone isAccountVerified')
+            .sort({ name: 1 })
+            .skip(skip)
+            .limit(parseInt(limit));
+        
+        const total = await User.countDocuments(searchFilter);
+        
+        res.json({
+            success: true,
+            data: users,
+            pagination: {
+                currentPage: parseInt(page),
+                totalPages: Math.ceil(total / limit),
+                totalItems: total,
+                itemsPerPage: parseInt(limit)
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching users for notifications:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching users',
+            error: error.message
+        });
+    }
+};
+
+ 
