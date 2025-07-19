@@ -1,7 +1,7 @@
 import PlatformAMSForm from '../models/PlatformAMSForm.js';
 import userModel from '../models/UserModel.js';
 import transporter from '../config/nodemailer.js';
-import { SERVICE_FORM_CONFIRMATION_TEMPLATE } from '../config/emailTemplets.js';
+import { SERVICE_FORM_CONFIRMATION_TEMPLATE, SERVICE_APPROVAL_TEMPLATE, sendEmail } from '../config/emailTemplets.js';
 
 // Submit platform AMS form
 export const submitForm = async (req, res) => {
@@ -95,8 +95,12 @@ export const submitForm = async (req, res) => {
             html: emailContent
           };
 
-          await transporter.sendMail(mailOptions);
-          console.log('Platform enablement confirmation email sent to:', user.email);
+          const emailResult = await sendEmail(transporter, mailOptions);
+          if (emailResult.success) {
+            console.log('Platform enablement confirmation email sent successfully to:', user.email);
+          } else {
+            console.error('Failed to send platform enablement confirmation email:', emailResult.error);
+          }
         }
       }
     } catch (emailError) {
@@ -160,13 +164,50 @@ export const updateSubmissionStatus = async (req, res) => {
       id,
       { status },
       { new: true, runValidators: true }
-    );
+    ).populate('userId', 'name email phone');
     
     if (!submission) {
       return res.status(404).json({
         success: false,
         message: 'Submission not found'
       });
+    }
+
+    // Send approval email if status is approved
+    if (status === 'approved' && submission.userId) {
+      try {
+        const user = submission.userId;
+        
+        const emailContent = SERVICE_APPROVAL_TEMPLATE
+          .replace(/{{userName}}/g, user.name)
+          .replace(/{{userEmail}}/g, user.email)
+          .replace(/{{serviceType}}/g, 'Platform Enablement Services')
+          .replace(/{{applicationId}}/g, submission._id.toString())
+          .replace(/{{approvalDate}}/g, new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }));
+
+        const mailOptions = {
+          from: process.env.SENDER_EMAIL,
+          to: user.email,
+          subject: '🎉 Your Platform Enablement Application Has Been Approved!',
+          html: emailContent
+        };
+
+        const emailResult = await sendEmail(transporter, mailOptions);
+        if (emailResult.success) {
+          console.log(`Platform Enablement approval email sent successfully to: ${user.email}`);
+        } else {
+          console.error(`Failed to send Platform Enablement approval email to: ${user.email}`, emailResult.error);
+        }
+      } catch (emailError) {
+        console.error('Error sending Platform Enablement approval email:', emailError);
+        // Don't fail the status update if email fails
+      }
     }
     
     res.status(200).json({

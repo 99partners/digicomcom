@@ -1,7 +1,7 @@
 import CoBrandingModel from '../models/CoBrandingModel.js';
 import userModel from '../models/UserModel.js';
 import transporter from '../config/nodemailer.js';
-import { SERVICE_FORM_CONFIRMATION_TEMPLATE } from '../config/emailTemplets.js';
+import { SERVICE_FORM_CONFIRMATION_TEMPLATE, sendEmail } from '../config/emailTemplets.js';
 
 export const submitCoBrandingForm = async (req, res) => {
     try {
@@ -86,8 +86,12 @@ export const submitCoBrandingForm = async (req, res) => {
                     html: emailContent
                 };
 
-                await transporter.sendMail(mailOptions);
-                console.log('Co-branding confirmation email sent to:', user.email);
+                const emailResult = await sendEmail(transporter, mailOptions);
+                if (emailResult.success) {
+                    console.log('Co-branding confirmation email sent successfully to:', user.email);
+                } else {
+                    console.error('Failed to send co-branding confirmation email:', emailResult.error);
+                }
             }
         } catch (emailError) {
             console.error('Error sending co-branding confirmation email:', emailError);

@@ -150,6 +150,66 @@ router.put('/partner-requests/:id/status', adminAuth, updatePartnerRequestStatus
 router.get('/form-submissions', adminAuth, getAllFormSubmissions);
 router.put('/form-submissions/:id/status', adminAuth, updateFormSubmissionStatus);
 
+// Test approval email endpoint (for debugging)
+router.post('/test-approval-email', adminAuth, async (req, res) => {
+    try {
+        const { email, serviceType, userName } = req.body;
+        
+        if (!email || !serviceType || !userName) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email, serviceType, and userName are required'
+            });
+        }
+
+        const transporter = (await import('../config/nodemailer.js')).default;
+        const { SERVICE_APPROVAL_TEMPLATE, sendEmail } = await import('../config/emailTemplets.js');
+
+        const emailContent = SERVICE_APPROVAL_TEMPLATE
+            .replace(/{{userName}}/g, userName)
+            .replace(/{{userEmail}}/g, email)
+            .replace(/{{serviceType}}/g, serviceType)
+            .replace(/{{applicationId}}/g, 'TEST-' + Date.now())
+            .replace(/{{approvalDate}}/g, new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }));
+
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: email,
+            subject: `🧪 TEST: Your ${serviceType} Application Has Been Approved!`,
+            html: emailContent
+        };
+
+        const result = await sendEmail(transporter, mailOptions);
+
+        if (result.success) {
+            res.json({
+                success: true,
+                message: 'Test approval email sent successfully',
+                details: result.info
+            });
+        } else {
+            res.status(500).json({
+                success: false,
+                message: 'Failed to send test approval email',
+                error: result.error.message
+            });
+        }
+    } catch (error) {
+        console.error('Test approval email error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message
+        });
+    }
+});
+
 // Notification Management Routes
 router.post('/notifications', adminAuth, createNotification);
 router.get('/notifications', adminAuth, getAllNotifications);
