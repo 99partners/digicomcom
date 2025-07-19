@@ -234,8 +234,7 @@ export default function PlatformEnablement() {
                   {
                     icon: Shield,
                     title: "GST, PAN, Bank Details Verification",
-                    description:
-                      "Ensure compliance with platform requirements.",
+                    description: "Ensure compliance with platform requirements.",
                   },
                   {
                     icon: Package,
@@ -245,8 +244,7 @@ export default function PlatformEnablement() {
                   {
                     icon: Building,
                     title: "5 Product Listings",
-                    description:
-                      "Create five sample product listings to get started.",
+                    description: "Create five sample product listings to get started.",
                   },
                   {
                     icon: CheckCircle,
@@ -267,38 +265,114 @@ export default function PlatformEnablement() {
                       <h3 className="font-semibold text-gray-900 mb-2">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 text-sm">
-                        {service.description}
-                      </p>
+                      <p className="text-gray-600 text-sm">{service.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
               <div>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-6">
-                  Onboarding Checklist
+                  Supported Marketplaces
                 </h3>
-                <ul className="space-y-2 text-gray-600" role="list">
+                <div className="grid grid-cols-1 gap-4">
                   {[
-                    "Account registration completed",
-                    "KYC and documentation verified",
-                    "Store profile setup",
-                    "Product listings created",
-                    "Ready to sell!",
-                  ].map((item, index) => (
-                    <li
+                    {
+                      name: "Amazon",
+                      description: "World's largest e-commerce platform",
+                      services: [
+                        "Account Management",
+                        "Brand Store",
+                        "Listing and Cataloging",
+                        "A+ Listing",
+                        "Advertising",
+                      ],
+                    },
+                    {
+                      name: "Flipkart",
+                      description: "India's leading e-commerce marketplace",
+                      services: [
+                        "Account Management",
+                        "Shopsy Integration",
+                        "Listing and Cataloging",
+                        "Advertising",
+                      ],
+                    },
+                    {
+                      name: "ONDC",
+                      description: "Open Network for Digital Commerce",
+                      services: [
+                        "Account Management",
+                        "Listing and Cataloging",
+                        "Network Integration",
+                      ],
+                    },
+                    {
+                      name: "JioMart",
+                      description: "Reliance's digital commerce platform",
+                      services: [
+                        "Account Management",
+                        "Listing and Cataloging",
+                        "Advertising",
+                      ],
+                    },
+                    {
+                      name: "Meesho",
+                      description: "Social commerce platform",
+                      services: [
+                        "Account Management",
+                        "Listing and Cataloging",
+                        "Advertising",
+                      ],
+                    },
+                    {
+                      name: "IndiaMART",
+                      description: "B2B marketplace for Indian businesses",
+                      services: [
+                        "Account Management",
+                        "Lead Management",
+                        "Catalog Optimization",
+                        "Buy Lead Subscription",
+                        "Premium Listing",
+                        "Business Analytics",
+                      ],
+                    },
+                    {
+                      name: "Snapdeal",
+                      description: "Popular e-commerce platform",
+                      services: [
+                        "Account Management",
+                        "Catalog Management",
+                        "Order Processing",
+                        "Performance Marketing",
+                        "Analytics & Reporting",
+                        "Competitor Analysis",
+                      ],
+                    },
+                  ].map((marketplace, index) => (
+                    <div
                       key={index}
-                      className="flex items-center"
-                      role="listitem"
+                      className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
                     >
-                      <CheckCircle
-                        className="h-4 w-4 text-green-600 mr-2"
-                        aria-hidden="true"
-                      />
-                      {item}
-                    </li>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                        {marketplace.name}
+                      </h4>
+                      <p className="text-sm text-gray-600 mb-4">
+                        {marketplace.description}
+                      </p>
+                      <div className="space-y-2">
+                        {marketplace.services.map((service, serviceIndex) => (
+                          <div
+                            key={serviceIndex}
+                            className="flex items-center text-sm text-gray-700"
+                          >
+                            <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                            {service}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
           </div>
