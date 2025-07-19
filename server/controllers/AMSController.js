@@ -1,4 +1,7 @@
 import AMSForm from '../models/AMSForm.js';
+import userModel from '../models/UserModel.js';
+import transporter from '../config/nodemailer.js';
+import { SERVICE_FORM_CONFIRMATION_TEMPLATE, sendEmail } from '../config/emailTemplets.js';
 
 // Submit AMS form
 export const submitForm = async (req, res) => {
@@ -58,6 +61,60 @@ export const submitForm = async (req, res) => {
     // Save to database
     const savedSubmission = await submission.save();
     console.log('AMS form submission saved successfully:', savedSubmission);
+    
+    // Send confirmation email to user
+    try {
+      if (req.user && req.user.id) {
+        const user = await userModel.findById(req.user.id);
+        if (user) {
+          // Create service-specific details for AMS
+          const selectedMarketplaces = Object.entries(formData.marketplaces || {})
+            .filter(([key, value]) => value === true)
+            .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
+            .join(', ') || 'None selected';
+
+          const serviceSpecificDetails = `
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e9ecef;">
+              <p style="margin: 0 0 8px;"><strong>Selected Marketplaces:</strong> ${selectedMarketplaces}</p>
+              <p style="margin: 0 0 8px;"><strong>Service Account Number:</strong> ${formData.serviceAccountNumber}</p>
+              <p style="margin: 0 0 8px;"><strong>GST Status:</strong> ${formData.hasGST === 'yes' ? 'Yes' : 'No'}</p>
+              ${formData.hasGST === 'yes' && formData.gstNumber ? `<p style="margin: 0 0 8px;"><strong>GST Number:</strong> ${formData.gstNumber}</p>` : ''}
+              ${formData.monthlySales ? `<p style="margin: 0;"><strong>Monthly Sales:</strong> ${formData.monthlySales}</p>` : ''}
+            </div>`;
+
+          const emailContent = SERVICE_FORM_CONFIRMATION_TEMPLATE
+            .replace(/{{userName}}/g, user.name)
+            .replace(/{{userEmail}}/g, user.email)
+            .replace(/{{serviceType}}/g, 'Account Management Services (AMS)')
+            .replace(/{{applicationId}}/g, savedSubmission._id.toString())
+            .replace(/{{submissionDate}}/g, new Date().toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            }))
+            .replace(/{{serviceSpecificDetails}}/g, serviceSpecificDetails);
+
+          const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: '✅ AMS Application Received - Next Steps Inside',
+            html: emailContent
+          };
+
+          const emailResult = await sendEmail(transporter, mailOptions);
+          if (emailResult.success) {
+            console.log('AMS confirmation email sent successfully to:', user.email);
+          } else {
+            console.error('Failed to send AMS confirmation email:', emailResult.error);
+          }
+        }
+      }
+    } catch (emailError) {
+      console.error('Error sending AMS confirmation email:', emailError);
+      // Don't fail the whole request if email fails
+    }
     
     res.status(201).json({
       success: true,
