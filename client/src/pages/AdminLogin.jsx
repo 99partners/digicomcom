@@ -26,9 +26,18 @@ const AdminLogin = () => {
             );
 
             if (response.data.success) {
-                handleLogin(response.data.token, { role: 'admin' }, true);
+                // First handle the login
+                await handleLogin(response.data.token, { 
+                    role: 'admin',
+                    username: response.data.admin?.username || credentials.username
+                }, true);
+                
                 toast.success('Login successful');
-                navigate('/admin');
+                
+                // Then navigate to admin dashboard
+                navigate('/admin', { replace: true });
+            } else {
+                toast.error(response.data.message || 'Login failed');
             }
         } catch (error) {
             // Only show error toast for actual login attempts, not for auth checks
@@ -36,8 +45,9 @@ const AdminLogin = () => {
                 toast.error('Invalid credentials');
             } else if (error.response?.status === 500) {
                 toast.error('Server error. Please try again later.');
+            } else {
+                toast.error('Login failed. Please try again.');
             }
-            // Don't show any toast for other errors
         } finally {
             setIsLoading(false);
         }
