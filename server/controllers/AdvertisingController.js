@@ -1,7 +1,7 @@
 import AdvertisingModel from '../models/AdvertisingModel.js';
 import userModel from '../models/UserModel.js';
 import transporter from '../config/nodemailer.js';
-import { SERVICE_FORM_CONFIRMATION_TEMPLATE } from '../config/emailTemplets.js';
+import { SERVICE_FORM_CONFIRMATION_TEMPLATE, sendEmail } from '../config/emailTemplets.js';
 
 export const submitAdvertisingForm = async (req, res) => {
     try {
@@ -75,8 +75,12 @@ export const submitAdvertisingForm = async (req, res) => {
                     html: emailContent
                 };
 
-                await transporter.sendMail(mailOptions);
-                console.log('Marketing confirmation email sent to:', user.email);
+                const emailResult = await sendEmail(transporter, mailOptions);
+                if (emailResult.success) {
+                    console.log('Marketing confirmation email sent successfully to:', user.email);
+                } else {
+                    console.error('Failed to send marketing confirmation email:', emailResult.error);
+                }
             }
         } catch (emailError) {
             console.error('Error sending marketing confirmation email:', emailError);
