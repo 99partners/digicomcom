@@ -23,6 +23,7 @@ import MyApplications from './pages/dashboard/MyApplications';
 import DashboardLayout from './components/partner/DashboardLayout';
 import PartnerDashboard from './pages/PartnerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import DashboardGuard from './components/DashboardGuard';
 import ServiceSelection from './components/partner/ServiceSelection';
 import DashboardPanel from './components/partner/DashboardPanel';
 import CustomerLogin from './pages/CutomerLogin';
@@ -74,12 +75,14 @@ function App() {
       <Router>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
-          {/* Dashboard Routes */}
+          {/* Dashboard Routes - Double Protected */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
-              <DashboardLayout>
-                <Outlet />
-              </DashboardLayout>
+              <DashboardGuard>
+                <DashboardLayout>
+                  <Outlet />
+                </DashboardLayout>
+              </DashboardGuard>
             </ProtectedRoute>
           }>
             <Route index element={<Profile />} />
@@ -164,7 +167,19 @@ function App() {
             <Route path="/services/ams" element={<AccountManagementServices />} />
             <Route path="/services/coBranding" element={<CoBranding />} />
             <Route path="/services/platformEnable" element={<PlatformEnablement />} />
+            
+            {/* Home Route */}
+            <Route path="/" element={<Home />} />
           </Route>
+          
+          {/* Catch-all route for unauthorized dashboard access */}
+          <Route path="/dashboard/*" element={
+            <ProtectedRoute>
+              <DashboardGuard>
+                <div>Redirecting...</div>
+              </DashboardGuard>
+            </ProtectedRoute>
+          } />
         </Routes>
       </Router>
     </AuthProvider>
