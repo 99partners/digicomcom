@@ -27,7 +27,6 @@ const Header = () => {
     {
       name: "Partners",
       submenu: [
-        { name: "Our Partners", href: "/partners/ourPartners" },
         { name: "Why Partners With Us?", href: "/partners/whyPartners" },
         { name: "Partners Onboarding", href: "/partners/partnersOnboarding" },
       ],

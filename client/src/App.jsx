@@ -34,7 +34,6 @@ import Subscriptions from './pages/dashboard/Subscriptions';
 
 // Import from Services Partner Resources
 import ForProductPartners from './pages/whyPartners';
-import PartnerCommitments from './pages/ourPartners';
 import PartnersOnboarding from './pages/partnersOnboarding';
 import PlatformEnablement from './pages/platformEnable';
 import AccountManagementServices from './pages/ams';
@@ -153,7 +152,6 @@ function App() {
 
             {/* routes from Services Partner Resources */}
             <Route path="/partners/whyPartners" element={<ForProductPartners />} />
-            <Route path="/partners/ourPartners" element={<PartnerCommitments />} />
             <Route path="/partners/partnersOnboarding" element={<PartnersOnboarding />} />
             <Route path="/partners/marketplaces/amazon" element={<Amazon />} />
             <Route path="/partners/marketplaces/flipkart" element={<Flipkart />} />
