@@ -15,6 +15,7 @@ import {
 import axios from 'axios';
 import { getApiUrl } from '../config/api.config';
 import { Helmet } from 'react-helmet';
+import { Link } from "react-router-dom"; // Add this import
 
 export default function ForProductPartners() {
   useEffect(() => {
@@ -221,6 +222,16 @@ export default function ForProductPartners() {
           </div>
         </section>
       </main>
+
+      {/* Join Us Button at the end */}
+      <div className="flex justify-center py-12 bg-white">
+        <Link
+          to="/partnerlogin"
+          className="inline-block px-8 py-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold text-lg shadow-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
+        >
+          Join us
+        </Link>
+      </div>
     </>
   );
 }
