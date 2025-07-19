@@ -84,6 +84,19 @@ export default function PartnerOnboarding() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      <Helmet>
+        <style>{`
+          @keyframes slide-from-right {
+            0% { transform: translateX(100vw); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(-100vw); }
+          }
+          .slide-animation {
+            animation: slide-from-right 30s linear infinite;
+          }
+        `}</style>
+      </Helmet>
+
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
@@ -110,135 +123,142 @@ export default function PartnerOnboarding() {
               Our streamlined process gets you ready to sell quickly.
             </p>
           </div>
-          <div className="flex flex-row justify-center space-x-8">
-            <img
-              src={step1}
-              alt="Step 1: Fill the Partner Interest Form illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step1}`);
-              }}
-            />
-            <img
-              src={step2}
-              alt="Step 2: Consultation & Category Assessment illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step2}`);
-              }}
-            />
-            <img
-              src={step3}
-              alt="Step 3: Documentation & Seller Account Setup illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step3}`);
-              }}
-            />
-            <img
-              src={step4}
-              alt="Step 4: Catalog, Content & Pricing illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step4}`);
-              }}
-            />
-            <img
-              src={step5}
-              alt="Step 5: Go Live & Start Selling illustration"
-              className="w-96 h-96 rounded-lg object-contain shadow-md"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                console.error(`Image failed to load: ${step5}`);
-              }}
-            />
+          <div className="relative overflow-hidden w-full h-[400px]">
+            <div className="flex flex-row space-x-8 absolute">
+              <img
+                src={step1}
+                alt="Step 1: Fill the Partner Interest Form illustration"
+                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-0"
+                style={{ position: 'relative', zIndex: 5 }}
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                  console.error(`Image failed to load: ${step1}`);
+                }}
+              />
+              <img
+                src={step2}
+                alt="Step 2: Consultation & Category Assessment illustration"
+                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-2"
+                style={{ position: 'relative', zIndex: 4 }}
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                  console.error(`Image failed to load: ${step2}`);
+                }}
+              />
+              <img
+                src={step3}
+                alt="Step 3: Documentation & Seller Account Setup illustration"
+                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-4"
+                style={{ position: 'relative', zIndex: 3 }}
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                  console.error(`Image failed to load: ${step3}`);
+                }}
+              />
+              <img
+                src={step4}
+                alt="Step 4: Catalog, Content & Pricing illustration"
+                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-6"
+                style={{ position: 'relative', zIndex: 2 }}
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                  console.error(`Image failed to load: ${step4}`);
+                }}
+              />
+              <img
+                src={step5}
+                alt="Step 5: Go Live & Start Selling illustration"
+                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-8"
+                style={{ position: 'relative', zIndex: 1 }}
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                  console.error(`Image failed to load: ${step5}`);
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>
 
-        {/* Partner Dashboard */}
-        <section aria-labelledby="dashboard-features-heading" className="py-16 px-4 bg-green-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="dashboard-features-heading" className="text-3xl font-bold text-gray-900 mb-4">Your Partner Dashboard Includes</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Manage your business with powerful tools and insights.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6" role="list">
-              {[
-                { name: "Product & Inventory Controls", icon: <Package className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-                { name: "Sales Reports and Insights", icon: <BarChart3 className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-                { name: "Support Ticketing System", icon: <MessageSquare className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-                { name: "Access to Growth Campaigns", icon: <Rocket className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              ].map((feature, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 flex items-center space-x-4" role="listitem">
-                  <div className="flex-shrink-0">{feature.icon}</div>
-                  <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
-                </div>
-              ))}
-            </div>
+      {/* Partner Dashboard */}
+      <section aria-labelledby="dashboard-features-heading" className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 id="dashboard-features-heading" className="text-3xl font-bold text-gray-900 mb-4">Your Partner Dashboard Includes</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Manage your business with powerful tools and insights.
+            </p>
           </div>
-        </section>
+          <div className="grid md:grid-cols-2 gap-6" role="list">
+            {[
+              { name: "Product & Inventory Controls", icon: <Package className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Sales Reports and Insights", icon: <BarChart3 className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Support Ticketing System", icon: <MessageSquare className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Access to Growth Campaigns", icon: <Rocket className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+            ].map((feature, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 flex items-center space-x-4" role="listitem">
+                <div className="flex-shrink-0">{feature.icon}</div>
+                <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        {/* Who Can Apply */}
-        <section aria-labelledby="eligible-partners-heading" className="py-16 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="eligible-partners-heading" className="text-3xl font-bold text-gray-900 mb-4">Who Can Apply?</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                We welcome a diverse range of brands ready to grow.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
-              {[
-                { name: "Organic & Wellness", desc: "Herbal and health-focused products" },
-                { name: "Artisan & Handmade", desc: "Spiritual and unique goods" },
-                { name: "Fashion & Lifestyle", desc: "Apparel and home décor" },
-                { name: "FMCG & Packaged Food", desc: "Consumer goods and food products" },
-                { name: "D2C Niche Brands", desc: "Direct-to-consumer startups" },
-                { name: "Restaurants & Food", desc: "For Zomato/Swiggy onboarding" },
-              ].map((category, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6" role="listitem">
-                  <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2" aria-hidden="true">
-                    <ShoppingCart className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
-                  <p className="text-gray-600 text-sm">{category.desc}</p>
-                </div>
-              ))}
-            </div>
+      {/* Who Can Apply */}
+      <section aria-labelledby="eligible-partners-heading" className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 id="eligible-partners-heading" className="text-3xl font-bold text-gray-900 mb-4">Who Can Apply?</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              We welcome a diverse range of brands ready to grow.
+            </p>
           </div>
-        </section>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
+            {[
+              { name: "Organic & Wellness", desc: "Herbal and health-focused products" },
+              { name: "Artisan & Handmade", desc: "Spiritual and unique goods" },
+              { name: "Fashion & Lifestyle", desc: "Apparel and home décor" },
+              { name: "FMCG & Packaged Food", desc: "Consumer goods and food products" },
+              { name: "D2C Niche Brands", desc: "Direct-to-consumer startups" },
+              { name: "Restaurants & Food", desc: "For Zomato/Swiggy onboarding" },
+            ].map((category, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6" role="listitem">
+                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2" aria-hidden="true">
+                  <ShoppingCart className="h-6 w-6" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
+                <p className="text-gray-600 text-sm">{category.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        {/* Expert Support */}
-        <section aria-labelledby="expert-support-heading" className="py-16 px-4 bg-green-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="expert-support-heading" className="text-3xl font-bold text-gray-900 mb-4">Get Expert Support at Every Step</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Our team is with you from onboarding to scaling.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6" role="list">
-              {[
-                { name: "Dedicated Onboarding Manager", icon: <Users className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-                { name: "Prebuilt Listing Templates", icon: <FileText className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-                { name: "Guidance on Pricing & Compliance", icon: <Tag className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-                { name: "Multi-Platform Enablement", icon: <Globe className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              ].map((support, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 flex items-center space-x-4" role="listitem">
-                  <div className="flex-shrink-0">{support.icon}</div>
-                  <h3 className="text-lg font-semibold text-gray-900">{support.name}</h3>
-                </div>
-              ))}
-            </div>
+      {/* Expert Support */}
+      <section aria-labelledby="expert-support-heading" className="py-16 px-4 bg-green-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 id="expert-support-heading" className="text-3xl font-bold text-gray-900 mb-4">Get Expert Support at Every Step</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our team is with you from onboarding to scaling.
+            </p>
           </div>
-        </section>
-      </div>
+          <div className="grid md:grid-cols-2 gap-6" role="list">
+            {[
+              { name: "Dedicated Onboarding Manager", icon: <Users className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Prebuilt Listing Templates", icon: <FileText className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Guidance on Pricing & Compliance", icon: <Tag className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Multi-Platform Enablement", icon: <Globe className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+            ].map((support, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 flex items-center space-x-4" role="listitem">
+                <div className="flex-shrink-0">{support.icon}</div>
+                <h3 className="text-lg font-semibold text-gray-900">{support.name}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
