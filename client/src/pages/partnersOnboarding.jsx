@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import { getApiUrl } from "../config/api.config";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 import step1 from "../assets/step1.png";
 import step2 from "../assets/step2.png";
 import step3 from "../assets/step3.png";
@@ -39,6 +39,16 @@ export default function PartnerOnboarding() {
     additionalNotes: "",
     consent: false,
   });
+
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = [
+    { src: step1, alt: "Step 1: Fill the Partner Interest Form illustration" },
+    { src: step2, alt: "Step 2: Consultation & Category Assessment illustration" },
+    { src: step3, alt: "Step 3: Documentation & Seller Account Setup illustration" },
+    { src: step4, alt: "Step 4: Catalog, Content & Pricing illustration" },
+    { src: step5, alt: "Step 5: Go Live & Start Selling illustration" },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,19 +92,18 @@ export default function PartnerOnboarding() {
     }));
   };
 
+  const handlePrev = () => {
+    setCurrentStep((prev) => (prev > 0 ? prev - 1 : 4));
+  };
+
+  const handleNext = () => {
+    setCurrentStep((prev) => (prev < 4 ? prev + 1 : 0));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       <Helmet>
-        <style>{`
-          @keyframes slide-from-right {
-            0% { transform: translateX(100vw); }
-            50% { transform: translateX(0); }
-            100% { transform: translateX(-100vw); }
-          }
-          .slide-animation {
-            animation: slide-from-right 30s linear infinite;
-          }
-        `}</style>
+        <style>{``}</style> {/* Removed animation styles */}
       </Helmet>
 
       {/* Hero Section */}
@@ -111,72 +120,6 @@ export default function PartnerOnboarding() {
             Start your journey with a growing network of digital-first brands. Simple, structured, and supportive onboarding to help you sell, scale, and succeed.
           </p>
           <div className="flex justify-center space-x-4"></div>
-        </div>
-      </section>
-
-      {/* Onboarding Steps */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Join 99digicom in 5 Easy Steps</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our streamlined process gets you ready to sell quickly.
-            </p>
-          </div>
-          <div className="relative overflow-hidden w-full h-[400px]">
-            <div className="flex flex-row space-x-8 absolute">
-              <img
-                src={step1}
-                alt="Step 1: Fill the Partner Interest Form illustration"
-                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-0"
-                style={{ position: 'relative', zIndex: 5 }}
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                  console.error(`Image failed to load: ${step1}`);
-                }}
-              />
-              <img
-                src={step2}
-                alt="Step 2: Consultation & Category Assessment illustration"
-                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-2"
-                style={{ position: 'relative', zIndex: 4 }}
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                  console.error(`Image failed to load: ${step2}`);
-                }}
-              />
-              <img
-                src={step3}
-                alt="Step 3: Documentation & Seller Account Setup illustration"
-                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-4"
-                style={{ position: 'relative', zIndex: 3 }}
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                  console.error(`Image failed to load: ${step3}`);
-                }}
-              />
-              <img
-                src={step4}
-                alt="Step 4: Catalog, Content & Pricing illustration"
-                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-6"
-                style={{ position: 'relative', zIndex: 2 }}
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                  console.error(`Image failed to load: ${step4}`);
-                }}
-              />
-              <img
-                src={step5}
-                alt="Step 5: Go Live & Start Selling illustration"
-                className="w-96 h-96 rounded-lg object-contain shadow-md slide-animation delay-8"
-                style={{ position: 'relative', zIndex: 1 }}
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                  console.error(`Image failed to load: ${step5}`);
-                }}
-              />
-            </div>
-          </div>
         </div>
       </section>
 
@@ -201,6 +144,55 @@ export default function PartnerOnboarding() {
                 <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Onboarding Steps */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Join 99digicom in 5 Easy Steps</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our streamlined process gets you ready to sell quickly.
+            </p>
+          </div>
+          <div className="relative overflow-hidden w-full h-[400px]">
+            <button
+              onClick={handlePrev}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
+              aria-label="Previous step"
+            >
+              <ArrowRight className="h-6 w-6 rotate-180" />
+            </button>
+            <div className="flex justify-center items-center h-full space-x-4">
+              {steps.map((step, index) => {
+                const isCenter = index === currentStep;
+                const isLeft = index === (currentStep - 1 + 5) % 5;
+                const isRight = index === (currentStep + 1) % 5;
+                return (
+                  <img
+                    key={index}
+                    src={step.src}
+                    alt={step.alt}
+                    className={`rounded-lg object-contain shadow-md transition-all duration-500 ${
+                      isCenter ? "w-96 h-96 z-20" : isLeft || isRight ? "w-48 h-48 scale-75 z-10" : "w-0 h-0 opacity-0"
+                    }`}
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
+                      console.error(`Image failed to load: ${step.src}`);
+                    }}
+                  />
+                );
+              })}
+            </div>
+            <button
+              onClick={handleNext}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
+              aria-label="Next step"
+            >
+              <ArrowRight className="h-6 w-6" />
+            </button>
           </div>
         </div>
       </section>
