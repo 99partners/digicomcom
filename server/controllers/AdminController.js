@@ -127,6 +127,27 @@ export const getAllSubscribers = async (req, res) => {
     }
 };
 
+// Check Admin Authentication
+export const checkAdminAuth = async (req, res) => {
+    try {
+        // If middleware passed, admin is authenticated
+        const admin = req.admin;
+        res.json({
+            success: true,
+            admin: {
+                id: admin._id,
+                username: admin.username,
+                role: admin.role
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
+    }
+};
+
 // Admin Logout
 export const adminLogout = async (req, res) => {
     try {

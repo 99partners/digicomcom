@@ -26,15 +26,20 @@ export const AuthProvider = ({ children }) => {
       // Check admin auth first
       if (adminToken) {
         try {
-          const response = await axiosInstance.get('/api/admin/dashboard-stats');
+          const response = await axiosInstance.get('/api/admin/auth-check');
           if (response.data.success) {
-            setUser({ role: 'admin', ...response.data.admin });
+            setUser({ 
+              role: 'admin',
+              isAdmin: true,
+              ...response.data.admin 
+            });
             setIsAuthenticated(true);
             return;
           }
         } catch (adminError) {
           console.error('Admin auth check failed:', adminError);
           localStorage.removeItem('adminToken');
+          // Continue to check user auth if admin auth fails
         }
       }
 
@@ -63,9 +68,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleLogin = async (token, userData) => {
+  const handleLogin = async (token, userData, isAdmin = false) => {
     try {
-      localStorage.setItem('authToken', token);
+      if (isAdmin) {
+        localStorage.setItem('adminToken', token);
+        localStorage.removeItem('authToken'); // Clear user token if exists
+      } else {
+        localStorage.setItem('authToken', token);
+        localStorage.removeItem('adminToken'); // Clear admin token if exists
+      }
+      
       setUser(userData);
       setIsAuthenticated(true);
       await checkAuthStatus(); // Refresh user data after login
