@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -43,6 +43,15 @@ export default function AccountManagementServices() {
     additionalNotes: "",
     consent: false,
   });
+
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = [
+    { src: AMS1, alt: "Hassle-Free Management illustration", title: "Hassle-Free Management", description: "Effortless order and inventory management." },
+    { src: AMS2, alt: "Timely Updates illustration", title: "Timely Updates", description: "Keep your product listings fresh and competitive." },
+    { src: AMS3, alt: "Performance-Driven Support illustration", title: "Performance-Driven Support", description: "Data-backed strategies to boost sales." },
+    { src: AMS4, alt: "Dedicated Coordination illustration", title: "Dedicated Coordination", description: "Stay connected via WhatsApp for real-time updates." },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,6 +102,14 @@ export default function AccountManagementServices() {
     }));
   };
 
+  const handlePrev = () => {
+    setCurrentStep((prev) => (prev > 0 ? prev - 1 : 3));
+  };
+
+  const handleNext = () => {
+    setCurrentStep((prev) => (prev < 3 ? prev + 1 : 0));
+  };
+
   return (
     <>
       <SEO
@@ -102,187 +119,6 @@ export default function AccountManagementServices() {
         canonicalUrl="https://99digicom.com/services/ams"
       />
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-        {/* AMS Form Section */}
-        {/* <section id="get-started" className="pt-24 pb-16 px-4">
-          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Your AMS Request</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
-                  <input
-                    type="text"
-                    value={formData.businessName}
-                    onChange={(e) => handleInputChange("businessName", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Contact Person</label>
-                  <input
-                    type="text"
-                    value={formData.contactPerson}
-                    onChange={(e) => handleInputChange("contactPerson", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
-                <input
-                  type="url"
-                  value={formData.website}
-                  onChange={(e) => handleInputChange("website", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="https://"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
-                <select
-                  value={formData.businessType}
-                  onChange={(e) => handleInputChange("businessType", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  required
-                >
-                  <option value="">Select Business Type</option>
-                  <option value="manufacturer">Manufacturer</option>
-                  <option value="retailer">Retailer</option>
-                  <option value="wholesaler">Wholesaler</option>
-                  <option value="distributor">Distributor</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Product Categories</label>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    "Electronics",
-                    "Fashion",
-                    "Home & Kitchen",
-                    "Beauty & Personal Care",
-                    "Toys & Games",
-                    "Sports & Fitness",
-                    "Books & Media",
-                    "Other"
-                  ].map((category) => (
-                    <label key={category} className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={formData.productCategories.includes(category)}
-                        onChange={(e) => handleCheckboxChange("productCategories", category, e.target.checked)}
-                        className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                      />
-                      <span className="text-sm text-gray-700">{category}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Top Products (comma-separated)</label>
-                <textarea
-                  value={formData.topProducts}
-                  onChange={(e) => handleInputChange("topProducts", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  rows="3"
-                  placeholder="Product 1, Product 2, Product 3"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Current Monthly Sales Volume</label>
-                <select
-                  value={formData.currentSalesVolume}
-                  onChange={(e) => handleInputChange("currentSalesVolume", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  required
-                >
-                  <option value="">Select Sales Volume</option>
-                  <option value="0-1L">₹0 - ₹1 Lakh</option>
-                  <option value="1L-5L">₹1 Lakh - ₹5 Lakh</option>
-                  <option value="5L-10L">₹5 Lakh - ₹10 Lakh</option>
-                  <option value="10L+">Above ₹10 Lakh</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Target Monthly Sales Volume</label>
-                <select
-                  value={formData.targetSalesVolume}
-                  onChange={(e) => handleInputChange("targetSalesVolume", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  required
-                >
-                  <option value="">Select Target Volume</option>
-                  <option value="1L-5L">₹1 Lakh - ₹5 Lakh</option>
-                  <option value="5L-10L">₹5 Lakh - ₹10 Lakh</option>
-                  <option value="10L-25L">₹10 Lakh - ₹25 Lakh</option>
-                  <option value="25L+">Above ₹25 Lakh</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Additional Notes</label>
-                <textarea
-                  value={formData.additionalNotes}
-                  onChange={(e) => handleInputChange("additionalNotes", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  rows="4"
-                  placeholder="Any specific requirements or questions..."
-                />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={formData.consent}
-                  onChange={(e) => handleInputChange("consent", e.target.checked)}
-                  className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                  required
-                />
-                <label className="text-sm text-gray-700">
-                  I agree to be contacted about my AMS request
-                </label>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
-                >
-                  Submit AMS Request
-                </button>
-              </div>
-            </form>
-          </div>
-        </section> */}
-
         {/* Hero Section */}
         <section className="pt-24 pb-16 px-4" aria-labelledby="hero-heading">
           <div className="max-w-7xl mx-auto text-center">
@@ -307,64 +143,7 @@ export default function AccountManagementServices() {
           </div>
         </section>
 
-        {/* Key Benefits */}
-        <section className="py-16 px-4 bg-white" aria-labelledby="benefits-heading">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="benefits-heading" className="text-3xl font-bold text-gray-900 mb-4">Key Benefits</h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Optimize your e-commerce operations with our comprehensive management services.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6" role="list">
-              {[
-                {
-                  title: "Hassle-Free Management",
-                  description: "Effortless order and inventory management.",
-                  image: AMS1
-                },
-                {
-                  title: "Timely Updates",
-                  description: "Keep your product listings fresh and competitive.",
-                  image: AMS2
-                },
-                {
-                  title: "Performance-Driven Support",
-                  description: "Data-backed strategies to boost sales.",
-                  image: AMS3
-                },
-                {
-                  title: "Dedicated Coordination",
-                  description: "Stay connected via WhatsApp for real-time updates.",
-                  image: AMS4
-                }
-              ].map((benefit, index) => (
-                <div 
-                  key={index} 
-                  className="flex flex-col items-center p-6 bg-green-50 rounded-lg"
-                  role="listitem"
-                >
-                  <img 
-                    src={benefit.image} 
-                    alt={benefit.title} 
-                    className="w-full h-48 object-cover rounded-lg mb-4"
-                    onError={(e) => {
-                      console.error(`Failed to load image: ${benefit.image}`);
-                      e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
-                    }}
-                    style={{ maxWidth: '40%', height: 'auto' }}
-                  />
-                  <div className="text-center">
-                    <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                    <p className="text-gray-600 text-sm">{benefit.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Services Included */}
+{/* Services Included */}
         <section className="py-16 px-4 bg-green-50" aria-labelledby="services-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
@@ -446,6 +225,66 @@ export default function AccountManagementServices() {
           </div>
         </section>
 
+        {/* Key Benefits */}
+        <section className="py-16 px-4 bg-white" aria-labelledby="benefits-heading">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="benefits-heading" className="text-3xl font-bold text-gray-900 mb-4">Key Benefits</h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+                Optimize your e-commerce operations with our comprehensive management services.
+              </p>
+            </div>
+            <div className="relative overflow-hidden w-full h-[400px]">
+              <button
+                onClick={handlePrev}
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
+                aria-label="Previous benefit"
+              >
+                <ArrowRight className="h-6 w-6 rotate-180" />
+              </button>
+              <div className="flex justify-center items-center h-full space-x-4">
+                {steps.map((step, index) => {
+                  const isCenter = index === currentStep;
+                  const isLeft = index === (currentStep - 1 + 4) % 4;
+                  const isRight = index === (currentStep + 1) % 4;
+                  return (
+                    <div
+                      key={index}
+                      className={`relative rounded-lg shadow-md transition-all duration-500 ${
+                        isCenter ? "w-96 h-96 z-20" : isLeft || isRight ? "w-48 h-48 scale-75 z-10" : "w-0 h-0 opacity-0"
+                      }`}
+                    >
+                      <img
+                        src={step.src}
+                        alt={step.alt}
+                        className="w-full h-full object-cover rounded-lg"
+                        onError={(e) => {
+                          console.error(`Failed to load image: ${step.src}`);
+                          e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
+                        }}
+                      />
+                      {isCenter && (
+                        <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 p-2 rounded text-center">
+                          <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
+                          <p className="text-gray-600 text-sm">{step.description}</p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <button
+                onClick={handleNext}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
+                aria-label="Next benefit"
+              >
+                <ArrowRight className="h-6 w-6" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        
         {/* Success Story */}
         <section className="py-16 px-4 bg-white" aria-labelledby="success-heading">
           <div className="max-w-7xl mx-auto">
@@ -465,36 +304,7 @@ export default function AccountManagementServices() {
           </div>
         </section>
 
-        {/* Supported Platforms */}
-        <section className="py-16 px-4 bg-green-50" aria-labelledby="platforms-heading">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="platforms-heading" className="text-3xl font-bold text-gray-900 mb-4">Supported Marketplaces</h2>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
-              {[
-                { name: "Amazon", desc: "World's largest e-commerce platform" },
-                { name: "Flipkart", desc: "India's leading e-commerce marketplace" },
-                { name: "Meesho", desc: "Social commerce platform" },
-                { name: "Jiomart", desc: "Reliance's digital commerce platform" },
-                { name: "IndiaMART", desc: "B2B marketplace for Indian businesses" },
-                { name: "Snapdeal", desc: "Popular e-commerce platform" },
-              ].map((platform, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6"
-                  role="listitem"
-                >
-                  <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2">
-                    <ShoppingCart className="h-6 w-6" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{platform.name}</h3>
-                  <p className="text-gray-600 text-sm">{platform.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        
       </main>
     </>
   );
