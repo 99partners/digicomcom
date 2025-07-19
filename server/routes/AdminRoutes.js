@@ -1,6 +1,6 @@
 import express from 'express';
 import { adminLogin, adminLogout, checkAdminAuth, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact, getAllFormSubmissions, updateFormSubmissionStatus } from '../controllers/AdminController.js';
-import { createNotification, getAllNotifications, getNotificationById, updateNotification, deleteNotification, toggleNotificationStatus, getNotificationStats } from '../controllers/NotificationController.js';
+import { createNotification, getAllNotifications, getNotificationById, updateNotification, deleteNotification, toggleNotificationStatus, getNotificationStats, getAllUsersForNotifications } from '../controllers/NotificationController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import PartnerRequest from '../models/PartnerRequestModel.js';
 
@@ -214,6 +214,7 @@ router.post('/test-approval-email', adminAuth, async (req, res) => {
 router.post('/notifications', adminAuth, createNotification);
 router.get('/notifications', adminAuth, getAllNotifications);
 router.get('/notifications/stats', adminAuth, getNotificationStats);
+router.get('/notifications/users', adminAuth, getAllUsersForNotifications);
 router.get('/notifications/:id', adminAuth, getNotificationById);
 router.put('/notifications/:id', adminAuth, updateNotification);
 router.delete('/notifications/:id', adminAuth, deleteNotification);

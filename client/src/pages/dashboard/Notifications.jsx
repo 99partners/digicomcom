@@ -28,6 +28,15 @@ const Notifications = () => {
         fetchNotifications();
     }, [page, filter]);
 
+    // Auto-refresh notifications every 30 seconds to show scheduled notifications
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchNotifications();
+        }, 30000);
+
+        return () => clearInterval(interval);
+    }, [page, filter]);
+
     const fetchNotifications = async () => {
         try {
             setLoading(true);
