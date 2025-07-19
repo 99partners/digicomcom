@@ -14,6 +14,7 @@ import {
 import axios from 'axios';
 import { getApiUrl } from '../config/api.config';
 import SEO from '../components/SEO';
+import ImageSlider from '../components/ImageSlider';
 import AMS1 from '../assets/AMS1.png';
 import AMS2 from '../assets/AMS2.png'; 
 import AMS3 from '../assets/AMS3.png';
@@ -44,13 +45,31 @@ export default function AccountManagementServices() {
     consent: false,
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
-
   const steps = [
-    { src: AMS1, alt: "Hassle-Free Management illustration", title: "Hassle-Free Management", description: "Effortless order and inventory management." },
-    { src: AMS2, alt: "Timely Updates illustration", title: "Timely Updates", description: "Keep your product listings fresh and competitive." },
-    { src: AMS3, alt: "Performance-Driven Support illustration", title: "Performance-Driven Support", description: "Data-backed strategies to boost sales." },
-    { src: AMS4, alt: "Dedicated Coordination illustration", title: "Dedicated Coordination", description: "Stay connected via WhatsApp for real-time updates." },
+    { 
+      src: AMS1, 
+      alt: "Step 1: Hassle-Free Management illustration",
+      title: "Hassle-Free Management",
+      description: "Effortless order and inventory management."
+    },
+    { 
+      src: AMS2, 
+      alt: "Step 2: Timely Updates illustration",
+      title: "Timely Updates",
+      description: "Keep your product listings fresh and competitive."
+    },
+    { 
+      src: AMS3, 
+      alt: "Step 3: Performance-Driven Support illustration",
+      title: "Performance-Driven Support",
+      description: "Data-backed strategies to boost sales."
+    },
+    { 
+      src: AMS4, 
+      alt: "Step 4: Dedicated Coordination illustration",
+      title: "Dedicated Coordination",
+      description: "Stay connected via WhatsApp for real-time updates."
+    }
   ];
 
   const handleSubmit = async (e) => {
@@ -100,14 +119,6 @@ export default function AccountManagementServices() {
       ...prev,
       [field]: value,
     }));
-  };
-
-  const handlePrev = () => {
-    setCurrentStep((prev) => (prev > 0 ? prev - 1 : 3));
-  };
-
-  const handleNext = () => {
-    setCurrentStep((prev) => (prev < 3 ? prev + 1 : 0));
   };
 
   return (
@@ -234,53 +245,7 @@ export default function AccountManagementServices() {
                 Optimize your e-commerce operations with our comprehensive management services.
               </p>
             </div>
-            <div className="relative overflow-hidden w-full h-[400px]">
-              <button
-                onClick={handlePrev}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
-                aria-label="Previous benefit"
-              >
-                <ArrowRight className="h-6 w-6 rotate-180" />
-              </button>
-              <div className="flex justify-center items-center h-full space-x-4">
-                {steps.map((step, index) => {
-                  const isCenter = index === currentStep;
-                  const isLeft = index === (currentStep - 1 + 4) % 4;
-                  const isRight = index === (currentStep + 1) % 4;
-                  return (
-                    <div
-                      key={index}
-                      className={`relative rounded-lg shadow-md transition-all duration-500 ${
-                        isCenter ? "w-96 h-96 z-20" : isLeft || isRight ? "w-48 h-48 scale-75 z-10" : "w-0 h-0 opacity-0"
-                      }`}
-                    >
-                      <img
-                        src={step.src}
-                        alt={step.alt}
-                        className="w-full h-full object-cover rounded-lg"
-                        onError={(e) => {
-                          console.error(`Failed to load image: ${step.src}`);
-                          e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
-                        }}
-                      />
-                      {isCenter && (
-                        <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 p-2 rounded text-center">
-                          <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
-                          <p className="text-gray-600 text-sm">{step.description}</p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <button
-                onClick={handleNext}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
-                aria-label="Next benefit"
-              >
-                <ArrowRight className="h-6 w-6" />
-              </button>
-            </div>
+            <ImageSlider slides={steps} />
           </div>
         </section>
 

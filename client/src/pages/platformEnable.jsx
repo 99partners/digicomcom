@@ -24,6 +24,7 @@ import jiomartLogo from "../assets/Jiomart.png";
 import meeshoLogo from "../assets/Meesho1.png";
 import indiamartLogo from "../assets/Indiamart.png";
 import snapdealLogo from "../assets/Snapdeal.png";
+import ImageSlider from '../components/ImageSlider';
 
 export default function PlatformEnablement() {
   const navigate = useNavigate();
@@ -367,61 +368,7 @@ export default function PlatformEnablement() {
                 support.
               </p>
             </div>
-            <div className="relative overflow-hidden w-full h-[400px]">
-              <button
-                onClick={handlePrev}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
-                aria-label="Previous benefit"
-              >
-                <ArrowRight className="h-6 w-6 rotate-180" />
-              </button>
-              <div className="flex justify-center items-center h-full space-x-4">
-                {steps.map((step, index) => {
-                  const isCenter = index === currentStep;
-                  const isLeft = index === (currentStep - 1 + 4) % 4;
-                  const isRight = index === (currentStep + 1) % 4;
-                  return (
-                    <div
-                      key={index}
-                      className={`relative rounded-lg shadow-md transition-all duration-500 ${
-                        isCenter
-                          ? "w-96 h-96 z-20"
-                          : isLeft || isRight
-                          ? "w-48 h-48 scale-75 z-10"
-                          : "w-0 h-0 opacity-0"
-                      }`}
-                    >
-                      <img
-                        src={step.src}
-                        alt={step.alt}
-                        className="w-full h-full object-cover rounded-lg"
-                        onError={(e) => {
-                          console.error(`Failed to load image: ${step.src}`);
-                          e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
-                        }}
-                      />
-                      {isCenter && (
-                        <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 p-2 rounded text-center">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {step.title}
-                          </h3>
-                          <p className="text-gray-600 text-sm">
-                            {step.description}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <button
-                onClick={handleNext}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
-                aria-label="Next benefit"
-              >
-                <ArrowRight className="h-6 w-6" />
-              </button>
-            </div>
+            <ImageSlider slides={steps} />
           </div>
         </section>
 

@@ -21,6 +21,7 @@ import step2 from "../assets/step2.png";
 import step3 from "../assets/step3.png";
 import step4 from "../assets/step4.png";
 import step5 from "../assets/step5.png";
+import ImageSlider from '../components/ImageSlider';
 
 export default function PartnerOnboarding() {
   useEffect(() => {
@@ -157,43 +158,7 @@ export default function PartnerOnboarding() {
               Our streamlined process gets you ready to sell quickly.
             </p>
           </div>
-          <div className="relative overflow-hidden w-full h-[400px]">
-            <button
-              onClick={handlePrev}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
-              aria-label="Previous step"
-            >
-              <ArrowRight className="h-6 w-6 rotate-180" />
-            </button>
-            <div className="flex justify-center items-center h-full space-x-4">
-              {steps.map((step, index) => {
-                const isCenter = index === currentStep;
-                const isLeft = index === (currentStep - 1 + 5) % 5;
-                const isRight = index === (currentStep + 1) % 5;
-                return (
-                  <img
-                    key={index}
-                    src={step.src}
-                    alt={step.alt}
-                    className={`rounded-lg object-contain shadow-md transition-all duration-500 ${
-                      isCenter ? "w-96 h-96 z-20" : isLeft || isRight ? "w-48 h-48 scale-75 z-10" : "w-0 h-0 opacity-0"
-                    }`}
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/600x600.png?text=Image+Not+Found";
-                      console.error(`Image failed to load: ${step.src}`);
-                    }}
-                  />
-                );
-              })}
-            </div>
-            <button
-              onClick={handleNext}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
-              aria-label="Next step"
-            >
-              <ArrowRight className="h-6 w-6" />
-            </button>
-          </div>
+          <ImageSlider slides={steps} />
         </div>
       </section>
 
