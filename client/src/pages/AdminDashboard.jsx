@@ -21,6 +21,7 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('AdminDashboard mounted, fetching data...');
         fetchData();
     }, []);
 

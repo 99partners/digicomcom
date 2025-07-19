@@ -20,7 +20,7 @@ export const ProtectedRoute = ({ children }) => {
   }
 
   // Silently redirect non-admin users from admin routes
-  if (isAdminRoute && user.role !== 'admin') {
+  if (isAdminRoute && (!user.role || user.role !== 'admin')) {
     return <Navigate to="/admin/login" replace state={{ from: location }} />;
   }
 

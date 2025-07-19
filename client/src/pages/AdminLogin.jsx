@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -12,34 +12,53 @@ const AdminLogin = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const { handleLogin } = useAuth();
+    const { handleLogin, user, loading } = useAuth();
+
+    // Check if admin is already logged in
+    useEffect(() => {
+        if (!loading && user && user.role === 'admin') {
+            console.log('Admin already logged in, redirecting to /admin');
+            navigate('/admin', { replace: true });
+        }
+    }, [user, loading, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
+            console.log('Attempting admin login with credentials:', { username: credentials.username });
+            
             const response = await axios.post(
                 getApiUrl('api/admin/login'),
                 credentials,
                 { withCredentials: true }
             );
 
+            console.log('Admin login response:', response.data);
+
             if (response.data.success) {
+                console.log('Admin login successful, response:', response.data);
+                
                 // First handle the login
                 await handleLogin(response.data.token, { 
                     role: 'admin',
-                    username: response.data.admin?.username || credentials.username
+                    username: response.data.admin?.username || credentials.username,
+                    isAdmin: true
                 }, true);
                 
+                console.log('Admin login handled, navigating to /admin');
                 toast.success('Login successful');
                 
-                // Then navigate to admin dashboard
-                navigate('/admin', { replace: true });
+                // Small delay to ensure state is set before navigation
+                setTimeout(() => {
+                    navigate('/admin', { replace: true });
+                }, 100);
             } else {
                 toast.error(response.data.message || 'Login failed');
             }
         } catch (error) {
+            console.error('Admin login error:', error);
             // Only show error toast for actual login attempts, not for auth checks
             if (error.response?.status === 401) {
                 toast.error('Invalid credentials');
@@ -52,6 +71,15 @@ const AdminLogin = () => {
             setIsLoading(false);
         }
     };
+
+    // Show loading while checking auth status
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">

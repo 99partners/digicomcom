@@ -155,14 +155,17 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       if (originalRequest.url?.includes('/api/admin')) {
         localStorage.removeItem('adminToken');
-        window.location.href = '/adminlogin';
+        // Only redirect if not already on admin login page
+        if (!window.location.pathname.includes('/admin/login')) {
+          window.location.href = '/admin/login';
+        }
       } else {
         localStorage.removeItem('authToken');
         const publicPaths = ['/', '/about', '/contact', '/partners', '/services', '/resources', '/signup', '/login', '/forgot-password', '/privacypolicy', '/termsofservice', '/cookiepolicy', '/faqss', '/platform-enablement-ams'];
         const isPublicPath = publicPaths.some(path => window.location.pathname === path || window.location.pathname.startsWith(path + '/'));
         
         if (!isPublicPath && !window.location.pathname.includes('login')) {
-          window.location.href = '/partner-login';
+          window.location.href = '/partnerlogin';
         }
       }
       throw new Error('Your session has expired. Please log in again.');
