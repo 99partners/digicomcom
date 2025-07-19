@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Store,
   CheckCircle,
@@ -7,7 +8,6 @@ import {
   FileText,
   Package,
   Building,
-  Truck,
   Shield,
   ShoppingCart,
 } from "lucide-react";
@@ -18,8 +18,101 @@ import PE1 from "../assets/PE1.png";
 import PE2 from "../assets/PE2.png";
 import PE3 from "../assets/PE3.png";
 import PE4 from "../assets/PE4.png";
+import amazonLogo from "../assets/Amazon.png";
+import flipkartLogo from "../assets/Flipkart.png";
+import ondcLogo from "../assets/ONDC1.png";
+import jiomartLogo from "../assets/Jiomart.png";
+import meeshoLogo from "../assets/Meesho1.png";
+import indiamartLogo from "../assets/Indiamart.png";
+import snapdealLogo from "../assets/Snapdeal.png";
 
 export default function PlatformEnablement() {
+  const navigate = useNavigate();
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
+
+  const marketplaces = {
+    amazon: {
+      name: "Amazon",
+      logo: amazonLogo,
+      href: "/partners/marketplaces/amazon",
+      services: [
+        "Account Management",
+        "Brand Store",
+        "Listing and Cataloging",
+        "A+ Listing",
+        "Advertising",
+        "Glowroad Account Management",
+      ],
+    },
+    flipkart: {
+      name: "Flipkart",
+      logo: flipkartLogo,
+      href: "/partners/marketplaces/flipkart",
+      services: [
+        "Account Management",
+        "Shopsy Integration",
+        "Listing and Cataloging",
+        "Advertising",
+      ],
+    },
+    ondc: {
+      name: "ONDC",
+      logo: ondcLogo,
+      href: "/partners/marketplaces/ondc",
+      services: [
+        "Account Management",
+        "Listing and Cataloging",
+        "Network Integration",
+      ],
+    },
+    jiomart: {
+      name: "JioMart",
+      logo: jiomartLogo,
+      href: "/partners/marketplaces/jiomart",
+      services: [
+        "Account Management",
+        "Listing and Cataloging",
+        "Advertising",
+      ],
+    },
+    meesho: {
+      name: "Meesho",
+      logo: meeshoLogo,
+      href: "/partners/marketplaces/meesho",
+      services: [
+        "Account Management",
+        "Listing and Cataloging",
+        "Advertising",
+      ],
+    },
+    indiamart: {
+      name: "IndiaMART",
+      logo: indiamartLogo,
+      href: "/partners/marketplaces/indiamart",
+      services: [
+        "Account Management",
+        "Lead Management",
+        "Catalog Optimization",
+        "Buy Lead Subscription",
+        "Premium Listing",
+        "Business Analytics",
+      ],
+    },
+    snapdeal: {
+      name: "Snapdeal",
+      logo: snapdealLogo,
+      href: "/partners/marketplaces/snapdeal",
+      services: [
+        "Account Management",
+        "Catalog Management",
+        "Order Processing",
+        "Performance Marketing",
+        "Analytics & Reporting",
+        "Competitor Analysis",
+      ],
+    },
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -206,172 +299,86 @@ export default function PlatformEnablement() {
           </div>
         </section>
 
-        {/* What's Included */}
-        <section
-          className="py-16 px-4 bg-green-50"
-          aria-labelledby="whats-included-heading"
-        >
+        {/* What's Included - Marketplaces Section */}
+        <section className="py-16 px-4 bg-green-50" aria-labelledby="whats-included-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2
-                id="whats-included-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
+              <h2 id="whats-included-heading" className="text-3xl font-bold text-gray-900 mb-4">
                 What's Included
               </h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Everything you need to start selling online.
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                Choose from our wide range of marketplace integrations
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-6" role="list">
-                {[
-                  {
-                    icon: FileText,
-                    title: "Business Account Creation",
-                    description: "Set up your seller account on one platform.",
-                  },
-                  {
-                    icon: Shield,
-                    title: "GST, PAN, Bank Details Verification",
-                    description: "Ensure compliance with platform requirements.",
-                  },
-                  {
-                    icon: Package,
-                    title: "Product Category Approval Assistance",
-                    description: "Get your products approved for listing.",
-                  },
-                  {
-                    icon: Building,
-                    title: "5 Product Listings",
-                    description: "Create five sample product listings to get started.",
-                  },
-                  {
-                    icon: CheckCircle,
-                    title: "7 Days Post-Setup Support",
-                    description: "Ongoing guidance after setup.",
-                  },
-                ].map((service, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-4"
-                    role="listitem"
-                  >
-                    <service.icon
-                      className="h-6 w-6 text-green-600 mt-1 flex-shrink-0"
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm">{service.description}</p>
-                    </div>
+
+            <div className="grid md:grid-cols-12 gap-8">
+              {/* Left Sidebar - Marketplace List */}
+              <div className="md:col-span-3">
+                <div className="bg-white rounded-lg shadow-md p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Supported Marketplaces
+                  </h3>
+                  <div className="space-y-2">
+                    {Object.entries(marketplaces).map(([key, marketplace]) => (
+                      <div
+                        key={key}
+                        className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                          activeMarketplace === key
+                            ? "bg-green-100 text-green-700"
+                            : "hover:bg-green-50 hover:text-green-600"
+                        }`}
+                        onMouseEnter={() => setActiveMarketplace(key)}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <img
+                            src={marketplace.logo}
+                            alt={`${marketplace.name} logo`}
+                            className="h-8 w-8 object-contain"
+                          />
+                          <span className="font-medium">{marketplace.name}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
-              <div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">
-                  Supported Marketplaces
-                </h3>
-                <div className="grid grid-cols-1 gap-4">
-                  {[
-                    {
-                      name: "Amazon",
-                      description: "World's largest e-commerce platform",
-                      services: [
-                        "Account Management",
-                        "Brand Store",
-                        "Listing and Cataloging",
-                        "A+ Listing",
-                        "Advertising",
-                      ],
-                    },
-                    {
-                      name: "Flipkart",
-                      description: "India's leading e-commerce marketplace",
-                      services: [
-                        "Account Management",
-                        "Shopsy Integration",
-                        "Listing and Cataloging",
-                        "Advertising",
-                      ],
-                    },
-                    {
-                      name: "ONDC",
-                      description: "Open Network for Digital Commerce",
-                      services: [
-                        "Account Management",
-                        "Listing and Cataloging",
-                        "Network Integration",
-                      ],
-                    },
-                    {
-                      name: "JioMart",
-                      description: "Reliance's digital commerce platform",
-                      services: [
-                        "Account Management",
-                        "Listing and Cataloging",
-                        "Advertising",
-                      ],
-                    },
-                    {
-                      name: "Meesho",
-                      description: "Social commerce platform",
-                      services: [
-                        "Account Management",
-                        "Listing and Cataloging",
-                        "Advertising",
-                      ],
-                    },
-                    {
-                      name: "IndiaMART",
-                      description: "B2B marketplace for Indian businesses",
-                      services: [
-                        "Account Management",
-                        "Lead Management",
-                        "Catalog Optimization",
-                        "Buy Lead Subscription",
-                        "Premium Listing",
-                        "Business Analytics",
-                      ],
-                    },
-                    {
-                      name: "Snapdeal",
-                      description: "Popular e-commerce platform",
-                      services: [
-                        "Account Management",
-                        "Catalog Management",
-                        "Order Processing",
-                        "Performance Marketing",
-                        "Analytics & Reporting",
-                        "Competitor Analysis",
-                      ],
-                    },
-                  ].map((marketplace, index) => (
-                    <div
-                      key={index}
-                      className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
-                    >
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                        {marketplace.name}
-                      </h4>
-                      <p className="text-sm text-gray-600 mb-4">
-                        {marketplace.description}
-                      </p>
-                      <div className="space-y-2">
-                        {marketplace.services.map((service, serviceIndex) => (
+
+              {/* Right Content - Marketplace Details */}
+              <div className="md:col-span-9">
+                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                  {activeMarketplace && marketplaces[activeMarketplace] && (
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="flex-1 flex justify-center">
+                          <img
+                            src={marketplaces[activeMarketplace].logo}
+                            alt={`${marketplaces[activeMarketplace].name} logo`}
+                            className="h-24 w-auto object-contain max-w-[280px]"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {marketplaces[activeMarketplace].services.map((service, index) => (
                           <div
-                            key={serviceIndex}
-                            className="flex items-center text-sm text-gray-700"
+                            key={index}
+                            className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
                           >
-                            <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                            {service}
+                            <CheckCircle className="h-6 w-6 text-green-600" />
+                            <span className="text-gray-700 text-lg">{service}</span>
                           </div>
                         ))}
                       </div>
+                      <div className="mt-8 flex justify-center">
+                        <button
+                          onClick={() => navigate(marketplaces[activeMarketplace].href)}
+                          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
+                        >
+                          <span>Learn more about {marketplaces[activeMarketplace].name}</span>
+                          <ArrowRight className="h-5 w-5" />
+                        </button>
+                      </div>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             </div>
