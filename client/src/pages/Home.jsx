@@ -12,6 +12,7 @@ import {
   Star,
   Calendar,
   ArrowRight,
+  Play,
 } from "lucide-react";
 import axios from "axios";
 import { getApiUrl } from "../config/api.config";
@@ -24,6 +25,7 @@ import zeptoLogo from "../assets/Zepto.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import swiggyLogo from "../assets/Swiggy.png";
 import zomatoLogo from "../assets/Meesho1.png";
+
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -106,7 +108,6 @@ const Home = () => {
     { name: "Swiggy", src: swiggyLogo, alt: "Swiggy Logo" },
     { name: "Zomato", src: zomatoLogo, alt: "Zomato Logo" },
   ];
-
   // Add this with your other state variables
   const [cardsData, setCardsData] = useState([
     {
@@ -166,6 +167,31 @@ const Home = () => {
         "Don't just take our word for it. We focus on measurable outcomes: Increased market share, higher conversion rates, reduced customer acquisition costs, stronger brand recall, and scalable revenue growth.",
     },
   ]);
+  
+  // YouTube Shorts data
+  const youtubeShorts = [
+    {
+      id: "short1",
+      title: "Quick E-commerce Tips",
+      description: "Learn 3 essential tips for boosting your online sales",
+      thumbnail: "https://picsum.photos/seed/ecommerce1/400/800.jpg",
+      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
+    },
+    {
+      id: "short2",
+      title: "Marketplace Setup Guide",
+      description: "Step-by-step guide to setting up on major platforms",
+      thumbnail: "https://picsum.photos/seed/ecommerce2/400/800.jpg",
+      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
+    },
+    {
+      id: "short3",
+      title: "Advertising Strategies",
+      description: "Proven advertising techniques for e-commerce success",
+      thumbnail: "https://picsum.photos/seed/ecommerce3/400/800.jpg",
+      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
+    }
+  ];
 
   return (
     <>
@@ -239,13 +265,29 @@ const Home = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {coreServices.map((service, idx) => {
                 const Icon = service.icon;
+                const [isFlipped, setIsFlipped] = useState(false);
+                const handleMouseEnter = () => {
+                  setIsFlipped(true);
+                };
+                const handleClick = () => {
+                  setIsFlipped(false);
+                };
                 return (
                   <div
                     key={idx}
-                    className="relative group h-80 perspective"
+                    className="relative group h-80 perspective cursor-pointer"
                     role="article"
+                    onClick={handleClick}
+                    onMouseEnter={handleMouseEnter}
                   >
-                    <div className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
+                    <div
+                      className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d"
+                      style={{
+                        transform: isFlipped
+                          ? "rotateY(180deg)"
+                          : "rotateY(0deg)",
+                      }}
+                    >
                       {/* Front Side */}
                       <div className="absolute w-full h-full backface-hidden bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden">
                         <div className="flex flex-col items-center justify-center h-full px-6 py-8 gap-4 bg-gradient-to-br from-white via-gray-50 to-green-50 hover:from-green-50 hover:to-white transition-all duration-300">
@@ -276,7 +318,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-
+        {/* Benefits Section */}
         <section className="py-12 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 sm:mb-12">
@@ -288,7 +330,6 @@ const Home = () => {
                 across all platforms
               </p>
             </div>
-
             <div className="relative">
               <div className="overflow-hidden">
                 <div className="flex animate-scroll-x pause-on-hover">
@@ -319,46 +360,184 @@ const Home = () => {
             </div>
           </div>
         </section>
-
         {/* Why Choose Us */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-r from-green-50 to-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                  Why Us
+              <div className="pr-0 md:pr-8">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+                  Why Choose Us?
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6">
                   We simplify your selling journey with a hassle-free setup
                   process, dedicated support, and years of marketplace
                   expertise. With a proven 90%+ customer retention rate, we
-                  ensure sellers not only launch but grow with us. Trust
-                  99digicom to deliver excellence at every stage.
+                  ensure sellers not only launch but grow with us.
+                </p>
+                <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                  Trust 99digicom to deliver excellence at every stage of your
+                  e-commerce growth.
                 </p>
               </div>
-              <div>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <span className="text-green-600 font-semibold mr-2">✓</span>
-                    Dedicated Account Manager
+              <div className="pl-0 md:pl-8 border-t md:border-t-0 md:border-l border-green-200 pt-6 md:pt-0 md:pl-8">
+                <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                  Our Commitment to Excellence
+                </h3>
+                <ul className="space-y-6">
+                  <li className="flex items-start group">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center transition-all duration-300 group-hover:bg-green-200">
+                        <svg
+                          className="w-3 h-3 text-green-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <h4 className="text-lg font-medium text-gray-900">
+                        Dedicated Account Manager
+                      </h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Personalized support for your business needs
+                      </p>
+                    </div>
                   </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 font-semibold mr-2">✓</span>
-                    Platform-Specific Expertise
+                  <li className="flex items-start group">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center transition-all duration-300 group-hover:bg-green-200">
+                        <svg
+                          className="w-3 h-3 text-green-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <h4 className="text-lg font-medium text-gray-900">
+                        Platform-Specific Expertise
+                      </h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Specialized knowledge across all marketplaces
+                      </p>
+                    </div>
                   </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 font-semibold mr-2">✓</span>
-                    Proven Success Rates (90%+ customer retention)
+                  <li className="flex items-start group">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center transition-all duration-300 group-hover:bg-green-200">
+                        <svg
+                          className="w-3 h-3 text-green-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <h4 className="text-lg font-medium text-gray-900">
+                        Proven Success Rates
+                      </h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        90%+ customer retention rate
+                      </p>
+                    </div>
                   </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 font-semibold mr-2">✓</span>
-                    7-Day Support
+                  <li className="flex items-start group">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center transition-all duration-300 group-hover:bg-green-200">
+                        <svg
+                          className="w-3 h-3 text-green-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <h4 className="text-lg font-medium text-gray-900">
+                        7-Day Support
+                      </h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Responsive assistance whenever you need it
+                      </p>
+                    </div>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
         </section>
+        
+        {/* YouTube Shorts Section - NEW */}
+        <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8 sm:mb-12 md:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
+                Quick Tips & Tutorials
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
+                Watch our YouTube Shorts for quick insights on e-commerce success
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {youtubeShorts.map((short) => (
+                <div key={short.id} className="relative group">
+                  <div className="relative aspect-[9/16] overflow-hidden rounded-xl shadow-lg">
+                    <img
+                      src={short.thumbnail}
+                      alt={short.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-white bg-opacity-80 flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110">
+                        <Play className="h-8 w-8 text-green-600" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold text-gray-900">{short.title}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{short.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="text-center mt-12">
+              <a 
+                href="https://www.youtube.com/@yourchannel" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-6 py-3 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold rounded-lg transition-all duration-300"
+              >
+                View All YouTube Shorts
+              </a>
+            </div>
+          </div>
+        </section>
+        
         {/* Testimonials Section */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
