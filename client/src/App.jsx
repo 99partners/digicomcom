@@ -11,7 +11,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Partners from './pages/Partners';
-import Shop from './pages/Shop';
+// import Shop from './pages/Shop';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -40,11 +40,11 @@ import PlatformEnablement from './pages/platformEnable';
 import AccountManagementServices from './pages/ams';
 import AdvertisingMarketing from './pages/advertising_marketing';
 import Blogs from './pages/blogs';
-import CaseStudies from './pages/caseStudies';
+// import CaseStudies from './pages/caseStudies';
 import GuidesTutorials from './pages/guidesTutorials';
 import Faqs from './pages/faqss';
 import CoBranding from './pages/CoBranding';
-import Careers from './pages/Careers';
+// import Careers from './pages/Careers';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 
@@ -132,8 +132,8 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/partners" element={<Partners />} />
-            <Route path="/resources/careers" element={<Careers />} />
-            <Route path="/shop" element={<Shop />} />
+            {/* <Route path="/resources/careers" element={<Careers />} /> */}
+            {/* <Route path="/shop" element={<Shop />} /> */}
             
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
@@ -142,7 +142,7 @@ function App() {
 
             <Route path="/resources/blogs" element={<Blogs />} />
             <Route path="/resources/blogs/:id" element={<BlogDetails />} />
-            <Route path="/resources/caseStudies" element={<CaseStudies />} />
+            {/* <Route path="/resources/caseStudies" element={<CaseStudies />} /> */}
             <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
             <Route path="/resources/faqss" element={<Faqs />} />
             <Route path="/customer-login" element={<CustomerLogin />} />
