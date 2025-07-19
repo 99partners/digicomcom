@@ -17,7 +17,7 @@ const PartnerLogin = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
-  const { handleLogin } = useAuth()
+  const { handleLogin, checkAuthStatus } = useAuth()
 
   const handlePhoneChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -52,9 +52,11 @@ const PartnerLogin = () => {
         // Store the token and user data
         await handleLogin(data.token, data.user)
         
+        // Ensure auth status is checked and user data is loaded
+        await checkAuthStatus()
+        
         if (state === "Sign Up") {
           toast.success("Account created successfully! Please verify your email.")
-          // For new registrations, redirect to email verification
           navigate("/email-verify")
         } else {
           // For login, check if user is verified first
@@ -65,7 +67,7 @@ const PartnerLogin = () => {
           }
 
           // For login, check if user has existing partner request
-          const hasRequest = await checkPartnerRequest(data.token)
+          const hasRequest = await checkPartnerRequest()
           toast.success("Login successful!")
           
           // Redirect based on whether they have a request or not
