@@ -279,8 +279,6 @@ const Header = () => {
         { name: "Blogs", href: "/resources/blogs" },
         { name: "Guides & Tutorials", href: "/resources/guidesTutorials" },
         { name: "FAQs", href: "/resources/faqss" },
-        { name: "Case Studies", href: "/resources/caseStudies" },
-        { name: "Careers", href: "/resources/careers" },
       ],
     },
     { name: "Contact Us", href: "/contact" },
