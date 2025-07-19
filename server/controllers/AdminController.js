@@ -96,12 +96,41 @@ export const getDashboardStats = async (req, res) => {
 // Get All Users
 export const getAllUsers = async (req, res) => {
     try {
+        // Import service models
+        const PlatformAMSForm = (await import('../models/PlatformAMSForm.js')).default;
+        const AMSForm = (await import('../models/AMSForm.js')).default;
+        const AdvertisingModel = (await import('../models/AdvertisingModel.js')).default;
+        const CoBrandingModel = (await import('../models/CoBrandingModel.js')).default;
+
         const users = await User.find({}, 'name email phone isAccountVerified')
             .sort({ createdAt: -1 });
 
+        // Get service counts for each user
+        const usersWithServices = await Promise.all(
+            users.map(async (user) => {
+                const [platformCount, amsCount, marketingCount, coBrandingCount] = await Promise.all([
+                    PlatformAMSForm.countDocuments({ userId: user._id }),
+                    AMSForm.countDocuments({ userId: user._id }),
+                    AdvertisingModel.countDocuments({ userId: user._id }),
+                    CoBrandingModel.countDocuments({ userId: user._id })
+                ]);
+
+                return {
+                    ...user.toObject(),
+                    serviceCounts: {
+                        platformEnable: platformCount,
+                        ams: amsCount,
+                        marketing: marketingCount,
+                        coBranding: coBrandingCount,
+                        total: platformCount + amsCount + marketingCount + coBrandingCount
+                    }
+                };
+            })
+        );
+
         res.json({
             success: true,
-            users
+            users: usersWithServices
         });
     } catch (error) {
         res.status(500).json({ 
