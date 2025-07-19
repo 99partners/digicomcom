@@ -43,6 +43,31 @@ export default function AdvertisingMarketing() {
     consent: false,
   });
 
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = [
+    {
+      src: AM1,
+      alt: "70% of Sales from Ads illustration",
+      title: "70% of Sales from Ads",
+      description: "Sponsored listings drive over 70% of e-commerce sales.",
+    },
+    {
+      src: AM2,
+      alt: "Better Ad Placement illustration",
+      title: "Better Ad Placement",
+      description:
+        "Improve visibility with strategic ad placements on platforms like Amazon, Flipkart, and more.",
+    },
+    {
+      src: AM3,
+      alt: "High-Intent Buyers illustration",
+      title: "High-Intent Buyers",
+      description:
+        "Attract customers who are ready to buy, using targeted campaigns to focus on high-conversion keywords and ads aimed at active shoppers.",
+    },
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -80,6 +105,30 @@ export default function AdvertisingMarketing() {
       console.error("Error submitting form:", error);
       alert("Error submitting form. Please try again.");
     }
+  };
+
+  const handleCheckboxChange = (field, value, checked) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: checked
+        ? [...prev[field], value]
+        : prev[field].filter((item) => item !== value),
+    }));
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handlePrev = () => {
+    setCurrentStep((prev) => (prev > 0 ? prev - 1 : 2));
+  };
+
+  const handleNext = () => {
+    setCurrentStep((prev) => (prev < 2 ? prev + 1 : 0));
   };
 
   return (
@@ -149,72 +198,6 @@ export default function AdvertisingMarketing() {
               Launch Your Campaign - ₹4,999
               <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
             </a>
-          </div>
-        </section>
-
-        {/* Why Advertising Matters */}
-        <section
-          aria-labelledby="why-advertising-heading"
-          className="py-16 px-4 bg-white"
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2
-                id="why-advertising-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
-                Why Advertising is a Must
-              </h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                In today's competitive e-commerce landscape, visibility is key
-                to driving sales. If your product isn't visible, it's likely to
-                be overlooked. Optimised advertising ensures you stand out in
-                crowded marketplaces.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6" role="list">
-              {[
-                {
-                  title: "70% of Sales from Ads",
-                  description:
-                    "Sponsored listings drive over 70% of e-commerce sales.",
-                  image: AM1,
-                },
-                {
-                  title: "Better Ad Placement",
-                  description:
-                    "Improve visibility with strategic ad placements on platforms like Amazon, Flipkart, and more.",
-                  image: AM2,
-                },
-                {
-                  title: "High-Intent Buyers",
-                  description:
-                    "Attract customers who are ready to buy, using targeted campaigns to focus on high-conversion keywords and ads aimed at active shoppers.",
-                  image: AM3,
-                },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
-                  role="listitem"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-48 object-cover rounded-lg mb-4"
-                    onError={(e) => {
-                      console.error(`Failed to load image: ${item.image}`);
-                      e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
-                    }}
-                    style={{ maxWidth: "70%", height: "auto" }}
-                  />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{item.description}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -334,6 +317,84 @@ export default function AdvertisingMarketing() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Advertising Matters */}
+        <section
+          aria-labelledby="why-advertising-heading"
+          className="py-16 px-4 bg-white"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2
+                id="why-advertising-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Why Advertising is a Must
+              </h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+                In today's competitive e-commerce landscape, visibility is key
+                to driving sales. If your product isn't visible, it's likely to
+                be overlooked. Optimised advertising ensures you stand out in
+                crowded marketplaces.
+              </p>
+            </div>
+            <div className="relative overflow-hidden w-full h-[400px]">
+              <button
+                onClick={handlePrev}
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
+                aria-label="Previous reason"
+              >
+                <ArrowRight className="h-6 w-6 rotate-180" />
+              </button>
+              <div className="flex justify-center items-center h-full space-x-4">
+                {steps.map((step, index) => {
+                  const isCenter = index === currentStep;
+                  const isLeft = index === (currentStep - 1 + 3) % 3;
+                  const isRight = index === (currentStep + 1) % 3;
+                  return (
+                    <div
+                      key={index}
+                      className={`relative rounded-lg shadow-md transition-all duration-500 ${
+                        isCenter
+                          ? "w-96 h-96 z-20"
+                          : isLeft || isRight
+                          ? "w-48 h-48 scale-75 z-10"
+                          : "w-0 h-0 opacity-0"
+                      }`}
+                    >
+                      <img
+                        src={step.src}
+                        alt={step.alt}
+                        className="w-full h-full object-cover rounded-lg"
+                        onError={(e) => {
+                          console.error(`Failed to load image: ${step.src}`);
+                          e.target.src = "/assets/fallback.png"; // Ensure fallback.png exists in public/assets/
+                        }}
+                      />
+                      {isCenter && (
+                        <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 p-2 rounded text-center">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {step.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            {step.description}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <button
+                onClick={handleNext}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-10"
+                aria-label="Next reason"
+              >
+                <ArrowRight className="h-6 w-6" />
+              </button>
             </div>
           </div>
         </section>
