@@ -46,6 +46,7 @@ const Notifications = () => {
             if (response.data.success) {
                 setNotifications(response.data.data);
                 setTotalPages(response.data.pagination.totalPages);
+                console.log('Fetched notifications:', response.data.data.length);
             }
         } catch (error) {
             console.error('Error fetching notifications:', error);

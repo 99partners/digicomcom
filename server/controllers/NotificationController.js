@@ -550,4 +550,60 @@ export const getAllUsersForNotifications = async (req, res) => {
     }
 };
 
- 
+// Test endpoint to debug scheduled notifications
+export const testScheduledNotifications = async (req, res) => {
+    try {
+        const { userId } = req.query;
+        
+        if (!userId) {
+            return res.status(400).json({
+                success: false,
+                message: 'User ID is required'
+            });
+        }
+
+        const currentDate = new Date();
+        
+        // Get all notifications for debugging
+        const allNotifications = await Notification.find({ 
+            $or: [
+                { targetAudience: 'all' },
+                { targetAudience: 'partners' },
+                { targetUserIds: userId }
+            ]
+        }).sort({ createdAt: -1 });
+
+        const debugInfo = allNotifications.map(notif => ({
+            id: notif._id,
+            title: notif.title,
+            isActive: notif.isActive,
+            scheduledAt: notif.scheduledAt,
+            expiresAt: notif.expiresAt,
+            targetAudience: notif.targetAudience,
+            createdAt: notif.createdAt,
+            shouldShow: notif.isActive && 
+                       new Date(notif.scheduledAt) <= currentDate &&
+                       (!notif.expiresAt || new Date(notif.expiresAt) > currentDate),
+            reasons: {
+                isActive: notif.isActive,
+                scheduledCheck: `${notif.scheduledAt} <= ${currentDate} = ${new Date(notif.scheduledAt) <= currentDate}`,
+                expiryCheck: !notif.expiresAt ? 'No expiry' : `${notif.expiresAt} > ${currentDate} = ${new Date(notif.expiresAt) > currentDate}`
+            }
+        }));
+
+        res.json({
+            success: true,
+            currentDate,
+            userId,
+            totalNotifications: allNotifications.length,
+            notifications: debugInfo
+        });
+    } catch (error) {
+        console.error('Error testing scheduled notifications:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error testing notifications',
+            error: error.message
+        });
+    }
+}; 

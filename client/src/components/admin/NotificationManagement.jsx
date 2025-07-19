@@ -329,7 +329,64 @@ const NotificationManagement = () => {
         setUserSearchTerm('');
     };
 
+    const testScheduledNotifications = async () => {
+        try {
+            // For testing, use a sample user ID or the first available user
+            const testUserId = users.length > 0 ? users[0]._id : '6740b8e50123456789abcdef';
+            
+            const response = await axiosInstance.get(`/api/admin/notifications/test-scheduled?userId=${testUserId}`);
+            
+            if (response.data.success) {
+                const data = response.data;
+                const scheduled = data.notifications.filter(n => n.shouldShow === false && new Date(n.scheduledAt) > new Date());
+                const active = data.notifications.filter(n => n.shouldShow === true);
+                
+                toast.success(
+                    `Test Results:\n` +
+                    `Total notifications: ${data.totalNotifications}\n` +
+                    `Currently active: ${active.length}\n` +
+                    `Scheduled for future: ${scheduled.length}\n` +
+                    `Current time: ${new Date(data.currentDate).toLocaleString()}`
+                );
+                
+                console.log('Scheduling test results:', data);
+            }
+        } catch (error) {
+            console.error('Error testing scheduled notifications:', error);
+            toast.error('Failed to test scheduling functionality');
+        }
+    };
 
+    const createTestNotification = async () => {
+        try {
+            const futureDate = new Date();
+            futureDate.setMinutes(futureDate.getMinutes() + 2); // 2 minutes from now
+            
+            const testNotification = {
+                title: 'Test Scheduled Notification',
+                message: 'This is a test notification scheduled for 2 minutes in the future to verify scheduling works correctly.',
+                type: 'info',
+                category: 'system',
+                priority: 'medium',
+                targetAudience: 'all',
+                scheduledAt: futureDate.toISOString().slice(0, 16),
+                metadata: {
+                    actionUrl: 'https://99digicom.com',
+                    actionText: 'Visit Website'
+                }
+            };
+            
+            const response = await axiosInstance.post('/api/admin/notifications', testNotification);
+            
+            if (response.data.success) {
+                toast.success(`Test notification created! It will be visible at ${futureDate.toLocaleTimeString()}`);
+                fetchNotifications();
+            }
+        } catch (error) {
+            console.error('Error creating test notification:', error);
+            toast.error('Failed to create test notification');
+        }
+    };
 
     const filteredNotifications = notifications.filter(notification => {
         const matchesSearch = notification.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -386,17 +443,33 @@ const NotificationManagement = () => {
                     <h2 className="text-2xl font-bold text-gray-900">Notification Management</h2>
                     <p className="text-gray-600">Create and manage system notifications</p>
                 </div>
-                <button
-                    onClick={() => {
-                        setShowForm(true);
-                        setEditingNotification(null);
-                        resetForm();
-                    }}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
-                >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Notification
-                </button>
+                <div className="flex space-x-3">
+                    <button
+                        onClick={() => {
+                            setShowForm(true);
+                            setEditingNotification(null);
+                            resetForm();
+                        }}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                    >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create Notification
+                    </button>
+                    <button
+                        onClick={testScheduledNotifications}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                    >
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Test Scheduling
+                    </button>
+                    <button
+                        onClick={createTestNotification}
+                        className="inline-flex items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100"
+                    >
+                        <Bell className="w-4 h-4 mr-2" />
+                        Create Test
+                    </button>
+                </div>
             </div>
 
             {/* Stats Cards */}
