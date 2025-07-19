@@ -5,7 +5,6 @@ import {
   Handshake,
   Target,
   Users,
-  Calendar,
   Globe,
   BarChart,
   ArrowRight,
@@ -17,13 +16,6 @@ const About = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const milestones = [
-    { year: "2020", event: "Company Founded", description: "Started with a vision to empower SMBs" },
-    { year: "2022", event: "ONDC Partnership", description: "Became official ONDC integration partner" },
-    { year: "2024", event: "10,000+ Partners", description: "Reached milestone of serving 10,000+ businesses" },
-    { year: "2025", event: "Global Expansion", description: "Expanding services to international markets" },
-  ];
 
   const values = [
     { icon: Handshake, title: "Partnership First", description: "We believe growth is better when it's shared. Every seller, creator, and collaborator is treated as a long-term partner." },
@@ -116,38 +108,31 @@ const About = () => {
 
           <section className="py-16 px-4 sm:px-6 md:px-10 bg-green-50" aria-labelledby="journey-heading">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
+              <div className="space-y-6">
                 <h2 id="journey-heading" className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Our Journey</h2>
-                <p className="text-base sm:text-lg text-gray-600 mb-6">
-                  Founded in 2020, 99digicom.com started with a vision to empower small and medium businesses in India's digital commerce ecosystem.
+                <p className="text-base sm:text-lg text-gray-600">
+                  Founded in 2021, 99digicom.com started with a vision to empower small and medium businesses in India's digital commerce ecosystem.
                 </p>
-                <p className="text-base sm:text-lg text-gray-600 mb-8">
+                <p className="text-base sm:text-lg text-gray-600">
                   Our journey is driven by innovation, collaboration, and a passion for helping businesses thrive in the digital age.
                 </p>
-                <div className="bg-white rounded-lg shadow-lg p-6 space-y-4">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Key Milestones</h3>
-                  {milestones.map((m, i) => (
-                    <div key={i} className="flex items-start space-x-3">
-                      <div className="flex-shrink-0 w-16 h-8 bg-green-600 text-white rounded text-sm font-bold flex items-center justify-center">
-                        {m.year}
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{m.event}</h4>
-                        <p className="text-gray-600 text-sm">{m.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-base sm:text-lg text-gray-600">
+                  What began as a small team of digital commerce enthusiasts has grown into a comprehensive enablement platform. Today, we're proud to be an official integration partner with major platforms like Amazon, Flipkart, ONDC, and more.
+                </p>
+                <p className="text-base sm:text-lg text-gray-600">
+                  Looking ahead, we're committed to staying at the forefront of digital commerce innovation, helping Indian businesses reach their full potential in the digital marketplace.
+                </p>
               </div>
-              <div className="relative">
+              <div className="relative space-y-6">
                 <img
                   src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600"
                   alt="99Digicom team collaborating on digital marketplace solutions"
-                  className="rounded-lg shadow-lg w-full h-auto object-cover"
+                  className="rounded-lg shadow-lg w-full h-auto object-cover mb-6"
                   width="600"
                   height="400"
                   loading="lazy"
                 />
+                  
               </div>
             </div>
           </section>
