@@ -201,7 +201,7 @@ const AdminDashboard = () => {
                                                             : 'bg-gray-100 text-gray-500'
                                                     }`}>
                                                         {user.serviceCounts?.coBranding || 0}
-                                                    </span>
+                                                                    </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
