@@ -189,4 +189,4 @@ const BlogEdit = () => {
   );
 };
 
-export default BlogEdit; 
+export default BlogEdit;
