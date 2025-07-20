@@ -15,6 +15,7 @@ import {
 import axios from 'axios';
 import { getApiUrl } from '../config/api.config';
 import { Helmet } from 'react-helmet';
+import { Link } from "react-router-dom"; // Add this import
 
 export default function ForProductPartners() {
   useEffect(() => {
@@ -134,71 +135,59 @@ export default function ForProductPartners() {
                 Empower your brand with tools, visibility, and support to succeed.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-8" role="list">
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: <Globe className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "Multi-Platform Presence",
-                    description: "Sell on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato with one unified enablement process."
-                  },
-                  {
-                    icon: <Settings className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "End-to-End Support",
-                    description: "From account setup and catalog creation to order fulfillment and returns, we handle it all."
-                  },
-                  {
-                    icon: <Handshake className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "Strategic Co-Branding",
-                    description: "Unlock new audiences with joint promotions, bundle offerings, and festive campaigns."
-                  },
-                  {
-                    icon: <Megaphone className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "Performance Marketing Expertise",
-                    description: "Data-driven ad campaigns on e-commerce and social media with clear ROI tracking."
-                  }
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-start space-x-4" role="listitem">
-                    {benefit.icon}
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                      <p className="text-gray-600 text-sm">{benefit.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: <Clock className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "Fast Onboarding",
-                    description: "Go live in 3–7 business days with our streamlined onboarding process."
-                  },
-                  {
-                    icon: <DollarSign className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "Affordable & Transparent Pricing",
-                    description: "Tailored plans for startups and scale-ups with no hidden costs or long-term contracts."
-                  },
-                  {
-                    icon: <BarChart3 className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "Analytics & Insights",
-                    description: "Regular reports with sales, ad performance, and platform insights for informed decisions."
-                  },
-                  {
-                    icon: <Users className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />,
-                    title: "Dedicated Partner Success Team",
-                    description: "Personalized support with a dedicated relationship manager for your business."
-                  }
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-start space-x-4" role="listitem">
-                    {benefit.icon}
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                      <p className="text-gray-600 text-sm">{benefit.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
+              {[
+                {
+                  icon: <Globe className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "Multi-Platform Presence",
+                  description: "Sell on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato with one unified enablement process."
+                },
+                {
+                  icon: <Settings className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "End-to-End Support",
+                  description: "From account setup and catalog creation to order fulfillment and returns, we handle it all."
+                },
+                {
+                  icon: <Handshake className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "Strategic Co-Branding",
+                  description: "Unlock new audiences with joint promotions, bundle offerings, and festive campaigns."
+                },
+                {
+                  icon: <Megaphone className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "Performance Marketing Expertise",
+                  description: "Data-driven ad campaigns on e-commerce and social media with clear ROI tracking."
+                },
+                {
+                  icon: <Clock className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "Fast Onboarding",
+                  description: "Go live in 3–7 business days with our streamlined onboarding process."
+                },
+                {
+                  icon: <DollarSign className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "Affordable & Transparent Pricing",
+                  description: "Tailored plans for startups and scale-ups with no hidden costs or long-term contracts."
+                },
+                {
+                  icon: <BarChart3 className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "Analytics & Insights",
+                  description: "Regular reports with sales, ad performance, and platform insights for informed decisions."
+                },
+                {
+                  icon: <Users className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  title: "Dedicated Partner Success Team",
+                  description: "Personalized support with a dedicated relationship manager for your business."
+                }
+              ].map((benefit, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow p-6 flex flex-col items-center text-center h-full"
+                  role="listitem"
+                >
+                  {benefit.icon}
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
+                  <p className="text-gray-600 text-sm">{benefit.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -233,6 +222,16 @@ export default function ForProductPartners() {
           </div>
         </section>
       </main>
+
+      {/* Join Us Button at the end */}
+      <div className="flex justify-center py-12 bg-white">
+        <Link
+          to="/partnerlogin"
+          className="inline-block px-8 py-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold text-lg shadow-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
+        >
+          Join us
+        </Link>
+      </div>
     </>
   );
 }

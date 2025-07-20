@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
 import { 
@@ -14,9 +14,28 @@ import {
     Shield,
     Edit
 } from 'lucide-react';
+import axiosInstance from '../../config/api.config';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
-    const { user } = useAuth();
+    const { user, refreshUserData } = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            try {
+                setIsLoading(true);
+                await refreshUserData();
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+                toast.error('Failed to load profile data');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProfileData();
+    }, []);
 
     const formatDate = (date) => {
         if (!date) return 'N/A';
@@ -64,6 +83,14 @@ const Profile = () => {
             </div>
         </motion.div>
     );
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50/50 py-8 flex items-center justify-center">
+                <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50/50 py-8">

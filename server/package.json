@@ -5,11 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "start:prod": "node start-production.js",
+    "start": "NODE_ENV=production node index.js",
+    "start:prod": "NODE_ENV=production node start-production.js",
     "server": "nodemon index.js",
     "dev": "NODE_ENV=development nodemon index.js",
-    "production": "NODE_ENV=production node index.js"
+    "production": "NODE_ENV=production node index.js",
+    "build": "NODE_ENV=production node index.js"
   },
   "keywords": [
     "MERN-Stack",
@@ -25,7 +26,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.17.0",
-    "mongoose": "^8.16.3",
+    "mongoose": "^7.6.3",
     "multer": "^2.0.1",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.9"

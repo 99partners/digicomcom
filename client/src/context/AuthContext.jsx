@@ -6,44 +6,55 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check for existing auth token in localStorage
-    const token = localStorage.getItem('authToken');
-    const adminToken = localStorage.getItem('adminToken');
-    
-    if (token || adminToken) {
-      checkAuthStatus();
-    } else {
-      setLoading(false);
-    }
+    checkAuthStatus();
   }, []);
 
   const checkAuthStatus = async () => {
     try {
-      // Check admin auth first
+      setLoading(true);
+      const token = localStorage.getItem('authToken');
       const adminToken = localStorage.getItem('adminToken');
+
+      if (!token && !adminToken) {
+        setLoading(false);
+        return;
+      }
+
+      // Check admin auth first
       if (adminToken) {
         try {
-          const response = await axiosInstance.get('/api/admin/dashboard-stats');
+          const response = await axiosInstance.get('/api/admin/auth-check');
           if (response.data.success) {
-            setUser({ role: 'admin', ...response.data.admin });
-            setLoading(false);
+            setUser({ 
+              role: 'admin',
+              isAdmin: true,
+              ...response.data.admin 
+            });
+            setIsAuthenticated(true);
             return;
           }
         } catch (adminError) {
           console.error('Admin auth check failed:', adminError);
           localStorage.removeItem('adminToken');
+          // Continue to check user auth if admin auth fails
         }
       }
 
       // Check regular user auth
-      const userToken = localStorage.getItem('authToken');
-      if (userToken) {
+      if (token) {
         try {
-          const response = await axiosInstance.get('/api/user/data');
-          if (response.data.success) {
-            setUser(response.data.userData);
+          const authResponse = await axiosInstance.get('/api/auth/is-auth');
+          if (authResponse.data.success) {
+            const userResponse = await axiosInstance.get('/api/user/data');
+            if (userResponse.data.success) {
+              setUser(userResponse.data.userData);
+              setIsAuthenticated(true);
+            } else {
+              handleLogout();
+            }
           } else {
             handleLogout();
           }
@@ -61,45 +72,48 @@ export const AuthProvider = ({ children }) => {
     try {
       if (isAdmin) {
         localStorage.setItem('adminToken', token);
+        localStorage.removeItem('authToken'); // Clear user token if exists
       } else {
         localStorage.setItem('authToken', token);
+        localStorage.removeItem('adminToken'); // Clear admin token if exists
       }
       
-      // Update axios instance headers
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      // Set user data
       setUser(userData);
-
-      // Verify the token immediately after login
-      await checkAuthStatus();
-      
-      return true;
+      setIsAuthenticated(true);
+      await checkAuthStatus(); // Refresh user data after login
     } catch (error) {
-      console.error('Login error:', error);
-      handleLogout();
-      return false;
+      console.error('Login handler error:', error);
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('adminToken');
-    delete axiosInstance.defaults.headers.common['Authorization'];
     setUser(null);
+    setIsAuthenticated(false);
   };
 
-  const value = {
-    user,
-    loading,
-    handleLogin,
-    handleLogout,
-    isAuthenticated: !!user,
-    checkAuthStatus, // Export this so components can manually check auth status
+  const refreshUserData = async () => {
+    try {
+      const response = await axiosInstance.get('/api/user/data');
+      if (response.data.success) {
+        setUser(response.data.userData);
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      isAuthenticated,
+      handleLogin,
+      handleLogout,
+      checkAuthStatus,
+      refreshUserData
+    }}>
       {children}
     </AuthContext.Provider>
   );
