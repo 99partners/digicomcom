@@ -5,7 +5,7 @@ import { connectDB } from './config/db.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import cors from 'cors'; // Available but using custom CORS implementation
+// Using custom CORS implementation instead of cors package
 import mongoose from 'mongoose';
 import { logger } from './utils/logger.js';
 import { requestLogger } from './middleware/requestLogger.js';
@@ -88,46 +88,57 @@ app.use((req, res, next) => {
     
     // Log all incoming requests
     logger.cors('REQUEST', requestInfo);
+    
+    // Debug logging for production CORS issues
+    if (req.url.includes('/api/newsletter')) {
+        console.log('🔍 Newsletter API Request:', {
+            origin: origin,
+            method: req.method,
+            url: req.url,
+            allowedOrigins: allowedOrigins,
+            isAllowed: !origin || allowedOrigins.includes(origin)
+        });
+    }
 
     // Function to set CORS headers
-    const setCorsHeaders = () => {
-        if (origin) {
-            res.setHeader('Access-Control-Allow-Origin', origin);
-            // Important: Vary header for CDN caching
-            res.setHeader('Vary', 'Origin');
-        }
+    const setCorsHeaders = (allowedOrigin) => {
+        res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-        // Add max age for preflight caching
         res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+        res.setHeader('Vary', 'Origin'); // Important for caching
     };
 
     try {
+        // Check if origin is allowed
+        const isOriginAllowed = !origin || allowedOrigins.includes(origin);
+        
         // Handle preflight requests first
         if (req.method === 'OPTIONS') {
-            if (allowedOrigins.includes(origin) || !origin) {
-                setCorsHeaders();
-                            logger.cors('PREFLIGHT_APPROVED', { origin });
-            return res.status(204).end();
+            if (isOriginAllowed) {
+                setCorsHeaders(origin || '*');
+                logger.cors('PREFLIGHT_APPROVED', { origin });
+                return res.status(204).end();
+            } else {
+                logger.cors('PREFLIGHT_BLOCKED', { origin, allowedOrigins });
+                return res.status(204).end(); // Still return 204 for security
+            }
         }
-        logger.cors('PREFLIGHT_BLOCKED', { origin });
-        return res.status(204).end(); // Still return 204 for security
-    }
 
-    // Handle actual requests
-    if (allowedOrigins.includes(origin) || !origin) {
-        setCorsHeaders();
-        logger.cors('REQUEST_APPROVED', { origin });
-        return next();
-    }
+        // Handle actual requests
+        if (isOriginAllowed) {
+            setCorsHeaders(origin || '*');
+            logger.cors('REQUEST_APPROVED', { origin });
+            return next();
+        }
 
-    // Log blocked requests
-    logger.cors('REQUEST_BLOCKED', {
-        ...requestInfo,
-        reason: 'Origin not allowed',
-        allowedOrigins: allowedOrigins
-    });
+        // Log blocked requests
+        logger.cors('REQUEST_BLOCKED', {
+            ...requestInfo,
+            reason: 'Origin not allowed',
+            allowedOrigins: allowedOrigins
+        });
 
         // In production, don't expose allowed origins
         return res.status(403).json({
@@ -138,6 +149,7 @@ app.use((req, res, next) => {
         });
 
     } catch (error) {
+        logger.error(error, req);
         console.error('🔥 CORS error:', error);
         return res.status(500).json({
             error: 'Internal CORS error',
