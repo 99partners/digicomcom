@@ -53,8 +53,8 @@ process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Promise Rejection:', reason);
 });
 
-// CORS Configuration - Manual implementation to prevent duplicate headers
-const allowedOrigins = [
+// CORS Configuration - Allowed domains
+const allowedDomains = [
     'https://99digicom.com',
     'https://www.99digicom.com',
     'https://api.99digicom.com',
@@ -69,49 +69,59 @@ const allowedOrigins = [
 // Log CORS configuration
 console.log('🔒 CORS Configuration:', {
     environment: process.env.NODE_ENV,
-    allowedOrigins: allowedOrigins,
+    allowedDomains: allowedDomains,
     timestamp: new Date().toISOString()
 });
 
 console.log('Current environment:', process.env.NODE_ENV);
-console.log('Allowed CORS origins:', allowedOrigins);
+console.log('Allowed CORS domains:', allowedDomains);
 
-// Simplified CORS middleware for ALL APIs - bulletproof implementation
-app.use((req, res, next) => {
+// Enable CORS for all methods
+app.use(function(req, res, next) {
     const origin = req.headers.origin;
-    
-    // Log all requests for debugging
     console.log(`🌐 CORS Request: ${req.method} ${req.url} from origin: ${origin || 'none'}`);
     
-    // Always set CORS headers for allowed origins
-    if (origin && allowedOrigins.includes(origin)) {
-        // Allowed origin - set specific origin with credentials
-        res.header('Access-Control-Allow-Origin', origin);
-        res.header('Access-Control-Allow-Credentials', 'true');
-        console.log(`✅ CORS: Allowed origin ${origin}`);
+    if (allowedDomains.includes(origin)) {
+        // Set CORS headers for allowed domains
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Max-Age', '86400');
+        
+        console.log(`✅ CORS: Allowed domain ${origin}`);
+        
+        // Handle preflight requests
+        if (req.method === 'OPTIONS') {
+            console.log(`✅ CORS: Preflight request approved for ${req.url}`);
+            return res.status(204).end();
+        }
+        
+        next(); // Proceed with the request
     } else if (!origin) {
-        // No origin (server-to-server, Postman, etc.) - allow with wildcard
-        res.header('Access-Control-Allow-Origin', '*');
-        console.log(`✅ CORS: No origin, using wildcard`);
+        // No origin header (server-to-server calls, Postman, etc.)
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+        res.setHeader('Access-Control-Max-Age', '86400');
+        
+        console.log(`✅ CORS: No origin header, allowing all`);
+        
+        // Handle preflight requests
+        if (req.method === 'OPTIONS') {
+            return res.status(204).end();
+        }
+        
+        next(); // Proceed with the request
     } else {
-        // Unknown origin - still set wildcard for public APIs
-        res.header('Access-Control-Allow-Origin', '*');
-        console.log(`⚠️ CORS: Unknown origin ${origin}, using wildcard`);
+        // Deny access to other domains
+        console.log(`❌ CORS: Access denied for origin ${origin}`);
+        res.status(403).json({ 
+            success: false,
+            message: 'Access forbidden - Origin not allowed',
+            origin: origin 
+        });
     }
-    
-    // Always set these headers for all requests
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-    res.header('Access-Control-Max-Age', '86400');
-    
-    // Handle preflight requests
-    if (req.method === 'OPTIONS') {
-        console.log(`✅ CORS: Preflight request approved for ${req.url}`);
-        return res.status(204).end();
-    }
-    
-    // Continue to actual request
-    next();
 });
 
 // Global error handler middleware
