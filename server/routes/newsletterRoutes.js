@@ -3,16 +3,28 @@ import express from "express";
 import mongoose from "mongoose";
 import Newsletter from "../models/Newsletter.js";
 import adminAuth from '../middleware/adminAuth.js';
+import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 
 // Newsletter subscription (POST)
 router.post("/", async (req, res) => {
-  console.log('Newsletter subscription request received:', req.body);
+  const startTime = Date.now();
+  
+  logger.api(req, res, 0); // Log initial request
+  console.log('Newsletter subscription request received:', {
+    body: req.body,
+    headers: {
+      origin: req.headers.origin,
+      referer: req.headers.referer,
+      'user-agent': req.headers['user-agent']
+    }
+  });
   
   const { email } = req.body;
 
   if (!email) {
+    logger.error(new Error('Email missing in newsletter subscription'), req);
     return res.status(400).json({ 
       success: false,
       message: "Email is required" 
@@ -20,9 +32,15 @@ router.post("/", async (req, res) => {
   }
 
   try {
+    // Check database connection
+    if (mongoose.connection.readyState !== 1) {
+      throw new Error('Database connection not ready');
+    }
+
     // Check if email already exists
     const existingSubscriber = await Newsletter.findOne({ email });
     if (existingSubscriber) {
+      logger.api(req, res, Date.now() - startTime);
       return res.status(400).json({ 
         success: false,
         message: "Email already subscribed" 
@@ -31,23 +49,56 @@ router.post("/", async (req, res) => {
 
     // Save email to DB
     const subscriber = await Newsletter.create({ email });
-    return res.status(200).json({ 
+    
+    // Log successful subscription
+    logger.db('CREATE', 'Newsletter', { email }, Date.now() - startTime);
+    
+    // Set CORS headers explicitly
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    const response = {
       success: true,
       message: "Subscribed successfully!",
       subscriber: subscriber
-    });
+    };
+
+    logger.api(req, res, Date.now() - startTime);
+    return res.status(200).json(response);
+
   } catch (error) {
-    console.error("Newsletter subscription error:", error);
+    // Log the error with full context
+    logger.error(error, req);
+    console.error("Newsletter subscription error:", {
+      error: error.message,
+      stack: error.stack,
+      body: req.body,
+      headers: req.headers
+    });
+
+    // Check specific error types
+    if (error.name === 'MongoError' || error.name === 'MongooseError') {
+      return res.status(503).json({ 
+        success: false,
+        message: "Service temporarily unavailable. Please try again later.",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+
     return res.status(500).json({ 
       success: false,
       message: "Subscription failed. Please try again later.",
-      error: error.message 
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 });
 
 // Delete subscriber (admin only)
 router.delete("/:id", adminAuth, async (req, res) => {
+  const startTime = Date.now();
+  
   try {
     const { id } = req.params;
     
@@ -67,11 +118,13 @@ router.delete("/:id", adminAuth, async (req, res) => {
       });
     }
 
+    logger.db('DELETE', 'Newsletter', { id }, Date.now() - startTime);
     return res.status(200).json({ 
       success: true,
       message: "Subscriber removed successfully" 
     });
   } catch (error) {
+    logger.error(error, req);
     console.error("Error removing subscriber:", error);
     return res.status(500).json({ 
       success: false,
@@ -82,6 +135,8 @@ router.delete("/:id", adminAuth, async (req, res) => {
 
 // Get all subscribers
 router.get("/", adminAuth, async (req, res) => {
+  const startTime = Date.now();
+  
   try {
     if (mongoose.connection.readyState !== 1) {
       return res.status(503).json({ 
@@ -91,16 +146,58 @@ router.get("/", adminAuth, async (req, res) => {
       });
     }
     const subscribers = await Newsletter.find({}, "email");
+    
+    logger.db('FIND', 'Newsletter', { operation: 'list-all' }, Date.now() - startTime);
     res.status(200).json({ 
       success: true,
       subscribers: subscribers 
     });
   } catch (error) {
+    logger.error(error, req);
     console.error("Failed to fetch newsletter subscribers:", error);
     res.status(500).json({ 
       success: false,
       message: "Failed to fetch subscribers",
       subscribers: [] 
+    });
+  }
+});
+
+// Add OPTIONS handler for CORS preflight
+router.options("/", (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+  res.status(204).end();
+});
+
+// Health check endpoint
+router.get('/health', (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    const health = {
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+      database: {
+        connected: mongoose.connection.readyState === 1,
+        state: mongoose.connection.readyState
+      },
+      cors: {
+        origin: req.headers.origin,
+        allowedOrigins: req.app.get('allowedOrigins')
+      }
+    };
+
+    logger.api(req, res, Date.now() - startTime);
+    res.status(200).json(health);
+  } catch (error) {
+    logger.error(error, req);
+    res.status(503).json({
+      status: 'error',
+      message: error.message
     });
   }
 });
