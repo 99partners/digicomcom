@@ -7,6 +7,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors'; // Available but using custom CORS implementation
 import mongoose from 'mongoose';
+import { logger } from './utils/logger.js';
+import { requestLogger } from './middleware/requestLogger.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -34,9 +37,21 @@ if (!process.env.JWT_SECRET && !process.env.JWT_SECRET_KEY) {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware: JSON & cookies
+// Middleware: Logging, JSON & cookies
+app.use(requestLogger);
 app.use(express.json());
 app.use(cookieParser());
+
+// Log all unhandled errors
+process.on('uncaughtException', (error) => {
+    logger.error(error);
+    console.error('Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    logger.error(new Error('Unhandled Promise Rejection: ' + reason));
+    console.error('Unhandled Promise Rejection:', reason);
+});
 
 // CORS Configuration - Manual implementation to prevent duplicate headers
 const allowedOrigins = [
@@ -72,7 +87,7 @@ app.use((req, res, next) => {
     };
     
     // Log all incoming requests
-    console.log('🔍 Incoming request:', requestInfo);
+    logger.cors('REQUEST', requestInfo);
 
     // Function to set CORS headers
     const setCorsHeaders = () => {
@@ -93,26 +108,26 @@ app.use((req, res, next) => {
         if (req.method === 'OPTIONS') {
             if (allowedOrigins.includes(origin) || !origin) {
                 setCorsHeaders();
-                console.log('✅ Preflight request approved for:', origin);
-                return res.status(204).end();
-            }
-            console.warn('❌ Preflight blocked for:', origin);
-            return res.status(204).end(); // Still return 204 for security
+                            logger.cors('PREFLIGHT_APPROVED', { origin });
+            return res.status(204).end();
         }
+        logger.cors('PREFLIGHT_BLOCKED', { origin });
+        return res.status(204).end(); // Still return 204 for security
+    }
 
-        // Handle actual requests
-        if (allowedOrigins.includes(origin) || !origin) {
-            setCorsHeaders();
-            console.log('✅ Request approved for:', origin);
-            return next();
-        }
+    // Handle actual requests
+    if (allowedOrigins.includes(origin) || !origin) {
+        setCorsHeaders();
+        logger.cors('REQUEST_APPROVED', { origin });
+        return next();
+    }
 
-        // Log blocked requests
-        console.warn('❌ Request blocked:', {
-            ...requestInfo,
-            reason: 'Origin not allowed',
-            allowedOrigins: allowedOrigins
-        });
+    // Log blocked requests
+    logger.cors('REQUEST_BLOCKED', {
+        ...requestInfo,
+        reason: 'Origin not allowed',
+        allowedOrigins: allowedOrigins
+    });
 
         // In production, don't expose allowed origins
         return res.status(403).json({
@@ -304,14 +319,19 @@ app.use((req, res) => {
     });
 });
 
+// Add error handler middleware last
+app.use(errorHandler);
+
 // Initialize server
 const startServer = async () => {
     try {
+        logger.access({ method: 'SYSTEM', url: '/startup' }, { status: 'INITIALIZING' }, 0);
         console.log('🔄 Initializing server...');
         
         // Connect to MongoDB
         console.log('🔄 Connecting to database...');
         await connectDB();
+        logger.db('CONNECT', 'system', 'Initial connection', Date.now());
         console.log('✅ Database connected successfully');
         
         // Start listening only after successful DB connection
