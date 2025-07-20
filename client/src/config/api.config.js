@@ -18,7 +18,7 @@ const isDevelopment = () => {
 };
 
 // Environment-specific configuration with fallbacks
-const ENV = import.meta.env.VITE_ENV || (isProduction() ? 'production' : 'development');
+const ENV = import.meta.env.MODE || import.meta.env.VITE_ENV || (isProduction() ? 'production' : 'development');
 
 const API_CONFIG = {
   development: {
@@ -29,13 +29,10 @@ const API_CONFIG = {
   },
   production: {
     baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://api.99digicom.com',
-    fallbackUrls: [
-      'https://99digicom.com',
-      'https://www.99digicom.com'
-    ],
+    fallbackUrls: [], // Remove fallback URLs to prevent 404 errors
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 60000,
     enableLogs: false,
-    enableRetry: true,
+    enableRetry: false, // Disable retry in production to avoid multiple CORS errors
   }
 };
 
@@ -108,30 +105,10 @@ axiosInstance.interceptors.response.use(
         baseURL: originalRequest.baseURL
       });
       
-      // Try fallback URLs in production
-      if (ENV === 'production' && currentConfig.fallbackUrls && !originalRequest._fallbackTried) {
-        originalRequest._fallbackTried = true;
-        
-        for (const fallbackUrl of currentConfig.fallbackUrls) {
-          try {
-            console.log('Trying fallback URL:', fallbackUrl);
-            const fallbackConfig = {
-              ...originalRequest,
-              baseURL: fallbackUrl,
-              url: originalRequest.url.replace(originalRequest.baseURL, '')
-            };
-            
-            const response = await axios(fallbackConfig);
-            console.log('Fallback URL successful:', fallbackUrl);
-            return response;
-          } catch (fallbackError) {
-            console.error('Fallback URL failed:', fallbackUrl, fallbackError.message);
-          }
-        }
-      }
+      // Don't try fallback URLs in production to avoid CORS/404 errors
       
-      // Only retry GET requests and only once
-      if (!originalRequest._retry && originalRequest.method === 'get') {
+      // Only retry GET requests and only once (and only in development)
+      if (!originalRequest._retry && originalRequest.method === 'get' && ENV === 'development') {
         originalRequest._retry = true;
         try {
           // Add a small delay before retry
@@ -153,16 +130,22 @@ axiosInstance.interceptors.response.use(
 
     // Handle authentication errors
     if (error.response?.status === 401) {
-      if (originalRequest.url?.includes('/api/admin')) {
+      // Check if this is an admin route or admin user context
+      const isAdminRoute = originalRequest.url?.includes('/api/admin') || window.location.pathname.startsWith('/admin');
+      
+      if (isAdminRoute) {
         localStorage.removeItem('adminToken');
-        window.location.href = '/adminlogin';
+        // Only redirect if not already on admin login page
+        if (!window.location.pathname.includes('/admin/login')) {
+          window.location.href = '/admin/login';
+        }
       } else {
         localStorage.removeItem('authToken');
         const publicPaths = ['/', '/about', '/contact', '/partners', '/services', '/resources', '/signup', '/login', '/forgot-password', '/privacypolicy', '/termsofservice', '/cookiepolicy', '/faqss', '/platform-enablement-ams'];
         const isPublicPath = publicPaths.some(path => window.location.pathname === path || window.location.pathname.startsWith(path + '/'));
         
         if (!isPublicPath && !window.location.pathname.includes('login')) {
-          window.location.href = '/partner-login';
+          window.location.href = '/partnerlogin';
         }
       }
       throw new Error('Your session has expired. Please log in again.');

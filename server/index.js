@@ -43,6 +43,8 @@ const allowedOrigins = [
     'https://99digicom.com',
     'https://www.99digicom.com',
     'https://api.99digicom.com',
+    'https://99partners.in', // Add existing domain
+    'https://www.99partners.in',
     ...(process.env.NODE_ENV !== 'production' ? [
         'http://localhost:5173',
         'http://localhost:5050',
@@ -58,23 +60,34 @@ console.log('Allowed CORS origins:', allowedOrigins);
 app.use((req, res, next) => {
     const origin = req.headers.origin;
     
-    console.log('🔍 Request from origin:', origin, 'Method:', req.method);
+    console.log('🔍 Request from origin:', origin, 'Method:', req.method, 'URL:', req.url);
     
-    // Check if origin is allowed
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
+    // Check if origin is allowed or if it's undefined (same-origin requests)
+    if (allowedOrigins.includes(origin) || !origin) {
+        if (origin) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Vary', 'Origin');
+        }
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
         
         // Handle preflight requests
         if (req.method === 'OPTIONS') {
+            console.log('✅ CORS preflight request handled for:', origin);
             res.status(200).end();
             return;
         }
+        
+        console.log('✅ CORS allowed for origin:', origin);
     } else {
         console.warn('❌ Origin blocked:', origin);
-        res.status(403).json({ error: 'Not allowed by CORS' });
+        console.warn('📋 Allowed origins:', allowedOrigins);
+        res.status(403).json({ 
+            error: 'Not allowed by CORS',
+            origin: origin,
+            allowedOrigins: process.env.NODE_ENV === 'development' ? allowedOrigins : 'Contact admin'
+        });
         return;
     }
     

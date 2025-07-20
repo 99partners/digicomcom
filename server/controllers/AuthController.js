@@ -27,11 +27,16 @@ export const register = async (req, res)=>{
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
+        //generate OTP for email verification
+        const otp = String(Math.floor(100000 + Math.random() * 900000)) //6 digits random number
+        
         const user = new userModel({
             name,
             email,
             phone,
-            password: hashedPassword
+            password: hashedPassword,
+            verifyOtp: otp,
+            verifyOtpExpireAt: Date.now() + 24*60*60*1000 //1day
         })
         await user.save()
 
@@ -47,16 +52,16 @@ export const register = async (req, res)=>{
             maxAge: 1*24*60*60*1000
         });
 
-        //we are send wellcome email to user...
+        //send OTP verification email to user
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
-            subject: 'Welcome to our site',
-            text: `Hello ${name}, Welcome to our site. 
-            We are happy to see you here.Your account has been created successfully with email id: ${email}.`
-
+            subject: 'Account Verification OTP',
+            html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", email)
         }
         await transporter.sendMail(mailOptions)
+
+        console.log('Registration successful and verification OTP sent to:', email, 'OTP:', otp)
 
         // Return user data and token
         const userData = {
@@ -119,6 +124,25 @@ export const login = async(req, res) => {
         };
 
         res.cookie('token', token, cookieOptions);
+
+        // If user is not verified, send OTP automatically
+        if (!user.isAccountVerified) {
+            const otp = String(Math.floor(100000 + Math.random() * 900000)) //6 digits random number
+            user.verifyOtp = otp;
+            user.verifyOtpExpireAt = Date.now() + 24*60*60*1000; //1day
+            await user.save();
+
+            //send OTP verification email to user
+            const mailOptions = {
+                from: process.env.SENDER_EMAIL,
+                to: user.email,
+                subject: 'Account Verification OTP',
+                html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
+            }
+            await transporter.sendMail(mailOptions);
+
+            console.log('Login successful for unverified user, OTP sent to:', user.email, 'OTP:', otp);
+        }
 
         // Return user data and token
         const userData = {

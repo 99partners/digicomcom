@@ -42,7 +42,7 @@ const Partner = () => {
     recentActivity: []
   });
   const navigate = useNavigate();
-  const { handleLogout, user, checkAuthStatus } = useAuth();
+  const { handleLogout, user, checkAuthStatus, refreshUserData } = useAuth();
   const { backendUrl } = useAppContext();
 
   const menuItems = [
@@ -56,6 +56,7 @@ const Partner = () => {
 
   const fetchPartnerData = async () => {
     try {
+      setIsLoading(true);
       const response = await axiosInstance.get('/api/user/data');
       if (response.data.success) {
         setPartnerData(response.data.userData);
@@ -71,7 +72,12 @@ const Partner = () => {
   };
 
   useEffect(() => {
-    fetchPartnerData();
+    const initializeData = async () => {
+      await checkAuthStatus();
+      await fetchPartnerData();
+      await checkExistingRequest();
+    };
+    initializeData();
   }, []);
 
   useEffect(() => {
@@ -82,10 +88,6 @@ const Partner = () => {
       }));
     }
   }, [user]);
-
-  useEffect(() => {
-    checkExistingRequest();
-  }, []);
 
   const checkExistingRequest = async () => {
     try {
@@ -115,6 +117,8 @@ const Partner = () => {
       }
     } catch (error) {
       console.error('Logout failed:', error);
+      handleLogout();
+      navigate('/partnerlogin');
     }
   };
 
