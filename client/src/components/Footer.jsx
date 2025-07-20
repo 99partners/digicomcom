@@ -55,7 +55,7 @@ const Footer = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true, // Important for CORS
+          // Removed withCredentials for newsletter - not needed for public endpoint
           timeout: 10000, // 10 second timeout
         }
       );
