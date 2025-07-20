@@ -4,6 +4,8 @@ import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
 import PartnerRequest from '../models/PartnerRequestModel.js';
 import Contact from '../models/ContactModel.js';
+import transporter from '../config/nodemailer.js';
+import { SERVICE_APPROVAL_TEMPLATE, sendEmail } from '../config/emailTemplets.js';
 
 // Admin Login
 export const adminLogin = async (req, res) => {
@@ -94,12 +96,41 @@ export const getDashboardStats = async (req, res) => {
 // Get All Users
 export const getAllUsers = async (req, res) => {
     try {
+        // Import service models
+        const PlatformAMSForm = (await import('../models/PlatformAMSForm.js')).default;
+        const AMSForm = (await import('../models/AMSForm.js')).default;
+        const AdvertisingModel = (await import('../models/AdvertisingModel.js')).default;
+        const CoBrandingModel = (await import('../models/CoBrandingModel.js')).default;
+
         const users = await User.find({}, 'name email phone isAccountVerified')
             .sort({ createdAt: -1 });
 
+        // Get service counts for each user
+        const usersWithServices = await Promise.all(
+            users.map(async (user) => {
+                const [platformCount, amsCount, marketingCount, coBrandingCount] = await Promise.all([
+                    PlatformAMSForm.countDocuments({ userId: user._id }),
+                    AMSForm.countDocuments({ userId: user._id }),
+                    AdvertisingModel.countDocuments({ userId: user._id }),
+                    CoBrandingModel.countDocuments({ userId: user._id })
+                ]);
+
+                return {
+                    ...user.toObject(),
+                    serviceCounts: {
+                        platformEnable: platformCount,
+                        ams: amsCount,
+                        marketing: marketingCount,
+                        coBranding: coBrandingCount,
+                        total: platformCount + amsCount + marketingCount + coBrandingCount
+                    }
+                };
+            })
+        );
+
         res.json({
             success: true,
-            users
+            users: usersWithServices
         });
     } catch (error) {
         res.status(500).json({ 
@@ -118,6 +149,27 @@ export const getAllSubscribers = async (req, res) => {
         res.json({
             success: true,
             subscribers
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
+    }
+};
+
+// Check Admin Authentication
+export const checkAdminAuth = async (req, res) => {
+    try {
+        // If middleware passed, admin is authenticated
+        const admin = req.admin;
+        res.json({
+            success: true,
+            admin: {
+                id: admin._id,
+                username: admin.username,
+                role: admin.role
+            }
         });
     } catch (error) {
         res.status(500).json({ 
@@ -331,6 +383,53 @@ export const updateFormSubmissionStatus = async (req, res) => {
             });
         }
 
+        // Send approval email if status is approved
+        if (status === 'approved' && updatedForm.userId) {
+            try {
+                const user = updatedForm.userId;
+                
+                // Map service types to user-friendly names
+                const serviceTypeNames = {
+                    'platformams': 'Platform Enablement Services',
+                    'ams': 'Account Management Services (AMS)',
+                    'advertising': 'Marketing & Advertising Services',
+                    'cobranding': 'Co-Branding Partnership'
+                };
+
+                const serviceTypeName = serviceTypeNames[formType] || formType;
+
+                const emailContent = SERVICE_APPROVAL_TEMPLATE
+                    .replace(/{{userName}}/g, user.name)
+                    .replace(/{{userEmail}}/g, user.email)
+                    .replace(/{{serviceType}}/g, serviceTypeName)
+                    .replace(/{{applicationId}}/g, updatedForm._id.toString())
+                    .replace(/{{approvalDate}}/g, new Date().toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }));
+
+                const mailOptions = {
+                    from: process.env.SENDER_EMAIL,
+                    to: user.email,
+                    subject: `🎉 Your ${serviceTypeName} Application Has Been Approved!`,
+                    html: emailContent
+                };
+
+                const emailResult = await sendEmail(transporter, mailOptions);
+                if (emailResult.success) {
+                    console.log(`Approval email sent successfully to: ${user.email} for ${serviceTypeName}`);
+                } else {
+                    console.error(`Failed to send approval email to: ${user.email}`, emailResult.error);
+                }
+            } catch (emailError) {
+                console.error('Error sending approval email:', emailError);
+                // Don't fail the status update if email fails
+            }
+        }
+
         res.json({
             success: true,
             message: `Form submission ${status} successfully`,
@@ -377,7 +476,54 @@ export const updatePartnerRequestStatus = async (req, res) => {
                 updatedAt: new Date() 
             },
             { new: true, runValidators: true }
-        );
+        ).populate('userId', 'name email');
+
+        // Send approval email if status is approved
+        if (status === 'approved' && request.userId) {
+            try {
+                const user = request.userId;
+                
+                // Map service types to user-friendly names for partner requests
+                const serviceTypeNames = {
+                    'ams': 'Account Management Services (AMS)',
+                    'platform': 'Platform Enablement Services',
+                    'cobranding': 'Co-Branding Partnership',
+                    'marketing': 'Marketing & Advertising Services'
+                };
+
+                const serviceTypeName = serviceTypeNames[request.serviceType] || 'Partner Services';
+
+                const emailContent = SERVICE_APPROVAL_TEMPLATE
+                    .replace(/{{userName}}/g, user.name)
+                    .replace(/{{userEmail}}/g, user.email)
+                    .replace(/{{serviceType}}/g, serviceTypeName)
+                    .replace(/{{applicationId}}/g, request._id.toString())
+                    .replace(/{{approvalDate}}/g, new Date().toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }));
+
+                const mailOptions = {
+                    from: process.env.SENDER_EMAIL,
+                    to: user.email,
+                    subject: `🎉 Your ${serviceTypeName} Partnership Request Has Been Approved!`,
+                    html: emailContent
+                };
+
+                const emailResult = await sendEmail(transporter, mailOptions);
+                if (emailResult.success) {
+                    console.log(`Partner approval email sent successfully to: ${user.email} for ${serviceTypeName}`);
+                } else {
+                    console.error(`Failed to send partner approval email to: ${user.email}`, emailResult.error);
+                }
+            } catch (emailError) {
+                console.error('Error sending partner approval email:', emailError);
+                // Don't fail the status update if email fails
+            }
+        }
 
         res.json({
             success: true,

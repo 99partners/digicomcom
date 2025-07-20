@@ -17,7 +17,7 @@ const PartnerLogin = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
-  const { handleLogin } = useAuth()
+  const { handleLogin, checkAuthStatus } = useAuth()
 
   const handlePhoneChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -28,15 +28,7 @@ const PartnerLogin = () => {
     }
   }
 
-  const checkPartnerRequest = async (token) => {
-    try {
-      const response = await axiosInstance.get('/api/partner/has-request');
-      return response.data.hasRequest;
-    } catch (error) {
-      console.error('Error checking partner request:', error);
-      return false;
-    }
-  };
+
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -52,9 +44,11 @@ const PartnerLogin = () => {
         // Store the token and user data
         await handleLogin(data.token, data.user)
         
+        // Ensure auth status is checked and user data is loaded
+        await checkAuthStatus()
+        
         if (state === "Sign Up") {
           toast.success("Account created successfully! Please verify your email.")
-          // For new registrations, redirect to email verification
           navigate("/email-verify")
         } else {
           // For login, check if user is verified first
@@ -64,16 +58,9 @@ const PartnerLogin = () => {
             return
           }
 
-          // For login, check if user has existing partner request
-          const hasRequest = await checkPartnerRequest(data.token)
+          // Redirect to dashboard profile after successful login
           toast.success("Login successful!")
-          
-          // Redirect based on whether they have a request or not
-          if (hasRequest) {
-            navigate("/partner")
-          } else {
-            navigate("/partner", { state: { section: 'create-user' } })
-          }
+          navigate("/dashboard/profile")
         }
       } else {
         toast.error(data.message || "Authentication failed")
