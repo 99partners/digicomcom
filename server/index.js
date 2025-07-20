@@ -325,13 +325,26 @@ app.use(errorHandler);
 // Initialize server
 const startServer = async () => {
     try {
-        logger.access({ method: 'SYSTEM', url: '/startup' }, { status: 'INITIALIZING' }, 0);
+        // Log server startup
+        logger.access(
+            { 
+                method: 'SYSTEM', 
+                url: '/startup',
+                status: 'INITIALIZING',
+                environment: process.env.NODE_ENV,
+                port: PORT
+            }, 
+            null, 
+            0
+        );
         console.log('🔄 Initializing server...');
         
         // Connect to MongoDB
         console.log('🔄 Connecting to database...');
         await connectDB();
-        logger.db('CONNECT', 'system', 'Initial connection', Date.now());
+        
+        // Log successful database connection
+        logger.db('CONNECT', 'system', { status: 'connected' }, Date.now());
         console.log('✅ Database connected successfully');
         
         // Start listening only after successful DB connection
