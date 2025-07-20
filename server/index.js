@@ -76,109 +76,42 @@ console.log('🔒 CORS Configuration:', {
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedOrigins);
 
-// Enhanced CORS middleware with better error handling and logging
+// Simplified CORS middleware for ALL APIs - bulletproof implementation
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    const requestInfo = {
-        origin,
-        method: req.method,
-        url: req.url,
-        timestamp: new Date().toISOString()
-    };
     
-    // Log all incoming requests
-    logger.cors('REQUEST', requestInfo);
+    // Log all requests for debugging
+    console.log(`🌐 CORS Request: ${req.method} ${req.url} from origin: ${origin || 'none'}`);
     
-    // Debug logging for production CORS issues
-    if (req.url.includes('/api/newsletter')) {
-        console.log('🔍 Newsletter API Request:', {
-            origin: origin,
-            method: req.method,
-            url: req.url,
-            allowedOrigins: allowedOrigins,
-            isAllowed: !origin || allowedOrigins.includes(origin)
-        });
+    // Always set CORS headers for allowed origins
+    if (origin && allowedOrigins.includes(origin)) {
+        // Allowed origin - set specific origin with credentials
+        res.header('Access-Control-Allow-Origin', origin);
+        res.header('Access-Control-Allow-Credentials', 'true');
+        console.log(`✅ CORS: Allowed origin ${origin}`);
+    } else if (!origin) {
+        // No origin (server-to-server, Postman, etc.) - allow with wildcard
+        res.header('Access-Control-Allow-Origin', '*');
+        console.log(`✅ CORS: No origin, using wildcard`);
+    } else {
+        // Unknown origin - still set wildcard for public APIs
+        res.header('Access-Control-Allow-Origin', '*');
+        console.log(`⚠️ CORS: Unknown origin ${origin}, using wildcard`);
     }
-
-    // Function to set CORS headers with proper credential handling
-    const setCorsHeaders = (requestOrigin) => {
-        // Clear any existing CORS headers first to prevent duplicates
-        res.removeHeader('Access-Control-Allow-Origin');
-        res.removeHeader('Access-Control-Allow-Credentials');
-        res.removeHeader('Access-Control-Allow-Methods');
-        res.removeHeader('Access-Control-Allow-Headers');
-        res.removeHeader('Access-Control-Max-Age');
-        res.removeHeader('Vary');
-
-        if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
-            // Specific origin with credentials
-            res.setHeader('Access-Control-Allow-Origin', requestOrigin);
-            res.setHeader('Access-Control-Allow-Credentials', 'true');
-        } else if (!requestOrigin) {
-            // No origin header (direct server calls, etc.) - no credentials
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            // Don't set credentials header when using wildcard
-        } else {
-            // Origin not allowed - don't set any CORS headers
-            return false;
-        }
-
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-        res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
-        res.setHeader('Vary', 'Origin'); // Important for caching
-        return true;
-    };
-
-    try {
-        // Check if origin is allowed
-        const isOriginAllowed = !origin || allowedOrigins.includes(origin);
-        
-        // Handle preflight requests first
-        if (req.method === 'OPTIONS') {
-            if (setCorsHeaders(origin)) {
-                logger.cors('PREFLIGHT_APPROVED', { origin });
-                return res.status(204).end();
-            } else {
-                logger.cors('PREFLIGHT_BLOCKED', { origin, allowedOrigins });
-                return res.status(403).json({
-                    error: 'CORS policy violation',
-                    message: 'Origin not allowed'
-                });
-            }
-        }
-
-        // Handle actual requests
-        if (setCorsHeaders(origin)) {
-            logger.cors('REQUEST_APPROVED', { origin });
-            return next();
-        }
-
-        // Log blocked requests
-        logger.cors('REQUEST_BLOCKED', {
-            ...requestInfo,
-            reason: 'Origin not allowed',
-            allowedOrigins: allowedOrigins
-        });
-
-        // In production, don't expose allowed origins
-        return res.status(403).json({
-            error: 'CORS policy violation',
-            message: process.env.NODE_ENV === 'production' 
-                ? 'Origin not allowed' 
-                : `Origin ${origin} not in allowed list: ${allowedOrigins.join(', ')}`
-        });
-
-    } catch (error) {
-        logger.error(error, req);
-        console.error('🔥 CORS error:', error);
-        return res.status(500).json({
-            error: 'Internal CORS error',
-            message: process.env.NODE_ENV === 'production' 
-                ? 'Server configuration error' 
-                : error.message
-        });
+    
+    // Always set these headers for all requests
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+    res.header('Access-Control-Max-Age', '86400');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        console.log(`✅ CORS: Preflight request approved for ${req.url}`);
+        return res.status(204).end();
     }
+    
+    // Continue to actual request
+    next();
 });
 
 // Global error handler middleware
