@@ -55,6 +55,8 @@ const Footer = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true, // Important for CORS
+          timeout: 10000, // 10 second timeout
         }
       );
 
@@ -62,16 +64,42 @@ const Footer = () => {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
+        console.log('Newsletter subscription successful:', response.data);
       } else {
+        console.warn('Newsletter subscription failed:', response.data);
         setError(
           response.data.message || "Failed to subscribe. Please try again."
         );
       }
     } catch (err) {
-      console.error("Newsletter subscription error:", err.message);
-      setError(
-        err.response?.data?.message || "Failed to subscribe. Please try again."
-      );
+      console.error("Newsletter subscription error:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        headers: err.response?.headers,
+        config: {
+          url: err.config?.url,
+          method: err.config?.method,
+          headers: err.config?.headers
+        }
+      });
+
+      // Handle specific error cases
+      if (err.code === 'ECONNABORTED') {
+        setError('Request timed out. Please try again.');
+      } else if (err.response?.status === 400) {
+        setError(err.response.data.message || 'Invalid email address.');
+      } else if (err.response?.status === 503) {
+        setError('Service temporarily unavailable. Please try again later.');
+      } else if (!navigator.onLine) {
+        setError('No internet connection. Please check your network.');
+      } else {
+        setError(
+          err.response?.data?.message || 
+          'Unable to subscribe at the moment. Please try again later.'
+        );
+      }
+      
       setIsSubmitted(false);
     } finally {
       setIsLoading(false);
