@@ -435,46 +435,6 @@ export const SERVICE_FORM_CONFIRMATION_TEMPLATE = `
 </html>
 `
 
-// Helper function for sending emails with better error handling
-export const sendEmail = async (transporter, mailOptions) => {
-    try {
-        console.log('📧 Attempting to send email to:', mailOptions.to);
-        console.log('📧 Email subject:', mailOptions.subject);
-        
-        const info = await transporter.sendMail(mailOptions);
-        
-        console.log('✅ Email sent successfully:', {
-            messageId: info.messageId,
-            accepted: info.accepted,
-            rejected: info.rejected,
-            response: info.response
-        });
-        
-        return { success: true, info };
-    } catch (error) {
-        console.error('❌ Email sending failed:', {
-            error: error.message,
-            code: error.code,
-            command: error.command,
-            to: mailOptions.to,
-            subject: mailOptions.subject
-        });
-        
-        // Common Brevo error messages and solutions
-        if (error.code === 'ECONNREFUSED') {
-            console.error('🔧 Connection refused - Check SMTP host and port');
-        } else if (error.code === 'EAUTH') {
-            console.error('🔧 Authentication failed - Check SMTP_USER and SMTP_PASSWORD');
-        } else if (error.responseCode === 535) {
-            console.error('🔧 Invalid credentials - Check your Brevo SMTP credentials');
-        } else if (error.responseCode === 550) {
-            console.error('🔧 Sender email not verified in Brevo - Add your sender email to Brevo account');
-        }
-        
-        return { success: false, error };
-    }
-};
-
 export const SERVICE_APPROVAL_TEMPLATE = `
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -714,4 +674,260 @@ export const SERVICE_APPROVAL_TEMPLATE = `
 </body>
 </html>
 `
+
+export const BLOG_NOTIFICATION_TEMPLATE = `
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>New Blog Post Published</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: #E5E5E5;
+    }
+
+    table, td {
+      border-collapse: collapse;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #22D172 0%, #1ea565 100%);
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .main-content {
+      padding: 40px 30px;
+      color: #333333;
+    }
+
+    .blog-preview {
+      background: #f8f9fa;
+      border-left: 4px solid #22D172;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .blog-image {
+      width: 100%;
+      max-width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .blog-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #22D172;
+      margin: 0 0 10px 0;
+      line-height: 1.3;
+    }
+
+    .blog-excerpt {
+      color: #666;
+      line-height: 1.6;
+      margin: 0 0 15px 0;
+    }
+
+    .blog-category {
+      background: #22D172;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    .button {
+      background: #22D172;
+      color: #ffffff;
+      text-decoration: none;
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .footer {
+      background: #f8f9fa;
+      padding: 30px;
+      text-align: center;
+      color: #666666;
+      font-size: 14px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e9ecef;
+      margin: 25px 0;
+    }
+
+    @media only screen and (max-width: 480px) {
+      .container {
+        width: 95% !important;
+        margin: 10px auto;
+      }
+      
+      .main-content {
+        padding: 20px 15px;
+      }
+      
+      .header {
+        padding: 20px 15px;
+      }
+
+      .blog-image {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" bgcolor="#E5E5E5">
+    <tbody>
+      <tr>
+        <td valign="top" align="center" style="padding: 20px;">
+          <table class="container" cellspacing="0" cellpadding="0" border="0">
+            <!-- Header -->
+            <tbody>
+              <tr>
+                <td class="header">
+                  <h1>📝 New Blog Post Published!</h1>
+                </td>
+              </tr>
+              
+              <!-- Main Content -->
+              <tr>
+                <td class="main-content">
+                  <h2 style="margin: 0 0 15px; color: #333; font-size: 18px;">
+                    Hi there! 👋
+                  </h2>
+                  
+                  <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6;">
+                    We've just published a new blog post that we think you'll find interesting. Take a look!
+                  </p>
+
+                  <div class="blog-preview">
+                    <img src="{{blogImage}}" alt="{{blogTitle}}" class="blog-image" />
+                    <div class="blog-category">{{blogCategory}}</div>
+                    <h3 class="blog-title">{{blogTitle}}</h3>
+                    <p class="blog-excerpt">{{blogExcerpt}}</p>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                      <a href="{{blogUrl}}" class="button">
+                        📖 Read Full Article
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="divider"></div>
+
+                  <p style="margin: 0 0 20px; font-size: 14px; line-height: 1.6; color: #666;">
+                    Published on {{publishDate}} • <strong>{{readTime}} min read</strong>
+                  </p>
+
+                  <p style="margin: 0 0 20px; font-size: 14px; line-height: 1.6; color: #666;">
+                    Stay updated with the latest insights, trends, and tips from 99DigiCom to help grow your business.
+                  </p>
+                </td>
+              </tr>
+              
+              <!-- Footer -->
+              <tr>
+                <td class="footer">
+                  <p style="margin: 0 0 10px; font-weight: 600;">99DigiCom</p>
+                  <p style="margin: 0 0 5px;">🌐 Website: <a href="https://99digicom.com" style="color: #22D172;">99digicom.com</a></p>
+                  <p style="margin: 0 0 5px;">📧 Email: <a href="mailto:support@99digicom.com" style="color: #22D172;">support@99digicom.com</a></p>
+                  
+                  <div class="divider"></div>
+                  
+                  <p style="margin: 0; font-size: 12px; color: #999;">
+                    © 2024 99DigiCom. All rights reserved.<br>
+                    You're receiving this because you're subscribed to our updates.
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
+`;
+
+// Helper function for sending emails with better error handling
+export const sendEmail = async (transporter, mailOptions) => {
+    try {
+        console.log('📧 Attempting to send email to:', mailOptions.to);
+        console.log('📧 Email subject:', mailOptions.subject);
+        
+        const info = await transporter.sendMail(mailOptions);
+        
+        console.log('✅ Email sent successfully:', {
+            messageId: info.messageId,
+            accepted: info.accepted,
+            rejected: info.rejected,
+            response: info.response
+        });
+        
+        return { success: true, info };
+    } catch (error) {
+        console.error('❌ Email sending failed:', {
+            error: error.message,
+            code: error.code,
+            command: error.command,
+            to: mailOptions.to,
+            subject: mailOptions.subject
+        });
+        
+        // Common Brevo error messages and solutions
+        if (error.code === 'ECONNREFUSED') {
+            console.error('🔧 Connection refused - Check SMTP host and port');
+        } else if (error.code === 'EAUTH') {
+            console.error('🔧 Authentication failed - Check SMTP_USER and SMTP_PASSWORD');
+        } else if (error.responseCode === 535) {
+            console.error('🔧 Invalid credentials - Check your Brevo SMTP credentials');
+        } else if (error.responseCode === 550) {
+            console.error('🔧 Sender email not verified in Brevo - Add your sender email to Brevo account');
+        }
+        
+        return { success: false, error };
+    }
+};
 
