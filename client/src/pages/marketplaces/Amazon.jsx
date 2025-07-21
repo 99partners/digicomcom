@@ -46,40 +46,40 @@ const Amazon = () => {
             <div className="text-center mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Step-by-Step Setup Process</h2>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <ol className="space-y-8">
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">1</span>
-                  <div>
+            <div className="flex justify-center">
+              <ol className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl">
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">1</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Visit the Amazon Seller Sign-Up Page</span>
-                    <p className="text-gray-600">Go to <a href="https://sell.amazon.com" className="text-green-600 underline" target="_blank" rel="noopener noreferrer">sell.amazon.com</a> or <a href="https://sellercentral.amazon.com" className="text-green-600 underline" target="_blank" rel="noopener noreferrer">sellercentral.amazon.com</a> and click “Sign Up.” Use an existing Amazon account or create a new one with a business email and password. Enter the OTP sent to your email for verification.</p>
+                    <p className="text-gray-600 whitespace-normal">Go to <a href="https://sell.amazon.com" className="text-green-600 underline" target="_blank" rel="noopener noreferrer">sell.amazon.com</a> or <a href="https://sellercentral.amazon.com" className="text-green-600 underline" target="_blank" rel="noopener noreferrer">sellercentral.amazon.com</a> and click “Sign Up.” Use an existing Amazon account or create a new one with a business email and password. Enter the OTP sent to your email for verification.</p>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">2</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">2</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Choose a Selling Plan</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li><b>Individual Plan:</b> $0.99 per item sold, no monthly fee. Best for sellers with fewer than 40 items/month. Limited access to advanced tools.</li>
                       <li><b>Professional Plan:</b> $39.99/month, no per-item fee. Ideal for sellers with over 40 items/month, offering bulk listing, advanced reporting, and eligibility for top product placement.</li>
                     </ul>
-                    <p className="text-gray-600 mt-1">You can change or cancel your plan anytime. Consider sales volume and business goals when choosing.</p>
+                    <p className="text-gray-600 whitespace-normal mt-1">You can change or cancel your plan anytime. Consider sales volume and business goals when choosing.</p>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">3</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">3</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Enter Business Information</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li><b>Business Location:</b> Select the country where your business is located. This must be accurate for verification.</li>
                       <li><b>Business Type:</b> Choose from options like “Privately-owned,” “None, I am an individual,” or other entities. Provide your business name as it appears on official documents.</li>
-                      <li><b>Primary Contact:</b> Enter the name, phone number, and ID of the primary contact (you or another person). Specify if you’re a beneficial owner (owns &gt;25% of the business) or legal representative (authorized to act on behalf of the business).</li>
+                      <li><b>Primary Contact:</b> Enter the name, phone number, and ID of the primary contact (you or another person). Specify if you’re a beneficial owner (owns {'>'}25% of the business) or legal representative (authorized to act on behalf of the business).</li>
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">4</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">4</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Provide Billing and Tax Information</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Enter a valid bank account for payments and a credit card for fees. Amazon may charge a $1 fee to verify the card.</li>
@@ -88,9 +88,9 @@ const Amazon = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">5</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">5</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Verify Your Identity</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Upload clear images of your government-issued ID and, if applicable, a recent bank statement. Ensure details match your provided information.</li>
@@ -100,9 +100,9 @@ const Amazon = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">6</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">6</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Set Up Your Store</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Choose a unique store name for your Amazon storefront. It doesn’t need to match your business name but must not be used by another seller. You can change it later in Seller Central settings.</li>
@@ -111,9 +111,9 @@ const Amazon = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">7</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">7</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Add Products to Your Inventory</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Go to the “Inventory” section in Seller Central and click “Add a Product.”</li>
@@ -122,9 +122,9 @@ const Amazon = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">8</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">8</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Configure Seller Central</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Access Seller Central to manage listings, inventory, orders, and performance metrics.</li>
