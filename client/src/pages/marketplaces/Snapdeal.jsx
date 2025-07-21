@@ -47,8 +47,8 @@ const Snapdeal = () => {
             <div className="text-center mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Step-by-Step Setup Process</h2>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <ol className="space-y-8">
+            <div className="flex justify-center">
+              <ol className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl">
                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">1</span>
                   <div>

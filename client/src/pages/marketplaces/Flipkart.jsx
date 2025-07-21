@@ -46,18 +46,18 @@ const Flipkart = () => {
             <div className="text-center mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Step-by-Step Setup Process</h2>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <ol className="space-y-8">
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">1</span>
-                  <div>
+            <div className="flex justify-center">
+              <ol className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl">
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">1</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Visit the Flipkart Seller Hub</span>
-                    <p className="text-gray-600">Go to <a href="https://seller.flipkart.com" className="text-green-600 underline" target="_blank" rel="noopener noreferrer">seller.flipkart.com</a> and click “Start Selling” or “Register Today.” Sign up using your email address or mobile number and create a strong password.</p>
+                    <p className="text-gray-600 whitespace-normal">Go to <a href="https://seller.flipkart.com" className="text-green-600 underline" target="_blank" rel="noopener noreferrer">seller.flipkart.com</a> and click “Start Selling” or “Register Today.” Sign up using your email address or mobile number and create a strong password.</p>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">2</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">2</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Enter Business and Contact Information</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Provide your business name, type (e.g., sole proprietorship, private limited company, LLP), and contact details.</li>
@@ -67,9 +67,9 @@ const Flipkart = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">3</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">3</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Verify Your Account</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Verify your email and phone number using OTPs sent by Flipkart.</li>
@@ -78,9 +78,9 @@ const Flipkart = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">4</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">4</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Set Up Your Seller Profile</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Once verified, access the Flipkart Seller Hub dashboard.</li>
@@ -90,9 +90,9 @@ const Flipkart = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">5</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">5</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">List Your First Product</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Navigate to “Listings &gt; Add New Listings” in the Seller Hub dashboard.</li>
@@ -103,18 +103,18 @@ const Flipkart = () => {
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">6</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">6</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Agree to Terms and Conditions</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Review and accept Flipkart’s seller policies, including guidelines for product listing, pricing, shipping, and customer service. Compliance is critical to avoid penalties or account suspension.</li>
                     </ul>
                   </div>
                 </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">7</span>
-                  <div>
+                <li className="bg-white rounded-2xl shadow-lg p-8 flex items-start w-full">
+                  <span className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-6 text-xl">7</span>
+                  <div className="flex-1">
                     <span className="font-semibold text-gray-900">Explore Seller Hub Features</span>
                     <ul className="list-disc ml-6 text-gray-600">
                       <li>Use the dashboard to manage orders, track inventory, monitor payments, and view performance analytics.</li>
