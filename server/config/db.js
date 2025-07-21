@@ -13,21 +13,7 @@ const loadEnvironmentVariables = () => {
     
     // Then try environment-specific files
     const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
-    const envPath = path.resolve(__dirname, '..', envFile);
-    
-    console.log(`🔧 Loading environment from: ${envFile}`);
-    console.log(`📁 Environment file path: ${envPath}`);
-    
-    dotenv.config({ path: envPath });
-    
-    // Log loaded environment variables (without sensitive data)
-    console.log('🔧 Environment variables loaded:', {
-        NODE_ENV: process.env.NODE_ENV,
-        PORT: process.env.PORT,
-        HAS_MONGODB_URI: !!process.env.MONGODB_URI,
-        HAS_JWT_SECRET: !!process.env.JWT_SECRET,
-        HAS_SENDER_EMAIL: !!process.env.SENDER_EMAIL
-    });
+    dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
 };
 
 loadEnvironmentVariables();
