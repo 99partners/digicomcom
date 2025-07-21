@@ -125,14 +125,14 @@ const About = () => {
               </div>
               <div className="relative space-y-6">
                 <img
-                  src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600"
+                  src="https://bing.com/th/id/BCO.b1906b9e-e58b-4c29-a213-b3f9b4b8aac6.png"
                   alt="99Digicom team collaborating on digital marketplace solutions"
                   className="rounded-lg shadow-lg w-full h-auto object-cover mb-6"
                   width="600"
                   height="400"
                   loading="lazy"
                 />
-                  
+            
               </div>
             </div>
           </section>
