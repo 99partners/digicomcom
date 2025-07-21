@@ -5,11 +5,8 @@ import { connectDB } from './config/db.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-// Using custom CORS implementation instead of cors package
+import cors from 'cors'; // Available but using custom CORS implementation
 import mongoose from 'mongoose';
-import { logger } from './utils/logger.js';
-import { requestLogger } from './middleware/requestLogger.js';
-import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -37,24 +34,12 @@ if (!process.env.JWT_SECRET && !process.env.JWT_SECRET_KEY) {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware: Logging, JSON & cookies
-app.use(requestLogger);
+// Middleware: JSON & cookies
 app.use(express.json());
 app.use(cookieParser());
 
-// Log all unhandled errors
-process.on('uncaughtException', (error) => {
-    logger.error(error);
-    console.error('Uncaught Exception:', error);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-    logger.error(new Error('Unhandled Promise Rejection: ' + reason));
-    console.error('Unhandled Promise Rejection:', reason);
-});
-
-// CORS Configuration - Allowed domains
-const allowedDomains = [
+// CORS Configuration - Manual implementation to prevent duplicate headers
+const allowedOrigins = [
     'https://99digicom.com',
     'https://www.99digicom.com',
     'https://api.99digicom.com',
@@ -66,49 +51,35 @@ const allowedDomains = [
     ] : [])
 ];
 
-// Log CORS configuration
-console.log('🔒 CORS Configuration:', {
-    environment: process.env.NODE_ENV,
-    allowedDomains: allowedDomains,
-    timestamp: new Date().toISOString()
-});
-
 console.log('Current environment:', process.env.NODE_ENV);
-console.log('Allowed CORS domains:', allowedDomains);
+console.log('Allowed CORS origins:', allowedOrigins);
 
-// Enable CORS for all methods
-app.use(function(req, res, next) {
-    console.log('🌐 CORS Request: ', req.method, req.url);
-    next();
-    // const origin = req.headers.origin;
-    // console.log(`🌐 CORS Request: ${req.method} ${req.url} from origin: ${origin || 'none'}`);
+// Custom CORS middleware to ensure single headers
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
     
-    // if (allowedDomains.includes(origin)) {
-    //     // Set CORS headers for allowed domains
-    //     res.setHeader('Access-Control-Allow-Origin', origin);
-    //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-    //     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-    //     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    //     res.setHeader('Access-Control-Max-Age', '86400');
+    console.log('🔍 Request from origin:', origin, 'Method:', req.method);
+    
+    // Check if origin is allowed
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Vary', 'Origin');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
         
-    //     console.log(`✅ CORS: Allowed domain ${origin}`);
-        
-    //     // Handle preflight requests
-    //     if (req.method === 'OPTIONS') {
-    //         console.log(`✅ CORS: Preflight request approved for ${req.url}`);
-    //         return res.status(204).end();
-    //     }
-        
-    //     next(); // Proceed with the request
-    // }  else {
-    //     // Deny access to other domains
-    //     console.log(`❌ CORS: Access denied for origin ${origin}`);
-    //     res.status(403).json({ 
-    //         success: false,
-    //         message: 'Access forbidden - Origin not allowed',
-    //         origin: origin 
-    //     });
-    // }
+        // Handle preflight requests
+        if (req.method === 'OPTIONS') {
+            res.status(200).end();
+            return;
+        }
+    } else {
+        console.warn('❌ Origin blocked:', origin);
+        res.status(403).json({ error: 'Not allowed by CORS' });
+        return;
+    }
+    
+    next();
 });
 
 // Global error handler middleware
@@ -186,11 +157,8 @@ app.get('/', (req, res) => {
     });
 });
 
-// Health check endpoint with CORS test
+// Health check endpoint
 app.get('/health', (req, res) => {
-    const origin = req.headers.origin;
-    const isOriginAllowed = allowedOrigins.includes(origin);
-    
     res.status(200).json({
         status: 'healthy',
         uptime: process.uptime(),
@@ -199,60 +167,10 @@ app.get('/health', (req, res) => {
         port: PORT,
         cors: {
             allowedOrigins: allowedOrigins,
-            currentOrigin: origin,
-            isOriginAllowed,
-            headers: {
-                sent: res.getHeaders(),
-                received: req.headers
-            }
+            currentOrigin: req.headers.origin
         },
-        database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-        server: {
-            nodeVersion: process.version,
-            platform: process.platform,
-            memory: process.memoryUsage()
-        }
+        database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
     });
-});
-
-// CORS test endpoint
-app.options('/api/cors-test', (req, res) => {
-    const origin = req.headers.origin;
-    console.log('🔍 CORS Test - Preflight from:', origin);
-    
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-        res.setHeader('Access-Control-Max-Age', '86400');
-        console.log('✅ CORS Test - Preflight approved');
-    } else {
-        console.warn('❌ CORS Test - Preflight blocked');
-    }
-    
-    res.status(204).end();
-});
-
-app.get('/api/cors-test', (req, res) => {
-    const origin = req.headers.origin;
-    console.log('🔍 CORS Test - Request from:', origin);
-    
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-        console.log('✅ CORS Test - Request approved');
-        res.json({ 
-            success: true, 
-            message: 'CORS is working correctly',
-            origin,
-            timestamp: new Date().toISOString()
-        });
-    } else {
-        console.warn('❌ CORS Test - Request blocked');
-        res.status(403).json({ 
-            success: false, 
-            message: 'CORS check failed' 
-        });
-    }
 });
 
 // API info endpoint
@@ -282,32 +200,14 @@ app.use((req, res) => {
     });
 });
 
-// Add error handler middleware last
-app.use(errorHandler);
-
 // Initialize server
 const startServer = async () => {
     try {
-        // Log server startup
-        logger.access(
-            { 
-                method: 'SYSTEM', 
-                url: '/startup',
-                status: 'INITIALIZING',
-                environment: process.env.NODE_ENV,
-                port: PORT
-            }, 
-            null, 
-            0
-        );
         console.log('🔄 Initializing server...');
         
         // Connect to MongoDB
         console.log('🔄 Connecting to database...');
         await connectDB();
-        
-        // Log successful database connection
-        logger.db('CONNECT', 'system', { status: 'connected' }, Date.now());
         console.log('✅ Database connected successfully');
         
         // Start listening only after successful DB connection
