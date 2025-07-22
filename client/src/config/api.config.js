@@ -22,7 +22,7 @@ const ENV = import.meta.env.MODE || import.meta.env.VITE_ENV || (isProduction() 
 
 const API_CONFIG = {
   development: {
-    baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050',
+    baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5051',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 30000,
     enableLogs: true,
     enableRetry: true,
@@ -63,12 +63,21 @@ const axiosInstance = axios.create({
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRF-Token': '1' // Add a default CSRF token
   }
 });
 
 // Add request interceptor
 axiosInstance.interceptors.request.use((config) => {
+  // Ensure headers are properly set for each request
+  config.headers = {
+    ...config.headers,
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  };
+  
   // Get both auth tokens from localStorage
   const userToken = localStorage.getItem('authToken');
   const adminToken = localStorage.getItem('adminToken');
