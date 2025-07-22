@@ -22,7 +22,7 @@ const ENV = import.meta.env.MODE || import.meta.env.VITE_ENV || (isProduction() 
 
 const API_CONFIG = {
   development: {
-    baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050',
+    baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5051',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 30000,
     enableLogs: true,
     enableRetry: true,
