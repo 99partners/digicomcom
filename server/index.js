@@ -9,7 +9,7 @@ import cors from 'cors'; // Available but using custom CORS implementation
 import mongoose from 'mongoose';
 
 const app = express();
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 5051;
 
 // Enhanced production logging
 console.log('🚀 Starting server with configuration:', {
@@ -45,9 +45,9 @@ const allowedOrigins = [
     'https://api.99digicom.com',
     ...(process.env.NODE_ENV !== 'production' ? [
         'http://localhost:5173',
-        'http://localhost:5050',
+        'http://localhost:5051',
         'http://127.0.0.1:5173',
-        'http://127.0.0.1:5050'
+        'http://127.0.0.1:5051'
     ] : [])
 ];
 
@@ -66,7 +66,9 @@ app.use((req, res, next) => {
         res.setHeader('Vary', 'Origin');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-CSRF-Token');
+        res.setHeader('Access-Control-Expose-Headers', 'Content-Length, X-Requested-With');
+        res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours cache for preflight
         
         // Handle preflight requests
         if (req.method === 'OPTIONS') {

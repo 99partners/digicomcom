@@ -13,7 +13,7 @@ console.log('================================================');
 
 // Set production environment variables
 process.env.NODE_ENV = 'production';
-process.env.PORT = process.env.PORT || '5050';
+process.env.PORT = process.env.PORT || '5051';
 
 // Required environment variables for production
 const requiredEnvVars = [
