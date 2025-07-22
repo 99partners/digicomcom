@@ -10,6 +10,7 @@ import {
   PieChart,
   Mail,
   ShoppingCart,
+  CheckCircle,
 } from "lucide-react";
 import axios from 'axios';
 import { getApiUrl } from '../config/api.config';
@@ -19,6 +20,13 @@ import AMS1 from '../assets/AMS1.png';
 import AMS2 from '../assets/AMS2.png'; 
 import AMS3 from '../assets/AMS3.png';
 import AMS4 from '../assets/AMS4.png';
+// Add these imports for marketplace logos
+import amazonLogo from "../assets/Amazon.png";
+import flipkartLogo from "../assets/Flipkart.png";
+import ondcLogo from "../assets/ONDC1.png";
+import jiomartLogo from "../assets/Jiomart.png";
+import meeshoLogo from "../assets/Meesho1.png";
+import snapdealLogo from "../assets/Snapdeal.png";
 
 export default function AccountManagementServices() {
   useEffect(() => {
@@ -44,6 +52,70 @@ export default function AccountManagementServices() {
     additionalNotes: "",
     consent: false,
   });
+
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
+
+  const marketplaces = {
+    amazon: {
+      name: "Amazon",
+      logo: amazonLogo,
+      href: "/partners/marketplaces/amazon",
+      services: [
+        "Account Management",
+        "Brand Store",
+        "Listing and Cataloging",
+        "A+ Listing",
+        "Advertising",
+        "Glowroad Account Management",
+      ],
+    },
+    flipkart: {
+      name: "Flipkart",
+      logo: flipkartLogo,
+      href: "/partners/marketplaces/flipkart",
+      services: [
+        "Account Management",
+        "Shopsy Integration",
+        "Listing and Cataloging",
+        "Advertising",
+      ],
+    },
+    ondc: {
+      name: "ONDC",
+      logo: ondcLogo,
+      href: "/partners/marketplaces/ondc",
+      services: [
+        "Account Management",
+        "Listing and Cataloging",
+        "Network Integration",
+      ],
+    },
+    jiomart: {
+      name: "JioMart",
+      logo: jiomartLogo,
+      href: "/partners/marketplaces/jiomart",
+      services: ["Account Management", "Listing and Cataloging", "Advertising"],
+    },
+    meesho: {
+      name: "Meesho",
+      logo: meeshoLogo,
+      href: "/partners/marketplaces/meesho",
+      services: ["Account Management", "Listing and Cataloging", "Advertising"],
+    },
+    snapdeal: {
+      name: "Snapdeal",
+      logo: snapdealLogo,
+      href: "/partners/marketplaces/snapdeal",
+      services: [
+        "Account Management",
+        "Catalog Management",
+        "Order Processing",
+        "Performance Marketing",
+        "Analytics & Reporting",
+        "Competitor Analysis",
+      ],
+    },
+  };
 
   const steps = [
     { 
@@ -151,6 +223,107 @@ export default function AccountManagementServices() {
               Start at ₹4,999/month
               <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
             </a>
+          </div>
+        </section>
+
+        {/* Marketplace Panel Section (copied from platformEnable.jsx) */}
+        <section
+          className="py-16 px-4 bg-green-50"
+          aria-labelledby="whats-included-heading"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2
+                id="whats-included-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                What's Included
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                Choose from our wide range of marketplace integrations
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-12 gap-8">
+              {/* Left Sidebar - Marketplace List */}
+              <div className="md:col-span-3">
+                <div className="bg-white rounded-lg shadow-md p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Supported Marketplaces
+                  </h3>
+                  <div className="space-y-2">
+                    {Object.entries(marketplaces).map(([key, marketplace]) => (
+                      <div
+                        key={key}
+                        className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                          activeMarketplace === key
+                            ? "bg-green-100 text-green-700"
+                            : "hover:bg-green-50 hover:text-green-600"
+                        }`}
+                        onMouseEnter={() => setActiveMarketplace(key)}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <img
+                            src={marketplace.logo}
+                            alt={`${marketplace.name} logo`}
+                            className="h-8 w-8 object-contain"
+                          />
+                          <span className="font-medium">
+                            {marketplace.name}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Content - Marketplace Details */}
+              <div className="md:col-span-9">
+                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                  {activeMarketplace && marketplaces[activeMarketplace] && (
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="flex-1 flex justify-center">
+                          <img
+                            src={marketplaces[activeMarketplace].logo}
+                            alt={`${marketplaces[activeMarketplace].name} logo`}
+                            className="h-24 w-auto object-contain max-w-[280px]"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {marketplaces[activeMarketplace].services.map(
+                          (service, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
+                            >
+                              <CheckCircle className="h-6 w-6 text-green-600" />
+                              <span className="text-gray-700 text-lg">
+                                {service}
+                              </span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                      <div className="mt-8 flex justify-center">
+                        <button
+                          // eslint-disable-next-line no-alert
+                          onClick={() => alert(`Learn more about ${marketplaces[activeMarketplace].name}`)}
+                          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
+                        >
+                          <span>
+                            Learn more about {marketplaces[activeMarketplace].name}
+                          </span>
+                          <ArrowRight className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
