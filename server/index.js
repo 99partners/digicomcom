@@ -9,7 +9,7 @@ import cors from 'cors'; // Available but using custom CORS implementation
 import mongoose from 'mongoose';
 
 const app = express();
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 5051;
 
 // Enhanced production logging
 console.log('🚀 Starting server with configuration:', {
@@ -45,9 +45,9 @@ const allowedOrigins = [
     'https://api.99digicom.com',
     ...(process.env.NODE_ENV !== 'production' ? [
         'http://localhost:5173',
-        'http://localhost:5050',
+        'http://localhost:5051',
         'http://127.0.0.1:5173',
-        'http://127.0.0.1:5050'
+        'http://127.0.0.1:5051'
     ] : [])
 ];
 
