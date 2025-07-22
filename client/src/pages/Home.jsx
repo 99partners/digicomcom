@@ -167,7 +167,7 @@ const Home = () => {
         "Don't just take our word for it. We focus on measurable outcomes: Increased market share, higher conversion rates, reduced customer acquisition costs, stronger brand recall, and scalable revenue growth.",
     },
   ]);
-  
+
   // YouTube Shorts data
   const youtubeShorts = [
     {
@@ -175,22 +175,22 @@ const Home = () => {
       title: "Quick E-commerce Tips",
       description: "Learn 3 essential tips for boosting your online sales",
       thumbnail: "https://picsum.photos/seed/ecommerce1/400/800.jpg",
-      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
+      videoId: "dQw4w9WgXcQ", // Replace with your actual YouTube Short ID
     },
     {
       id: "short2",
       title: "Marketplace Setup Guide",
       description: "Step-by-step guide to setting up on major platforms",
       thumbnail: "https://picsum.photos/seed/ecommerce2/400/800.jpg",
-      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
+      videoId: "dQw4w9WgXcQ", // Replace with your actual YouTube Short ID
     },
     {
       id: "short3",
       title: "Advertising Strategies",
       description: "Proven advertising techniques for e-commerce success",
       thumbnail: "https://picsum.photos/seed/ecommerce3/400/800.jpg",
-      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
-    }
+      videoId: "dQw4w9WgXcQ", // Replace with your actual YouTube Short ID
+    },
   ];
 
   return (
@@ -201,7 +201,7 @@ const Home = () => {
         keywords="digital commerce, e-commerce solutions, marketplace management, ONDC integration, co-branding, digital marketing, online business"
         canonicalUrl="https://99digicom.com"
       />
-      <div className="pt-12 sm:pt-16">
+      <div className="pt-12 sm:pt-8">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-50">
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-32 text-center">
@@ -235,7 +235,7 @@ const Home = () => {
                   (logo, index) => (
                     <div
                       key={`${logo.name}-${index}`}
-                      className="flex-shrink-0 mx-2 xl:mx-3 flex items-center justify-center bg-white p-3 sm:p-4 hover:shadow-lg transition-shadow duration-300"
+                      className="flex-shrink-0 mx-2 xl:mx-3 flex items-center justify-center p-3 sm:p-4 hover:shadow-lg transition-shadow duration-300"
                     >
                       <img
                         src={logo.src}
@@ -489,7 +489,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-        
+
         {/* YouTube Shorts Section - NEW */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -498,10 +498,11 @@ const Home = () => {
                 Quick Tips & Tutorials
               </h2>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
-                Watch our YouTube Shorts for quick insights on e-commerce success
+                Watch our YouTube Shorts for quick insights on e-commerce
+                success
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {youtubeShorts.map((short) => (
                 <div key={short.id} className="relative group">
@@ -518,26 +519,19 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <h3 className="text-lg font-semibold text-gray-900">{short.title}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{short.description}</p>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {short.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {short.description}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
-            
-            <div className="text-center mt-12">
-              <a 
-                href="https://www.youtube.com/@yourchannel" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold rounded-lg transition-all duration-300"
-              >
-                View All YouTube Shorts
-              </a>
-            </div>
           </div>
         </section>
-        
+
         {/* Testimonials Section */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -670,15 +664,6 @@ const Home = () => {
                 ))}
               </div>
             )}
-            <div className="text-center mt-12">
-              <Link
-                to="/resources/blogs"
-                className="inline-flex items-center justify-center px-6 py-3 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold rounded-lg transition-all duration-300"
-                aria-label="View all blog articles"
-              >
-                View All Articles
-              </Link>
-            </div>
           </div>
         </section>
       </div>
