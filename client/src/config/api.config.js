@@ -63,12 +63,21 @@ const axiosInstance = axios.create({
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRF-Token': '1' // Add a default CSRF token
   }
 });
 
 // Add request interceptor
 axiosInstance.interceptors.request.use((config) => {
+  // Ensure headers are properly set for each request
+  config.headers = {
+    ...config.headers,
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  };
+  
   // Get both auth tokens from localStorage
   const userToken = localStorage.getItem('authToken');
   const adminToken = localStorage.getItem('adminToken');
