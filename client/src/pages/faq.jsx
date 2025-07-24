@@ -24,7 +24,7 @@ const faqs = [
         answer: 'Platform enablement takes 7–14 days (depending on catalog complexity). Account management begins immediately after onboarding. Advertising/co-branding campaigns launch in 2–3 weeks post-strategy finalization.',
       },
       {
-        question: 'What’s included in your Account Management service?',
+        question: 'What\'s included in your Account Management service?',
         answer: 'Full lifecycle support: Daily platform operations (listings, inventory, orders), performance monitoring & reporting, compliance/issue resolution, optimizing catalog content & promotions, coordinating with marketplace support teams.',
       },
       {
@@ -33,7 +33,7 @@ const faqs = [
       },
       {
         question: 'What if we only need one service (e.g., ads but not account management)?',
-        answer: 'No problem! Services are modular. We’ll align with your internal teams to ensure seamless integration (e.g., sharing ad performance data with your sales ops).',
+        answer: 'No problem! Services are modular. We\'ll align with your internal teams to ensure seamless integration (e.g., sharing ad performance data with your sales ops).',
       },
     ],
   },
@@ -230,4 +230,4 @@ const Faqs = () => {
   );
 };
 
-export default Faqs;
+export default Faqs; 

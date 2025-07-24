@@ -42,7 +42,7 @@ import AdvertisingMarketing from './pages/advertising_marketing';
 import Blogs from './pages/blogs';
 // import CaseStudies from './pages/caseStudies';
 import GuidesTutorials from './pages/guidesTutorials';
-import Faqs from './pages/faqss';
+import Faqs from './pages/faq';
 import CoBranding from './pages/CoBranding';
 // import Careers from './pages/Careers';
 import EmailVerify from './components/EmailVerify';
@@ -140,13 +140,12 @@ function App() {
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/termsofservice" element={<TermsOfService />} />
             <Route path="/cookiepolicy" element={<CookiePolicy />} />
-            <Route path="/faqss" element={<Faqs />} />
 
             <Route path="/resources/blogs" element={<Blogs />} />
             <Route path="/resources/blogs/:id" element={<BlogDetails />} />
             {/* <Route path="/resources/caseStudies" element={<CaseStudies />} /> */}
             <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
-            <Route path="/resources/faqss" element={<Faqs />} />
+            <Route path="/resources/faq" element={<Faqs />} />
             <Route path="/customer-login" element={<CustomerLogin />} />
             <Route path="/partnerlogin" element={<PartnerLogin />} />
             <Route path="/customerlogin" element={<CustomerLogin />} />
