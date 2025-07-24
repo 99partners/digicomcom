@@ -131,8 +131,8 @@ function App() {
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/about_us" element={<About />} />
+            <Route path="/contact_us" element={<Contact />} />
             <Route path="/partners" element={<Partners />} />
             {/* <Route path="/resources/careers" element={<Careers />} /> */}
             {/* <Route path="/shop" element={<Shop />} /> */}
@@ -145,7 +145,7 @@ function App() {
             <Route path="/resources/blogs" element={<Blogs />} />
             <Route path="/resources/blogs/:id" element={<BlogDetails />} />
             {/* <Route path="/resources/caseStudies" element={<CaseStudies />} /> */}
-            <Route path="/resources/guidesTutorials" element={<GuidesTutorials />} />
+            <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
             <Route path="/resources/faqss" element={<Faqs />} />
             <Route path="/customer-login" element={<CustomerLogin />} />
             <Route path="/partnerlogin" element={<PartnerLogin />} />
@@ -154,8 +154,8 @@ function App() {
             <Route path="/platform-enablement-ams" element={<PlatformEnablementAMS />} />
 
             {/* routes from Services Partner Resources */}
-            <Route path="/partners/whyPartners" element={<ForProductPartners />} />
-            <Route path="/partners/partnersOnboarding" element={<PartnersOnboarding />} />
+            <Route path="/partners/why_Partners_with_us" element={<ForProductPartners />} />
+            <Route path="/partners/partners_Onboarding" element={<PartnersOnboarding />} />
             <Route path="/partners/marketplaces/amazon" element={<Amazon />} />
             <Route path="/partners/marketplaces/flipkart" element={<Flipkart />} />
             <Route path="/partners/marketplaces/ondc" element={<ONDC />} />
@@ -163,10 +163,10 @@ function App() {
             <Route path="/partners/marketplaces/meesho" element={<Meesho />} />
             <Route path="/partners/marketplaces/indiamart" element={<IndiaMART />} />
             <Route path="/partners/marketplaces/snapdeal" element={<Snapdeal />} />
-            <Route path="/services/advertising_marketing" element={<AdvertisingMarketing />} />    
-            <Route path="/services/ams" element={<AccountManagementServices />} />
-            <Route path="/services/coBranding" element={<CoBranding />} />
-            <Route path="/services/platformEnable" element={<PlatformEnablement />} />
+            <Route path="/services/grow" element={<AdvertisingMarketing />} />    
+            <Route path="/services/manage" element={<AccountManagementServices />} />
+            <Route path="/services/co_branding_solutions" element={<CoBranding />} />
+            <Route path="/services/launch" element={<PlatformEnablement />} />
             
             {/* Home Route */}
             <Route path="/" element={<Home />} />
