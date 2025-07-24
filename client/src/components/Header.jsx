@@ -16,32 +16,32 @@ const Header = () => {
 
   const navigation = [
     { name: "Home", href: "/" },
-    { name: "About Us", href: "/about" },
+    { name: "About Us", href: "/about_us" },
     {
       name: "Services",
       submenu: [
-        { name: "Platform Enablement", href: "/services/platformEnable" },
-        { name: "Account Management Service", href: "/services/ams" },
-        { name: "Advertising & Marketing", href: "/services/advertising_marketing" },
-        { name: "Co-Branding", href: "/services/coBranding" },
+        { name: "Launch", href: "/services/launch" },
+        { name: "Manage", href: "/services/manage" },
+        { name: "Grow", href: "/services/grow" },
+        { name: "Co-Branding Solutions", href: "/services/co_branding_solutions" },
       ],
     },
     {
       name: "Partners",
       submenu: [
-        { name: "Why Partners With Us?", href: "/partners/whyPartners" },
-        { name: "Partners Onboarding", href: "/partners/partnersOnboarding" },
+        { name: "Why Partners With Us?", href: "/partners/why_Partners_with_us" },
+        { name: "Partners Onboarding", href: "/partners/partners_Onboarding" },
       ],
     },
     {
       name: "Resources",
       submenu: [
         { name: "Blogs", href: "/resources/blogs" },
-        { name: "Guides & Tutorials", href: "/resources/guidesTutorials" },
-        { name: "FAQs", href: "/resources/faqss" },
+        { name: "Guides & Tutorials", href: "/resources/guides_Tutorials" },
+        { name: "FAQs", href: "/resources/faq" },
       ],
     },
-    { name: "Contact Us", href: "/contact" },
+    { name: "Contact Us", href: "/contact_us" },
   ];
 
   const isActive = (href) => pathname === href || (href && pathname.startsWith(href + "/"));
