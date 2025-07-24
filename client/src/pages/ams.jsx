@@ -220,7 +220,7 @@ export default function AccountManagementServices() {
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
               aria-label="Start with account management services"
             >
-              Start at ₹4,999/month
+              Start 
               <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
             </a>
           </div>
