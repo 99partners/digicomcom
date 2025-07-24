@@ -20,6 +20,10 @@ import CookiePolicy from './pages/CookiePolicy';
 import FAQ from './pages/dashboard/FAQ';
 import MyApplications from './pages/dashboard/MyApplications';
 
+// Import ONDC Solutions
+import OndcSeller from './pages/solutions/OndcSeller';
+import OndcBuyer from './pages/solutions/OndcBuyer';
+
 import DashboardLayout from './components/partner/DashboardLayout';
 import PartnerDashboard from './pages/PartnerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -167,6 +171,10 @@ function App() {
             <Route path="/services/co_branding_solutions" element={<CoBranding />} />
             <Route path="/services/launch" element={<PlatformEnablement />} />
             
+            {/* Solution Routes */}
+            <Route path="/solutions/ondc-seller" element={<OndcSeller />} />
+            <Route path="/solutions/ondc-buyer" element={<OndcBuyer />} />
+
             {/* Home Route */}
             <Route path="/" element={<Home />} />
           </Route>
