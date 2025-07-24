@@ -372,11 +372,10 @@ const Home = () => {
                   We simplify your selling journey with a hassle-free setup
                   process, dedicated support, and years of marketplace
                   expertise. With a proven 90%+ customer retention rate, we
-                  ensure sellers not only launch but grow with us.
-                </p>
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                  Trust 99digicom to deliver excellence at every stage of your
-                  e-commerce growth.
+                  ensure sellers not only launch but grow with us.<br /><br />
+                  <p> Trust 99digicom to deliver excellence at every stage of your
+                  e-commerce growth.</p> <br />
+                  <p>The E-commerce Partner You Can Trust.</p>
                 </p>
               </div>
               <div className="pl-0 md:pl-8 border-t md:border-t-0 md:border-l border-green-200 pt-6 md:pt-0 md:pl-8">
@@ -402,10 +401,11 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        Dedicated Account Manager
+                        Hassle-Free Setup
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        Personalized support for your business needs
+                        Enjoy a simplified and smooth onboarding process to get
+                        your selling journey started quickly.
                       </p>
                     </div>
                   </li>
@@ -427,10 +427,11 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        Platform-Specific Expertise
+                        Dedicated Support
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        Specialized knowledge across all marketplaces
+                        Benefit from personalised assistance and expert guidance
+                        throughout your e-commerce growth.
                       </p>
                     </div>
                   </li>
@@ -452,10 +453,11 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        Proven Success Rates
+                        Marketplace Expertise
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        90%+ customer retention rate
+                        Leverage years of proven experience in the e-commerce
+                        marketplace to optimise your sales.
                       </p>
                     </div>
                   </li>
@@ -477,10 +479,11 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        7-Day Support
+                        High Customer Retention
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        Responsive assistance whenever you need it
+                        Join a community of successful sellers, reflected in our
+                        over 90% customer retention rate.
                       </p>
                     </div>
                   </li>
