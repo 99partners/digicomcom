@@ -190,7 +190,9 @@ const DashboardLayout = ({ children }) => {
             </div>
             <div className="flex items-center space-x-4">
               {/* Quick Actions */}
-              <button className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+              <button 
+                onClick={() => navigate('/dashboard/notifications')}
+                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
                 <Bell className="w-5 h-5" />
               </button>
               
