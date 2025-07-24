@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import logo from "../assets/99digicom.png";
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +12,7 @@ const Header = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -122,12 +124,26 @@ const Header = () => {
           >
             Shop
           </Link>
-          <Link
-            to="/partnerlogin"
-            className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
-          >
-            Join Us
-          </Link>
+                     {isAuthenticated ? (
+             <button
+               onClick={() => navigate('/dashboard/profile')}
+               className="p-1 rounded-full hover:bg-green-50 transition-all duration-200"
+               title="View Profile"
+             >
+               <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                 <span className="text-sm font-bold text-white">
+                   {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                 </span>
+               </div>
+             </button>
+           ) : (
+            <Link
+              to="/partnerlogin"
+              className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
+            >
+              Join Us
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -215,13 +231,33 @@ const Header = () => {
           >
             Shop
           </Link>
-          <Link
-            to="/partnerlogin"
-            onClick={() => setIsMenuOpen(false)}
-            className="block w-full px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200"
-          >
-            Join Us
-          </Link>
+          {isAuthenticated ? (
+            <button
+              onClick={() => {
+                navigate('/dashboard/profile');
+                setIsMenuOpen(false);
+              }}
+              className="flex items-center w-full px-4 py-2.5 text-base text-left text-gray-700 hover:bg-gray-100 rounded-lg"
+            >
+              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                <span className="text-sm font-bold text-white">
+                  {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                </span>
+              </div>
+              <div>
+                <div className="text-sm font-bold text-gray-900">{user?.name || user?.username}</div>
+                <div className="text-xs text-gray-600">View Profile</div>
+              </div>
+            </button>
+          ) : (
+            <Link
+              to="/partnerlogin"
+              onClick={() => setIsMenuOpen(false)}
+              className="block w-full px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200"
+            >
+              Join Us
+            </Link>
+          )}
         </div>
       </div>
     </header>
