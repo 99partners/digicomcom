@@ -6,7 +6,7 @@ const ServiceSelection = () => {
   const services = [
     {
       id: 'platform',
-      title: 'Platform Enablement',
+      title: 'Launch',
       description: 'Get your business online with our comprehensive platform enablement services',
       icon: '🚀',
       route: '/partner/create-application/platform',
@@ -14,7 +14,7 @@ const ServiceSelection = () => {
     },
     {
       id: 'ams',
-      title: 'Account Management Services (AMS)',
+      title: 'Manage',
       description: 'Professional account management to optimize your online presence',
       icon: '📊',
       route: '/partner/create-application/ams',
@@ -22,7 +22,7 @@ const ServiceSelection = () => {
     },
     {
       id: 'advertising',
-      title: 'Marketing Services',
+      title: 'Grow',
       description: 'Boost your visibility with our targeted marketing solutions',
       icon: '📈',
       route: '/partner/create-application/advertising',
@@ -30,7 +30,7 @@ const ServiceSelection = () => {
     },
     {
       id: 'cobranding',
-      title: 'Co-Branding Partnership',
+      title: 'Co-Branding Solutions',
       description: 'Partner with us to expand your brand reach and market presence',
       icon: '🤝',
       route: '/partner/create-application/cobranding',
