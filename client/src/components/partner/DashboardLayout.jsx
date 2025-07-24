@@ -181,7 +181,7 @@ const DashboardLayout = ({ children }) => {
             <div className="flex items-center">
               <button
                 onClick={toggleSidebar}
-                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 mr-1"
+                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 mr-1 -ml-4"
               >
                 {sidebarCollapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
               </button>
