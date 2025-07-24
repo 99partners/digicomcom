@@ -23,7 +23,14 @@ const Header = () => {
         { name: "Launch", href: "/services/launch" },
         { name: "Manage", href: "/services/manage" },
         { name: "Grow", href: "/services/grow" },
+      ],
+    },
+    {
+      name: "Solutions",
+      submenu: [
         { name: "Co-Branding Solutions", href: "/services/co_branding_solutions" },
+        { name: "ONDC Seller Network Participant", href: "/solutions/ondc-seller" },
+        { name: "ONDC Buyer Network Participant", href: "/solutions/ondc-buyer" },
       ],
     },
     {
