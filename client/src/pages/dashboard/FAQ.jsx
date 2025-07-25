@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FAQ = () => {
@@ -95,7 +95,7 @@ const FAQ = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8">
-            <div className="max-w-4xl mx-auto px-4">
+            <div className="max-w-4xl mx-auto px-2 sm:px-4">
                 <h1 className="text-3xl font-bold text-center text-gray-700 mb-8">
                     Frequently Asked Questions
                 </h1>
@@ -113,7 +113,7 @@ const FAQ = () => {
                             >
                                 <button
                                     onClick={() => toggleCategory(category.category)}
-                                    className="w-full px-6 py-4 text-left bg-gradient-to-r from-green-100 to-green-200 text-green-800 font-semibold flex justify-between items-center hover:from-green-200 hover:to-green-300 transition-colors"
+                                    className="w-full px-4 sm:px-6 py-4 text-left bg-gradient-to-r from-green-100 to-green-200 text-green-800 font-semibold flex justify-between items-center hover:from-green-200 hover:to-green-300 transition-colors"
                                 >
                                     <span>{category.category}</span>
                                     <span className="transform transition-transform duration-200">
@@ -128,7 +128,7 @@ const FAQ = () => {
                                             animate={{ height: 'auto', opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3 }}
-                                            className="px-6 py-4 space-y-4 bg-white"
+                                            className="px-4 sm:px-6 py-4 space-y-4 bg-white"
                                         >
                                             {category.questions.map((item, questionIndex) => {
                                                 const isExpanded = expandedQuestions[`${categoryIndex}-${questionIndex}`];
@@ -172,4 +172,4 @@ const FAQ = () => {
     );
 };
 
-export default FAQ; 
+export default FAQ;

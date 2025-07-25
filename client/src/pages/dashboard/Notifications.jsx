@@ -143,7 +143,7 @@ const Notifications = () => {
     if (loading && notifications.length === 0) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8">
-                <div className="max-w-4xl mx-auto px-4">
+                <div className="max-w-4xl mx-auto px-2 sm:px-4">
                     <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
                         <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
                             <div className="flex items-center space-x-2">
@@ -162,11 +162,11 @@ const Notifications = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8">
-            <div className="max-w-4xl mx-auto px-4">
+            <div className="max-w-4xl mx-auto px-2 sm:px-4">
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
                     {/* Header */}
                     <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                             <div className="flex items-center space-x-2">
                                 <Bell className="w-6 h-6 text-white" />
                                 <h1 className="text-2xl font-bold text-white">Notifications</h1>
@@ -240,11 +240,11 @@ const Notifications = () => {
                                                 {getIcon(notification.type)}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <div className="flex items-center justify-between">
+                                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
                                                     <p className="text-sm font-medium text-gray-900">
                                                         {notification.title}
                                                     </p>
-                                                    <div className="flex items-center space-x-2">
+                                                    <div className="flex items-center space-x-2 mt-2 sm:mt-0">
                                                         <span className="flex items-center text-xs text-gray-500">
                                                             <Clock className="w-3 h-3 mr-1" />
                                                             {formatTimestamp(notification.createdAt)}
@@ -254,7 +254,7 @@ const Notifications = () => {
                                                 <p className="mt-1 text-sm text-gray-600">
                                                     {notification.message}
                                                 </p>
-                                                <div className="mt-2 flex items-center justify-between">
+                                                <div className="mt-2 flex flex-col sm:flex-row items-center justify-between gap-2">
                                                     <div className="flex items-center space-x-2">
                                                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                             {getCategoryIcon(notification.category)}
@@ -301,7 +301,7 @@ const Notifications = () => {
                     {/* Pagination */}
                     {totalPages > 1 && (
                         <div className="px-6 py-4 border-t border-green-100 bg-gray-50">
-                            <div className="flex items-center justify-between">
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
                                 <p className="text-sm text-gray-700">
                                     Page {page} of {totalPages}
                                 </p>
@@ -330,4 +330,4 @@ const Notifications = () => {
     );
 };
 
-export default Notifications; 
+export default Notifications;
