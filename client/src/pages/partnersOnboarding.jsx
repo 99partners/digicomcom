@@ -8,7 +8,6 @@ import {
   BarChart3,
   MessageSquare,
   FileText,
-  Image as ImageIcon,
   Tag,
   Rocket,
   Globe,
@@ -104,7 +103,7 @@ export default function PartnerOnboarding() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       <Helmet>
-        <style>{``}</style> {/* Removed animation styles */}
+        <style>{``}</style>
       </Helmet>
 
       {/* Hero Section */}
@@ -120,7 +119,6 @@ export default function PartnerOnboarding() {
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Start your journey with a growing network of digital-first brands. Simple, structured, and supportive onboarding to help you sell, scale, and succeed.
           </p>
-          <div className="flex justify-center space-x-4"></div>
         </div>
       </section>
 
