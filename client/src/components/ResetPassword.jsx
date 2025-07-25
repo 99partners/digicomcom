@@ -98,18 +98,18 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-green-300">
-      {/* Commented-out original logo section */}
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-green-300 px-2">
+      {/* Logo */}
       <Link
         to="/"
-        className="absolute left-5 sm:left-20 top-5 flex items-center space-x-2 group"
+        className="absolute left-2 sm:left-20 top-5 flex items-center space-x-2 group"
       >
         <img
           src={logo || "/placeholder.svg"}
           alt="Digicom Logo"
-          className="h-16 w-auto object-contain"
+          className="h-12 w-auto object-contain"
         />
-        <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
+        <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
           Digicom
         </span>
       </Link>
@@ -117,9 +117,9 @@ const ResetPassword = () => {
       {!isEmailSent && (
         <form
           onSubmit={onSubmitEmail}
-          className="bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm"
+          className="bg-slate-900 p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-xs sm:max-w-md text-sm"
         >
-          <h1 className="text-white text-2xl font-semibold text-center mb-4">
+          <h1 className="text-white text-xl sm:text-2xl font-semibold text-center mb-4">
             Reset Password
           </h1>
           <p className="text-center mb-6 text-indigo-300">
@@ -131,7 +131,7 @@ const ResetPassword = () => {
             <input
               type="email"
               placeholder="Email ID"
-              className="bg-transparent outline-none text-white"
+              className="bg-transparent outline-none text-white w-full"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -147,9 +147,9 @@ const ResetPassword = () => {
       {!isOtpSent && isEmailSent && (
         <form
           onSubmit={onSubmitOtp}
-          className="bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm"
+          className="bg-slate-900 p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-xs sm:max-w-md text-sm"
         >
-          <h1 className="text-white text-2xl font-semibold text-center mb-4">
+          <h1 className="text-white text-xl sm:text-2xl font-semibold text-center mb-4">
             Reset Password OTP
           </h1>
           <p className="text-center mb-6 text-indigo-300">
@@ -168,7 +168,7 @@ const ResetPassword = () => {
                   onInput={(e) => handleInput(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                   required
-                  className="w-12 h-12 bg-[#333A5C] text-white text-center text-lg rounded-md"
+                  className="w-10 h-10 sm:w-12 sm:h-12 bg-[#333A5C] text-white text-center text-lg rounded-md"
                 />
               ))}
           </div>
@@ -182,9 +182,9 @@ const ResetPassword = () => {
       {isOtpSent && isEmailSent && (
         <form
           onSubmit={onSubmitNewPassword}
-          className="bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm"
+          className="bg-slate-900 p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-xs sm:max-w-md text-sm"
         >
-          <h1 className="text-white text-2xl font-semibold text-center mb-4">
+          <h1 className="text-white text-xl sm:text-2xl font-semibold text-center mb-4">
             New Password
           </h1>
           <p className="text-center mb-6 text-indigo-300">
@@ -200,7 +200,7 @@ const ResetPassword = () => {
             <input
               type="password"
               placeholder="New Password"
-              className="bg-transparent outline-none text-white"
+              className="bg-transparent outline-none text-white w-full"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required

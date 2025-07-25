@@ -60,56 +60,60 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">{user ? 'Edit User' : 'Create User'}</h2>
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 max-w-2xl w-full mx-auto">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4">{user ? 'Edit User' : 'Create User'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        required
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            required
+                        />
+                    </div>
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Phone</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Role</label>
-                    <select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                    >
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                    </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Phone</label>
+                        <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Role</label>
+                        <select
+                            name="role"
+                            value={formData.role}
+                            onChange={handleChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                        >
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Services</label>
-                    <div className="flex gap-2 mt-1">
+                    <div className="flex flex-col sm:flex-row gap-2 mt-1">
                         <input
                             type="text"
                             value={newService}
@@ -153,7 +157,7 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
                     />
                     <label className="ml-2 block text-sm text-gray-700">Account Verified</label>
                 </div>
-                <div className="flex justify-end space-x-3 mt-6">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
                     <button
                         type="button"
                         onClick={onCancel}
