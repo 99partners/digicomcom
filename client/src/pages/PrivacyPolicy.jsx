@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail } from 'lucide-react'
-import { useEffect } from "react";
 
 const PrivacyPolicy = () => {
   // Scroll to top on component mount
