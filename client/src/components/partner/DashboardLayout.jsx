@@ -14,7 +14,8 @@ import {
   BarChart3,
   Shield,
   Menu,
-  X
+  X,
+  ArrowLeft
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/99digicom.png';
@@ -184,6 +185,13 @@ const DashboardLayout = ({ children }) => {
                 className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 mr-1 -ml-4"
               >
                 {sidebarCollapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
+              </button>
+              <button
+                onClick={() => navigate(-1)}
+                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 mr-2"
+                title="Go Back"
+              >
+                <ArrowLeft className="w-5 h-5" />
               </button>
               <img src={logo} alt="Logo" className="h-8 w-auto" />
               <span className="ml-3 text-xl font-semibold text-gray-900">Partner Portal</span>
