@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Megaphone,
   CheckCircle,
@@ -21,12 +22,11 @@ import AM2 from "../assets/A&M2.png";
 import AM3 from "../assets/A&M3.png";
 import amazonLogo from "../assets/Amazon.png";
 import flipkartLogo from "../assets/Flipkart.png";
-import ondcLogo from "../assets/ONDC1.png";
 import jiomartLogo from "../assets/Jiomart.png";
 import meeshoLogo from "../assets/Meesho1.png";
-import indiamartLogo from "../assets/Indiamart.png";
 import snapdealLogo from "../assets/Snapdeal.png";
 import swiggyLogo from "../assets/Swiggy.png";
+import zomatoLogo from "../assets/Zomato.png";
 import ImageSlider from '../components/ImageSlider';
 
 export default function AdvertisingMarketing() {
@@ -34,6 +34,7 @@ export default function AdvertisingMarketing() {
     window.scrollTo(0, 0);
   }, []);
 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -55,6 +56,7 @@ export default function AdvertisingMarketing() {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); 
 
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
@@ -64,6 +66,85 @@ export default function AdvertisingMarketing() {
     { src: meeshoLogo, alt: "Meesho logo" },
     { src: swiggyLogo, alt: "Swiggy logo" },
   ];
+
+  const marketplaces = {
+    amazon: {
+      name: "Amazon",
+      logo: amazonLogo,
+      href: "/partners/marketplaces/amazon",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Daily Bid & Budget Optimisation",
+        "Negative Keyword Management",
+        "ASIN & Category Targeting",
+        "Product Listing Creation & Optimisation",
+      ],
+    },
+    flipkart: {
+      name: "Flipkart",
+      logo: flipkartLogo,
+      href: "/partners/marketplaces/flipkart",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Daily Bid & Budget Optimisation",
+        "Product Listing Creation & Optimisation",
+        "Advertising",
+      ],
+    },
+    jiomart: {
+      name: "JioMart",
+      logo: jiomartLogo,
+      href: "/partners/marketplaces/jiomart",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Product Listing Creation & Optimisation",
+        "Advertising",
+      ],
+    },
+    meesho: {
+      name: "Meesho",
+      logo: meeshoLogo,
+      href: "/partners/marketplaces/meesho",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Product Listing Creation & Optimisation",
+        "Advertising",
+      ],
+    },
+    snapdeal: {
+      name: "Snapdeal",
+      logo: snapdealLogo,
+      href: "/partners/marketplaces/snapdeal",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Catalog Management",
+        "Advertising",
+        "Analytics & Reporting",
+      ],
+    },
+    zomato: {
+      name: "Zomato",
+      logo: zomatoLogo,
+      href: "/partners/marketplaces/zomato",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Catalog Management",
+        "Advertising",
+        "Analytics & Reporting",
+      ],
+    },
+    swiggy: {
+      name: "Swiggy",
+      logo: swiggyLogo,
+      href: "/partners/marketplaces/swiggy",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Catalog Management",
+        "Advertising",
+        "Analytics & Reporting",
+      ],
+    },
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -211,7 +292,7 @@ export default function AdvertisingMarketing() {
               id="hero-heading"
               className="text-5xl font-bold text-gray-900 mb-6 flex items-center justify-center flex-wrap"
             >
-              <span className="text-green-600">Grow</span> Your Online Store with
+              <span className="text-green-600 mr-2">Grow</span> Your Online Store with
               <div className="ml-4">
                 <img
                   src={logos[currentLogoIndex].src}
@@ -248,6 +329,141 @@ export default function AdvertisingMarketing() {
             animation: fadeIn 0.5s ease-in-out;
           }
         `}</style>
+
+        {/* What's Included - Marketplaces Section */}
+        <section
+          className="py-16 px-4 bg-green-50"
+          aria-labelledby="marketplaces-heading"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2
+                id="marketplaces-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Supported Marketplaces
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                Choose from our wide range of marketplace integrations for tailored advertising services
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-12 gap-8">
+              {/* Left Sidebar - Marketplace List */}
+              <div className="md:col-span-3">
+                <div className="bg-white rounded-lg shadow-md p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Supported Marketplaces
+                  </h3>
+                  <div className="space-y-2">
+                    {Object.entries(marketplaces).map(([key, marketplace]) => (
+                      <div
+                        key={key}
+                        className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                          activeMarketplace === key
+                            ? "bg-green-100 text-green-700"
+                            : "hover:bg-green-50 hover:text-green-600"
+                        }`}
+                        onMouseEnter={() => setActiveMarketplace(key)}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <img
+                            src={marketplace.logo}
+                            alt={`${marketplace.name} logo`}
+                            className="h-8 w-8 object-contain"
+                            onError={(e) => {
+                              console.error(`Failed to load ${marketplace.name} logo`);
+                              e.target.src = "/assets/fallback.png";
+                            }}
+                          />
+                          <span className="font-medium">
+                            {marketplace.name}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Content - Marketplace Details */}
+              <div className="md:col-span-9">
+                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                  {activeMarketplace && marketplaces[activeMarketplace] && (
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="flex-1 flex justify-center">
+                          <img
+                            src={marketplaces[activeMarketplace].logo}
+                            alt={`${marketplaces[activeMarketplace].name} logo`}
+                            className="h-24 w-auto object-contain max-w-[280px]"
+                            onError={(e) => {
+                              console.error(`Failed to load ${marketplaces[activeMarketplace].name} logo`);
+                              e.target.src = "/assets/fallback.png";
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {marketplaces[activeMarketplace].services.map(
+                          (service, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
+                            >
+                              <CheckCircle className="h-6 w-6 text-green-600" />
+                              <span className="text-gray-700 text-lg">
+                                {service}
+                              </span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                      <div className="mt-8 flex justify-center">
+                        <button
+                          onClick={() =>
+                            navigate(marketplaces[activeMarketplace].href)
+                          }
+                          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
+                        >
+                          <span>
+                            Learn more about{" "}
+                            {marketplaces[activeMarketplace].name}
+                          </span>
+                          <ArrowRight className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Advertising Matters */}
+        <section
+          aria-labelledby="why-advertising-heading"
+          className="py-16 px-4 bg-white"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2
+                id="why-advertising-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Why Advertising is a Must
+              </h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+                In today's competitive e-commerce landscape, visibility is key
+                to driving sales. If your product isn't visible, it's likely to
+                be overlooked. Optimised advertising ensures you stand out in
+                crowded marketplaces.
+              </p>
+            </div>
+            <ImageSlider slides={steps} />
+          </div>
+        </section>
 
         {/* Campaign Setup Includes */}
         <section aria-labelledby="campaign-setup-heading" className="py-16 px-4 bg-green-50">
@@ -325,30 +541,6 @@ export default function AdvertisingMarketing() {
           </div>
         </section>
 
-        {/* Why Advertising Matters */}
-        <section
-          aria-labelledby="why-advertising-heading"
-          className="py-16 px-4 bg-white"
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2
-                id="why-advertising-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
-                Why Advertising is a Must
-              </h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                In today's competitive e-commerce landscape, visibility is key
-                to driving sales. If your product isn't visible, it's likely to
-                be overlooked. Optimised advertising ensures you stand out in
-                crowded marketplaces.
-              </p>
-            </div>
-            <ImageSlider slides={steps} />
-          </div>
-        </section>
-
         {/* Success Story */}
         <section
           aria-labelledby="success-story-heading"
@@ -400,75 +592,7 @@ export default function AdvertisingMarketing() {
           </div>
         </section>
 
-        {/* Supported Platforms */}
-        <section aria-labelledby="platforms-heading" className="py-16 px-4 bg-green-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="platforms-heading" className="text-3xl font-bold text-gray-900 mb-4">
-                Supported Marketplaces
-              </h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                We optimise campaigns across various leading marketplaces to ensure maximum exposure for your products.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-              {[
-                {
-                  logo: amazonLogo,
-                  name: "Amazon",
-                  description: "World's largest e-commerce platform with millions of daily shoppers.",
-                },
-                {
-                  logo: flipkartLogo,
-                  name: "Flipkart",
-                  description: "India's leading e-commerce marketplace, offering extensive reach within India.",
-                },
-                {
-                  logo: meeshoLogo,
-                  name: "Meesho",
-                  description: "A growing social commerce platform focusing on direct-to-consumer selling via social media channels.",
-                },
-                {
-                  logo: jiomartLogo,
-                  name: "JioMart",
-                  description: "Reliance's digital commerce platform, catering to a wide range of consumer goods.",
-                },
-                {
-                  logo: indiamartLogo,
-                  name: "IndiaMart",
-                  description: "A B2B marketplace providing access to bulk buyers and a large network of suppliers.",
-                },
-                {
-                  logo: snapdealLogo,
-                  name: "Snapdeal",
-                  description: "A popular e-commerce platform that serves millions of buyers across India.",
-                },
-              ].map((platform, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl overflow-hidden transform hover:-translate-y-1 transition-all duration-300 shadow-md hover:shadow-xl"
-                >
-                  <div className="bg-green-600 h-2" />
-                  <div className="p-6">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <img
-                        src={platform.logo}
-                        alt={`${platform.name} logo`}
-                        className="h-10 w-auto object-contain"
-                        onError={(e) => {
-                          console.error(`Failed to load ${platform.name} logo`);
-                          e.target.src = "/assets/fallback.png";
-                        }}
-                      />
-                      <h3 className="text-xl font-semibold text-gray-900">{platform.name}</h3>
-                    </div>
-                    <p className="text-gray-600 text-sm">{platform.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        
 
         {/* FAQs with Expandable Sections */}
         <section className="py-16 px-4 bg-green-50">
