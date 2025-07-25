@@ -114,4 +114,4 @@ const OndcSeller = () => {
   );
 };
 
-export default OndcSeller; 
+export default OndcSeller;

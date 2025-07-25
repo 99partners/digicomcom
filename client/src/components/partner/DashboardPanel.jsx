@@ -33,11 +33,11 @@ const DashboardPanel = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-8 px-4">
-      <div className="bg-white rounded-lg shadow p-6">
+    <div className="max-w-5xl mx-auto py-8 px-2 sm:px-4">
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
         {/* Tabs */}
-        <div className="border-b mb-8">
-          <div className="flex space-x-8">
+        <div className="border-b mb-8 overflow-x-auto">
+          <div className="flex space-x-4 sm:space-x-8">
             {tabs.map((tab) => (
               <button
                 key={tab}
@@ -86,4 +86,4 @@ const DashboardPanel = () => {
   );
 };
 
-export default DashboardPanel; 
+export default DashboardPanel;

@@ -43,7 +43,7 @@ const MyApplications = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-2 sm:px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">My Applications</h1>
       
       {applications.length === 0 ? (
@@ -114,4 +114,4 @@ const MyApplications = () => {
   );
 };
 
-export default MyApplications; 
+export default MyApplications;
