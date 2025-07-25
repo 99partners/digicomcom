@@ -24,11 +24,12 @@ import flipkartLogo from "../assets/Flipkart.png";
 import jiomartLogo from "../assets/Jiomart.png";
 import meeshoLogo from "../assets/Meesho1.png";
 import snapdealLogo from "../assets/Snapdeal.png";
-import swiggyLogo from "../assets/Swiggy.png";
-import zomatoLogo from "../assets/Zomato.png";
+import instamartLogo from "../assets/Instamart.png";
+import bigbasketLogo from "../assets/BigBasket.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
 import ImageSlider from '../components/ImageSlider';
+
 
 export default function AdvertisingMarketing() {
   useEffect(() => {
@@ -64,7 +65,7 @@ export default function AdvertisingMarketing() {
     { src: snapdealLogo, alt: "Snapdeal logo" },
     { src: jiomartLogo, alt: "JioMart logo" },
     { src: meeshoLogo, alt: "Meesho logo" },
-    { src: swiggyLogo, alt: "Swiggy logo" },
+    { src: bigbasketLogo, alt: "BigBasket logo" },
   ];
   
   // Updated marketplaces with category property
@@ -124,10 +125,10 @@ export default function AdvertisingMarketing() {
       ],
       category: "quick-commerce" // Added category
     },
-    zomato: {
-      name: "Zomato",
-      logo: zomatoLogo,
-      href: "/partners/marketplaces/zomato",
+    instamart : {
+      name: "Instamart",
+      logo: instamartLogo,
+      href: "/partners/marketplaces/instamart",
       services: [
         "Flash sales, promotional discounts, and marketing campaigns",
 "Boosting high-demand products with Instamart promotions",
@@ -135,10 +136,10 @@ export default function AdvertisingMarketing() {
       ],
       category: "quick-commerce" // Added category
     },
-    swiggy: {
-      name: "Swiggy",
-      logo: swiggyLogo,
-      href: "/partners/marketplaces/swiggy",
+    bigbasket: {
+      name: "BigBasket",
+      logo: bigbasketLogo,
+      href: "/partners/marketplaces/bigbasket",
       services: [
         "Bigbasket Ads and campaigns for featured products",
         "Promotions tied to Bigbasket’s seasonal events and offers",
