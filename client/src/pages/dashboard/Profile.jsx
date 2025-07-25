@@ -53,7 +53,7 @@ const Profile = () => {
             className="bg-white rounded-xl shadow-sm overflow-hidden"
         >
             <div className="px-4 sm:px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
-                <h2 className="text-lg font-semibold text-green-800">{title}</h2>
+                <h2 className="text-base sm:text-lg font-semibold text-green-800">{title}</h2>
             </div>
             <div className="p-4 sm:p-6">{children}</div>
         </motion.div>
@@ -70,11 +70,11 @@ const Profile = () => {
                 </div>
             </div>
             <div className="flex-1">
-                <p className="text-sm font-medium text-gray-500">{label}</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-500">{label}</p>
                 <div className="flex items-center mt-1">
-                    <p className="text-base text-gray-700">{value || 'Not provided'}</p>
+                    <p className="text-sm sm:text-base text-gray-700 break-all">{value || 'Not provided'}</p>
                     {verified && (
-                        <span className="ml-2 flex items-center text-green-600 text-sm">
+                        <span className="ml-2 flex items-center text-green-600 text-xs sm:text-sm">
                             <CheckCircle size={14} className="mr-1" />
                             Verified
                         </span>
@@ -108,8 +108,8 @@ const Profile = () => {
                                     whileHover={{ scale: 1.05 }}
                                     className="relative group"
                                 >
-                                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full flex items-center justify-center shadow-md">
-                                        <span className="text-2xl sm:text-3xl font-bold text-green-600">
+                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-md">
+                                        <span className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
                                             {user?.name?.charAt(0) || 'U'}
                                         </span>
                                     </div>
@@ -117,16 +117,16 @@ const Profile = () => {
                                         <Edit size={16} className="text-green-600" />
                                     </button>
                                 </motion.div>
-                                <div className="ml-4 sm:ml-6">
-                                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+                                <div className="ml-3 sm:ml-4 md:ml-6">
+                                    <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2">
                                         {user?.name || 'Partner'}
                                     </h1>
                                     <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-                                        <span className="px-3 py-1 bg-white/80 rounded-full text-green-700 text-sm flex items-center">
+                                        <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/80 rounded-full text-green-700 text-xs sm:text-sm flex items-center">
                                             <Crown size={16} className="mr-1" />
                                             {user?.plan || 'Free Plan'}
                                         </span>
-                                        <span className="px-3 py-1 bg-white/80 rounded-full text-green-700 text-sm flex items-center">
+                                        <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/80 rounded-full text-green-700 text-xs sm:text-sm flex items-center">
                                             <Calendar size={16} className="mr-1" />
                                             Joined {formatDate(user?.createdAt)}
                                         </span>
@@ -137,11 +137,11 @@ const Profile = () => {
                     </div>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div className="space-y-6 md:space-y-8">
                         {/* Contact Information */}
                         <ProfileSection title="Contact Information">
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                                 <InfoItem
                                     icon={Mail}
                                     label="Email Address"
@@ -158,7 +158,7 @@ const Profile = () => {
 
                         {/* Account Information */}
                         <ProfileSection title="Account Information">
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                                 <InfoItem
                                     icon={Shield}
                                     label="Account Status"
@@ -178,10 +178,10 @@ const Profile = () => {
                         </ProfileSection>
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="space-y-6 md:space-y-8">
                         {/* Business Information */}
                         <ProfileSection title="Business Information">
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                                 <InfoItem
                                     icon={Building}
                                     label="Company Name"
@@ -202,7 +202,7 @@ const Profile = () => {
 
                         {/* Additional Section for Future Use */}
                         <ProfileSection title="Preferences">
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                                 <InfoItem
                                     icon={User}
                                     label="Language"
