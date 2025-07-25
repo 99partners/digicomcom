@@ -65,9 +65,9 @@ const Blogs = () => {
 
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
-        <section className="pt-24 pb-16 px-4" aria-labelledby="hero-heading">
+        <section className="pt-24 pb-16 px-4">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 id="hero-heading" className="text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-5xl font-bold text-gray-900 mb-6">
               <span className="text-green-600">Insights</span> & Trends
             </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -77,50 +77,36 @@ const Blogs = () => {
         </section>
 
         {/* Blogs Section */}
-        <section className="py-16 px-4 bg-green-50" aria-labelledby="blogs-heading">
+        <section className="py-16 px-4 bg-green-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="blogs-heading" className="text-3xl font-bold text-gray-900 mb-4">Latest Articles</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Latest Articles</h2>
               <p className="text-lg text-gray-600">
                 Explore expert insights and tips to grow your business.
               </p>
             </div>
 
             {loading ? (
-              <div 
-                className="text-center p-8 bg-white rounded-lg shadow"
-                role="status"
-                aria-live="polite"
-              >
+              <div className="text-center p-8 bg-white rounded-lg shadow">
                 <div className="animate-spin h-8 w-8 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-4"></div>
                 <p className="text-gray-600">Loading articles...</p>
               </div>
             ) : error ? (
-              <div 
-                className="text-center p-8 bg-white rounded-lg shadow"
-                role="alert"
-                aria-live="assertive"
-              >
+              <div className="text-center p-8 bg-white rounded-lg shadow">
                 <p className="text-red-600">{error}</p>
                 <button 
                   onClick={() => window.location.reload()}
                   className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
-                  aria-label="Retry loading articles"
                 >
                   Retry
                 </button>
               </div>
             ) : (
-              <div 
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                role="feed"
-                aria-label="Blog articles"
-              >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {blogs.map((blog) => (
                   <article
                     key={blog._id}
                     className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
-                    aria-labelledby={`article-${blog._id}`}
                   >
                     <div className="relative">
                       <img
@@ -135,29 +121,22 @@ const Blogs = () => {
                       </div>
                     </div>
                     <div className="p-6">
-                      <div 
-                        className="flex items-center text-sm text-gray-600 mb-3"
-                        aria-label={`Published on ${new Date(blog.createdAt).toLocaleDateString()}, ${blog.readTime} read time`}
-                      >
-                        <Calendar className="h-4 w-4 text-green-600 mr-1" aria-hidden="true" />
+                      <div className="flex items-center text-sm text-gray-600 mb-3">
+                        <Calendar className="h-4 w-4 text-green-600 mr-1" />
                         <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
-                        <span className="mx-2" aria-hidden="true">•</span>
+                        <span className="mx-2">•</span>
                         <span>{blog.readTime}</span>
                       </div>
-                      <h3 
-                        id={`article-${blog._id}`}
-                        className="text-xl font-semibold text-gray-900 mb-3"
-                      >
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
                         {blog.title}
                       </h3>
                       <p className="text-gray-600 text-sm mb-4">{blog.excerpt}</p>
                       <Link
                         to={`/resources/blogs/${blog._id}`}
                         className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
-                        aria-label={`Read more about ${blog.title}`}
                       >
                         Read More
-                        <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+                        <ArrowRight className="ml-1 h-4 w-4" />
                       </Link>
                     </div>
                   </article>
