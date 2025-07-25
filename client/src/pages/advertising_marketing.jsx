@@ -26,8 +26,7 @@ import jiomartLogo from "../assets/Jiomart.png";
 import meeshoLogo from "../assets/Meesho1.png";
 import indiamartLogo from "../assets/Indiamart.png";
 import snapdealLogo from "../assets/Snapdeal.png";
-import blinkitLogo from "../assets/Blinkit.png"; // Placeholder for Blinkit logo
-import zomatoLogo from "../assets/Zomato.png"; // Placeholder for Zomato logo
+import swiggyLogo from "../assets/Swiggy.png";
 import ImageSlider from '../components/ImageSlider';
 
 export default function AdvertisingMarketing() {
@@ -62,8 +61,8 @@ export default function AdvertisingMarketing() {
     { src: flipkartLogo, alt: "Flipkart logo" },
     { src: snapdealLogo, alt: "Snapdeal logo" },
     { src: jiomartLogo, alt: "JioMart logo" },
-    { src: blinkitLogo, alt: "Blinkit logo" },
-    { src: zomatoLogo, alt: "Zomato logo" },
+    { src: meeshoLogo, alt: "Meesho logo" },
+    { src: swiggyLogo, alt: "Swiggy logo" },
   ];
 
   useEffect(() => {
@@ -212,8 +211,7 @@ export default function AdvertisingMarketing() {
               id="hero-heading"
               className="text-5xl font-bold text-gray-900 mb-6 flex items-center justify-center flex-wrap"
             >
-              <span className="text-green-600">Amazon </span>
-              {" "}Your Online Store with
+              <span className="text-green-600">Grow</span> Your Online Store with
               <div className="ml-4">
                 <img
                   src={logos[currentLogoIndex].src}
