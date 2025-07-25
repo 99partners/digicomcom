@@ -52,10 +52,10 @@ const Profile = () => {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-xl shadow-sm overflow-hidden"
         >
-            <div className="px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
+            <div className="px-4 sm:px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
                 <h2 className="text-lg font-semibold text-green-800">{title}</h2>
             </div>
-            <div className="p-6">{children}</div>
+            <div className="p-4 sm:p-6">{children}</div>
         </motion.div>
     );
 
@@ -94,22 +94,22 @@ const Profile = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50/50 py-8">
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="max-w-7xl mx-auto px-2 sm:px-4">
                 {/* Profile Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-2xl shadow-sm overflow-hidden mb-8"
                 >
-                    <div className="bg-gradient-to-r from-green-100 to-emerald-100 px-8 py-10 relative">
-                        <div className="relative z-10 flex items-center justify-between">
+                    <div className="bg-gradient-to-r from-green-100 to-emerald-100 px-4 sm:px-8 py-8 sm:py-10 relative">
+                        <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between">
                             <div className="flex items-center">
                                 <motion.div 
                                     whileHover={{ scale: 1.05 }}
                                     className="relative group"
                                 >
-                                    <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md">
-                                        <span className="text-3xl font-bold text-green-600">
+                                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full flex items-center justify-center shadow-md">
+                                        <span className="text-2xl sm:text-3xl font-bold text-green-600">
                                             {user?.name?.charAt(0) || 'U'}
                                         </span>
                                     </div>
@@ -117,11 +117,11 @@ const Profile = () => {
                                         <Edit size={16} className="text-green-600" />
                                     </button>
                                 </motion.div>
-                                <div className="ml-6">
-                                    <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                                <div className="ml-4 sm:ml-6">
+                                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
                                         {user?.name || 'Partner'}
                                     </h1>
-                                    <div className="flex items-center space-x-4">
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                                         <span className="px-3 py-1 bg-white/80 rounded-full text-green-700 text-sm flex items-center">
                                             <Crown size={16} className="mr-1" />
                                             {user?.plan || 'Free Plan'}
@@ -133,7 +133,6 @@ const Profile = () => {
                                     </div>
                                 </div>
                             </div>
-                          
                         </div>
                     </div>
                 </motion.div>
@@ -223,4 +222,4 @@ const Profile = () => {
     );
 };
 
-export default Profile; 
+export default Profile;

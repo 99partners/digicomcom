@@ -98,14 +98,14 @@ const Subscriptions = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8">
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="max-w-7xl mx-auto px-2 sm:px-4">
                 {/* Billing History */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-xl shadow-lg overflow-hidden border border-green-100"
                 >
-                    <div className="px-6 py-4 border-b border-green-100 bg-white">
+                    <div className="px-4 sm:px-6 py-4 border-b border-green-100 bg-white">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                                 <Receipt className="h-5 w-5 text-green-600" />
@@ -115,14 +115,14 @@ const Subscriptions = () => {
                     </div>
 
                     {billingHistory.length === 0 ? (
-                        <div className="px-6 py-8 text-center text-gray-500">
+                        <div className="px-4 sm:px-6 py-8 text-center text-gray-500">
                             No billing history available
                         </div>
                     ) : (
                         <div className="divide-y divide-green-100">
                             {billingHistory.map((bill) => (
-                                <div key={bill.id} className="px-6 py-4 flex items-center justify-between hover:bg-green-50">
-                                    <div className="flex items-center space-x-4">
+                                <div key={bill.id} className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between hover:bg-green-50">
+                                    <div className="flex items-center space-x-4 mb-2 sm:mb-0">
                                         <div className="h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
                                             <CreditCard className="h-5 w-5 text-green-600" />
                                         </div>
@@ -165,4 +165,4 @@ const Subscriptions = () => {
     );
 };
 
-export default Subscriptions; 
+export default Subscriptions;

@@ -39,28 +39,28 @@ const ServiceSelection = () => {
   ];
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-2 sm:px-4">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Service</h1>
-        <p className="text-lg text-gray-600">Select the type of service you're interested in</p>
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Choose Your Service</h1>
+        <p className="text-base sm:text-lg text-gray-600">Select the type of service you're interested in</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
         {services.map((service) => (
           <div
             key={service.id}
             onClick={() => navigate(service.route)}
-            className={`${service.bgColor} rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-100`}
+            className={`${service.bgColor} rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-100`}
           >
-            <div className="flex items-start space-x-6">
+            <div className="flex items-start space-x-4 sm:space-x-6">
               <div className="flex-shrink-0">
                 <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md">
                   <span className="text-2xl">{service.icon}</span>
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{service.description}</p>
               </div>
             </div>
           </div>
@@ -70,4 +70,4 @@ const ServiceSelection = () => {
   );
 };
 
-export default ServiceSelection; 
+export default ServiceSelection;

@@ -11,7 +11,6 @@ const Amazon = () => {
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-8">Amazon Seller Account Setup Guide</h1>
-
           {/* Overview Section */}
           <section className="mb-12">
             <div className="bg-white rounded-lg shadow-md p-8 mb-6">
@@ -21,7 +20,6 @@ const Amazon = () => {
               </p>
             </div>
           </section>
-
           {/* Requirements Section */}
           <section className="mb-12">
             <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-lg shadow mb-6">
@@ -40,7 +38,6 @@ const Amazon = () => {
               </ul>
             </div>
           </section>
-
           {/* Step-by-Step Setup Process */}
           <section className="mb-12">
             <div className="text-center mb-10">
@@ -137,7 +134,6 @@ const Amazon = () => {
               </ol>
             </div>
           </section>
-
           {/* Post-Setup Tips Section */}
           <section className="mb-12">
             <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-lg shadow mb-6">
@@ -164,7 +160,6 @@ const Amazon = () => {
               </ul>
             </div>
           </section>
-
           {/* Common Questions Section */}
           <section className="mb-12">
             <div className="bg-white rounded-lg shadow-md p-8">
@@ -191,4 +186,4 @@ const Amazon = () => {
   );
 };
 
-export default Amazon; 
+export default Amazon;
