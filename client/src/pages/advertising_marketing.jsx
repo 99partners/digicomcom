@@ -26,6 +26,8 @@ import jiomartLogo from "../assets/Jiomart.png";
 import meeshoLogo from "../assets/Meesho1.png";
 import indiamartLogo from "../assets/Indiamart.png";
 import snapdealLogo from "../assets/Snapdeal.png";
+import blinkitLogo from "../assets/Blinkit.png"; // Placeholder for Blinkit logo
+import zomatoLogo from "../assets/Zomato.png"; // Placeholder for Zomato logo
 import ImageSlider from '../components/ImageSlider';
 
 export default function AdvertisingMarketing() {
@@ -53,6 +55,24 @@ export default function AdvertisingMarketing() {
   });
 
   const [currentStep, setCurrentStep] = useState(0);
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
+
+  const logos = [
+    { src: amazonLogo, alt: "Amazon logo" },
+    { src: flipkartLogo, alt: "Flipkart logo" },
+    { src: snapdealLogo, alt: "Snapdeal logo" },
+    { src: jiomartLogo, alt: "JioMart logo" },
+    { src: blinkitLogo, alt: "Blinkit logo" },
+    { src: zomatoLogo, alt: "Zomato logo" },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLogoIndex((prevIndex) => (prevIndex + 1) % logos.length);
+    }, 2000); // Change logo every 2 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
 
   const steps = [
     {
@@ -190,10 +210,21 @@ export default function AdvertisingMarketing() {
             </div>
             <h1
               id="hero-heading"
-              className="text-5xl font-bold text-gray-900 mb-6"
+              className="text-5xl font-bold text-gray-900 mb-6 flex items-center justify-center flex-wrap"
             >
-              Boost Your Product Visibility on{" "}
-              <span className="text-green-600">Amazon, Flipkart & More</span>
+              <span className="text-green-600">Amazon </span>
+              {" "}Your Online Store with
+              <div className="ml-4">
+                <img
+                  src={logos[currentLogoIndex].src}
+                  alt={logos[currentLogoIndex].alt}
+                  className="h-12 w-auto object-contain animate-fadeIn"
+                  onError={(e) => {
+                    console.error(`Failed to load ${logos[currentLogoIndex].alt}`);
+                    e.target.src = "/assets/fallback.png";
+                  }}
+                />
+              </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Maximise your reach with performance marketing tailored for
@@ -209,6 +240,16 @@ export default function AdvertisingMarketing() {
             </a>
           </div>
         </section>
+
+        <style jsx>{`
+          @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+          }
+        `}</style>
 
         {/* Campaign Setup Includes */}
         <section aria-labelledby="campaign-setup-heading" className="py-16 px-4 bg-green-50">
@@ -375,34 +416,34 @@ export default function AdvertisingMarketing() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
               {[
                 {
-                  
                   logo: amazonLogo,
-                  desc: "World's largest e-commerce platform with millions of daily shoppers.",
+                  name: "Amazon",
+                  description: "World's largest e-commerce platform with millions of daily shoppers.",
                 },
                 {
-
                   logo: flipkartLogo,
-                  desc: "India's leading e-commerce marketplace, offering extensive reach within India.",
+                  name: "Flipkart",
+                  description: "India's leading e-commerce marketplace, offering extensive reach within India.",
                 },
                 {
-                  
                   logo: meeshoLogo,
-                  desc: "A growing social commerce platform focusing on direct-to-consumer selling via social media channels.",
+                  name: "Meesho",
+                  description: "A growing social commerce platform focusing on direct-to-consumer selling via social media channels.",
                 },
                 {
-                  
                   logo: jiomartLogo,
-                  desc: "Reliance's digital commerce platform, catering to a wide range of consumer goods.",
+                  name: "JioMart",
+                  description: "Reliance's digital commerce platform, catering to a wide range of consumer goods.",
                 },
                 {
-                  
                   logo: indiamartLogo,
-                  desc: "A B2B marketplace providing access to bulk buyers and a large network of suppliers.",
+                  name: "IndiaMart",
+                  description: "A B2B marketplace providing access to bulk buyers and a large network of suppliers.",
                 },
                 {
-                  
                   logo: snapdealLogo,
-                  desc: "A popular e-commerce platform that serves millions of buyers across India.",
+                  name: "Snapdeal",
+                  description: "A popular e-commerce platform that serves millions of buyers across India.",
                 },
               ].map((platform, index) => (
                 <div
@@ -423,7 +464,7 @@ export default function AdvertisingMarketing() {
                       />
                       <h3 className="text-xl font-semibold text-gray-900">{platform.name}</h3>
                     </div>
-                    <p className="text-gray-600 text-sm">{platform.desc}</p>
+                    <p className="text-gray-600 text-sm">{platform.description}</p>
                   </div>
                 </div>
               ))}
@@ -431,7 +472,6 @@ export default function AdvertisingMarketing() {
           </div>
         </section>
 
-    
         {/* FAQs with Expandable Sections */}
         <section className="py-16 px-4 bg-green-50">
           <div className="max-w-3xl mx-auto">
