@@ -77,29 +77,29 @@ const SuccessMessage = ({ message, onClose, redirectPath }) => {
       ))}
 
       {/* Success Message */}
-      <div className={`bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center transform transition-all duration-500 ${
+      <div className={`bg-white rounded-2xl p-4 sm:p-8 max-w-md w-full mx-2 sm:mx-4 text-center transform transition-all duration-500 ${
         showMessage ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
       }`}>
         {/* Success Icon with Animation */}
         <div className="relative mb-6">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto animate-bounce">
-            <CheckCircle2 className="w-10 h-10 text-green-600" />
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto animate-bounce">
+            <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
           </div>
           
           {/* Sparkle effects around the icon */}
           <div className="absolute -top-2 -right-2 animate-pulse">
-            <Sparkles className="w-6 h-6 text-yellow-500" />
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" />
           </div>
           <div className="absolute -bottom-2 -left-2 animate-pulse delay-300">
-            <Sparkles className="w-4 h-4 text-blue-500" />
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" />
           </div>
           <div className="absolute top-0 left-0 animate-pulse delay-500">
-            <Sparkles className="w-5 h-5 text-purple-500" />
+            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
           </div>
         </div>
 
         {/* Success Message */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Success!</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Success!</h2>
         <p className="text-gray-600 mb-6">
           {message || 'Your application has been submitted successfully!'}
         </p>
@@ -107,18 +107,18 @@ const SuccessMessage = ({ message, onClose, redirectPath }) => {
         {/* Celebration Icons */}
         <div className="flex justify-center space-x-4 mb-6">
           <div className="animate-bounce delay-100">
-            <Trophy className="w-6 h-6 text-yellow-500" />
+            <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" />
           </div>
           <div className="animate-bounce delay-200">
-            <Gift className="w-6 h-6 text-green-500" />
+            <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
           </div>
           <div className="animate-bounce delay-300">
-            <Sparkles className="w-6 h-6 text-blue-500" />
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
           </div>
         </div>
 
         {/* Progress indicator */}
-        <div className="text-sm text-gray-500 mb-4">
+        <div className="text-xs sm:text-sm text-gray-500 mb-4">
           Redirecting to your applications...
         </div>
         
@@ -130,7 +130,7 @@ const SuccessMessage = ({ message, onClose, redirectPath }) => {
         {/* Manual redirect button */}
         <button
           onClick={onClose}
-          className="mt-4 text-green-600 hover:text-green-700 text-sm font-medium transition-colors"
+          className="mt-4 text-green-600 hover:text-green-700 text-xs sm:text-sm font-medium transition-colors"
         >
           Continue →
         </button>
@@ -153,4 +153,4 @@ const SuccessMessage = ({ message, onClose, redirectPath }) => {
   );
 };
 
-export default SuccessMessage; 
+export default SuccessMessage;

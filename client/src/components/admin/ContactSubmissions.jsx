@@ -66,7 +66,7 @@ const ContactSubmissions = () => {
     }
 
     return (
-        <div className="bg-white rounded-lg p-6">
+        <div className="bg-white rounded-lg p-4 sm:p-6 max-w-5xl w-full mx-auto">
             <h1 className="text-2xl font-bold mb-6">Contact Form Submissions</h1>
             {contacts.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">No contact submissions found</p>
@@ -114,4 +114,4 @@ const ContactSubmissions = () => {
     );
 };
 
-export default ContactSubmissions; 
+export default ContactSubmissions;
