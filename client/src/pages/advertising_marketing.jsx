@@ -74,11 +74,9 @@ export default function AdvertisingMarketing() {
       logo: amazonLogo,
       href: "/partners/marketplaces/amazon",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Daily Bid & Budget Optimisation",
-        "Negative Keyword Management",
-        "ASIN & Category Targeting",
-        "Product Listing Creation & Optimisation",
+        "Sponsored Ads (PPC campaigns) setup & management",
+        "Amazon Prime Day/Seasonal promotions management",
+        "Enhanced Brand Content (EBC) for better visibility",
       ],
       category: "ecommerce" // Added category
     },
@@ -87,10 +85,9 @@ export default function AdvertisingMarketing() {
       logo: flipkartLogo,
       href: "/partners/marketplaces/flipkart",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Daily Bid & Budget Optimisation",
-        "Product Listing Creation & Optimisation",
-        "Advertising",
+        "KFlipkart Ads (PPC campaigns, Smart Ads) management",
+        " Promotions and discount strategy for visibility",
+        "Flipkart Seller Hub analytics and insights for growth",
       ],
       category: "ecommerce" // Added category
     },
@@ -99,9 +96,9 @@ export default function AdvertisingMarketing() {
       logo: meeshoLogo,
       href: "/partners/marketplaces/meesho",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Product Listing Creation & Optimisation",
-        "Advertising",
+        "Social media integration and influencer marketing",
+        " Meesho Boost campaigns for higher reach",
+        "Targeted sales during Meesho's seasonal campaigns",
       ],
       category: "ecommerce" // Added category
     },
@@ -110,10 +107,9 @@ export default function AdvertisingMarketing() {
       logo: snapdealLogo,
       href: "/partners/marketplaces/snapdeal",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Catalog Management",
-        "Advertising",
-        "Analytics & Reporting",
+        "Snapdeal Ads campaigns setup and management",
+        "Participation in Snapdeal’s 'Srinivasa Sale' & other promotions",
+        " Dynamic pricing and offers management to boost sales",
       ],
       category: "ecommerce" // Added category
     },
@@ -122,9 +118,9 @@ export default function AdvertisingMarketing() {
       logo: jiomartLogo,
       href: "/partners/marketplaces/jiomart",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Product Listing Creation & Optimisation",
-        "Advertising",
+        "Co-branded marketing initiatives (Jio partner promotions)",
+        "Jiomart-specific advertising and promotional activities",
+        "Engaging with Jio ecosystem users for broader reach",
       ],
       category: "quick-commerce" // Added category
     },
@@ -133,10 +129,9 @@ export default function AdvertisingMarketing() {
       logo: zomatoLogo,
       href: "/partners/marketplaces/zomato",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Catalog Management",
-        "Advertising",
-        "Analytics & Reporting",
+        "Flash sales, promotional discounts, and marketing campaigns",
+"Boosting high-demand products with Instamart promotions",
+"Cross-platform visibility with Flipkart’s and Instamart’s collaboration",
       ],
       category: "quick-commerce" // Added category
     },
@@ -145,10 +140,9 @@ export default function AdvertisingMarketing() {
       logo: swiggyLogo,
       href: "/partners/marketplaces/swiggy",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Catalog Management",
-        "Advertising",
-        "Analytics & Reporting",
+        "Bigbasket Ads and campaigns for featured products",
+        "Promotions tied to Bigbasket’s seasonal events and offers",
+        "Cross-selling and bundling strategies for grocery packages",
       ],
       category: "quick-commerce" // Added category
     },
@@ -157,9 +151,9 @@ export default function AdvertisingMarketing() {
       logo: blinkitLogo,
       href: "/partners/marketplaces/blinkit",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Product Listing Creation & Optimisation",
-        "Advertising",
+        "Blinkit Ads (promotions within Blinkit app)",
+        "Collaborative marketing campaigns for local areas",
+        "Special offers and deals during peak hours for better visibility",
       ],
       category: "quick-commerce" // Added category
     },
@@ -168,9 +162,9 @@ export default function AdvertisingMarketing() {
       logo: zeptoLogo,
       href: "/partners/marketplaces/zepto",
       services: [
-        "Keyword Research & Campaign Setup",
-        "Product Listing Creation & Optimisation",
-        "Advertising",
+        "Zepto's targeted marketing campaigns to drive demand",
+        "Promotional partnerships for high-priority products",
+        "Collaborations with local influencers to enhance reach",
       ],
       category: "quick-commerce" // Added category
     },
