@@ -27,6 +27,8 @@ import meeshoLogo from "../assets/Meesho1.png";
 import snapdealLogo from "../assets/Snapdeal.png";
 import swiggyLogo from "../assets/Swiggy.png";
 import zomatoLogo from "../assets/Zomato.png";
+import blinkitLogo from "../assets/Blinkit.png";
+import zeptoLogo from "../assets/Zepto.png";
 import ImageSlider from '../components/ImageSlider';
 
 export default function AdvertisingMarketing() {
@@ -91,16 +93,6 @@ export default function AdvertisingMarketing() {
         "Advertising",
       ],
     },
-    jiomart: {
-      name: "JioMart",
-      logo: jiomartLogo,
-      href: "/partners/marketplaces/jiomart",
-      services: [
-        "Keyword Research & Campaign Setup",
-        "Product Listing Creation & Optimisation",
-        "Advertising",
-      ],
-    },
     meesho: {
       name: "Meesho",
       logo: meeshoLogo,
@@ -120,6 +112,16 @@ export default function AdvertisingMarketing() {
         "Catalog Management",
         "Advertising",
         "Analytics & Reporting",
+      ],
+    },
+    jiomart: {
+      name: "JioMart",
+      logo: jiomartLogo,
+      href: "/partners/marketplaces/jiomart",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Product Listing Creation & Optimisation",
+        "Advertising",
       ],
     },
     zomato: {
@@ -142,6 +144,26 @@ export default function AdvertisingMarketing() {
         "Catalog Management",
         "Advertising",
         "Analytics & Reporting",
+      ],
+    },
+    blinkit: {
+      name: "Blinkit",
+      logo: blinkitLogo,
+      href: "/partners/marketplaces/blinkit",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Product Listing Creation & Optimisation",
+        "Advertising",
+      ],
+    },
+    zepto: {
+      name: "Zepto",
+      logo: zeptoLogo,
+      href: "/partners/marketplaces/zepto",
+      services: [
+        "Keyword Research & Campaign Setup",
+        "Product Listing Creation & Optimisation",
+        "Advertising",
       ],
     },
   };
