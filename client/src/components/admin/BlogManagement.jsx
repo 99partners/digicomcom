@@ -128,9 +128,9 @@ const BlogManagement = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Blog Management</h2>
+    <div className="max-w-7xl w-full mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+        <h2 className="text-xl sm:text-2xl font-bold">Blog Management</h2>
         <button
           onClick={() => {
             if (showForm) {
@@ -158,18 +158,38 @@ const BlogManagement = () => {
             {editingBlogId ? 'Edit Blog' : 'Create New Blog'}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title
-              </label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Category
+                </label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="">Select a category</option>
+                  <option value="Industry Insights">Industry Insights</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Digital Marketing">Digital Marketing</option>
+                  <option value="Technology">Technology</option>
+                </select>
+              </div>
             </div>
 
             <div>
@@ -200,44 +220,27 @@ const BlogManagement = () => {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category
-              </label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                <option value="">Select a category</option>
-                <option value="Industry Insights">Industry Insights</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Digital Marketing">Digital Marketing</option>
-                <option value="Technology">Technology</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Image URL
-              </label>
-              <input
-                type="url"
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                required
-                placeholder="Enter image URL"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              {previewImage && (
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500 mb-2">Preview:</p>
-                  <img src={previewImage} alt="Preview" className="h-32 object-cover rounded" />
-                </div>
-              )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Image URL
+                </label>
+                <input
+                  type="url"
+                  name="image"
+                  value={formData.image}
+                  onChange={handleChange}
+                  required
+                  placeholder="Enter image URL"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+                {previewImage && (
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500 mb-2">Preview:</p>
+                    <img src={previewImage} alt="Preview" className="h-32 object-cover rounded" />
+                  </div>
+                )}
+              </div>
             </div>
 
             <button
@@ -251,7 +254,7 @@ const BlogManagement = () => {
         </div>
       )}
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="bg-white shadow-md rounded-lg overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>

@@ -111,31 +111,31 @@ export default function ForProductPartners() {
 
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
-        <section aria-labelledby="hero-heading" className="pt-24 pb-16 px-4">
+        <section aria-labelledby="hero-heading" className="pt-20 pb-12 px-4 sm:pt-24 sm:pb-16 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6" role="text">
               <Handshake className="h-4 w-4" aria-hidden="true" />
               <span>For Product Partners</span>
             </div>
-            <h1 id="hero-heading" className="text-5xl font-bold text-gray-900 mb-6">
+            <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Why Partner with <span className="text-green-600">99digicom?</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               We don't just offer a platform — we build partnerships to help your brand thrive in India's digital commerce landscape.
             </p>
           </div>
         </section>
 
         {/* Benefits of Partnering */}
-        <section aria-labelledby="benefits-heading" className="py-16 px-4 bg-white">
+        <section aria-labelledby="benefits-heading" className="py-12 px-4 sm:py-16 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="benefits-heading" className="text-3xl font-bold text-gray-900 mb-4">Benefits of Partnering with Us</h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+            <div className="text-center mb-10 sm:mb-12">
+              <h2 id="benefits-heading" className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Benefits of Partnering with Us</h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-4xl mx-auto">
                 Empower your brand with tools, visibility, and support to succeed.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8" role="list">
               {[
                 {
                   icon: <Globe className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
@@ -184,8 +184,8 @@ export default function ForProductPartners() {
                   role="listitem"
                 >
                   {benefit.icon}
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm">{benefit.description}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2 text-base sm:text-lg">{benefit.title}</h3>
+                  <p className="text-gray-600 text-sm sm:text-base">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -193,15 +193,15 @@ export default function ForProductPartners() {
         </section>
 
         {/* Who Should Partner */}
-        <section aria-labelledby="partner-types-heading" className="py-16 px-4 bg-green-50">
+        <section aria-labelledby="partner-types-heading" className="py-12 px-4 sm:py-16 sm:px-6 lg:px-8 bg-green-50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="partner-types-heading" className="text-3xl font-bold text-gray-900 mb-4">Who Should Partner With Us?</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <div className="text-center mb-10 sm:mb-12">
+              <h2 id="partner-types-heading" className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Who Should Partner With Us?</h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
                 Our services are tailored for brands ready to scale in the digital commerce ecosystem.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
               {[
                 { name: "D2C Brands", desc: "Looking to scale across multiple platforms" },
                 { name: "Manufacturers", desc: "Seeking digital reach and co-branding support" },
@@ -214,24 +214,14 @@ export default function ForProductPartners() {
                   <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2" aria-hidden="true">
                     <ShoppingCart className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{partner.name}</h3>
-                  <p className="text-gray-600 text-sm">{partner.desc}</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">{partner.name}</h3>
+                  <p className="text-gray-600 text-sm sm:text-base">{partner.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
       </main>
-
-      {/* Join Us Button at the end */}
-      <div className="flex justify-center py-12 bg-white">
-        <Link
-          to="/partnerlogin"
-          className="inline-block px-8 py-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold text-lg shadow-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
-        >
-          Join us
-        </Link>
-      </div>
     </>
   );
 }

@@ -1,231 +1,463 @@
-import React from 'react';
+// import React from 'react';
+// import { Helmet } from 'react-helmet';
+
+// const Meesho = () => {
+//   return (
+//     <>
+//       <Helmet>
+//         <title>Meesho Services | 99digicom</title>
+//         <meta name="description" content="Complete Meesho marketplace services including account management, listing optimization, and advertising." />
+//       </Helmet>
+//       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 to-white">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//           <h1 className="text-4xl font-bold text-gray-900 mb-8">Meesho Seller Account Setup Guide</h1>
+
+//           {/* Overview Section */}
+//           <section className="mb-12">
+//             <div className="bg-white rounded-lg shadow-md p-8 mb-6">
+//               <h2 className="text-2xl font-bold text-green-700 mb-2">Overview</h2>
+//               <p className="text-gray-700">
+//                 Meesho empowers sellers with over 100 million users. Offers zero commission fees and social media integration. Steps to register and optimize your store.
+//               </p>
+//             </div>
+//           </section>
+
+//           {/* Requirements Section */}
+//           <section className="mb-12">
+//             <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-lg shadow mb-6">
+//               <h2 className="text-2xl font-bold text-green-700 mb-2">Requirements</h2>
+//               <ul className="list-disc ml-6 text-gray-700 space-y-2">
+//                 <li><b>Active Mobile Number</b></li>
+//                 <li><b>Email Address</b></li>
+//                 <li><b>GSTIN (for taxable products)</b></li>
+//                 <li><b>PAN Card</b></li>
+//                 <li><b>Bank Account</b></li>
+//                 <li><b>Business Details</b></li>
+//                 <li><b>Address Proof</b></li>
+//                 <li><b>Product Information</b></li>
+//                 <li><b>Age Requirement:</b> 18+</li>
+//                 <li><b>Smartphone</b></li>
+//                 <li><b>Trademark Registration (Optional)</b></li>
+//               </ul>
+//             </div>
+//           </section>
+
+//           {/* Step-by-Step Setup Process */}
+//           <section className="mb-12">
+//             <div className="text-center mb-10">
+//               <h2 className="text-2xl font-bold text-gray-900 mb-2">Step-by-Step Setup Process</h2>
+//             </div>
+//             <div className="flex justify-center">
+//               <ol className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl">
+//                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
+//                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">1</span>
+//                   <div>
+//                     <span className="font-semibold text-gray-900">Download the Meesho Supplier App</span>
+//                   </div>
+//                 </li>
+//                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
+//                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">2</span>
+//                   <div>
+//                     <span className="font-semibold text-gray-900">Initiate Registration</span>
+//                   </div>
+//                 </li>
+//                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
+//                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">3</span>
+//                   <div>
+//                     <span className="font-semibold text-gray-900">Enter Business Details</span>
+//                   </div>
+//                 </li>
+//                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
+//                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">4</span>
+//                   <div>
+//                     <span className="font-semibold text-gray-900">Upload Required Documents</span>
+//                   </div>
+//                 </li>
+//                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
+//                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">5</span>
+//                   <div>
+//                     <span className="font-semibold text-gray-900">Complete Verification and Activate Account</span>
+//                   </div>
+//                 </li>
+//                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
+//                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">6</span>
+//                   <div>
+//                     <span className="font-semibold text-gray-900">Set Up Your Store and List Products</span>
+//                   </div>
+//                 </li>
+//                 <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
+//                   <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">7</span>
+//                   <div>
+//                     <span className="font-semibold text-gray-900">Enable Account Security</span>
+//                   </div>
+//                 </li>
+//               </ol>
+//             </div>
+//           </section>
+
+//           {/* Post-Setup Tips Section */}
+//           <section className="mb-12">
+//             <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-lg shadow mb-6">
+//               <h2 className="text-2xl font-bold text-green-700 mb-2">Post-Setup Tips</h2>
+//               <ul className="list-disc ml-6 text-gray-700 space-y-2">
+//                 <li><b>Optimize Product Listings</b></li>
+//                 <li><b>Leverage Social Commerce</b></li>
+//                 <li><b>Manage Orders and Inventory</b></li>
+//                 <li><b>Understand Fees</b></li>
+//                 <li><b>Provide Excellent Customer Service</b></li>
+//                 <li><b>Monitor Performance</b></li>
+//                 <li><b>Avoid Common Issues</b></li>
+//                 <li><b>Use Additional Resources</b></li>
+//               </ul>
+//             </div>
+//           </section>
+
+//           {/* Common Questions Section */}
+//           <section className="mb-12">
+//             <div className="bg-white rounded-lg shadow-md p-8">
+//               <h2 className="text-2xl font-bold text-green-700 mb-4">Common Questions</h2>
+//               <div className="space-y-6">
+//                 <div>
+//                   <span className="font-semibold text-gray-900">Is registration free?</span>
+//                   <p className="text-gray-700">Yes</p>
+//                 </div>
+//                 <div>
+//                   <span className="font-semibold text-gray-900">Is GSTIN mandatory?</span>
+//                   <p className="text-gray-700">Required for taxable products, optional otherwise</p>
+//                 </div>
+//                 <div>
+//                   <span className="font-semibold text-gray-900">How long does verification take?</span>
+//                   <p className="text-gray-700">2-5 business days</p>
+//                 </div>
+//                 <div>
+//                   <span className="font-semibold text-gray-900">Can individuals sell?</span>
+//                   <p className="text-gray-700">Yes</p>
+//                 </div>
+//                 <div>
+//                   <span className="font-semibold text-gray-900">Does Meesho handle logistics?</span>
+//                   <p className="text-gray-700">Yes</p>
+//                 </div>
+//               </div>
+//             </div>
+//           </section>
+
+//           {/* Resources & Notes Section */}
+//           <section className="mb-12">
+//             <div className="bg-green-100 rounded-lg shadow-md p-8">
+//               <h2 className="text-2xl font-bold text-green-700 mb-4">Resources</h2>
+//               <ul className="list-disc ml-6 text-gray-700 space-y-2">
+//                 <li><a href="https://supplier.meesho.com" className="text-green-700 underline" target="_blank" rel="noopener noreferrer">Meesho Supplier Portal</a></li>
+//                 <li>Meesho Supplier App</li>
+//                 <li><a href="mailto:seller@meesho.com" className="text-green-700 underline">Meesho Seller Support</a> or in-app chat</li>
+//                 <li>Third-party resources: Seller Rocket, Unicommerce, ClearTax</li>
+//               </ul>
+//               <h2 className="text-2xl font-bold text-green-700 mt-8 mb-4">Notes</h2>
+//               <ul className="list-disc ml-6 text-gray-700 space-y-2">
+//                 <li>Zero-commission model requires strategic pricing.</li>
+//                 <li>Ideal for social media-savvy sellers.</li>
+//                 <li>Review policies regularly.</li>
+//                 <li>Leverage WhatsApp and social platforms.</li>
+//               </ul>
+//               <p className="text-gray-700 mt-4">By following these steps and leveraging Meesho’s tools, you can build a successful online business. <b>Start your Meesho selling journey today!</b></p>
+//             </div>
+//           </section>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Meesho;
+
+
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, X, ShoppingBag } from 'lucide-react';
 
 const Meesho = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Calculate scroll progress
+      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+      
+      // Show/hide scroll to top button
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <>
       <Helmet>
         <title>Meesho Services | 99digicom</title>
         <meta name="description" content="Complete Meesho marketplace services including account management, listing optimization, and advertising." />
+        <meta name="keywords" content="Meesho seller account, Meesho setup, Meesho marketplace, social commerce, online selling" />
       </Helmet>
+      
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+        <div 
+          className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-300 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        ></div>
+      </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 z-40 animate-bounce-slow"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp size={24} />
+        </button>
+      )}
+
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Meesho Seller Account Setup Guide</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header Section with Logo */}
+          <div className="flex items-center justify-center mb-10">
+            <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
+              <div className="w-16 h-16 bg-green-500 rounded-md flex items-center justify-center mr-4">
+                <ShoppingBag className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Meesho Seller Account Setup</h1>
+                <p className="text-green-600">Your Gateway to India's Social Commerce Platform</p>
+              </div>
+            </div>
+          </div>
 
           {/* Overview Section */}
           <section className="mb-12">
-            <div className="bg-white rounded-lg shadow-md p-8 mb-6">
-              <h2 className="text-2xl font-bold text-green-700 mb-2">Overview</h2>
-              <p className="text-gray-700">
-                Meesho is a popular e-commerce platform in India that empowers sellers, including individuals and small businesses, to sell products through its app and social media channels like WhatsApp, Facebook, and Instagram. With over 100 million monthly active users, Meesho offers zero commission fees and a user-friendly interface, making it ideal for new sellers. This guide provides a step-by-step process to register as a Meesho seller, set up your account, and optimize your store for success.
-              </p>
+            <div className="bg-white rounded-lg shadow-md p-8 mb-6 border-l-4 border-green-500 transform hover:scale-105 transition-transform duration-300">
+              <div className="flex items-start">
+                <div className="mr-6">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <HelpCircle className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-green-700 mb-2">Overview</h2>
+                  <p className="text-gray-700">
+                    Meesho empowers sellers with over 100 million users. Offers zero commission fees and social media integration. Our comprehensive guide walks you through every step of registering and optimizing your store on India's leading social commerce platform.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
 
           {/* Requirements Section */}
           <section className="mb-12">
-            <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-lg shadow mb-6">
-              <h2 className="text-2xl font-bold text-green-700 mb-2">Requirements</h2>
-              <p className="text-gray-700 mb-4">Before starting, ensure you have the following:</p>
-              <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                <li><b>Active Mobile Number:</b> A 10-digit Indian mobile number for OTP verification and account management.</li>
-                <li><b>Email Address:</b> A valid email for communication and account verification.</li>
-                <li><b>GSTIN:</b> Mandatory for selling taxable products. Not required for GST-exempt products (e.g., books, certain handicrafts) or if you’re a reseller sourcing from Meesho’s catalog.</li>
-                <li><b>PAN Card:</b> Personal or business PAN for tax compliance and identity verification.</li>
-                <li><b>Bank Account:</b> A current or savings account in the name of the individual or business for receiving payments. Include account number, IFSC code, and a canceled cheque or bank statement.</li>
-                <li><b>Business Details:</b> Business name, address, and type (e.g., sole proprietorship, partnership, private limited company). Individuals can register without a formal business.</li>
-                <li><b>Address Proof:</b> Utility bill, Aadhaar card, or lease agreement for the business or pickup address.</li>
-                <li><b>Product Information:</b> If not reselling Meesho’s catalog, have details for at least one product (description, high-quality images, pricing) in categories like fashion, home, electronics, or beauty.</li>
-                <li><b>Age Requirement:</b> Seller must be at least 18 years old.</li>
-                <li><b>Smartphone:</b> Required to download the Meesho Supplier App for account setup and management.</li>
-                <li><b>Trademark Registration (Optional):</b> Needed if selling your own branded products.</li>
-              </ul>
+            <div className="bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 p-8 rounded-lg shadow-lg mb-6 transform hover:shadow-xl transition-all duration-300">
+              <div className="flex items-start mb-4">
+                <div className="mr-6">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                    <Check className="h-6 w-6 text-white" />
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-green-700 mb-2">Requirements</h2>
+                  <p className="text-gray-700 mb-4">To create a Meesho Seller account, you'll need the following:</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <ShoppingBag className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">Active Mobile Number</span>
+                </div>
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <User className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">Email Address</span>
+                </div>
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <CreditCard className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">GSTIN (for taxable products)</span>
+                </div>
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <User className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">PAN Card</span>
+                </div>
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <CreditCard className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">Bank Account</span>
+                </div>
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <Building className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">Business Details</span>
+                </div>
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <Package className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">Address Proof</span>
+                </div>
+                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <ShoppingBag className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-800">Product Information</span>
+                </div>
+              </div>
+              
+              <div className="mt-4 text-center">
+                <a 
+                  href="https://supplier.meesho.com" 
+                  className="inline-flex items-center text-green-700 hover:text-green-900 font-medium transition-colors"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  Visit Meesho Supplier Portal
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </a>
+              </div>
             </div>
           </section>
 
           {/* Step-by-Step Setup Process */}
           <section className="mb-12">
             <div className="text-center mb-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Step-by-Step Setup Process</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 relative inline-block">
+                Step-by-Step Setup Process
+                <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-green-500 rounded-full"></span>
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">Follow these steps to create your Meesho Seller account quickly and easily</p>
             </div>
-            <div className="flex justify-center">
-              <ol className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl">
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">1</span>
-                  <div>
-                    <span className="font-semibold text-gray-900">Download the Meesho Supplier App</span>
-                    <p className="text-gray-600">Download the Meesho Supplier App from the Google Play Store or iOS App Store. Alternatively, visit <a href="https://supplier.meesho.com" className="text-green-600 underline" target="_blank" rel="noopener noreferrer">supplier.meesho.com</a> to initiate registration, but the app is recommended for ease of use.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { step: 1, title: "Download the Meesho Supplier App", details: "Available on Google Play Store and iOS App Store" },
+                { step: 2, title: "Initiate Registration", details: "Open the app and tap on 'Register'" },
+                { step: 3, title: "Enter Business Information", details: "Provide company details and contact information" },
+                { step: 4, title: "Upload Required Documents", details: "PAN card, GST certificate, and business proof" },
+                { step: 5, title: "Complete Verification", details: "Document verification typically takes 2-5 days" },
+                { step: 6, title: "Set Up Your Store", details: "Add store details, logo, and policies" },
+                { step: 7, title: "Enable Account Security", details: "Set up two-factor authentication" },
+                { step: 8, title: "Start Listing Products", details: "Add products and set competitive pricing" }
+              ].map((step, index) => (
+                <div 
+                  key={index} 
+                  className="bg-white rounded-2xl shadow-lg p-6 flex items-start transform hover:scale-105 transition-transform duration-300 hover:shadow-xl"
+                >
+                  <div className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold mr-4">
+                    {step.step}
                   </div>
-                </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">2</span>
                   <div>
-                    <span className="font-semibold text-gray-900">Initiate Registration</span>
-                    <ul className="list-disc ml-6 text-gray-600">
-                      <li>Open the Meesho Supplier App and click “Start Selling” or “Register Now.”</li>
-                      <li>Enter your 10-digit mobile number and verify it with the OTP sent to your phone.</li>
-                      <li>Provide your email address and verify it via the OTP sent to your email. This ensures secure communication.</li>
-                    </ul>
+                    <h3 className="font-semibold text-lg text-gray-900 mb-1">{step.title}</h3>
+                    <p className="text-gray-600">{step.details}</p>
                   </div>
-                </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">3</span>
-                  <div>
-                    <span className="font-semibold text-gray-900">Enter Business Details</span>
-                    <ul className="list-disc ml-6 text-gray-600">
-                      <li>Business Name: Use your legal business name or personal name for individuals.</li>
-                      <li>Business Type: Select Sole Proprietorship, Partnership, Private Limited Company, LLP, or “Individual” if not a registered business.</li>
-                      <li>GSTIN: Enter your GST number for taxable products. If exempt, select the appropriate option.</li>
-                      <li>PAN Number: Provide your personal or business PAN.</li>
-                      <li>Pickup Address: Enter a valid address for product pickups by Meesho’s logistics partners.</li>
-                      <li>Bank Details: Submit account number, IFSC code, and bank name for payments.</li>
-                      <li>For non-individual businesses, include additional details like Corporate Identification Number (CIN) if applicable.</li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">4</span>
-                  <div>
-                    <span className="font-semibold text-gray-900">Upload Required Documents</span>
-                    <ul className="list-disc ml-6 text-gray-600">
-                      <li>PAN Card</li>
-                      <li>GST Certificate (if applicable)</li>
-                      <li>Canceled cheque or bank statement</li>
-                      <li>Address proof (e.g., Aadhaar card, utility bill, lease agreement)</li>
-                      <li>Business registration documents (e.g., Certificate of Incorporation, Partnership Deed) for non-individual entities</li>
-                    </ul>
-                    <p className="text-gray-600 mt-1">Ensure documents match the provided details to avoid verification delays. File sizes should be within 2-5 MB. Meesho’s team reviews documents within 2-5 business days. Check your email or app notifications for approval status or requests for additional documents.</p>
-                  </div>
-                </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">5</span>
-                  <div>
-                    <span className="font-semibold text-gray-900">Complete Verification and Activate Account</span>
-                    <ul className="list-disc ml-6 text-gray-600">
-                      <li>After document verification, Meesho approves your account. You’ll receive a confirmation email or app notification with login credentials.</li>
-                      <li>Log in to the Meesho Supplier App or supplier.meesho.com using your mobile number or email and password.</li>
-                      <li>Agree to Meesho’s Terms of Use and Seller Policies to activate your account.</li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">6</span>
-                  <div>
-                    <span className="font-semibold text-gray-900">Set Up Your Store and List Products</span>
-                    <ul className="list-disc ml-6 text-gray-600">
-                      <li>Access the Seller Dashboard in the Meesho Supplier App to configure your store: add a business logo and a brief description to enhance buyer trust.</li>
-                      <li>Select product categories (e.g., fashion, home decor, electronics) that align with your offerings.</li>
-                      <li>Configure payment settings (bank transfers) and shipping preferences. Meesho’s logistics handle deliveries, but you can set pricing to cover shipping costs.</li>
-                    </ul>
-                    <p className="text-gray-600 mt-1">Add products via the “Products” section:</p>
-                    <ul className="list-disc ml-6 text-gray-600">
-                      <li><b>Option 1: Resell Meesho’s Catalog:</b> Browse Meesho’s supplier catalog and select products to resell. No inventory is needed; Meesho sources products directly. Add your margin to the base price to set the selling price.</li>
-                      <li><b>Option 2: List Your Own Products:</b> Title: Use descriptive, keyword-rich titles (e.g., “Cotton Printed Kurti, Size M, Blue”). Description: Include features, specifications, and benefits in bullet points. Images: Upload high-resolution images (clear, well-lit, multiple angles) per Meesho’s guidelines (minimum 800x800 pixels). Pricing: Set competitive prices, factoring in Meesho’s zero-commission model and shipping costs.</li>
-                    </ul>
-                    <p className="text-gray-600 mt-1">Save and publish listings. Listings typically go live within 24-48 hours after approval. Meesho requires at least one active listing to fully activate your seller account.</p>
-                  </div>
-                </li>
-                <li className="bg-white rounded-lg shadow-md p-6 flex items-start">
-                  <span className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-green-100 text-green-700 font-bold mr-4">7</span>
-                  <div>
-                    <span className="font-semibold text-gray-900">Enable Account Security</span>
-                    <ul className="list-disc ml-6 text-gray-600">
-                      <li>Set a strong password (mix of letters, numbers, symbols) and enable two-factor authentication in the app settings for enhanced security.</li>
-                      <li>Regularly monitor your account for unauthorized activity.</li>
-                    </ul>
-                  </div>
-                </li>
-              </ol>
+                </div>
+              ))}
             </div>
           </section>
 
           {/* Post-Setup Tips Section */}
           <section className="mb-12">
-            <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-lg shadow mb-6">
-              <h2 className="text-2xl font-bold text-green-700 mb-2">Post-Setup Tips</h2>
-              <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                <li><b>Optimize Product Listings:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Use SEO-friendly keywords (e.g., “Meesho sarees,” “budget kurtis”) to improve visibility in search results.</li>
-                    <li>Ensure high-quality images and accurate descriptions to attract buyers.</li>
-                    <li>Update pricing and stock regularly to stay competitive, using Meesho’s analytics tools.</li>
-                  </ul>
-                </li>
-                <li><b>Leverage Social Commerce:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Share product listings on WhatsApp, Facebook, Instagram, and other platforms to reach customers directly.</li>
-                    <li>Use Meesho’s sharing tools to create quick links for social media promotion.</li>
-                  </ul>
-                </li>
-                <li><b>Manage Orders and Inventory:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Track orders, shipments, and returns via the Meesho Supplier App or Seller Dashboard.</li>
-                    <li>For resellers, Meesho handles inventory; for own products, maintain stock to avoid order cancellations.</li>
-                    <li>Meesho’s logistics partners (e.g., Delhivery, Ecom Express) handle pickups and deliveries.</li>
-                  </ul>
-                </li>
-                <li><b>Understand Fees:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Commission Fee: Meesho charges 0% commission, making it cost-effective for sellers.</li>
-                    <li>Shipping Fees: Based on package weight, dimensions, and delivery location. Include in pricing or list separately.</li>
-                    <li>Payment Gateway Charges: Minimal fees for COD or prepaid transactions.</li>
-                    <li>Payments are credited to your bank account weekly (typically every 7 days) after order delivery.</li>
-                  </ul>
-                </li>
-                <li><b>Provide Excellent Customer Service:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Respond to customer inquiries within hours via the app or social media to build trust.</li>
-                    <li>Handle returns promptly per Meesho’s 7-day easy return policy to maintain high ratings.</li>
-                  </ul>
-                </li>
-                <li><b>Monitor Performance:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Check the Seller Dashboard for metrics like order fulfillment rate, customer feedback, and cancellation rates.</li>
-                    <li>Maintain high performance to avoid penalties or account suspension.</li>
-                  </ul>
-                </li>
-                <li><b>Avoid Common Issues:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Ensure document accuracy to prevent verification delays.</li>
-                    <li>Avoid listing prohibited items (e.g., hazardous goods, counterfeit products) per Meesho’s policies.</li>
-                    <li>Contact Meesho Seller Support at <a href="mailto:seller@meesho.com" className="text-green-700 underline">seller@meesho.com</a> or via the app’s help section for issues with registration, listings, or payments.</li>
-                  </ul>
-                </li>
-                <li><b>Use Additional Resources:</b>
-                  <ul className="list-disc ml-6">
-                    <li>Access Meesho’s Seller Education Hub for webinars, tutorials, and tips on social selling.</li>
-                    <li>Consider third-party tools like Seller Rocket or Unicommerce for inventory management, product photography, or analytics.</li>
-                  </ul>
-                </li>
-              </ul>
+            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-8 mb-6">
+              <div className="flex items-start mb-4">
+                <div className="mr-6">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                    <Check className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-2">Post-Setup Tips</h2>
+                  <p className="text-green-100">Maximize your Meesho selling experience with these expert recommendations</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <h3 className="font-semibold text-white mb-2">Optimize Product Listings</h3>
+                  <p className="text-green-100 text-sm">Use high-quality images, compelling titles, and relevant keywords</p>
+                </div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <h3 className="font-semibold text-white mb-2">Leverage Social Commerce</h3>
+                  <p className="text-green-100 text-sm">Integrate with WhatsApp and other social platforms</p>
+                </div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <h3 className="font-semibold text-white mb-2">Manage Orders and Inventory</h3>
+                  <p className="text-green-100 text-sm">Use Meesho's tools to track and fulfill orders efficiently</p>
+                </div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <h3 className="font-semibold text-white mb-2">Understand Fees</h3>
+                  <p className="text-green-100 text-sm">Zero-commission model requires strategic pricing</p>
+                </div>
+              </div>
             </div>
           </section>
 
           {/* Common Questions Section */}
           <section className="mb-12">
-            <div className="bg-white rounded-lg shadow-md p-8">
-              <h2 className="text-2xl font-bold text-green-700 mb-4">Common Questions</h2>
+            <div className="bg-white rounded-lg shadow-md p-8 border-t-4 border-green-500">
+              <div className="flex items-center mb-6">
+                <div className="mr-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <HelpCircle className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+                <h2 className="text-2xl font-bold text-green-700">Common Questions</h2>
+              </div>
+              
               <div className="space-y-6">
-                <div>
-                  <span className="font-semibold text-gray-900">Is registration free?</span>
-                  <p className="text-gray-700">Yes, Meesho charges no registration or listing fees. Costs apply only for shipping and payment gateway charges.</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Is GSTIN mandatory?</span>
-                  <p className="text-gray-700">Required for taxable products but optional for GST-exempt products or resellers using Meesho’s catalog.</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">How long does verification take?</span>
-                  <p className="text-gray-700">Typically 2-5 business days, depending on document accuracy.</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Can individuals sell?</span>
-                  <p className="text-gray-700">Yes, individuals can register without a formal business, making Meesho ideal for home-based sellers.</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-900">Does Meesho handle logistics?</span>
-                  <p className="text-gray-700">Yes, Meesho’s logistics partners manage pickups and deliveries, simplifying the process for sellers.</p>
-                </div>
+                {[
+                  { 
+                    question: "Is registration free?", 
+                    answer: "Yes, registration is completely free." 
+                  },
+                  { 
+                    question: "Is GSTIN mandatory?", 
+                    answer: "Required for taxable products, optional otherwise." 
+                  },
+                  { 
+                    question: "How long does verification take?", 
+                    answer: "2-5 business days for document verification." 
+                  },
+                  { 
+                    question: "Can individuals sell?", 
+                    answer: "Yes, both individuals and businesses can sell." 
+                  },
+                  { 
+                    question: "Does Meesho handle logistics?", 
+                    answer: "Yes, Meesho offers integrated logistics solutions." 
+                  }
+                ].map((item, index) => (
+                  <div key={index} className="bg-gray-50 rounded-lg p-4 transform hover:bg-gray-100 transition-colors duration-300">
+                    <h3 className="font-semibold text-gray-900 mb-2">{item.question}</h3>
+                    <p className="text-gray-700">{item.answer}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
@@ -236,24 +468,32 @@ const Meesho = () => {
               <h2 className="text-2xl font-bold text-green-700 mb-4">Resources</h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
                 <li><a href="https://supplier.meesho.com" className="text-green-700 underline" target="_blank" rel="noopener noreferrer">Meesho Supplier Portal</a></li>
-                <li>Meesho Supplier App for iOS and Android</li>
-                <li><a href="mailto:seller@meesho.com" className="text-green-700 underline">Meesho Seller Support: seller@meesho.com</a> or in-app chat</li>
-                <li>Third-party resources: Seller Rocket, Unicommerce, or ClearTax for additional support</li>
+                <li>Meesho Supplier App</li>
+                <li><a href="mailto:seller@meesho.com" className="text-green-700 underline" target="_blank" rel="noopener noreferrer">Meesho Seller Support</a> or in-app chat</li>
+                <li>Third-party resources: Seller Rocket, Unicommerce, ClearTax</li>
               </ul>
               <h2 className="text-2xl font-bold text-green-700 mt-8 mb-4">Notes</h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                <li>Meesho’s zero-commission model is a major advantage, but shipping costs and competition require strategic pricing.</li>
-                <li>The platform’s social commerce focus makes it ideal for sellers with strong social media networks.</li>
-                <li>Regularly review Meesho’s policies to stay compliant and maximize sales opportunities.</li>
-                <li>Meesho’s integration with WhatsApp and social platforms allows sellers to reach customers directly, boosting conversion rates.</li>
+                <li>Zero-commission model requires strategic pricing.</li>
+                <li>Ideal for social media-savvy sellers.</li>
+                <li>Review policies regularly.</li>
+                <li>Leverage WhatsApp and social platforms.</li>
               </ul>
-              <p className="text-gray-700 mt-4">By following these steps and leveraging Meesho’s tools, you can build a successful online business, whether reselling or selling your own products. <b>Start your Meesho selling journey today!</b></p>
+              <p className="text-gray-700 mt-4">By following these steps and leveraging Meesho's tools, you can build a successful online business. <b>Start your Meesho selling journey today!</b></p>
             </div>
           </section>
+
+          {/* Call to Action */}
+          <div className="text-center mt-12 mb-8">
+            <div className="inline-block bg-gradient-to-r from-green-600 to-green-700 text-white font-bold text-xl py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl">
+              Ready to Start Selling on Meesho?
+            </div>
+            <p className="mt-4 text-gray-600">Our team of Meesho experts can help you set up and optimize your account</p>
+          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default Meesho; 
+export default Meesho;

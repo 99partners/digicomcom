@@ -43,8 +43,8 @@ const MyApplications = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">My Applications</h1>
+    <div className="max-w-5xl mx-auto px-2 sm:px-4 py-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-center sm:text-left">My Applications</h1>
       
       {applications.length === 0 ? (
         <div className="text-center py-12">
@@ -59,19 +59,19 @@ const MyApplications = () => {
       ) : (
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 text-sm">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-3 sm:px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                     Service Type
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-3 sm:px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-3 sm:px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                     Description
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-3 sm:px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                     Submitted On
                   </th>
                 </tr>
@@ -79,23 +79,23 @@ const MyApplications = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {applications.map((app) => (
                   <tr key={app._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                      <div className="font-medium text-gray-900">
                         {app.serviceType}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                       <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(app.status)}`}>
                         {app.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900">
+                    <td className="px-3 sm:px-6 py-4">
+                      <div className="text-gray-900">
                         {app.description}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
+                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                      <div className="text-gray-500">
                         {new Date(app.createdAt).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'short',
@@ -114,4 +114,4 @@ const MyApplications = () => {
   );
 };
 
-export default MyApplications; 
+export default MyApplications;

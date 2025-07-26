@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
-import { Calendar, ArrowLeft, Tag } from "lucide-react"
+import { Calendar, ArrowLeft } from "lucide-react"
 import axios from "axios"
 import { getApiUrl } from '../config/api.config'
 import SEO from '../components/SEO';
@@ -98,9 +98,8 @@ const BlogDetails = () => {
             <Link
               to="/resources/blogs"
               className="inline-flex items-center text-green-600 hover:text-green-800 font-medium mb-8"
-              aria-label="Back to blogs list"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
+              <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Blogs
             </Link>
 
@@ -118,7 +117,7 @@ const BlogDetails = () => {
                 {blog.category}
               </span>
               <div className="flex items-center text-sm text-gray-600">
-                <Calendar className="h-4 w-4 text-green-600 mr-1" aria-hidden="true" />
+                <Calendar className="h-4 w-4 text-green-600 mr-1" />
                 <time dateTime={blog.createdAt}>{new Date(blog.createdAt).toLocaleDateString()}</time>
                 <span className="mx-2">•</span>
                 <span>{blog.readTime}</span>
@@ -153,16 +152,14 @@ const BlogDetails = () => {
 
         {/* Related Blogs Section */}
         {relatedBlogs.length > 0 && (
-          <section className="py-16 px-4 bg-white" aria-labelledby="related-posts">
+          <section className="py-16 px-4 bg-white">
             <div className="max-w-7xl mx-auto">
-              <h2 id="related-posts" className="text-3xl font-bold text-gray-900 mb-8 text-center">More Articles</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">More Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {relatedBlogs.map((relatedBlog) => (
                   <article
                     key={relatedBlog._id}
                     className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6"
-                    itemScope
-                    itemType="http://schema.org/BlogPosting"
                   >
                     <div className="relative">
                       <img
@@ -170,7 +167,6 @@ const BlogDetails = () => {
                         alt={relatedBlog.title}
                         className="w-full h-48 object-cover rounded-lg"
                         loading="lazy"
-                        itemProp="image"
                       />
                       <div className="absolute top-4 left-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(relatedBlog.category)}`}>
@@ -180,26 +176,25 @@ const BlogDetails = () => {
                     </div>
                     <div className="p-6">
                       <div className="flex items-center text-sm text-gray-600 mb-3">
-                        <Calendar className="h-4 w-4 text-green-600 mr-1" aria-hidden="true" />
-                        <time itemProp="datePublished" dateTime={relatedBlog.createdAt}>
+                        <Calendar className="h-4 w-4 text-green-600 mr-1" />
+                        <time dateTime={relatedBlog.createdAt}>
                           {new Date(relatedBlog.createdAt).toLocaleDateString()}
                         </time>
                         <span className="mx-2">•</span>
                         <span>{relatedBlog.readTime}</span>
                       </div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3" itemProp="headline">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
                         {relatedBlog.title}
                       </h3>
-                      <p className="text-gray-600 text-sm mb-4" itemProp="description">
+                      <p className="text-gray-600 text-sm mb-4">
                         {relatedBlog.excerpt}
                       </p>
                       <Link
                         to={`/resources/blogs/${relatedBlog._id}`}
                         className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
-                        aria-label={`Read more about ${relatedBlog.title}`}
                       >
                         Read More
-                        <ArrowLeft className="ml-1 h-4 w-4 rotate-180" aria-hidden="true" />
+                        <ArrowLeft className="ml-1 h-4 w-4 rotate-180" />
                       </Link>
                     </div>
                   </article>
@@ -213,4 +208,4 @@ const BlogDetails = () => {
   );
 };
 
-export default BlogDetails; 
+export default BlogDetails;
