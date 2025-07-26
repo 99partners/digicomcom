@@ -143,84 +143,88 @@ const DashboardLayout = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation */}
-      <nav className="bg-white shadow-sm fixed w-full z-20 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <button
-                onClick={toggleSidebar}
-                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 mr-1 -ml-2 sm:-ml-4 lg:ml-0"
-                aria-label="Toggle sidebar"
-              >
-                {sidebarCollapsed || sidebarOpenMobile ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
-              </button>
-              <button
-                onClick={() => navigate(-1)}
-                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 mr-2"
-                title="Go Back"
-                aria-label="Go Back"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
-              <img src={logo} alt="Logo" className="h-8 w-auto" />
-              <span className="ml-2 sm:ml-3 text-lg sm:text-xl font-semibold text-gray-900">Partner Portal</span>
+<nav className="bg-white shadow-sm fixed w-full z-20 border-b border-gray-200">
+  <div className="w-full px-4 sm:px-6 lg:px-8">
+    <div className="flex justify-between items-center h-16">
+      {/* Left: Logo and Navigation Buttons */}
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={toggleSidebar}
+          className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+          aria-label="Toggle sidebar"
+        >
+          {sidebarCollapsed || sidebarOpenMobile ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
+        </button>
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+          title="Go Back"
+          aria-label="Go Back"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <img src={logo} alt="Logo" className="h-8 w-auto" />
+        <span className="ml-2 sm:ml-3 text-lg sm:text-xl font-semibold text-gray-900">Partner Portal</span>
+      </div>
+
+      {/* Right: Notifications and Profile */}
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        <button 
+          onClick={() => navigate('/dashboard/notifications')}
+          className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+          aria-label="Notifications"
+        >
+          <Bell className="w-5 h-5" />
+        </button>
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+            className="flex items-center space-x-2 sm:space-x-3 text-gray-700 hover:text-gray-900 focus:outline-none p-2 rounded-lg hover:bg-gray-100"
+            aria-label="Profile menu"
+          >
+            <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+              <span className="text-sm font-bold text-white">
+                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+              </span>
             </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <button 
-                onClick={() => navigate('/dashboard/notifications')}
-                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
-                aria-label="Notifications"
-              >
-                <Bell className="w-5 h-5" />
-              </button>
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                  className="flex items-center space-x-2 sm:space-x-3 text-gray-700 hover:text-gray-900 focus:outline-none p-2 rounded-lg hover:bg-gray-100"
-                  aria-label="Profile menu"
-                >
-                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                    <span className="text-sm font-bold text-white">
-                      {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                    </span>
-                  </div>
-                  <span className="hidden md:block font-bold">{user?.name}</span>
-                </button>
-                {showProfileDropdown && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 ring-1 ring-black ring-opacity-5 z-50">
-                    <div className="px-4 py-3 border-b border-gray-100">
-                      <div className="font-bold text-gray-900">{user?.name}</div>
-                      <div className="text-sm font-medium text-gray-600">{user?.email}</div>
-                    </div>
-                    <button
-                      onClick={() => handleNavigation('/dashboard/profile')}
-                      className="w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 flex items-center"
-                    >
-                      <User className="w-4 h-4 mr-3" />
-                      View profile
-                    </button>
-                    <button
-                      onClick={() => handleNavigation('/dashboard/settings')}
-                      className="w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 flex items-center"
-                    >
-                      <Settings className="w-4 h-4 mr-3" />
-                      Settings
-                    </button>
-                    <div className="border-t border-gray-100 my-1"></div>
-                    <button
-                      onClick={onLogout}
-                      className="w-full text-left px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center"
-                    >
-                      <LogOut className="w-4 h-4 mr-3" />
-                      Sign Out
-                    </button>
-                  </div>
-                )}
+            <span className="hidden md:block font-bold">{user?.name}</span>
+          </button>
+          {showProfileDropdown && (
+            <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 ring-1 ring-black ring-opacity-5 z-50">
+              <div className="px-4 py-3 border-b border-gray-100">
+                <div className="font-bold text-gray-900">{user?.name}</div>
+                <div className="text-sm font-medium text-gray-600">{user?.email}</div>
               </div>
+              <button
+                onClick={() => handleNavigation('/dashboard/profile')}
+                className="w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 flex items-center"
+              >
+                <User className="w-4 h-4 mr-3" />
+                View profile
+              </button>
+              <button
+                onClick={() => handleNavigation('/dashboard/settings')}
+                className="w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 flex items-center"
+              >
+                <Settings className="w-4 h-4 mr-3" />
+                Settings
+              </button>
+              <div className="border-t border-gray-100 my-1"></div>
+              <button
+                onClick={onLogout}
+                className="w-full text-left px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center"
+              >
+                <LogOut className="w-4 h-4 mr-3" />
+                Sign Out
+              </button>
             </div>
-          </div>
+          )}
         </div>
-      </nav>
+      </div>
+    </div>
+  </div>
+</nav>
+
 
       {/* Sidebar and Main Content */}
       <div className="flex pt-16">
