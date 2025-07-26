@@ -222,16 +222,6 @@ export default function ForProductPartners() {
           </div>
         </section>
       </main>
-
-      {/* Join Us Button at the end */}
-      <div className="flex justify-center py-8 sm:py-12 bg-white px-4">
-        <Link
-          to="/partnerlogin"
-          className="inline-block px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold text-base sm:text-lg shadow-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
-        >
-          Join us
-        </Link>
-      </div>
     </>
   );
 }
