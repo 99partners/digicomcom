@@ -276,72 +276,78 @@ const Home = () => {
         </section>
         {/* Core Services Section */}
         <section
-          className="py-16 bg-green-50"
-          aria-labelledby="services-heading"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2
-              id="services-heading"
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 text-center"
+  className="py-16 bg-green-50"
+  aria-labelledby="services-heading"
+>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2
+      id="services-heading"
+      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 text-center"
+    >
+      Our Core Services
+    </h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {coreServices.map((service, idx) => {
+        const Icon = service.icon;
+        const [isFlipped, setIsFlipped] = useState(false);
+        
+        const handleMouseEnter = () => {
+          setIsFlipped(true);
+        };
+        
+        const handleMouseLeave = () => {
+          setIsFlipped(false);
+        };
+        
+        const handleClick = () => {
+          // Add any click functionality here
+          console.log(`Clicked on ${service.title}`);
+        };
+        
+        return (
+          <div
+            key={idx}
+            className="relative group h-80 perspective cursor-pointer"
+            role="article"
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div
+              className={`relative w-full h-full transition-transform duration-700 ease-in-out transform-style-preserve-3d ${
+                isFlipped ? 'rotate-y-180' : 'rotate-y-0'
+              }`}
             >
-              Our Core Services
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {coreServices.map((service, idx) => {
-                const Icon = service.icon;
-                const [isFlipped, setIsFlipped] = useState(false);
-                const handleMouseEnter = () => {
-                  setIsFlipped(true);
-                };
-                const handleClick = () => {
-                  setIsFlipped(false);
-                };
-                return (
-                  <div
-                    key={idx}
-                    className="relative group h-80 perspective cursor-pointer"
-                    role="article"
-                    onClick={handleClick}
-                    onMouseEnter={handleMouseEnter}
-                  >
-                    <div
-                      className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d"
-                      style={{
-                        transform: isFlipped
-                          ? "rotateY(180deg)"
-                          : "rotateY(0deg)",
-                      }}
-                    >
-                      {/* Front Side */}
-                      <div className="absolute w-full h-full backface-hidden bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden">
-                        <div className="flex flex-col items-center justify-center h-full px-6 py-8 gap-4 bg-gradient-to-br from-white via-gray-50 to-green-50 hover:from-green-50 hover:to-white transition-all duration-300">
-                          <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center shadow transition hover:bg-green-200 transform hover:scale-110">
-                            <Icon
-                              className="h-6 w-6 text-green-600"
-                              aria-hidden="true"
-                            />
-                          </div>
-                          <h3 className="text-xl font-semibold text-gray-900">
-                            {service.title}
-                          </h3>
-                          <p className="text-sm text-gray-600 text-center">
-                            {service.frontText}
-                          </p>
-                        </div>
-                      </div>
-                      {/* Back Side */}
-                      <div className="absolute w-full h-full backface-hidden bg-white text-gray-800 rounded-xl shadow-xl rotate-y-180 flex items-center justify-center p-6 border">
-                        <p className="text-sm sm:text-base text-center leading-relaxed">
-                          {service.backText}
-                        </p>
-                      </div>
-                    </div>
+              {/* Front Side */}
+              <div className="absolute w-full h-full backface-hidden bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-xl">
+                <div className="flex flex-col items-center justify-center h-full px-6 py-8 gap-4 bg-gradient-to-br from-white via-gray-50 to-green-50 hover:from-green-50 hover:to-white">
+                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-110 hover:bg-green-200 animate-float">
+                    <Icon
+                      className="h-8 w-8 text-green-600"
+                      aria-hidden="true"
+                    />
                   </div>
-                );
-              })}
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 text-center">
+                    {service.frontText}
+                  </p>
+                </div>
+              </div>
+              {/* Back Side */}
+              <div className="absolute w-full h-full backface-hidden bg-white text-gray-800 rounded-xl shadow-lg rotate-y-180 flex flex-col items-center justify-center p-6 border border-green-200 transition-all duration-300 hover:shadow-xl">
+                <p className="text-sm sm:text-base text-center leading-relaxed">
+                  {service.backText}
+                </p>
+              </div>
             </div>
           </div>
-        </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
         {/* Benefits Section */}
         <section className="py-12 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -485,9 +485,7 @@ export default function AccountManagementServices() {
                       <div className="mt-8 flex justify-center">
                         <button
                           onClick={() =>
-                            alert(
-                              `Learn more about ${marketplaces[activeMarketplace].name}`
-                            )
+                            navigate(marketplaces[activeMarketplace].href)
                           }
                           className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
                         >
