@@ -12,14 +12,14 @@ import {
   ShoppingCart,
   CheckCircle,
 } from "lucide-react";
-import axios from 'axios';
-import { getApiUrl } from '../config/api.config';
-import SEO from '../components/SEO';
-import ImageSlider from '../components/ImageSlider';
-import AMS1 from '../assets/AMS1.png';
-import AMS2 from '../assets/AMS2.png'; 
-import AMS3 from '../assets/AMS3.png';
-import AMS4 from '../assets/AMS4.png';
+import axios from "axios";
+import { getApiUrl } from "../config/api.config";
+import SEO from "../components/SEO";
+import ImageSlider from "../components/ImageSlider";
+import AMS1 from "../assets/AMS1.png";
+import AMS2 from "../assets/AMS2.png";
+import AMS3 from "../assets/AMS3.png";
+import AMS4 from "../assets/AMS4.png";
 // Add these imports for marketplace logos
 import amazonLogo from "../assets/Amazon.png";
 import flipkartLogo from "../assets/Flipkart.png";
@@ -81,109 +81,99 @@ export default function AccountManagementServices() {
       logo: amazonLogo,
       href: "/partners/marketplaces/amazon",
       services: [
-        "Account Management",
-        "Brand Store",
-        "Listing and Cataloging",
-        "A+ Listing",
-        "Advertising",
-        "Glowroad Account Management",
+        "Inventory and order management",
+        "Performance metrics tracking (A+ content, reviews, sales)",
+        "Account health monitoring and suspension management",
       ],
-      category: "ecommerce"
+      category: "ecommerce",
     },
     flipkart: {
       name: "Flipkart",
       logo: flipkartLogo,
       href: "/partners/marketplaces/flipkart",
       services: [
-        "Account Management",
-        "Shopsy Integration",
-        "Listing and Cataloging",
-        "Advertising",
+        "Flipkart seller registration & tax setup",
+        "Product upload with Flipkart-specific attributes",
+        "Flipkart SmartBuy program support",
       ],
-      category: "ecommerce"
-    },
-    ondc: {
-      name: "ONDC",
-      logo: ondcLogo,
-      href: "/partners/marketplaces/ondc",
-      services: [
-        "Account Management",
-        "Listing and Cataloging",
-        "Network Integration",
-      ],
-      category: "ecommerce"
+      category: "ecommerce",
     },
     jiomart: {
       name: "JioMart",
       logo: jiomartLogo,
       href: "/partners/marketplaces/jiomart",
-      services: ["Account Management", "Listing and Cataloging", "Advertising"],
-      category: "quick-commerce"
+      services: [
+        "Regular inventory updates & stock tracking",
+        "Order processing and return management",
+        "Managing promotional listings and offers",
+      ],
+      category: "quick-commerce",
     },
     meesho: {
       name: "Meesho",
       logo: meeshoLogo,
       href: "/partners/marketplaces/meesho",
-      services: ["Account Management", "Listing and Cataloging", "Advertising"],
-      category: "ecommerce"
+      services: [
+        "Inventory & order management for resellers and brands",
+        "Handling Meesho's discounting policies and pricing",
+        "Return and refund management through Meesho's system",
+      ],
+      category: "ecommerce",
     },
     snapdeal: {
       name: "Snapdeal",
       logo: snapdealLogo,
       href: "/partners/marketplaces/snapdeal",
       services: [
-        "Account Management",
-        "Catalog Management",
-        "Order Processing",
-        "Performance Marketing",
-        "Analytics & Reporting",
-        "Competitor Analysis",
+        "Seller dashboard management (orders, stock, returns)",
+        "Customer service support and order resolution",
+        "Monitoring seller performance metrics on Snapdeal",
       ],
-      category: "ecommerce"
+      category: "ecommerce",
     },
     instamart: {
       name: "Instamart",
       logo: instamartLogo,
       href: "/partners/marketplaces/instamart",
       services: [
-        "Flash sales, promotional discounts, and marketing campaigns",
-        "Boosting high-demand products with Instamart promotions",
-        "Cross-platform visibility with Flipkart’s and Instamart’s collaboration",
+        "Real-time inventory tracking and product updates",
+        "Efficient order and return management",
+        "Customer feedback monitoring for better service",
       ],
-      category: "quick-commerce"
+      category: "quick-commerce",
     },
     bigbasket: {
       name: "BigBasket",
       logo: bigbasketLogo,
       href: "/partners/marketplaces/bigbasket",
       services: [
-        "Bigbasket Ads and campaigns for featured products",
-        "Promotions tied to Bigbasket’s seasonal events and offers",
-        "Cross-selling and bundling strategies for grocery packages",
+        "Inventory tracking for grocery and FMCG products",
+        "Efficient order processing and customer service support",
+        "Handling seasonal fluctuations (festive sales) in demand",
       ],
-      category: "quick-commerce"
+      category: "quick-commerce",
     },
     blinkit: {
       name: "Blinkit",
       logo: blinkitLogo,
       href: "/partners/marketplaces/blinkit",
       services: [
-        "Blinkit Ads (promotions within Blinkit app)",
-        "Collaborative marketing campaigns for local areas",
-        "Special offers and deals during peak hours for better visibility",
+        "Real-time order management & customer communication",
+        "Inventory and stock alerts for perishable goods",
+        "Order fulfillment & last-mile delivery optimization",
       ],
-      category: "quick-commerce"
+      category: "quick-commerce",
     },
     zepto: {
       name: "Zepto",
       logo: zeptoLogo,
       href: "/partners/marketplaces/zepto",
       services: [
-        "Zepto's targeted marketing campaigns to drive demand",
-        "Promotional partnerships for high-priority products",
-        "Collaborations with local influencers to enhance reach",
+        "Real-time stock and inventory management for perishable goods",
+        "Order fulfillment, packing, and dispatching to Zepto hubs",
+        "Managing product ratings and customer interactions",
       ],
-      category: "quick-commerce"
+      category: "quick-commerce",
     },
   };
 
@@ -196,39 +186,41 @@ export default function AccountManagementServices() {
     .map(([key, marketplace]) => ({ key, ...marketplace }));
 
   const steps = [
-    { 
-      src: AMS1, 
+    {
+      src: AMS1,
       alt: "Step 1: Hassle-Free Management illustration",
       title: "Hassle-Free Management",
-      description: "Effortless order and inventory management."
+      description: "Effortless order and inventory management.",
     },
-    { 
-      src: AMS2, 
+    {
+      src: AMS2,
       alt: "Step 2: Timely Updates illustration",
       title: "Timely Updates",
-      description: "Keep your product listings fresh and competitive."
+      description: "Keep your product listings fresh and competitive.",
     },
-    { 
-      src: AMS3, 
+    {
+      src: AMS3,
       alt: "Step 3: Performance-Driven Support illustration",
       title: "Performance-Driven Support",
-      description: "Data-backed strategies to boost sales."
+      description: "Data-backed strategies to boost sales.",
     },
-    { 
-      src: AMS4, 
+    {
+      src: AMS4,
       alt: "Step 4: Dedicated Coordination illustration",
       title: "Dedicated Coordination",
-      description: "Stay connected via WhatsApp for real-time updates."
-    }
+      description: "Stay connected via WhatsApp for real-time updates.",
+    },
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(getApiUrl('api/ams/submit'), formData);
+      const response = await axios.post(getApiUrl("api/ams/submit"), formData);
       const data = await response.data;
       if (data.success) {
-        alert('Thank you for your submission! Our team will contact you shortly.');
+        alert(
+          "Thank you for your submission! Our team will contact you shortly."
+        );
         setFormData({
           businessName: "",
           contactPerson: "",
@@ -249,18 +241,20 @@ export default function AccountManagementServices() {
           consent: false,
         });
       } else {
-        alert('Error submitting form: ' + data.message);
+        alert("Error submitting form: " + data.message);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Error submitting form. Please try again.');
+      console.error("Error submitting form:", error);
+      alert("Error submitting form. Please try again.");
     }
   };
 
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: checked ? [...prev[field], value] : prev[field].filter((item) => item !== value),
+      [field]: checked
+        ? [...prev[field], value]
+        : prev[field].filter((item) => item !== value),
     }));
   };
 
@@ -291,21 +285,25 @@ export default function AccountManagementServices() {
               id="hero-heading"
               className="text-5xl font-bold text-gray-900 mb-6 flex items-center justify-center flex-wrap"
             >
-              <span className="text-green-600 mr-2">Manage</span> Your Online Store on
+              <span className="text-green-600 mr-2">Manage</span> Your Online
+              Store on
               <div className="ml-4">
                 <img
                   src={logos[currentLogoIndex].src}
                   alt={logos[currentLogoIndex].alt}
                   className="h-12 w-auto object-contain animate-fadeIn"
                   onError={(e) => {
-                    console.error(`Failed to load ${logos[currentLogoIndex].alt}`);
+                    console.error(
+                      `Failed to load ${logos[currentLogoIndex].alt}`
+                    );
                     e.target.src = "/assets/fallback.png";
                   }}
                 />
               </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Let us handle daily operations, listings, and reports so you can focus on business.
+              Let us handle daily operations, listings, and reports so you can
+              focus on business.
             </p>
             <a
               href="#get-started"
@@ -332,7 +330,8 @@ export default function AccountManagementServices() {
                 Supported Marketplaces
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
-                Choose from our wide range of marketplace integrations for tailored management services
+                Choose from our wide range of marketplace integrations for
+                tailored management services
               </p>
             </div>
             {/* Category Tabs */}
@@ -366,7 +365,9 @@ export default function AccountManagementServices() {
               <div className="md:col-span-3">
                 <div className="bg-white rounded-lg shadow-md p-4">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    {activeCategory === "ecommerce" ? "E-commerce Platforms" : "Quick Commerce Platforms"}
+                    {activeCategory === "ecommerce"
+                      ? "E-commerce Platforms"
+                      : "Quick Commerce Platforms"}
                   </h3>
                   <div className="space-y-2">
                     {activeCategory === "ecommerce"
@@ -433,7 +434,9 @@ export default function AccountManagementServices() {
                             alt={`${marketplaces[activeMarketplace].name} logo`}
                             className="h-24 w-auto object-contain max-w-[280px]"
                             onError={(e) => {
-                              console.error(`Failed to load ${marketplaces[activeMarketplace].name} logo`);
+                              console.error(
+                                `Failed to load ${marketplaces[activeMarketplace].name} logo`
+                              );
                               e.target.src = "/assets/fallback.png";
                             }}
                           />
@@ -457,12 +460,15 @@ export default function AccountManagementServices() {
                       <div className="mt-8 flex justify-center">
                         <button
                           onClick={() =>
-                            alert(`Learn more about ${marketplaces[activeMarketplace].name}`)
+                            alert(
+                              `Learn more about ${marketplaces[activeMarketplace].name}`
+                            )
                           }
                           className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
                         >
                           <span>
-                            Learn more about {marketplaces[activeMarketplace].name}
+                            Learn more about{" "}
+                            {marketplaces[activeMarketplace].name}
                           </span>
                           <ArrowRight className="h-5 w-5" />
                         </button>
@@ -475,11 +481,19 @@ export default function AccountManagementServices() {
           </div>
         </section>
 
-{/* Services Included */}
-        <section className="py-16 px-4 bg-green-50" aria-labelledby="services-heading">
+        {/* Services Included */}
+        <section
+          className="py-16 px-4 bg-green-50"
+          aria-labelledby="services-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="services-heading" className="text-3xl font-bold text-gray-900 mb-4">Monthly Service Includes</h2>
+              <h2
+                id="services-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Monthly Service Includes
+              </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Comprehensive support to keep your store active and profitable.
               </p>
@@ -490,65 +504,76 @@ export default function AccountManagementServices() {
                   {
                     icon: Search,
                     title: "Up to 50 SKUs/month",
-                    description: "Manage listings for up to 50 products."
+                    description: "Manage listings for up to 50 products.",
                   },
                   {
                     icon: Headphones,
                     title: "Order & Return Handling",
-                    description: "Seamless management of orders and returns."
+                    description: "Seamless management of orders and returns.",
                   },
                   {
                     icon: BarChart3,
                     title: "Inventory & Price Sync",
-                    description: "Real-time updates for stock and pricing."
+                    description: "Real-time updates for stock and pricing.",
                   },
                   {
                     icon: Search,
                     title: "Keyword Optimization (Basic SEO)",
-                    description: "Improve visibility with optimized listings."
+                    description: "Improve visibility with optimized listings.",
                   },
                   {
                     icon: PieChart,
                     title: "Monthly Sales Reports",
-                    description: "Actionable insights to track performance."
-                  }
+                    description: "Actionable insights to track performance.",
+                  },
                 ].map((service, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="flex items-start space-x-4"
                     role="listitem"
                   >
-                    <service.icon className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" aria-hidden="true" />
+                    <service.icon
+                      className="h-6 w-6 text-green-600 mt-1 flex-shrink-0"
+                      aria-hidden="true"
+                    />
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{service.title}</h3>
-                      <p className="text-gray-600 text-sm">{service.description}</p>
+                      <h3 className="font-semibold text-gray-900 mb-2">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        {service.description}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Optional Add-Ons</h3>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                  Optional Add-Ons
+                </h3>
                 <div className="space-y-4" role="list">
                   {[
                     {
                       title: "Additional 50 SKUs",
                       price: "₹999",
-                      description: "Manage up to 100 SKUs per month."
+                      description: "Manage up to 100 SKUs per month.",
                     },
                     {
                       title: "Dedicated Account Manager",
                       price: "₹1,999/month",
-                      description: "Personalized support for your business."
-                    }
+                      description: "Personalized support for your business.",
+                    },
                   ].map((addon, index) => (
-                    <div 
+                    <div
                       key={index}
                       className="border-2 border-green-200 rounded-lg hover:border-green-400 transition-colors p-6"
                       role="listitem"
                     >
                       <h4 className="text-lg font-semibold">{addon.title}</h4>
                       <p className="text-sm text-gray-600">{addon.price}</p>
-                      <p className="text-sm text-gray-700 mt-2">{addon.description}</p>
+                      <p className="text-sm text-gray-700 mt-2">
+                        {addon.description}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -558,39 +583,56 @@ export default function AccountManagementServices() {
         </section>
 
         {/* Key Benefits */}
-        <section className="py-16 px-4 bg-white" aria-labelledby="benefits-heading">
+        <section
+          className="py-16 px-4 bg-white"
+          aria-labelledby="benefits-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="benefits-heading" className="text-3xl font-bold text-gray-900 mb-4">Key Benefits</h2>
+              <h2
+                id="benefits-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Key Benefits
+              </h2>
               <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Optimize your e-commerce operations with our comprehensive management services.
+                Optimize your e-commerce operations with our comprehensive
+                management services.
               </p>
             </div>
             <ImageSlider slides={steps} />
           </div>
         </section>
 
-        
         {/* Success Story */}
-        <section className="py-16 px-4 bg-white" aria-labelledby="success-heading">
+        <section
+          className="py-16 px-4 bg-white"
+          aria-labelledby="success-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="success-heading" className="text-3xl font-bold text-gray-900 mb-4">Success Story</h2>
+              <h2
+                id="success-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Success Story
+              </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                A kitchenware brand scaled 180% in 3 months with 99digicom's management support.
+                A kitchenware brand scaled 180% in 3 months with 99digicom's
+                management support.
               </p>
             </div>
             <div className="bg-green-50 rounded-lg p-6">
               <blockquote>
                 <p className="text-gray-600">
-                  By streamlining inventory, optimizing listings, and handling orders efficiently, we helped a kitchenware brand achieve a 180% sales increase in just three months.
+                  By streamlining inventory, optimizing listings, and handling
+                  orders efficiently, we helped a kitchenware brand achieve a
+                  180% sales increase in just three months.
                 </p>
               </blockquote>
             </div>
           </div>
         </section>
-
-        
       </main>
     </>
   );
