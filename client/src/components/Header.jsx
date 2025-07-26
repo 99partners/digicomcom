@@ -64,11 +64,11 @@ const Header = () => {
             <img
               src={logo}
               alt="99Digicom Logo"
-              className="h-12 w-auto object-contain sm:h-14 lg:h-16"
-              width="64"
-              height="64"
+              className="h-10 w-auto object-contain sm:h-12 lg:h-14"
+              width="56"
+              height="56"
             />
-            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
               Digicom
             </span>
           </Link>
@@ -81,7 +81,7 @@ const Header = () => {
               {item.submenu ? (
                 <div className="relative">
                   <button
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
                       isActive(item.submenu.find((sub) => sub.href === pathname)?.href)
                         ? "text-green-700 bg-green-100"
                         : "text-gray-700 hover:text-green-700 hover:bg-green-50"
@@ -90,8 +90,8 @@ const Header = () => {
                     {item.name}
                     <ChevronDown className="ml-1 h-4 w-4" />
                   </button>
-                  {/* Simple Dropdown */}
-                  <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
+                  {/* Dropdown */}
+                  <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2 z-50">
                     {item.submenu.map((subItem) => (
                       <Link
                         key={subItem.name}
@@ -110,7 +110,7 @@ const Header = () => {
               ) : (
                 <Link
                   to={item.href}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all ${
                     isActive(item.href)
                       ? "text-green-700 bg-green-100"
                       : "text-gray-700 hover:text-green-700 hover:bg-green-50"
@@ -124,29 +124,29 @@ const Header = () => {
         </nav>
 
         {/* Desktop Right Section */}
-        <div className="hidden lg:flex items-center space-x-3">
+        <div className="hidden lg:flex items-center space-x-2">
           <Link
-            // to="/shop"
-            className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
+            to="/shop"
+            className="px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
           >
             Shop
           </Link>
-                     {isAuthenticated ? (
-             <button
-               onClick={() => navigate('/dashboard/profile')}
-               className="p-1 rounded-full hover:bg-green-50 transition-all duration-200"
-               title="View Profile"
-             >
-               <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                 <span className="text-sm font-bold text-white">
-                   {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                 </span>
-               </div>
-             </button>
-           ) : (
+          {isAuthenticated ? (
+            <button
+              onClick={() => navigate('/dashboard/profile')}
+              className="p-1 rounded-full hover:bg-green-50 transition-all duration-200"
+              title="View Profile"
+            >
+              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-white">
+                  {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                </span>
+              </div>
+            </button>
+          ) : (
             <Link
               to="/partnerlogin"
-              className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
+              className="px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
             >
               Join Us
             </Link>
@@ -157,6 +157,7 @@ const Header = () => {
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="lg:hidden p-2 text-gray-600 hover:text-green-700"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         >
           {isMenuOpen ? (
             <X className="h-6 w-6" />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 const ImageSlider = ({ slides, height = "400px" }) => {
@@ -21,7 +21,7 @@ const ImageSlider = ({ slides, height = "400px" }) => {
         <div className="relative overflow-hidden w-full" style={{ height }}>
             <button
                 onClick={handlePrev}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-30"
+                className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-30"
                 aria-label="Previous slide"
             >
                 <ArrowRight className="h-6 w-6 rotate-180" />
@@ -60,7 +60,7 @@ const ImageSlider = ({ slides, height = "400px" }) => {
                                     src={slide.src}
                                     alt={slide.alt}
                                     className={`rounded-lg shadow-lg object-contain ${
-                                        isCenter ? 'max-h-96 w-auto' : 'max-h-64 w-auto'
+                                        isCenter ? 'max-h-64 sm:max-h-96 w-auto' : 'max-h-40 sm:max-h-64 w-auto'
                                     }`}
                                     onError={(e) => {
                                         console.error(`Failed to load image: ${slide.src}`);
@@ -68,10 +68,10 @@ const ImageSlider = ({ slides, height = "400px" }) => {
                                     }}
                                 />
                                 {isCenter && slide.title && (
-                                    <div className="absolute bottom-4 left-4 right-4 bg-white bg-opacity-90 p-4 rounded-lg text-center">
-                                        <h3 className="text-lg font-semibold text-gray-900">{slide.title}</h3>
+                                    <div className="absolute bottom-2 left-2 right-2 sm:bottom-4 sm:left-4 sm:right-4 bg-white bg-opacity-90 p-2 sm:p-4 rounded-lg text-center">
+                                        <h3 className="text-base sm:text-lg font-semibold text-gray-900">{slide.title}</h3>
                                         {slide.description && (
-                                            <p className="text-gray-600 text-sm mt-1">{slide.description}</p>
+                                            <p className="text-gray-600 text-xs sm:text-sm mt-1">{slide.description}</p>
                                         )}
                                     </div>
                                 )}
@@ -83,14 +83,14 @@ const ImageSlider = ({ slides, height = "400px" }) => {
 
             <button
                 onClick={handleNext}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-30"
+                className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors z-30"
                 aria-label="Next slide"
             >
                 <ArrowRight className="h-6 w-6" />
             </button>
 
             {/* Navigation dots */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
                 {slides.map((_, index) => (
                     <button
                         key={index}
@@ -106,4 +106,4 @@ const ImageSlider = ({ slides, height = "400px" }) => {
     );
 };
 
-export default ImageSlider; 
+export default ImageSlider;
