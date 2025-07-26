@@ -519,6 +519,89 @@ export default function AdvertisingMarketing() {
             </div>
           </div>
         </section>
+
+        {/* What's Included Section */}
+        <section className="py-16 px-4 bg-white" aria-labelledby="whats-included-heading">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="whats-included-heading" className="text-3xl font-bold text-green-700 mb-4">
+                What's Included
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Advertising & Marketing Services help sellers grow their presence, attract customers, and increase sales through targeted marketing efforts.
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
+              {/* Card 1 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Paid Advertising Campaigns</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Setting up and managing PPC campaigns on platforms like Amazon Ads, Flipkart Ads, and Google Ads.</li>
+                  <li>Performance-driven campaigns with ROI tracking (e.g., Sponsored Products, Brand Ads).</li>
+                </ul>
+              </div>
+              {/* Card 2 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Users className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Social Media Marketing & Influencer Collaborations</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Creating promotional content for social media (Instagram, Facebook, Twitter, etc.).</li>
+                  <li>Collaborating with influencers to drive brand awareness and customer acquisition.</li>
+                  <li>Running seasonal social media campaigns (e.g., festive promotions).</li>
+                </ul>
+              </div>
+              {/* Card 3 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Star className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">A+ Content & Brand Store Management</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Creating enhanced brand content (A+ Content) to improve product listings and conversions on Amazon and Flipkart.</li>
+                  <li>Optimizing brand stores with better visuals and stories to attract more customers.</li>
+                </ul>
+              </div>
+              {/* Card 4 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Promotions & Discounts Management</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Running platform-specific promotions (discounts, coupons, flash sales).</li>
+                  <li>Managing bundle offers and special deals to increase cart value.</li>
+                </ul>
+              </div>
+              {/* Card 5 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <ArrowRight className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Market Expansion Support</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Guidance on expanding to other platforms or international markets.</li>
+                  <li>Multi-platform strategy planning for higher visibility and sales.</li>
+                </ul>
+              </div>
+              {/* Card 6 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Review Management & Reputation Building</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Monitoring and responding to reviews.</li>
+                  <li>Encouraging positive reviews through customer engagement campaigns</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
         {/* Why Advertising Matters */}
         <section
           aria-labelledby="why-advertising-heading"

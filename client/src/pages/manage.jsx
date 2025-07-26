@@ -310,7 +310,7 @@ export default function AccountManagementServices() {
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
               aria-label="Start with account management services"
             >
-              Start at ₹4,999/month
+              Get Started
               <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
             </a>
           </div>
@@ -482,101 +482,84 @@ export default function AccountManagementServices() {
         </section>
 
         {/* Services Included */}
-        <section
-          className="py-16 px-4 bg-green-50"
-          aria-labelledby="services-heading"
-        >
+        <section className="py-16 px-4 bg-green-50" aria-labelledby="whats-included-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2
-                id="services-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
-                Monthly Service Includes
+              <h2 id="whats-included-heading" className="text-3xl font-bold text-green-700 mb-4">
+                What's Included
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Comprehensive support to keep your store active and profitable.
+                Account Management Services (AMS) help sellers manage their accounts and day-to-day operations across marketplaces.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-6" role="list">
-                {[
-                  {
-                    icon: Search,
-                    title: "Up to 50 SKUs/month",
-                    description: "Manage listings for up to 50 products.",
-                  },
-                  {
-                    icon: Headphones,
-                    title: "Order & Return Handling",
-                    description: "Seamless management of orders and returns.",
-                  },
-                  {
-                    icon: BarChart3,
-                    title: "Inventory & Price Sync",
-                    description: "Real-time updates for stock and pricing.",
-                  },
-                  {
-                    icon: Search,
-                    title: "Keyword Optimization (Basic SEO)",
-                    description: "Improve visibility with optimized listings.",
-                  },
-                  {
-                    icon: PieChart,
-                    title: "Monthly Sales Reports",
-                    description: "Actionable insights to track performance.",
-                  },
-                ].map((service, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-4"
-                    role="listitem"
-                  >
-                    <service.icon
-                      className="h-6 w-6 text-green-600 mt-1 flex-shrink-0"
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">
-                  Optional Add-Ons
-                </h3>
-                <div className="space-y-4" role="list">
-                  {[
-                    {
-                      title: "Additional 50 SKUs",
-                      price: "₹999",
-                      description: "Manage up to 100 SKUs per month.",
-                    },
-                    {
-                      title: "Dedicated Account Manager",
-                      price: "₹1,999/month",
-                      description: "Personalized support for your business.",
-                    },
-                  ].map((addon, index) => (
-                    <div
-                      key={index}
-                      className="border-2 border-green-200 rounded-lg hover:border-green-400 transition-colors p-6"
-                      role="listitem"
-                    >
-                      <h4 className="text-lg font-semibold">{addon.title}</h4>
-                      <p className="text-sm text-gray-600">{addon.price}</p>
-                      <p className="text-sm text-gray-700 mt-2">
-                        {addon.description}
-                      </p>
-                    </div>
-                  ))}
+            <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
+              {/* Card 1 */}
+              <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Settings className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Product Listing Maintenance</span>
                 </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Regular updates to product listings (price changes, stock updates, new variants).</li>
+                  <li>Optimization of product content to keep up with marketplace changes.</li>
+                </ul>
+              </div>
+              {/* Card 2 */}
+              <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Inventory & Stock Management</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Monitoring inventory levels to avoid out-of-stock issues.</li>
+                  <li>Proactive stock alerts for timely restocking.</li>
+                  <li>Syncing inventory across platforms.</li>
+                </ul>
+              </div>
+              {/* Card 3 */}
+              <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Order Processing & Return Management</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Handling order processing (packing, dispatch) for smooth fulfillment.</li>
+                  <li>Managing returns, exchanges, and refunds according to platform policies.</li>
+                </ul>
+              </div>
+              {/* Card 4 */}
+              <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Headphones className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Customer Service Management</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Responding to customer queries and issues in a timely manner.</li>
+                  <li>Handling product feedback and customer complaints to maintain a good seller rating.</li>
+                </ul>
+              </div>
+              {/* Card 5 */}
+              <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <PieChart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Performance Monitoring & Reporting</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Tracking performance metrics (sales, returns, reviews, customer ratings).</li>
+                  <li>Monthly reports to help sellers track growth and identify areas for improvement.</li>
+                  <li>Handling account health issues (suspensions, penalties, etc.).</li>
+                </ul>
+              </div>
+              {/* Card 6 */}
+              <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Compliance & Policy Monitoring</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Ensuring compliance with platform policies to avoid penalties.</li>
+                  <li>Updating product listings according to platform-specific requirements</li>
+                </ul>
               </div>
             </div>
           </div>
