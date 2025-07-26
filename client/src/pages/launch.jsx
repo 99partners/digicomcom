@@ -488,6 +488,91 @@ export default function PlatformEnablement() {
           </div>
         </section>
 
+        
+        {/* What's Included Section */}
+        <section className="py-16 px-4 bg-white" aria-labelledby="whats-included-heading">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="whats-included-heading" className="text-3xl font-bold text-green-700 mb-4">
+                What's Included
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Registration & Platform Enablement Services help new sellers get set up and ready to sell across multiple marketplaces.
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
+              {/* Card 1 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <FileText className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Account Registration & Onboarding</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Create and register seller accounts across multiple platforms (Amazon, Flipkart, Jiomart, Meesho, etc.)</li>
+                  <li>Help with KYC and compliance documentation (GST, PAN, bank details).</li>
+                  <li>Platform-specific tax and payment setup.</li>
+                </ul>
+              </div>
+              {/* Card 2 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Package className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Product Catalog Setup</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Bulk product listing upload (CSV/Excel templates)</li>
+                  <li>Optimizing product titles, descriptions, and images for better visibility.</li>
+                  <li>Creating categories and adding variations (size, color, etc.).</li>
+                </ul>
+              </div>
+              {/* Card 3 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Store className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Brand Store Creation</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Setting up your branded storefront on platforms like Amazon and Flipkart.</li>
+                  <li>Uploading brand story, banners, and images to make your store attractive.</li>
+                </ul>
+              </div>
+              {/* Card 4 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Building className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Platform-Specific Integration</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Connecting your account with required third-party tools (e.g., logistics, payment systems).</li>
+                  <li>Product and inventory syncing with platform APIs (e.g., Amazon Seller Central, Flipkart Seller Hub).</li>
+                </ul>
+              </div>
+              {/* Card 5 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Shield className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Listing Optimization</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>SEO-focused product descriptions to improve search visibility.</li>
+                  <li>Image and content alignment with platform guidelines.</li>
+                </ul>
+              </div>
+              {/* Card 6 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">Go-Live Support</span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Step-by-step assistance to go live on marketplaces.</li>
+                  <li>Final checks to ensure everything is working (products, pricing, stock levels)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Why Choose Us */}
         <section
           className="py-16 px-4 bg-white"
@@ -509,6 +594,7 @@ export default function PlatformEnablement() {
             <ImageSlider slides={steps} />
           </div>
         </section>
+
 
         {/* Client Testimonials */}
         <section
