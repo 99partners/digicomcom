@@ -60,12 +60,9 @@ export default function PlatformEnablement() {
       logo: amazonLogo,
       href: "/partners/marketplaces/amazon",
       services: [
-        "Account Management",
-        "Brand Store",
-        "Listing and Cataloging",
-        "A+ Listing",
-        "Advertising",
-        "Glowroad Account Management",
+        "Account registration & KYC compliance",
+        "Product listing optimization for Amazon SEO",
+        "Amazon Brand Registry assistance",
       ],
       category: "ecommerce"
     },
@@ -74,10 +71,9 @@ export default function PlatformEnablement() {
       logo: flipkartLogo,
       href: "/partners/marketplaces/flipkart",
       services: [
-        "Account Management",
-        "Shopsy Integration",
-        "Listing and Cataloging",
-        "Advertising",
+        "Flipkart seller registration & tax setup",
+        "Product upload with Flipkart-specific attributes",
+        "Flipkart SmartBuy program support",
       ],
       category: "ecommerce"
     },
@@ -85,14 +81,22 @@ export default function PlatformEnablement() {
       name: "JioMart",
       logo: jiomartLogo,
       href: "/partners/marketplaces/jiomart",
-      services: ["Account Management", "Listing and Cataloging", "Advertising"],
+      services: [
+        "Jiomart seller registration & onboarding",
+        "Product catalog listing and categorization",
+        "Packaging & delivery integration with Jiomart",
+      ],
       category: "quick-commerce"
     },
     meesho: {
       name: "Meesho",
       logo: meeshoLogo,
       href: "/partners/marketplaces/meesho",
-      services: ["Account Management", "Listing and Cataloging", "Advertising"],
+      services: [
+        "Meesho onboarding process & GST validation",
+        "Product photography and listing optimization for Meesho",
+        "Meesho catalog expansion (for resellers & brands)",
+      ],
       category: "ecommerce"
     },
     snapdeal: {
@@ -100,45 +104,31 @@ export default function PlatformEnablement() {
       logo: snapdealLogo,
       href: "/partners/marketplaces/snapdeal",
       services: [
-        "Account Management",
-        "Catalog Management",
-        "Order Processing",
-        "Performance Marketing",
-        "Analytics & Reporting",
-        "Competitor Analysis",
+        "Snapdeal seller registration & product listing",
+        "Integration with Snapdeal’s payment & shipping systems",
+        "Catalog optimization based on Snapdeal policies",
       ],
       category: "ecommerce"
-    },
-    instamart: {
-      name: "Instamart",
-      logo: instamartLogo,
-      href: "/partners/marketplaces/instamart",
-      services: [
-        "Flash sales, promotional discounts, and marketing campaigns",
-        "Boosting high-demand products with Instamart promotions",
-        "Cross-platform visibility with Flipkart’s and Instamart’s collaboration",
-      ],
-      category: "quick-commerce"
-    },
-    bigbasket: {
-      name: "BigBasket",
-      logo: bigbasketLogo,
-      href: "/partners/marketplaces/bigbasket",
-      services: [
-        "Bigbasket Ads and campaigns for featured products",
-        "Promotions tied to Bigbasket’s seasonal events and offers",
-        "Cross-selling and bundling strategies for grocery packages",
-      ],
-      category: "quick-commerce"
     },
     blinkit: {
       name: "Blinkit",
       logo: blinkitLogo,
       href: "/partners/marketplaces/blinkit",
       services: [
-        "Blinkit Ads (promotions within Blinkit app)",
-        "Collaborative marketing campaigns for local areas",
-        "Special offers and deals during peak hours for better visibility",
+        "Blinkit seller registration & store setup",
+        "Product catalog listing (grocery, FMCG products)",
+        "Blinkit’s delivery zone & logistics integration",
+      ],
+      category: "quick-commerce"
+    },
+    instamart: {
+      name: "Instamart",
+      logo: instamartLogo,
+      href: "/partners/marketplaces/instamart",
+      services: [
+        "Onboarding on Instamart (through partners like Flipkart)",
+        "Listing products, pricing, and description optimization",
+        "Integration with Instamart’s logistics & payment systems",
       ],
       category: "quick-commerce"
     },
@@ -147,9 +137,20 @@ export default function PlatformEnablement() {
       logo: zeptoLogo,
       href: "/partners/marketplaces/zepto",
       services: [
-        "Zepto's targeted marketing campaigns to drive demand",
-        "Promotional partnerships for high-priority products",
-        "Collaborations with local influencers to enhance reach",
+        "Zepto seller registration and onboarding support",
+        "Product upload with categorization for fast delivery",
+        "Integration with Zepto’s delivery systems for quick turnaround",
+      ],
+      category: "quick-commerce"
+    },
+    bigbasket: {
+      name: "BigBasket",
+      logo: bigbasketLogo,
+      href: "/partners/marketplaces/bigbasket",
+      services: [
+        "Bigbasket seller registration & platform setup",
+        "Grocery product catalog setup (packaging, pricing, bulk uploads)",
+        "Integration with Bigbasket’s payment and logistics systems",
       ],
       category: "quick-commerce"
     },
