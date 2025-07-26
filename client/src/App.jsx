@@ -38,10 +38,10 @@ import Notifications from './pages/dashboard/Notifications';
 import Subscriptions from './pages/dashboard/Subscriptions';
 
 // Import from Services Partner Resources
+import PlatformEnablement from './pages/launch';
+import AccountManagementServices from './pages/manage';
 import ForProductPartners from './pages/whyPartners';
 import PartnersOnboarding from './pages/partnersOnboarding';
-import PlatformEnablement from './pages/platformEnable';
-import AccountManagementServices from './pages/ams';
 import AdvertisingMarketing from './pages/advertising_marketing';
 import Blogs from './pages/blogs';
 // import CaseStudies from './pages/caseStudies';
