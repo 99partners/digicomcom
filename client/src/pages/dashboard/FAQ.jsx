@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FAQ = () => {
@@ -94,9 +94,9 @@ const FAQ = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8">
-            <div className="max-w-4xl mx-auto px-4">
-                <h1 className="text-3xl font-bold text-center text-gray-700 mb-8">
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-2 sm:px-4">
+            <div className="max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-700 mb-8">
                     Frequently Asked Questions
                 </h1>
                 
@@ -113,10 +113,10 @@ const FAQ = () => {
                             >
                                 <button
                                     onClick={() => toggleCategory(category.category)}
-                                    className="w-full px-6 py-4 text-left bg-gradient-to-r from-green-100 to-green-200 text-green-800 font-semibold flex justify-between items-center hover:from-green-200 hover:to-green-300 transition-colors"
+                                    className="w-full px-3 sm:px-6 py-4 text-left bg-gradient-to-r from-green-100 to-green-200 text-green-800 font-semibold flex justify-between items-center hover:from-green-200 hover:to-green-300 transition-colors text-base sm:text-lg"
                                 >
                                     <span>{category.category}</span>
-                                    <span className="transform transition-transform duration-200">
+                                    <span className="transform transition-transform duration-200 text-xl sm:text-2xl">
                                         {expandedCategory === category.category ? '−' : '+'}
                                     </span>
                                 </button>
@@ -128,7 +128,7 @@ const FAQ = () => {
                                             animate={{ height: 'auto', opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3 }}
-                                            className="px-6 py-4 space-y-4 bg-white"
+                                            className="px-3 sm:px-6 py-4 space-y-4 bg-white"
                                         >
                                             {category.questions.map((item, questionIndex) => {
                                                 const isExpanded = expandedQuestions[`${categoryIndex}-${questionIndex}`];
@@ -136,10 +136,10 @@ const FAQ = () => {
                                                     <div key={questionIndex} className="border-b border-green-50 last:border-0 pb-4">
                                                         <button
                                                             onClick={() => toggleQuestion(categoryIndex, questionIndex)}
-                                                            className="w-full text-left font-medium text-gray-600 flex justify-between items-center hover:text-green-600 transition-colors"
+                                                            className="w-full text-left font-medium text-gray-600 flex justify-between items-center hover:text-green-600 transition-colors text-sm sm:text-base"
                                                         >
                                                             <span>{item.question}</span>
-                                                            <span className="text-green-500 ml-2">
+                                                            <span className="text-green-500 ml-2 text-lg sm:text-xl">
                                                                 {isExpanded ? '−' : '+'}
                                                             </span>
                                                         </button>
@@ -151,7 +151,7 @@ const FAQ = () => {
                                                                     animate={{ opacity: 1, height: 'auto' }}
                                                                     exit={{ opacity: 0, height: 0 }}
                                                                     transition={{ duration: 0.2 }}
-                                                                    className="mt-2 text-gray-500 text-sm"
+                                                                    className="mt-2 text-gray-500 text-xs sm:text-sm"
                                                                 >
                                                                     {item.answer}
                                                                 </motion.p>
@@ -172,4 +172,4 @@ const FAQ = () => {
     );
 };
 
-export default FAQ; 
+export default FAQ;

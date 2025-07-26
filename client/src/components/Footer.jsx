@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Mail,
-  MapPin,
   Linkedin,
   Instagram,
   Youtube,
@@ -10,6 +9,7 @@ import {
 } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
+import mapImage from "../assets/map.png"; // your image file
 import axios from "axios";
 import { API_CONFIG } from "../config/api.config";
 
@@ -34,7 +34,6 @@ const Footer = () => {
     setIsLoading(true);
     setError(null);
 
-    // Validate email
     if (!email) {
       setError("Please enter an email address");
       setIsLoading(false);
@@ -55,8 +54,7 @@ const Footer = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          // Removed withCredentials for newsletter - not needed for public endpoint
-          timeout: 10000, // 10 second timeout
+          timeout: 10000,
         }
       );
 
@@ -64,42 +62,26 @@ const Footer = () => {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
-        console.log('Newsletter subscription successful:', response.data);
       } else {
-        console.warn('Newsletter subscription failed:', response.data);
         setError(
           response.data.message || "Failed to subscribe. Please try again."
         );
       }
     } catch (err) {
-      console.error("Newsletter subscription error:", {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        headers: err.response?.headers,
-        config: {
-          url: err.config?.url,
-          method: err.config?.method,
-          headers: err.config?.headers
-        }
-      });
-
-      // Handle specific error cases
-      if (err.code === 'ECONNABORTED') {
-        setError('Request timed out. Please try again.');
+      if (err.code === "ECONNABORTED") {
+        setError("Request timed out. Please try again.");
       } else if (err.response?.status === 400) {
-        setError(err.response.data.message || 'Invalid email address.');
+        setError(err.response.data.message || "Invalid email address.");
       } else if (err.response?.status === 503) {
-        setError('Service temporarily unavailable. Please try again later.');
+        setError("Service temporarily unavailable. Please try again later.");
       } else if (!navigator.onLine) {
-        setError('No internet connection. Please check your network.');
+        setError("No internet connection. Please check your network.");
       } else {
         setError(
-          err.response?.data?.message || 
-          'Unable to subscribe at the moment. Please try again later.'
+          err.response?.data?.message ||
+            "Unable to subscribe at the moment. Please try again later."
         );
       }
-      
       setIsSubmitted(false);
     } finally {
       setIsLoading(false);
@@ -133,7 +115,11 @@ const Footer = () => {
       url: "https://www.linkedin.com/company/99-partners-digicom-private-limited/",
       label: "LinkedIn",
     },
-    { icon: Twitter, url: "https://x.com/99_partners?t=E3xMTe3OeDRrm3eDysWzVQ&s=08", label: "X" },
+    {
+      icon: Twitter,
+      url: "https://x.com/99_partners?t=E3xMTe3OeDRrm3eDysWzVQ&s=08",
+      label: "X",
+    },
     {
       icon: Instagram,
       url: "https://www.instagram.com/99partners_?igsh=Njhlbmh5NTdkMWt2",
@@ -151,34 +137,11 @@ const Footer = () => {
     },
   ];
 
-  const addresses = [
-    {
-      country: "India",
-      details: "Ahmedabad, Gujarat, India",
-      mapLink:
-        "https://maps.google.com/?q=Titanium+City+Center,+Satellite,+Ahmedabad,+380015",
-    },
-    {
-      country: "United States",
-      details: "Dover, Delaware, USA",
-      mapLink:
-        "https://maps.google.com/?q=8+The+Green+STE+B,+Dover,+Delaware+19901",
-    },
-    {
-      country: "Australia",
-      details: "Sydney, NSW, Australia",
-      mapLink:
-        "https://maps.google.com/?q=Level+13/50+Carrington+Street,+Sydney,+NSW,+Australia,+2000",
-    },
-    {
-      country: "India",
-      details: "Bhavnagar, Gujarat, India",
-      mapLink: "https://maps.app.goo.gl/Wq8ACCPD6HafkqFh8",
-    },
-  ];
-
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white" role="contentinfo">
+    <footer
+      className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white"
+      role="contentinfo"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10">
           {/* Left Column */}
@@ -199,12 +162,15 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-gray-400 max-w-md">
-              Setup, Manage, Advertise, and Co-Brand across all Top marketplaces.
+              Launch, Manage and Grow your business across all Top marketplaces.
             </p>
 
             <div className="text-xs sm:text-sm text-gray-400 space-y-3">
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" aria-hidden="true" />
+                <Mail
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400"
+                  aria-hidden="true"
+                />
                 <a
                   href="mailto:support@99digicom.com"
                   className="hover:text-white transition-colors"
@@ -213,20 +179,15 @@ const Footer = () => {
                   support@99digicom.com
                 </a>
               </div>
-              <div className="grid gap-2">
-                {addresses.map((address, i) => (
-                  <a
-                    key={i}
-                    href={address.mapLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 hover:text-red-300 transition-colors text-gray-300 bg-gray-800/50 px-3 py-1.5 rounded-md text-xs sm:text-sm w-full sm:w-auto"
-                    aria-label={`Visit our office in ${address.details}`}
-                  >
-                    <MapPin className="w-4 h-4 text-red-400" aria-hidden="true" />
-                    <span className="truncate">{address.details}</span>
-                  </a>
-                ))}
+
+              {/* ✅ Image moved to left side (default alignment) */}
+              <div className="mt-4">
+                <img
+                  src={mapImage}
+                  alt="Our global locations"
+                  className="rounded-md shadow-md max-w-xs w-full h-auto"
+                  loading="lazy"
+                />
               </div>
             </div>
           </div>
@@ -326,15 +287,18 @@ const Footer = () => {
                   </div>
 
                   {isSubmitted && !error && (
-                    <p className="text-green-400 text-xs sm:text-sm mt-1" role="status">
+                    <p
+                      className="text-green-400 text-xs sm:text-sm mt-1"
+                      role="status"
+                    >
                       Subscribed successfully!
                     </p>
                   )}
 
                   {error && (
-                    <p 
-                      id="newsletter-error" 
-                      className="text-red-400 text-xs sm:text-sm mt-1" 
+                    <p
+                      id="newsletter-error"
+                      className="text-red-400 text-xs sm:text-sm mt-1"
                       role="alert"
                     >
                       {error}

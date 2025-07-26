@@ -1,6 +1,6 @@
 "use client";
-
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Megaphone,
   CheckCircle,
@@ -19,20 +19,56 @@ import { Helmet } from "react-helmet";
 import AM1 from "../assets/A&M1.png";
 import AM2 from "../assets/A&M2.png";
 import AM3 from "../assets/A&M3.png";
+// Add these imports for marketplace logos
 import amazonLogo from "../assets/Amazon.png";
 import flipkartLogo from "../assets/Flipkart.png";
 import ondcLogo from "../assets/ONDC1.png";
 import jiomartLogo from "../assets/Jiomart.png";
 import meeshoLogo from "../assets/Meesho1.png";
-import indiamartLogo from "../assets/Indiamart.png";
 import snapdealLogo from "../assets/Snapdeal.png";
+import instamartLogo from "../assets/Instamart.png";
+import bigbasketLogo from "../assets/BigBasket.png";
+import blinkitLogo from "../assets/Blinkit.png";
+import zeptoLogo from "../assets/Zepto.png";
 import ImageSlider from '../components/ImageSlider';
 
 export default function AdvertisingMarketing() {
+  const navigate = useNavigate();
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState("ecommerce");
+  const logos = [
+    { src: amazonLogo, alt: "Amazon logo" },
+    { src: flipkartLogo, alt: "Flipkart logo" },
+    { src: snapdealLogo, alt: "Snapdeal logo" },
+    { src: jiomartLogo, alt: "JioMart logo" },
+    { src: meeshoLogo, alt: "Meesho logo" },
+    { src: bigbasketLogo, alt: "BigBasket logo" },
+  ];
+  
+  // Add authentication check function
+  const isAuthenticated = () => {
+    // Check if token exists in localStorage or sessionStorage
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    return !!token;
+  };
+  
+  // Handle Get Started button click
+  const handleGetStarted = () => {
+    if (isAuthenticated()) {
+      navigate('/dashboard'); // Redirect to dashboard if authenticated
+    } else {
+      navigate('/partnerlogin'); // Redirect to login if not authenticated
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    const interval = setInterval(() => {
+      setCurrentLogoIndex((prevIndex) => (prevIndex + 1) % logos.length);
+    }, 2000);
+    return () => clearInterval(interval);
   }, []);
-
+  
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -51,9 +87,114 @@ export default function AdvertisingMarketing() {
     additionalNotes: "",
     consent: false,
   });
-
-  const [currentStep, setCurrentStep] = useState(0);
-
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
+  const marketplaces = {
+    amazon: {
+      name: "Amazon",
+      logo: amazonLogo,
+      href: "/partners/marketplaces/amazon",
+      services: [
+        "Sponsored Ads (PPC campaigns) setup & management",
+        "Amazon Prime Day/Seasonal promotions management",
+        "Enhanced Brand Content (EBC) for better visibility",
+      ],
+      category: "ecommerce" // Added category
+    },
+    flipkart: {
+      name: "Flipkart",
+      logo: flipkartLogo,
+      href: "/partners/marketplaces/flipkart",
+      services: [
+        "KFlipkart Ads (PPC campaigns, Smart Ads) management",
+        " Promotions and discount strategy for visibility",
+        "Flipkart Seller Hub analytics and insights for growth",
+      ],
+      category: "ecommerce" // Added category
+    },
+    meesho: {
+      name: "Meesho",
+      logo: meeshoLogo,
+      href: "/partners/marketplaces/meesho",
+      services: [
+        "Social media integration and influencer marketing",
+        " Meesho Boost campaigns for higher reach",
+        "Targeted sales during Meesho's seasonal campaigns",
+      ],
+      category: "ecommerce" // Added category
+    },
+    snapdeal: {
+      name: "Snapdeal",
+      logo: snapdealLogo,
+      href: "/partners/marketplaces/snapdeal",
+      services: [
+        "Snapdeal Ads campaigns setup and management",
+        "Participation in Snapdeal's 'Srinivasa Sale' & other promotions",
+        " Dynamic pricing and offers management to boost sales",
+      ],
+      category: "ecommerce" // Added category
+    },
+    jiomart: {
+      name: "JioMart",
+      logo: jiomartLogo,
+      href: "/partners/marketplaces/jiomart",
+      services: [
+        "Co-branded marketing initiatives (Jio partner promotions)",
+        "Jiomart-specific advertising and promotional activities",
+        "Engaging with Jio ecosystem users for broader reach",
+      ],
+      category: "quick-commerce" // Added category
+    },
+    instamart : {
+      name: "Instamart",
+      logo: instamartLogo,
+      href: "/partners/marketplaces/instamart",
+      services: [
+        "Flash sales, promotional discounts, and marketing campaigns",
+"Boosting high-demand products with Instamart promotions",
+"Cross-platform visibility with Flipkart's and Instamart's collaboration",
+      ],
+      category: "quick-commerce" // Added category
+    },
+    bigbasket: {
+      name: "BigBasket",
+      logo: bigbasketLogo,
+      href: "/partners/marketplaces/bigbasket",
+      services: [
+        "Bigbasket Ads and campaigns for featured products",
+        "Promotions tied to Bigbasket's seasonal events and offers",
+        "Cross-selling and bundling strategies for grocery packages",
+      ],
+      category: "quick-commerce" // Added category
+    },
+    blinkit: {
+      name: "Blinkit",
+      logo: blinkitLogo,
+      href: "/partners/marketplaces/blinkit",
+      services: [
+        "Blinkit Ads (promotions within Blinkit app)",
+        "Collaborative marketing campaigns for local areas",
+        "Special offers and deals during peak hours for better visibility",
+      ],
+      category: "quick-commerce" // Added category
+    },
+    zepto: {
+      name: "Zepto",
+      logo: zeptoLogo,
+      href: "/partners/marketplaces/zepto",
+      services: [
+        "Zepto's targeted marketing campaigns to drive demand",
+        "Promotional partnerships for high-priority products",
+        "Collaborations with local influencers to enhance reach",
+      ],
+      category: "quick-commerce" // Added category
+    },
+  };
+  const ecommerceMarketplaces = Object.entries(marketplaces)
+    .filter(([_, marketplace]) => marketplace.category === "ecommerce")
+    .map(([key, marketplace]) => ({ key, ...marketplace }));
+  const quickCommerceMarketplaces = Object.entries(marketplaces)
+    .filter(([_, marketplace]) => marketplace.category === "quick-commerce")
+    .map(([key, marketplace]) => ({ key, ...marketplace }));
   const steps = [
     {
       src: AM1,
@@ -76,7 +217,6 @@ export default function AdvertisingMarketing() {
         "Attract customers who are ready to buy, using targeted campaigns to focus on high-conversion keywords and ads aimed at active shoppers.",
     },
   ];
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -115,7 +255,6 @@ export default function AdvertisingMarketing() {
       alert("Error submitting form. Please try again.");
     }
   };
-
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
@@ -124,26 +263,22 @@ export default function AdvertisingMarketing() {
         : prev[field].filter((item) => item !== value),
     }));
   };
-
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
-
   const handlePrev = () => {
     setCurrentStep((prev) => (prev > 0 ? prev - 1 : 2));
   };
-
   const handleNext = () => {
     setCurrentStep((prev) => (prev < 2 ? prev + 1 : 0));
   };
-
   return (
     <>
       <Helmet>
-        <title>E-commerce Advertising & Marketing Services | 99digicom</title>
+        <title>E-commerce Advertising & Marketing Services | 99Digicom</title>
         <meta
           name="description"
           content="Boost your product visibility on Amazon, Flipkart & more with our performance marketing services. Get started with campaign setup from ₹4,999. Drive more sales today!"
@@ -176,7 +311,6 @@ export default function AdvertisingMarketing() {
           `}
         </script>
       </Helmet>
-
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
         <section aria-labelledby="hero-heading" className="pt-24 pb-16 px-4">
@@ -190,26 +324,327 @@ export default function AdvertisingMarketing() {
             </div>
             <h1
               id="hero-heading"
-              className="text-5xl font-bold text-gray-900 mb-6"
+              className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
             >
-              Boost Your Product Visibility on{" "}
-              <span className="text-green-600">Amazon, Flipkart & More</span>
+              <span className="flex items-center flex-wrap justify-center">
+                <span className="text-green-600 mr-2">Grow</span> Your Online Store with
+              </span>
+              <div className="mt-4">
+                <img
+                  src={logos[currentLogoIndex].src}
+                  alt={logos[currentLogoIndex].alt}
+                  className="h-12 w-auto object-contain animate-fadeIn"
+                  onError={(e) => {
+                    console.error(`Failed to load ${logos[currentLogoIndex].alt}`);
+                    e.target.src = "/assets/fallback.png";
+                  }}
+                />
+              </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Maximise your reach with performance marketing tailored for
-              e-commerce success.
+              Maximise your reach with performance marketing tailored for e-commerce success.
             </p>
-            <a
-              href="#get-started"
-              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+            {/* MODIFIED: Added onClick handler to the Get Started button */}
+            <button
+              onClick={handleGetStarted}
+              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
               aria-label="Launch your campaign starting at ₹4,999"
             >
-              Launch Your Campaign 
-              <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-            </a>
+              <span>Get Started</span>
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            </button>
           </div>
         </section>
-
+        <style jsx>{`
+          @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+          }
+        `}</style>
+        {/* What's Included - Marketplaces Section */}
+        <section
+          className="py-16 px-4 bg-green-50"
+          aria-labelledby="marketplaces-heading"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2
+                id="marketplaces-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Supported Marketplaces
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                Choose from our wide range of marketplace integrations for
+                tailored advertising services
+              </p>
+            </div>
+            
+            {/* Category Tabs */}
+            <div className="flex justify-center mb-8">
+              <div className="inline-flex rounded-md shadow-sm">
+                <button
+                  onClick={() => setActiveCategory("ecommerce")}
+                  className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
+                    activeCategory === "ecommerce"
+                      ? "bg-green-600 text-white"
+                      : "bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  E-commerce
+                </button>
+                <button
+                  onClick={() => setActiveCategory("quick-commerce")}
+                  className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
+                    activeCategory === "quick-commerce"
+                      ? "bg-green-600 text-white"
+                      : "bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  Quick Commerce
+                </button>
+              </div>
+            </div>
+            
+            {/* Marketplace List and Details */}
+            <div className="grid md:grid-cols-12 gap-8">
+              {/* Left Sidebar - Marketplace List */}
+              <div className="md:col-span-3">
+                <div className="bg-white rounded-lg shadow-md p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    {activeCategory === "ecommerce"
+                      ? "E-commerce Platforms"
+                      : "Quick Commerce Platforms"}
+                  </h3>
+                  <div className="space-y-2">
+                    {activeCategory === "ecommerce"
+                      ? ecommerceMarketplaces.map(({ key, name, logo }) => (
+                          <div
+                            key={key}
+                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                              activeMarketplace === key
+                                ? "bg-green-100 text-green-700"
+                                : "hover:bg-green-50 hover:text-green-600"
+                            }`}
+                            onMouseEnter={() => setActiveMarketplace(key)}
+                          >
+                            <div className="flex items-center space-x-3">
+                              <img
+                                src={logo}
+                                alt={`${name} logo`}
+                                className="h-8 w-8 object-contain"
+                                onError={(e) => {
+                                  console.error(`Failed to load ${name} logo`);
+                                  e.target.src = "/assets/fallback.png";
+                                }}
+                              />
+                              <span className="font-medium">{name}</span>
+                            </div>
+                          </div>
+                        ))
+                      : quickCommerceMarketplaces.map(({ key, name, logo }) => (
+                          <div
+                            key={key}
+                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                              activeMarketplace === key
+                                ? "bg-green-100 text-green-700"
+                                : "hover:bg-green-50 hover:text-green-600"
+                            }`}
+                            onMouseEnter={() => setActiveMarketplace(key)}
+                          >
+                            <div className="flex items-center space-x-3">
+                              <img
+                                src={logo}
+                                alt={`${name} logo`}
+                                className="h-8 w-8 object-contain"
+                                onError={(e) => {
+                                  console.error(`Failed to load ${name} logo`);
+                                  e.target.src = "/assets/fallback.png";
+                                }}
+                              />
+                              <span className="font-medium">{name}</span>
+                            </div>
+                          </div>
+                        ))}
+                  </div>
+                </div>
+              </div>
+              {/* Right Content - Marketplace Details */}
+              <div className="md:col-span-9">
+                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                  {activeMarketplace && marketplaces[activeMarketplace] && (
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="flex-1 flex justify-center">
+                          <img
+                            src={marketplaces[activeMarketplace].logo}
+                            alt={`${marketplaces[activeMarketplace].name} logo`}
+                            className="h-24 w-auto object-contain max-w-[280px]"
+                            onError={(e) => {
+                              console.error(
+                                `Failed to load ${marketplaces[activeMarketplace].name} logo`
+                              );
+                              e.target.src = "/assets/fallback.png";
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {marketplaces[activeMarketplace].services.map(
+                          (service, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
+                            >
+                              <CheckCircle className="h-6 w-6 text-green-600" />
+                              <span className="text-gray-700 text-lg">
+                                {service}
+                              </span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                      <div className="mt-8 flex justify-center">
+                        <button
+                          onClick={() =>
+                            navigate(marketplaces[activeMarketplace].href)
+                          }
+                          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
+                        >
+                          <span>
+                            Learn more about{" "}
+                            {marketplaces[activeMarketplace].name}
+                          </span>
+                          <ArrowRight className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* What's Included Section */}
+        <section className="py-16 px-4 bg-white" aria-labelledby="whats-included-heading">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="whats-included-heading" className="text-3xl font-bold text-green-700 mb-4">
+                What's Included
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Advertising & Marketing Services help sellers grow their presence, attract customers, and increase sales through targeted marketing efforts.
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
+              {/* Card 1 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">
+                    Paid Advertising Campaigns
+                  </span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Setting up and managing PPC campaigns on platforms like Amazon Ads, Flipkart Ads, and Google Ads.</li>
+                  <li>Performance-driven campaigns with ROI tracking (e.g., Sponsored Products, Brand Ads).</li>
+                </ul>
+              </div>
+              {/* Card 2 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Users className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">
+                    Social Media Marketing & Influencer Collaborations
+                  </span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Creating promotional content for social media (Instagram, Facebook, Twitter, etc.).</li>
+                  <li>Collaborating with influencers to drive brand awareness and customer acquisition.</li>
+                  <li>Running seasonal social media campaigns (e.g., festive promotions).</li>
+                </ul>
+              </div>
+              {/* Card 3 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <Star className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">
+                    A+ Content & Brand Store Management
+                  </span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Creating enhanced brand content (A+ Content) to improve product listings and conversions on Amazon and Flipkart.</li>
+                  <li>Optimizing brand stores with better visuals and stories to attract more customers.</li>
+                </ul>
+              </div>
+              {/* Card 4 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">
+                    Promotions & Discounts Management
+                  </span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Running platform-specific promotions (discounts, coupons, flash sales).</li>
+                  <li>Managing bundle offers and special deals to increase cart value.</li>
+                </ul>
+              </div>
+              {/* Card 5 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <ArrowRight className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">
+                    Market Expansion Support
+                  </span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Guidance on expanding to other platforms or international markets.</li>
+                  <li>Multi-platform strategy planning for higher visibility and sales.</li>
+                </ul>
+              </div>
+              {/* Card 6 */}
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
+                <div className="flex items-center mb-3">
+                  <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-lg text-gray-900">
+                    Review Management & Reputation Building
+                  </span>
+                </div>
+                <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
+                  <li>Monitoring and responding to reviews.</li>
+                  <li>Encouraging positive reviews through customer engagement campaigns</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* Why Advertising Matters */}
+        <section
+          aria-labelledby="why-advertising-heading"
+          className="py-16 px-4 bg-white"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2
+                id="why-advertising-heading"
+                className="text-3xl font-bold text-gray-900 mb-4"
+              >
+                Why Advertising is a Must
+              </h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+                In today's competitive e-commerce landscape, visibility is key
+                to driving sales. If your product isn't visible, it's likely to
+                be overlooked. Optimised advertising ensures you stand out in
+                crowded marketplaces.
+              </p>
+            </div>
+            <ImageSlider slides={steps} />
+          </div>
+        </section>
         {/* Campaign Setup Includes */}
         <section aria-labelledby="campaign-setup-heading" className="py-16 px-4 bg-green-50">
           <div className="max-w-7xl mx-auto">
@@ -285,31 +720,6 @@ export default function AdvertisingMarketing() {
             </div>
           </div>
         </section>
-
-        {/* Why Advertising Matters */}
-        <section
-          aria-labelledby="why-advertising-heading"
-          className="py-16 px-4 bg-white"
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2
-                id="why-advertising-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
-                Why Advertising is a Must
-              </h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                In today's competitive e-commerce landscape, visibility is key
-                to driving sales. If your product isn't visible, it's likely to
-                be overlooked. Optimised advertising ensures you stand out in
-                crowded marketplaces.
-              </p>
-            </div>
-            <ImageSlider slides={steps} />
-          </div>
-        </section>
-
         {/* Success Story */}
         <section
           aria-labelledby="success-story-heading"
@@ -331,8 +741,8 @@ export default function AdvertisingMarketing() {
             <div className="bg-green-50 rounded-lg p-8">
               <p className="text-gray-700 mb-6">
                 We partnered with a home decor brand to enhance its product
-                visibility through targeted Amazon Sponsored Ads and Flipkart
-                PLA campaigns. By optimising product listings and running
+                visibility through targeted Amazon Sponsored Ads and Flipkart PLA
+                campaigns. By optimising product listings and running
                 seasonal promotions, we helped the brand achieve:
               </p>
               <ul className="space-y-4 mb-6">
@@ -360,78 +770,7 @@ export default function AdvertisingMarketing() {
             </div>
           </div>
         </section>
-
-        {/* Supported Platforms */}
-        <section aria-labelledby="platforms-heading" className="py-16 px-4 bg-green-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="platforms-heading" className="text-3xl font-bold text-gray-900 mb-4">
-                Supported Marketplaces
-              </h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                We optimise campaigns across various leading marketplaces to ensure maximum exposure for your products.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-              {[
-                {
-                  
-                  logo: amazonLogo,
-                  desc: "World's largest e-commerce platform with millions of daily shoppers.",
-                },
-                {
-
-                  logo: flipkartLogo,
-                  desc: "India's leading e-commerce marketplace, offering extensive reach within India.",
-                },
-                {
-                  
-                  logo: meeshoLogo,
-                  desc: "A growing social commerce platform focusing on direct-to-consumer selling via social media channels.",
-                },
-                {
-                  
-                  logo: jiomartLogo,
-                  desc: "Reliance's digital commerce platform, catering to a wide range of consumer goods.",
-                },
-                {
-                  
-                  logo: indiamartLogo,
-                  desc: "A B2B marketplace providing access to bulk buyers and a large network of suppliers.",
-                },
-                {
-                  
-                  logo: snapdealLogo,
-                  desc: "A popular e-commerce platform that serves millions of buyers across India.",
-                },
-              ].map((platform, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl overflow-hidden transform hover:-translate-y-1 transition-all duration-300 shadow-md hover:shadow-xl"
-                >
-                  <div className="bg-green-600 h-2" />
-                  <div className="p-6">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <img
-                        src={platform.logo}
-                        alt={`${platform.name} logo`}
-                        className="h-10 w-auto object-contain"
-                        onError={(e) => {
-                          console.error(`Failed to load ${platform.name} logo`);
-                          e.target.src = "/assets/fallback.png";
-                        }}
-                      />
-                      <h3 className="text-xl font-semibold text-gray-900">{platform.name}</h3>
-                    </div>
-                    <p className="text-gray-600 text-sm">{platform.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-    
+        
         {/* FAQs with Expandable Sections */}
         <section className="py-16 px-4 bg-green-50">
           <div className="max-w-3xl mx-auto">

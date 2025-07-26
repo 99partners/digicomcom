@@ -2,15 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add these to your global CSS file */
 @layer utilities {
-  @keyframes scroll-x {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
-  }
-  .animate-scroll-x {
-    animation: scroll-x 40s linear infinite;
-  }
-
   /* 3D Flip Card Utilities */
   .perspective {
     perspective: 1000px;
@@ -24,11 +17,12 @@
   .backface-hidden {
     backface-visibility: hidden;
   }
-
-  /* Optional icon float Animation */
+  
+  /* Icon float animation */
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
+  
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
