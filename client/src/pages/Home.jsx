@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Puzzle,
   Target,
@@ -29,10 +29,13 @@ import zomatoLogo from "../assets/Meesho1.png";
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Add useNavigate hook
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchLatestBlogs();
   }, []);
+
   const fetchLatestBlogs = async () => {
     try {
       const response = await axios.get(getApiUrl("api/blogs"));
@@ -45,6 +48,23 @@ const Home = () => {
       setLoading(false);
     }
   };
+
+  // Check if user is authenticated
+  const isAuthenticated = () => {
+    // Check if token exists in localStorage or sessionStorage
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    return !!token;
+  };
+
+  // Handle Get Started button click
+  const handleGetStarted = () => {
+    if (isAuthenticated()) {
+      navigate('/dashboard'); // Redirect to dashboard if authenticated
+    } else {
+      navigate('/partnerlogin'); // Redirect to login if not authenticated
+    }
+  };
+
   const testimonials = [
     {
       quote:
@@ -68,6 +88,7 @@ const Home = () => {
       rating: 5,
     },
   ];
+
   const coreServices = [
     {
       icon: Puzzle,
@@ -98,6 +119,7 @@ const Home = () => {
         "We connect you with influencers and allied brands for bundled offerings, joint campaigns, and visibility spikes across platforms.",
     },
   ];
+
   // Logo data array
   const marketplaceLogos = [
     { name: "Amazon", src: amazonLogo, alt: "Amazon Logo" },
@@ -108,6 +130,7 @@ const Home = () => {
     { name: "Swiggy", src: swiggyLogo, alt: "Swiggy Logo" },
     { name: "Zomato", src: zomatoLogo, alt: "Zomato Logo" },
   ];
+
   // Add this with your other state variables
   const [cardsData, setCardsData] = useState([
     {
@@ -220,13 +243,14 @@ const Home = () => {
               marketplaces.
             </p>
             <div className="flex justify-center">
-              <Link
-                to="/partnerlogin"
+              {/* Changed to button with onClick handler */}
+              <button
+                onClick={handleGetStarted}
                 className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold rounded-lg transition-all duration-300 text-sm sm:text-base"
                 aria-label="Get Started with 99Digicom"
               >
                 Get Started
-              </Link>
+              </button>
             </div>
             {/* Logo Scroll Section */}
             <div className="mt-8 sm:mt-12 overflow-hidden pause-on-hover">
@@ -492,7 +516,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
         {/* YouTube Shorts Section - NEW */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -505,7 +528,6 @@ const Home = () => {
                 success
               </p>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {youtubeShorts.map((short) => (
                 <div key={short.id} className="relative group">
@@ -534,7 +556,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
         {/* Testimonials Section */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -673,4 +694,5 @@ const Home = () => {
     </>
   );
 };
+
 export default Home;

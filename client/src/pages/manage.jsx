@@ -1,6 +1,6 @@
 "use client";
-
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Added this import
 import {
   Settings,
   ArrowRight,
@@ -31,11 +31,10 @@ import instamartLogo from "../assets/Instamart.png";
 import bigbasketLogo from "../assets/BigBasket.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
-
 export default function AccountManagementServices() {
+  const navigate = useNavigate();
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("ecommerce");
-
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
     { src: flipkartLogo, alt: "Flipkart logo" },
@@ -44,6 +43,22 @@ export default function AccountManagementServices() {
     { src: meeshoLogo, alt: "Meesho logo" },
     { src: bigbasketLogo, alt: "BigBasket logo" },
   ];
+  
+  // Add authentication check function
+  const isAuthenticated = () => {
+    // Check if token exists in localStorage or sessionStorage
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    return !!token;
+  };
+  
+  // Handle Get Started button click
+  const handleGetStarted = () => {
+    if (isAuthenticated()) {
+      navigate('/dashboard'); // Redirect to dashboard if authenticated
+    } else {
+      navigate('/partnerlogin'); // Redirect to login if not authenticated
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,7 +67,6 @@ export default function AccountManagementServices() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -72,9 +86,7 @@ export default function AccountManagementServices() {
     additionalNotes: "",
     consent: false,
   });
-
   const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
-
   const marketplaces = {
     amazon: {
       name: "Amazon",
@@ -176,15 +188,12 @@ export default function AccountManagementServices() {
       category: "quick-commerce",
     },
   };
-
   const ecommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "ecommerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
-
   const quickCommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "quick-commerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
-
   const steps = [
     {
       src: AMS1,
@@ -211,11 +220,13 @@ export default function AccountManagementServices() {
       description: "Stay connected via WhatsApp for real-time updates.",
     },
   ];
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(getApiUrl("api/ams/submit"), formData);
+      const response = await axios.post(
+        getApiUrl("api/ams/submit"),
+        formData
+      );
       const data = await response.data;
       if (data.success) {
         alert(
@@ -248,7 +259,6 @@ export default function AccountManagementServices() {
       alert("Error submitting form. Please try again.");
     }
   };
-
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
@@ -257,14 +267,12 @@ export default function AccountManagementServices() {
         : prev[field].filter((item) => item !== value),
     }));
   };
-
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
-
   return (
     <>
       <SEO
@@ -276,53 +284,63 @@ export default function AccountManagementServices() {
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
         <section className="pt-24 pb-16 px-4" aria-labelledby="hero-heading">
-  <div className="max-w-7xl mx-auto text-center">
-    <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-      <Settings className="h-4 w-4" aria-hidden="true" />
-      <span>Seller Account Management</span>
-    </div>
-    <h1
-      id="hero-heading"
-      className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
-    >
-      <span className="flex items-center flex-wrap justify-center">
-        <span className="text-green-600 mr-2">Manage</span> Your Online Store on
-      </span>
-      <div className="mt-4">
-        <img
-          src={logos[currentLogoIndex].src}
-          alt={logos[currentLogoIndex].alt}
-          className="h-12 w-auto object-contain animate-fadeIn"
-          onError={(e) => {
-            console.error(`Failed to load ${logos[currentLogoIndex].alt}`);
-            e.target.src = "/assets/fallback.png";
-          }}
-        />
-      </div>
-    </h1>
-    <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-      Let us handle daily operations, listings, and reports so you can focus on business.
-    </p>
-    <a
-      href="#get-started"
-      className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-      aria-label="Start with account management services"
-    >
-      Get Started
-      <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-    </a>
-  </div>
-</section>
-<style jsx>{`
-  @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-`}</style>
-
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Settings className="h-4 w-4" aria-hidden="true" />
+              <span>Seller Account Management</span>
+            </div>
+            <h1
+              id="hero-heading"
+              className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
+            >
+              <span className="flex items-center flex-wrap justify-center">
+                <span className="text-green-600 mr-2">Manage</span> Your Online
+                Store on
+              </span>
+              <div className="mt-4">
+                <img
+                  src={logos[currentLogoIndex].src}
+                  alt={logos[currentLogoIndex].alt}
+                  className="h-12 w-auto object-contain animate-fadeIn"
+                  onError={(e) => {
+                    console.error(
+                      `Failed to load ${logos[currentLogoIndex].alt}`
+                    );
+                    e.target.src = "/assets/fallback.png";
+                  }}
+                />
+              </div>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Let us handle daily operations, listings, and reports so you can
+              focus on business.
+            </p>
+            {/* MODIFIED: Added onClick handler to the Get Started button */}
+            <button
+              onClick={handleGetStarted}
+              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
+              aria-label="Start with account management services"
+            >
+              <span>Get Started</span>
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+        </section>
+        <style jsx>{`
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+          }
+        `}</style>
         {/* Marketplace Panel Section (copied from platformEnable.jsx) */}
         <section
           className="py-16 px-4 bg-green-50"
@@ -487,16 +505,22 @@ export default function AccountManagementServices() {
             </div>
           </div>
         </section>
-
         {/* Services Included */}
-        <section className="py-16 px-4 bg-green-50" aria-labelledby="whats-included-heading">
+        <section
+          className="py-16 px-4 bg-green-50"
+          aria-labelledby="whats-included-heading"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 id="whats-included-heading" className="text-3xl font-bold text-green-700 mb-4">
+              <h2
+                id="whats-included-heading"
+                className="text-3xl font-bold text-green-700 mb-4"
+              >
                 What's Included
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Account Management Services (AMS) help sellers manage their accounts and day-to-day operations across marketplaces.
+                Account Management Services (AMS) help sellers manage their
+                accounts and day-to-day operations across marketplaces.
               </p>
             </div>
             <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
@@ -504,21 +528,33 @@ export default function AccountManagementServices() {
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Settings className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Product Listing Maintenance</span>
+                  <span className="font-semibold text-lg text-gray-900">
+                    Product Listing Maintenance
+                  </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Regular updates to product listings (price changes, stock updates, new variants).</li>
-                  <li>Optimization of product content to keep up with marketplace changes.</li>
+                  <li>
+                    Regular updates to product listings (price changes, stock
+                    updates, new variants).
+                  </li>
+                  <li>
+                    Optimization of product content to keep up with marketplace
+                    changes.
+                  </li>
                 </ul>
               </div>
               {/* Card 2 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Inventory & Stock Management</span>
+                  <span className="font-semibold text-lg text-gray-900">
+                    Inventory & Stock Management
+                  </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Monitoring inventory levels to avoid out-of-stock issues.</li>
+                  <li>
+                    Monitoring inventory levels to avoid out-of-stock issues.
+                  </li>
                   <li>Proactive stock alerts for timely restocking.</li>
                   <li>Syncing inventory across platforms.</li>
                 </ul>
@@ -527,51 +563,85 @@ export default function AccountManagementServices() {
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Order Processing & Return Management</span>
+                  <span className="font-semibold text-lg text-gray-900">
+                    Order Processing & Return Management
+                  </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Handling order processing (packing, dispatch) for smooth fulfillment.</li>
-                  <li>Managing returns, exchanges, and refunds according to platform policies.</li>
+                  <li>
+                    Handling order processing (packing, dispatch) for smooth
+                    fulfillment.
+                  </li>
+                  <li>
+                    Managing returns, exchanges, and refunds according to
+                    platform policies.
+                  </li>
                 </ul>
               </div>
               {/* Card 4 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Headphones className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Customer Service Management</span>
+                  <span className="font-semibold text-lg text-gray-900">
+                    Customer Service Management
+                  </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Responding to customer queries and issues in a timely manner.</li>
-                  <li>Handling product feedback and customer complaints to maintain a good seller rating.</li>
+                  <li>
+                    Responding to customer queries and issues in a timely
+                    manner.
+                  </li>
+                  <li>
+                    Handling product feedback and customer complaints to
+                    maintain a good seller rating.
+                  </li>
                 </ul>
               </div>
               {/* Card 5 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <PieChart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Performance Monitoring & Reporting</span>
+                  <span className="font-semibold text-lg text-gray-900">
+                    Performance Monitoring & Reporting
+                  </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Tracking performance metrics (sales, returns, reviews, customer ratings).</li>
-                  <li>Monthly reports to help sellers track growth and identify areas for improvement.</li>
-                  <li>Handling account health issues (suspensions, penalties, etc.).</li>
+                  <li>
+                    Tracking performance metrics (sales, returns, reviews,
+                    customer ratings).
+                  </li>
+                  <li>
+                    Monthly reports to help sellers track growth and identify
+                    areas for improvement.
+                  </li>
+                  <li>
+                    Handling account health issues (suspensions, penalties,
+                    etc.).
+                  </li>
                 </ul>
               </div>
               {/* Card 6 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Compliance & Policy Monitoring</span>
+                  <span className="font-semibold text-lg text-gray-900">
+                    Compliance & Policy Monitoring
+                  </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Ensuring compliance with platform policies to avoid penalties.</li>
-                  <li>Updating product listings according to platform-specific requirements</li>
+                  <li>
+                    Ensuring compliance with platform policies to avoid
+                    penalties.
+                  </li>
+                  <li>
+                    Updating product listings according to platform-specific
+                    requirements
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
         </section>
-
         {/* Key Benefits */}
         <section
           className="py-16 px-4 bg-white"
@@ -593,7 +663,6 @@ export default function AccountManagementServices() {
             <ImageSlider slides={steps} />
           </div>
         </section>
-
         {/* Success Story */}
         <section
           className="py-16 px-4 bg-white"

@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import { getApiUrl } from "../config/api.config";
 import SEO from "../components/SEO";
+// Import local logos
 import PE1 from "../assets/PE1.png";
 import PE2 from "../assets/PE2.png";
 import PE3 from "../assets/PE3.png";
@@ -29,13 +30,11 @@ import instamartLogo from "../assets/Instamart.png";
 import bigbasketLogo from "../assets/BigBasket.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
-
 export default function PlatformEnablement() {
   const navigate = useNavigate();
   const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("ecommerce");
-
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
     { src: flipkartLogo, alt: "Flipkart logo" },
@@ -44,6 +43,22 @@ export default function PlatformEnablement() {
     { src: meeshoLogo, alt: "Meesho logo" },
     { src: bigbasketLogo, alt: "BigBasket logo" },
   ];
+  
+  // Add authentication check function
+  const isAuthenticated = () => {
+    // Check if token exists in localStorage or sessionStorage
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    return !!token;
+  };
+  
+  // Handle Get Started button click
+  const handleGetStarted = () => {
+    if (isAuthenticated()) {
+      navigate('/dashboard'); // Redirect to dashboard if authenticated
+    } else {
+      navigate('/partnerlogin'); // Redirect to login if not authenticated
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,7 +67,6 @@ export default function PlatformEnablement() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
   // Add category property to marketplaces
   const marketplaces = {
     amazon: {
@@ -105,7 +119,7 @@ export default function PlatformEnablement() {
       href: "/partners/marketplaces/snapdeal",
       services: [
         "Snapdeal seller registration & product listing",
-        "Integration with Snapdeal’s payment & shipping systems",
+        "Integration with Snapdeal's payment & shipping systems",
         "Catalog optimization based on Snapdeal policies",
       ],
       category: "ecommerce"
@@ -117,7 +131,7 @@ export default function PlatformEnablement() {
       services: [
         "Blinkit seller registration & store setup",
         "Product catalog listing (grocery, FMCG products)",
-        "Blinkit’s delivery zone & logistics integration",
+        "Blinkit's delivery zone & logistics integration",
       ],
       category: "quick-commerce"
     },
@@ -128,7 +142,7 @@ export default function PlatformEnablement() {
       services: [
         "Onboarding on Instamart (through partners like Flipkart)",
         "Listing products, pricing, and description optimization",
-        "Integration with Instamart’s logistics & payment systems",
+        "Integration with Instamart's logistics & payment systems",
       ],
       category: "quick-commerce"
     },
@@ -139,7 +153,7 @@ export default function PlatformEnablement() {
       services: [
         "Zepto seller registration and onboarding support",
         "Product upload with categorization for fast delivery",
-        "Integration with Zepto’s delivery systems for quick turnaround",
+        "Integration with Zepto's delivery systems for quick turnaround",
       ],
       category: "quick-commerce"
     },
@@ -150,20 +164,17 @@ export default function PlatformEnablement() {
       services: [
         "Bigbasket seller registration & platform setup",
         "Grocery product catalog setup (packaging, pricing, bulk uploads)",
-        "Integration with Bigbasket’s payment and logistics systems",
+        "Integration with Bigbasket's payment and logistics systems",
       ],
       category: "quick-commerce"
     },
   };
-
   const ecommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "ecommerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
-
   const quickCommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "quick-commerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
-
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -183,9 +194,7 @@ export default function PlatformEnablement() {
     additionalNotes: "",
     consent: false,
   });
-
   const [currentStep, setCurrentStep] = useState(0);
-
   const steps = [
     {
       src: PE1,
@@ -212,7 +221,6 @@ export default function PlatformEnablement() {
       description: "Prevent common seller errors.",
     },
   ];
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -252,7 +260,6 @@ export default function PlatformEnablement() {
       alert("Error submitting form. Please try again.");
     }
   };
-
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
@@ -261,22 +268,18 @@ export default function PlatformEnablement() {
         : prev[field].filter((item) => item !== value),
     }));
   };
-
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
-
   const handlePrev = () => {
     setCurrentStep((prev) => (prev > 0 ? prev - 1 : 3));
   };
-
   const handleNext = () => {
     setCurrentStep((prev) => (prev < 3 ? prev + 1 : 0));
   };
-
   return (
     <>
       <SEO
@@ -288,62 +291,44 @@ export default function PlatformEnablement() {
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
         <section className="pt-24 pb-16 px-4" aria-labelledby="hero-heading">
-  <div className="max-w-7xl mx-auto text-center">
-    <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-      <Store className="h-4 w-4" aria-hidden="true" />
-      <span>Seller Account Setup</span>
-    </div>
-    <h1
-      id="hero-heading"
-      className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
-    >
-      <span className="flex items-center flex-wrap justify-center">
-        <span className="text-green-600 mr-2">Launch</span> Your Online Store on
-      </span>
-      <div className="mt-4">
-        <img
-          src={logos[currentLogoIndex].src}
-          alt={logos[currentLogoIndex].alt}
-          className="h-12 w-auto object-contain animate-fadeIn"
-          onError={(e) => {
-            console.error(`Failed to load ${logos[currentLogoIndex].alt}`);
-            e.target.src = "/assets/fallback.png";
-          }}
-        />
-      </div>
-    </h1>
-    <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-      Start your e-commerce journey with our expert platform enablement services.
-    </p>
-    <a
-      href="#get-started"
-      className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
-      aria-label="Get started with platform enablement services"
-    >
-      Get Started 
-      <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-    </a>
-  </div>
-</section>
-<style jsx>{`
-  @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-`}</style>
-        <style jsx>{`
-          @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
-          }
-          .animate-fadeIn {
-            animation: fadeIn 0.5s ease-in-out;
-          }
-        `}</style>
-
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Store className="h-4 w-4" aria-hidden="true" />
+              <span>Seller Account Setup</span>
+            </div>
+            <h1
+              id="hero-heading"
+              className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
+            >
+              <span className="flex items-center flex-wrap justify-center">
+                <span className="text-green-600 mr-2">Launch</span> Your Online Store on
+              </span>
+              <div className="mt-4">
+                <img
+                  src={logos[currentLogoIndex].src}
+                  alt={logos[currentLogoIndex].alt}
+                  className="h-12 w-auto object-contain animate-fadeIn"
+                  onError={(e) => {
+                    console.error(`Failed to load ${logos[currentLogoIndex].alt}`);
+                    e.target.src = "/assets/fallback.png";
+                  }}
+                />
+              </div>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Start your e-commerce journey with our expert platform enablement services.
+            </p>
+            {/* MODIFIED: Added onClick handler to the Get Started button */}
+            <button
+              onClick={handleGetStarted}
+              className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
+              aria-label="Start with account management services"
+            >
+              <span>Get Started</span>
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+        </section>
         {/* What's Included - Marketplaces Section */}
         <section
           className="py-16 px-4 bg-green-50"
@@ -501,8 +486,6 @@ export default function PlatformEnablement() {
             </div>
           </div>
         </section>
-
-        
         {/* What's Included Section */}
         <section className="py-16 px-4 bg-white" aria-labelledby="whats-included-heading">
           <div className="max-w-7xl mx-auto">
@@ -586,7 +569,6 @@ export default function PlatformEnablement() {
             </div>
           </div>
         </section>
-
         {/* Why Choose Us */}
         <section
           className="py-16 px-4 bg-white"
@@ -601,14 +583,12 @@ export default function PlatformEnablement() {
                 Why Choose 99digicom for Account Setup?
               </h2>
               <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Start selling online quickly and confidently with our expert
-                support.
+                Start selling online quickly and confidently with our expert support.
               </p>
             </div>
             <ImageSlider slides={steps} />
           </div>
         </section>
-
 
         {/* Client Testimonials */}
         <section
