@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  Mail,
-  Linkedin,
-  Instagram,
-  Youtube,
-  Twitter,
-} from "lucide-react";
+import { Mail, Linkedin, Instagram, Youtube, Twitter } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import mapImage from "../assets/map.png"; // your image file
@@ -185,7 +179,7 @@ const Footer = () => {
                 <img
                   src={mapImage}
                   alt="Our global locations"
-                  className="rounded-md shadow-md max-w-xs w-full h-auto"
+                  className="rounded-md shadow-md max-w-md w-full h-auto"
                   loading="lazy"
                 />
               </div>
@@ -257,7 +251,8 @@ const Footer = () => {
                   Stay Connected
                 </p>
                 <p className="text-xs sm:text-sm text-gray-300">
-                  Subscribe to our newsletter for updates on new partnerships and opportunities.
+                  Subscribe to our newsletter for updates on new partnerships
+                  and opportunities.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-2">
@@ -318,7 +313,10 @@ const Footer = () => {
                         aria-label={label}
                         className="w-9 h-9 bg-gray-800 rounded-md flex items-center justify-center hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 transition-transform hover:scale-110"
                       >
-                        <Icon className="w-4 h-4 text-white" aria-hidden="true" />
+                        <Icon
+                          className="w-4 h-4 text-white"
+                          aria-hidden="true"
+                        />
                       </a>
                     ))}
                   </div>
