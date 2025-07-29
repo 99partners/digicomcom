@@ -48,39 +48,87 @@ const Jiomart = () => {
 
   const faqCategories = [
     {
-      title: 'General',
+      title: 'Registration & Account',
       faqs: [
-        { q: 'What is JioMart Seller Portal?', a: 'JioMart Seller Portal is a platform that enables you to list and sell your products on JioMart marketplace.' },
-        { q: 'How does selling on JioMart work?', a: 'Selling on JioMart is simple. First, list the products you want to sell. Customers see your products and make purchases. You receive a notification to ship the product. After delivery, JioMart will deposit the funds into your bank account after deducting fees.' },
-        { q: 'What products can I sell on JioMart?', a: 'You can sell items in categories like groceries, home essentials, electronics, fashion, beauty products, and more. Certain categories may require prior approval.' },
-        { q: 'What do I need to register as a seller on JioMart?', a: 'You will need: Your business details, contact details (email and phone), basic business information, tax registration details (PAN and GST), and product details.' },
-        { q: 'I don\'t have a website, can I still sell on JioMart?', a: 'Yes, you don\'t need a website to sell on JioMart. Once registered, you\'ll have access to the Seller Portal to list your products.' },
+        { 
+          q: 'How do I register on JioMart?', 
+          a: 'Click Sign In at the top-right, fill in your details, verify via OTP sent to your mobile, and you\'re ready to shop.' 
+        },
+        { 
+          q: 'Do I need to register to shop?', 
+          a: 'Yes. Browsing is possible, but you must register or log in during checkout.' 
+        }
       ]
     },
     {
-      title: 'Fees and Charges',
+      title: 'Ordering',
       faqs: [
-        { q: 'What are the charges for selling on JioMart?', a: 'JioMart charges a commission fee on each sale. The exact percentage varies by category. Listing products is free.' },
-        { q: 'How can I calculate my profitability?', a: 'You can calculate your profits by subtracting the product cost, shipping fees, and JioMart commission from your selling price.' },
-        { q: 'How and when do I get paid?', a: 'Payments are typically settled within 7-10 days after delivery. Funds are transferred directly to your registered bank account.' },
+        { 
+          q: 'How can I search for products?', 
+          a: 'Use the site\'s search bar or navigate category pages.' 
+        },
+        { 
+          q: 'How do I know if a product is in stock?', 
+          a: 'Add items to your cart and enter your delivery PIN code—the site will then show availability based on that address.' 
+        },
+        { 
+          q: 'Can I modify my order after placing it?', 
+          a: 'No modifications once placed. But you can cancel before dispatch or initiate a return after delivery.' 
+        }
       ]
     },
     {
-      title: 'Managing your Account',
+      title: 'Payment',
       faqs: [
-        { q: 'How do I list my products on JioMart?', a: 'You can list products individually through the Seller Portal or use bulk upload tools for larger catalogs.' },
-        { q: 'How do I manage my orders on JioMart?', a: 'You can view and manage all orders through the "Orders" section in the Seller Portal. Notifications will alert you to new orders.' },
-        { q: 'How can I grow my business on JioMart?', a: 'You can grow by optimizing listings, participating in promotions, maintaining high seller ratings, and leveraging JioMart\'s marketing tools.' },
+        { 
+          q: 'What payment methods does JioMart accept?', 
+          a: 'UPI, credit/debit cards, net banking, e-wallets, meal cards, Pay Later, and Cash on Delivery.' 
+        },
+        { 
+          q: 'Can I change my payment method after placing the order?', 
+          a: 'No, once an order is placed, the payment option cannot be changed.' 
+        },
+        { 
+          q: 'When will I receive a refund?', 
+          a: 'Refunds can take up to 7 working days, depending on the payment method. COD refunds are credited to your JioMart wallet.' 
+        }
       ]
     },
     {
-      title: 'Services',
+      title: 'Delivery & Charges',
       faqs: [
-        { q: 'Does JioMart offer protection against fraud?', a: 'Yes, JioMart has measures in place to protect sellers against fraudulent orders and payment issues.' },
-        { q: 'Can customers leave feedback and why is it important?', a: 'Yes, customers can leave feedback. High ratings are crucial as they influence buyer decisions and your visibility on the platform.' },
-        { q: 'Where can I get JioMart branded packaging material?', a: 'You can purchase packaging materials through the Seller Portal or from recommended suppliers listed in the resources section.' },
+        { 
+          q: 'Are delivery fees applicable?', 
+          a: 'Orders below ₹250 (in selected categories) incur a ₹40 fee; orders above ₹250 are free. New users get the first three orders delivery-free.' 
+        },
+        { 
+          q: 'Does JioMart deliver to my area?', 
+          a: 'Delivery availability is shown automatically based on your entered PIN code.' 
+        }
       ]
     },
+    {
+      title: 'Returns & Cancellation',
+      faqs: [
+        { 
+          q: 'How do I cancel an order?', 
+          a: 'Cancel via My Orders before dispatch. After dispatch, contact Customer Support (you may still reject delivery). Cancellation of items like flowers or cakes may not be allowed.' 
+        },
+        { 
+          q: 'How do returns and refunds work?', 
+          a: 'Returns must be requested within the permitted window and product eligibility. You can raise a return request via the Help section under My Orders, and may need to provide photos or videos. Refunds are processed after verification.' 
+        }
+      ]
+    },
+    {
+      title: 'Contact & Support',
+      faqs: [
+        { 
+          q: 'How can I contact JioMart for help?', 
+          a: 'Reach support via WhatsApp 70003 70003 or call 1800 890 1222, available every day from 8:00 AM to 8:00 PM. You can also email at customer.support@jiomart.com' 
+        }
+      ]
+    }
   ];
 
   return (
