@@ -19,7 +19,6 @@ import { Helmet } from "react-helmet";
 import AM1 from "../assets/A&M1.png";
 import AM2 from "../assets/A&M2.png";
 import AM3 from "../assets/A&M3.png";
-// Add these imports for marketplace logos
 import amazonLogo from "../assets/Amazon.png";
 import flipkartLogo from "../assets/Flipkart.png";
 import ondcLogo from "../assets/ONDC1.png";
@@ -35,18 +34,8 @@ import ImageSlider from '../components/ImageSlider';
 export default function AdvertisingMarketing() {
   const navigate = useNavigate();
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
-  const [activeCategory, setActiveCategory] = useState("ecommerce");
-  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
-  
-  // Update active marketplace when category changes
-  useEffect(() => {
-    if (activeCategory === "ecommerce") {
-      setActiveMarketplace("amazon");
-    } else if (activeCategory === "quick-commerce") {
-      setActiveMarketplace("jiomart");
-    }
-  }, [activeCategory]);
-  
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon");
+
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
     { src: flipkartLogo, alt: "Flipkart logo" },
@@ -55,23 +44,20 @@ export default function AdvertisingMarketing() {
     { src: meeshoLogo, alt: "Meesho logo" },
     { src: bigbasketLogo, alt: "BigBasket logo" },
   ];
-  
-  // Add authentication check function
+
   const isAuthenticated = () => {
-    // Check if token exists in localStorage or sessionStorage
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     return !!token;
   };
-  
-  // Handle Get Started button click
+
   const handleGetStarted = () => {
     if (isAuthenticated()) {
-      navigate('/dashboard'); // Redirect to dashboard if authenticated
+      navigate('/dashboard');
     } else {
-      navigate('/partnerlogin'); // Redirect to login if not authenticated
+      navigate('/partnerlogin');
     }
   };
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const interval = setInterval(() => {
@@ -79,7 +65,7 @@ export default function AdvertisingMarketing() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-  
+
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -98,7 +84,7 @@ export default function AdvertisingMarketing() {
     additionalNotes: "",
     consent: false,
   });
-  
+
   const marketplaces = {
     amazon: {
       name: "Amazon",
@@ -109,18 +95,18 @@ export default function AdvertisingMarketing() {
         "Amazon Prime Day/Seasonal promotions management",
         "Enhanced Brand Content (EBC) for better visibility",
       ],
-      category: "ecommerce" // Added category
+      category: "ecommerce"
     },
     flipkart: {
       name: "Flipkart",
       logo: flipkartLogo,
       href: "/partners/marketplaces/flipkart",
       services: [
-        "KFlipkart Ads (PPC campaigns, Smart Ads) management",
-        " Promotions and discount strategy for visibility",
+        "Flipkart Ads (PPC campaigns, Smart Ads) management",
+        "Promotions and discount strategy for visibility",
         "Flipkart Seller Hub analytics and insights for growth",
       ],
-      category: "ecommerce" // Added category
+      category: "ecommerce"
     },
     meesho: {
       name: "Meesho",
@@ -128,10 +114,10 @@ export default function AdvertisingMarketing() {
       href: "/partners/marketplaces/meesho",
       services: [
         "Social media integration and influencer marketing",
-        " Meesho Boost campaigns for higher reach",
+        "Meesho Boost campaigns for higher reach",
         "Targeted sales during Meesho's seasonal campaigns",
       ],
-      category: "ecommerce" // Added category
+      category: "ecommerce"
     },
     snapdeal: {
       name: "Snapdeal",
@@ -140,9 +126,9 @@ export default function AdvertisingMarketing() {
       services: [
         "Snapdeal Ads campaigns setup and management",
         "Participation in Snapdeal's 'Srinivasa Sale' & other promotions",
-        " Dynamic pricing and offers management to boost sales",
+        "Dynamic pricing and offers management to boost sales",
       ],
-      category: "ecommerce" // Added category
+      category: "ecommerce"
     },
     jiomart: {
       name: "JioMart",
@@ -150,32 +136,32 @@ export default function AdvertisingMarketing() {
       href: "/partners/marketplaces/jiomart",
       services: [
         "Co-branded marketing initiatives (Jio partner promotions)",
-        "Jiomart-specific advertising and promotional activities",
+        "JioMart-specific advertising and promotional activities",
         "Engaging with Jio ecosystem users for broader reach",
       ],
-      category: "quick-commerce" // Added category
+      category: "quick-commerce"
     },
-    instamart : {
+    instamart: {
       name: "Instamart",
       logo: instamartLogo,
       href: "/partners/marketplaces/instamart",
       services: [
         "Flash sales, promotional discounts, and marketing campaigns",
-"Boosting high-demand products with Instamart promotions",
-"Cross-platform visibility with Flipkart's and Instamart's collaboration",
+        "Boosting high-demand products with Instamart promotions",
+        "Cross-platform visibility with Flipkart's and Instamart's collaboration",
       ],
-      category: "quick-commerce" // Added category
+      category: "quick-commerce"
     },
     bigbasket: {
       name: "BigBasket",
       logo: bigbasketLogo,
       href: "/partners/marketplaces/bigbasket",
       services: [
-        "Bigbasket Ads and campaigns for featured products",
-        "Promotions tied to Bigbasket's seasonal events and offers",
+        "BigBasket Ads and campaigns for featured products",
+        "Promotions tied to BigBasket's seasonal events and offers",
         "Cross-selling and bundling strategies for grocery packages",
       ],
-      category: "quick-commerce" // Added category
+      category: "quick-commerce"
     },
     blinkit: {
       name: "Blinkit",
@@ -186,7 +172,7 @@ export default function AdvertisingMarketing() {
         "Collaborative marketing campaigns for local areas",
         "Special offers and deals during peak hours for better visibility",
       ],
-      category: "quick-commerce" // Added category
+      category: "quick-commerce"
     },
     zepto: {
       name: "Zepto",
@@ -197,15 +183,18 @@ export default function AdvertisingMarketing() {
         "Promotional partnerships for high-priority products",
         "Collaborations with local influencers to enhance reach",
       ],
-      category: "quick-commerce" // Added category
+      category: "quick-commerce"
     },
   };
+
   const ecommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "ecommerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
+
   const quickCommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "quick-commerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
+
   const steps = [
     {
       src: AM1,
@@ -228,6 +217,7 @@ export default function AdvertisingMarketing() {
         "Attract customers who are ready to buy, using targeted campaigns to focus on high-conversion keywords and ads aimed at active shoppers.",
     },
   ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -266,6 +256,7 @@ export default function AdvertisingMarketing() {
       alert("Error submitting form. Please try again.");
     }
   };
+
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
@@ -274,25 +265,14 @@ export default function AdvertisingMarketing() {
         : prev[field].filter((item) => item !== value),
     }));
   };
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
-  const handlePrev = () => {
-    setCurrentStep((prev) => (prev > 0 ? prev - 1 : 2));
-  };
-  const handleNext = () => {
-    setCurrentStep((prev) => (prev < 2 ? prev + 1 : 0));
-  };
-  
-  // Update the category change handlers to set default marketplaces
-  const handleCategoryChange = (category) => {
-    setActiveCategory(category);
-    // The useEffect will handle setting the default marketplace
-  };
-  
+
   return (
     <>
       <Helmet>
@@ -362,7 +342,6 @@ export default function AdvertisingMarketing() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Maximise your reach with performance marketing tailored for e-commerce success.
             </p>
-            {/* MODIFIED: Added onClick handler to the Get Started button */}
             <button
               onClick={handleGetStarted}
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
@@ -396,151 +375,114 @@ export default function AdvertisingMarketing() {
                 Supported Marketplaces
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
-                Choose from our wide range of marketplace integrations for
-                tailored advertising services
+                Choose from our wide range of marketplace integrations for tailored advertising services
               </p>
             </div>
-            
-            {/* Category Tabs */}
-            <div className="flex justify-center mb-8">
-              <div className="inline-flex rounded-md shadow-sm">
-                <button
-                  onClick={() => handleCategoryChange("ecommerce")}
-                  className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
-                    activeCategory === "ecommerce"
-                      ? "bg-green-600 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Left Column - E-commerce Platforms */}
+              <div className="lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <ShoppingCart className="h-5 w-5 mr-2 text-green-600" />
                   E-commerce
-                </button>
-                <button
-                  onClick={() => handleCategoryChange("quick-commerce")}
-                  className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
-                    activeCategory === "quick-commerce"
-                      ? "bg-green-600 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Quick Commerce
-                </button>
-              </div>
-            </div>
-            
-            {/* Marketplace List and Details */}
-            <div className="grid md:grid-cols-12 gap-8">
-              {/* Left Sidebar - Marketplace List */}
-              <div className="md:col-span-3">
-                <div className="bg-white rounded-lg shadow-md p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    {activeCategory === "ecommerce"
-                      ? "E-commerce Platforms"
-                      : "Quick Commerce Platforms"}
-                  </h3>
-                  <div className="space-y-2">
-                    {activeCategory === "ecommerce"
-                      ? ecommerceMarketplaces.map(({ key, name, logo }) => (
-                          <div
-                            key={key}
-                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                              activeMarketplace === key
-                                ? "bg-green-100 text-green-700"
-                                : "hover:bg-green-50 hover:text-green-600"
-                            }`}
-                            onMouseEnter={() => setActiveMarketplace(key)}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <img
-                                src={logo}
-                                alt={`${name} logo`}
-                                className="h-8 w-8 object-contain"
-                                onError={(e) => {
-                                  console.error(`Failed to load ${name} logo`);
-                                  e.target.src = "/assets/fallback.png";
-                                }}
-                              />
-                              <span className="font-medium">{name}</span>
-                            </div>
-                          </div>
-                        ))
-                      : quickCommerceMarketplaces.map(({ key, name, logo }) => (
-                          <div
-                            key={key}
-                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                              activeMarketplace === key
-                                ? "bg-green-100 text-green-700"
-                                : "hover:bg-green-50 hover:text-green-600"
-                            }`}
-                            onMouseEnter={() => setActiveMarketplace(key)}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <img
-                                src={logo}
-                                alt={`${name} logo`}
-                                className="h-8 w-8 object-contain"
-                                onError={(e) => {
-                                  console.error(`Failed to load ${name} logo`);
-                                  e.target.src = "/assets/fallback.png";
-                                }}
-                              />
-                              <span className="font-medium">{name}</span>
-                            </div>
-                          </div>
-                        ))}
-                  </div>
-                </div>
-              </div>
-              {/* Right Content - Marketplace Details */}
-              <div className="md:col-span-9">
-                <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                  {activeMarketplace && marketplaces[activeMarketplace] && (
-                    <div className="p-8">
-                      <div className="flex items-center justify-between mb-8">
-                        <div className="flex-1 flex justify-center">
-                          <img
-                            src={marketplaces[activeMarketplace].logo}
-                            alt={`${marketplaces[activeMarketplace].name} logo`}
-                            className="h-24 w-auto object-contain max-w-[280px]"
-                            onError={(e) => {
-                              console.error(
-                                `Failed to load ${marketplaces[activeMarketplace].name} logo`
-                              );
-                              e.target.src = "/assets/fallback.png";
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-6">
-                        {marketplaces[activeMarketplace].services.map(
-                          (service, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
-                            >
-                              <CheckCircle className="h-6 w-6 text-green-600" />
-                              <span className="text-gray-700 text-lg">
-                                {service}
-                              </span>
-                            </div>
-                          )
-                        )}
-                      </div>
-                      <div className="mt-8 flex justify-center">
-                        <button
-                          onClick={() =>
-                            navigate(marketplaces[activeMarketplace].href)
-                          }
-                          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
-                        >
-                          <span>
-                            Learn more about{" "}
-                            {marketplaces[activeMarketplace].name}
-                          </span>
-                          <ArrowRight className="h-5 w-5" />
-                        </button>
+                </h3>
+                <div className="space-y-2">
+                  {ecommerceMarketplaces.map(({ key, name, logo }) => (
+                    <div
+                      key={key}
+                      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                        activeMarketplace === key
+                          ? "bg-green-100 text-green-700"
+                          : "hover:bg-green-50 hover:text-green-600"
+                      }`}
+                      onMouseEnter={() => setActiveMarketplace(key)}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <img
+                          src={logo}
+                          alt={`${name} logo`}
+                          className="h-8 w-8 object-contain"
+                          onError={(e) => {
+                            console.error(`Failed to load ${name} logo`);
+                            e.target.src = "/assets/fallback.png";
+                          }}
+                        />
+                        <span className="font-medium">{name}</span>
                       </div>
                     </div>
-                  )}
+                  ))}
+                </div>
+              </div>
+              {/* Center Column - Content */}
+              <div className="lg:col-span-6 bg-white rounded-lg shadow-md overflow-hidden">
+                {activeMarketplace && marketplaces[activeMarketplace] && (
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-8">
+                      <div className="flex-1 flex justify-center">
+                        <img
+                          src={marketplaces[activeMarketplace].logo}
+                          alt={`${marketplaces[activeMarketplace].name} logo`}
+                          className="h-24 w-auto object-contain max-w-[280px]"
+                          onError={(e) => {
+                            console.error(`Failed to load ${marketplaces[activeMarketplace].name} logo`);
+                            e.target.src = "/assets/fallback.png";
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {marketplaces[activeMarketplace].services.map((service, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
+                        >
+                          <CheckCircle className="h-6 w-6 text-green-600" />
+                          <span className="text-gray-700 text-lg">{service}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-8 flex justify-center">
+                      <button
+                        onClick={() => navigate(marketplaces[activeMarketplace].href)}
+                        className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
+                      >
+                        <span>Learn more about {marketplaces[activeMarketplace].name}</span>
+                        <ArrowRight className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {/* Right Column - Quick Commerce Platforms */}
+              <div className="lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Megaphone className="h-5 w-5 mr-2 text-green-600" />
+                  Quick Commerce
+                </h3>
+                <div className="space-y-2">
+                  {quickCommerceMarketplaces.map(({ key, name, logo }) => (
+                    <div
+                      key={key}
+                      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                        activeMarketplace === key
+                          ? "bg-green-100 text-green-700"
+                          : "hover:bg-green-50 hover:text-green-600"
+                      }`}
+                      onMouseEnter={() => setActiveMarketplace(key)}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <img
+                          src={logo}
+                          alt={`${name} logo`}
+                          className="h-8 w-8 object-contain"
+                          onError={(e) => {
+                            console.error(`Failed to load ${name} logo`);
+                            e.target.src = "/assets/fallback.png";
+                          }}
+                        />
+                        <span className="font-medium">{name}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -558,7 +500,6 @@ export default function AdvertisingMarketing() {
               </p>
             </div>
             <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
-              {/* Card 1 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -571,7 +512,6 @@ export default function AdvertisingMarketing() {
                   <li>Performance-driven campaigns with ROI tracking (e.g., Sponsored Products, Brand Ads).</li>
                 </ul>
               </div>
-              {/* Card 2 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Users className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -585,7 +525,6 @@ export default function AdvertisingMarketing() {
                   <li>Running seasonal social media campaigns (e.g., festive promotions).</li>
                 </ul>
               </div>
-              {/* Card 3 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Star className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -598,7 +537,6 @@ export default function AdvertisingMarketing() {
                   <li>Optimizing brand stores with better visuals and stories to attract more customers.</li>
                 </ul>
               </div>
-              {/* Card 4 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -611,7 +549,6 @@ export default function AdvertisingMarketing() {
                   <li>Managing bundle offers and special deals to increase cart value.</li>
                 </ul>
               </div>
-              {/* Card 5 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <ArrowRight className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -624,7 +561,6 @@ export default function AdvertisingMarketing() {
                   <li>Multi-platform strategy planning for higher visibility and sales.</li>
                 </ul>
               </div>
-              {/* Card 6 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -788,7 +724,6 @@ export default function AdvertisingMarketing() {
             </div>
           </div>
         </section>
-        
         {/* FAQs with Expandable Sections */}
         <section className="py-16 px-4 bg-green-50">
           <div className="max-w-3xl mx-auto">

@@ -8,9 +8,8 @@ import {
   BarChart3,
   Headphones,
   PieChart,
-  Mail,
-  ShoppingCart,
   CheckCircle,
+  ShoppingCart,
 } from "lucide-react";
 import axios from "axios";
 import { getApiUrl } from "../config/api.config";
@@ -34,7 +33,6 @@ import zeptoLogo from "../assets/Zepto.png";
 export default function AccountManagementServices() {
   const navigate = useNavigate();
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
-  const [activeCategory, setActiveCategory] = useState("ecommerce");
   const [activeMarketplace, setActiveMarketplace] = useState("amazon");
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
@@ -46,15 +44,15 @@ export default function AccountManagementServices() {
   ];
 
   const isAuthenticated = () => {
-    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     return !!token;
   };
 
   const handleGetStarted = () => {
     if (isAuthenticated()) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     } else {
-      navigate('/partnerlogin');
+      navigate("/partnerlogin");
     }
   };
 
@@ -65,15 +63,6 @@ export default function AccountManagementServices() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
-  // New useEffect to set default marketplace based on category
-  useEffect(() => {
-    if (activeCategory === "ecommerce") {
-      setActiveMarketplace("amazon");
-    } else if (activeCategory === "quick-commerce") {
-      setActiveMarketplace("jiomart");
-    }
-  }, [activeCategory]);
 
   const [formData, setFormData] = useState({
     businessName: "",
@@ -112,9 +101,9 @@ export default function AccountManagementServices() {
       logo: flipkartLogo,
       href: "/partners/marketplaces/flipkart",
       services: [
-        "Flipkart seller registration & tax setup",
-        "Product upload with Flipkart-specific attributes",
-        "Flipkart SmartBuy program support",
+        "Order and inventory tracking",
+        "Customer service and return management",
+        "Performance analytics via Flipkart Seller Hub",
       ],
       category: "ecommerce",
     },
@@ -208,25 +197,25 @@ export default function AccountManagementServices() {
   const steps = [
     {
       src: AMS1,
-      alt: "Step 1: Hassle-Free Management illustration",
+      alt: "Hassle-Free Management illustration",
       title: "Hassle-Free Management",
       description: "Effortless order and inventory management.",
     },
     {
       src: AMS2,
-      alt: "Step 2: Timely Updates illustration",
+      alt: "Timely Updates illustration",
       title: "Timely Updates",
       description: "Keep your product listings fresh and competitive.",
     },
     {
       src: AMS3,
-      alt: "Step 3: Performance-Driven Support illustration",
+      alt: "Performance-Driven Support illustration",
       title: "Performance-Driven Support",
       description: "Data-backed strategies to boost sales.",
     },
     {
       src: AMS4,
-      alt: "Step 4: Dedicated Coordination illustration",
+      alt: "Dedicated Coordination illustration",
       title: "Dedicated Coordination",
       description: "Stay connected via WhatsApp for real-time updates.",
     },
@@ -235,15 +224,10 @@ export default function AccountManagementServices() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        getApiUrl("api/ams/submit"),
-        formData
-      );
+      const response = await axios.post(getApiUrl("api/ams/submit"), formData);
       const data = await response.data;
       if (data.success) {
-        alert(
-          "Thank you for your submission! Our team will contact you shortly."
-        );
+        alert("Thank you for your submission! Our team will contact you shortly.");
         setFormData({
           businessName: "",
           contactPerson: "",
@@ -275,9 +259,7 @@ export default function AccountManagementServices() {
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: checked
-        ? [...prev[field], value]
-        : prev[field].filter((item) => item !== value),
+      [field]: checked ? [...prev[field], value] : prev[field].filter((item) => item !== value),
     }));
   };
 
@@ -309,8 +291,7 @@ export default function AccountManagementServices() {
               className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
             >
               <span className="flex items-center flex-wrap justify-center">
-                <span className="text-green-600 mr-2">Manage</span> Your Online
-                Store on
+                <span className="text-green-600 mr-2">Manage</span> Your Online Store on
               </span>
               <div className="mt-4">
                 <img
@@ -318,17 +299,14 @@ export default function AccountManagementServices() {
                   alt={logos[currentLogoIndex].alt}
                   className="h-12 w-auto object-contain animate-fadeIn"
                   onError={(e) => {
-                    console.error(
-                      `Failed to load ${logos[currentLogoIndex].alt}`
-                    );
+                    console.error(`Failed to load ${logos[currentLogoIndex].alt}`);
                     e.target.src = "/assets/fallback.png";
                   }}
                 />
               </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Let us handle daily operations, listings, and reports so you can
-              focus on business.
+              Let us handle daily operations, listings, and reports so you can focus on business.
             </p>
             <button
               onClick={handleGetStarted}
@@ -342,229 +320,165 @@ export default function AccountManagementServices() {
         </section>
         <style jsx>{`
           @keyframes fadeIn {
-            0% {
-              opacity: 0;
-              transform: translateY(10px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
           }
           .animate-fadeIn {
             animation: fadeIn 0.5s ease-in-out;
           }
         `}</style>
+
         {/* Marketplace Panel Section */}
-        <section
-          className="py-16 px-4 bg-green-50"
-          aria-labelledby="marketplaces-heading"
-        >
+        <section className="py-16 px-4 bg-green-50" aria-labelledby="marketplaces-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2
-                id="marketplaces-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
+              <h2 id="marketplaces-heading" className="text-3xl font-bold text-gray-900 mb-4">
                 Supported Marketplaces
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
-                Choose from our wide range of marketplace integrations for
-                tailored management services
+                Choose from our wide range of marketplace integrations for tailored management services
               </p>
             </div>
-            {/* Category Tabs */}
-            <div className="flex justify-center mb-8">
-              <div className="inline-flex rounded-md shadow-sm">
-                <button
-                  onClick={() => setActiveCategory("ecommerce")}
-                  className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
-                    activeCategory === "ecommerce"
-                      ? "bg-green-600 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Left Column - E-commerce Platforms */}
+              <div className="lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <ShoppingCart className="h-5 w-5 mr-2 text-green-600" />
                   E-commerce
-                </button>
-                <button
-                  onClick={() => setActiveCategory("quick-commerce")}
-                  className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
-                    activeCategory === "quick-commerce"
-                      ? "bg-green-600 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Quick Commerce
-                </button>
-              </div>
-            </div>
-            {/* Marketplace List and Details */}
-            <div className="grid md:grid-cols-12 gap-8">
-              {/* Left Sidebar - Marketplace List */}
-              <div className="md:col-span-3">
-                <div className="bg-white rounded-lg shadow-md p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    {activeCategory === "ecommerce"
-                      ? "E-commerce Platforms"
-                      : "Quick Commerce Platforms"}
-                  </h3>
-                  <div className="space-y-2">
-                    {activeCategory === "ecommerce"
-                      ? ecommerceMarketplaces.map(({ key, name, logo }) => (
-                          <div
-                            key={key}
-                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                              activeMarketplace === key
-                                ? "bg-green-100 text-green-700"
-                                : "hover:bg-green-50 hover:text-green-600"
-                            }`}
-                            onMouseEnter={() => setActiveMarketplace(key)}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <img
-                                src={logo}
-                                alt={`${name} logo`}
-                                className="h-8 w-8 object-contain"
-                                onError={(e) => {
-                                  console.error(`Failed to load ${name} logo`);
-                                  e.target.src = "/assets/fallback.png";
-                                }}
-                              />
-                              <span className="font-medium">{name}</span>
-                            </div>
-                          </div>
-                        ))
-                      : quickCommerceMarketplaces.map(({ key, name, logo }) => (
-                          <div
-                            key={key}
-                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                              activeMarketplace === key
-                                ? "bg-green-100 text-green-700"
-                                : "hover:bg-green-50 hover:text-green-600"
-                            }`}
-                            onMouseEnter={() => setActiveMarketplace(key)}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <img
-                                src={logo}
-                                alt={`${name} logo`}
-                                className="h-8 w-8 object-contain"
-                                onError={(e) => {
-                                  console.error(`Failed to load ${name} logo`);
-                                  e.target.src = "/assets/fallback.png";
-                                }}
-                              />
-                              <span className="font-medium">{name}</span>
-                            </div>
-                          </div>
-                        ))}
-                  </div>
-                </div>
-              </div>
-              {/* Right Content - Marketplace Details */}
-              <div className="md:col-span-9">
-                <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                  {activeMarketplace && marketplaces[activeMarketplace] && (
-                    <div className="p-8">
-                      <div className="flex items-center justify-between mb-8">
-                        <div className="flex-1 flex justify-center">
-                          <img
-                            src={marketplaces[activeMarketplace].logo}
-                            alt={`${marketplaces[activeMarketplace].name} logo`}
-                            className="h-24 w-auto object-contain max-w-[280px]"
-                            onError={(e) => {
-                              console.error(
-                                `Failed to load ${marketplaces[activeMarketplace].name} logo`
-                              );
-                              e.target.src = "/assets/fallback.png";
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-6">
-                        {marketplaces[activeMarketplace].services.map(
-                          (service, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
-                            >
-                              <CheckCircle className="h-6 w-6 text-green-600" />
-                              <span className="text-gray-700 text-lg">
-                                {service}
-                              </span>
-                            </div>
-                          )
-                        )}
-                      </div>
-                      <div className="mt-8 flex justify-center">
-                        <button
-                          onClick={() =>
-                            navigate(marketplaces[activeMarketplace].href)
-                          }
-                          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
-                        >
-                          <span>
-                            Learn more about{" "}
-                            {marketplaces[activeMarketplace].name}
-                          </span>
-                          <ArrowRight className="h-5 w-5" />
-                        </button>
+                </h3>
+                <div className="space-y-2">
+                  {ecommerceMarketplaces.map(({ key, name, logo }) => (
+                    <div
+                      key={key}
+                      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                        activeMarketplace === key
+                          ? "bg-green-100 text-green-700"
+                          : "hover:bg-green-50 hover:text-green-600"
+                      }`}
+                      onMouseEnter={() => setActiveMarketplace(key)}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <img
+                          src={logo}
+                          alt={`${name} logo`}
+                          className="h-8 w-8 object-contain"
+                          onError={(e) => {
+                            console.error(`Failed to load ${name} logo`);
+                            e.target.src = "/assets/fallback.png";
+                          }}
+                        />
+                        <span className="font-medium">{name}</span>
                       </div>
                     </div>
-                  )}
+                  ))}
+                </div>
+              </div>
+              {/* Center Column - Content */}
+              <div className="lg:col-span-6 bg-white rounded-lg shadow-md overflow-hidden">
+                {activeMarketplace && marketplaces[activeMarketplace] && (
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-8">
+                      <div className="flex-1 flex justify-center">
+                        <img
+                          src={marketplaces[activeMarketplace].logo}
+                          alt={`${marketplaces[activeMarketplace].name} logo`}
+                          className="h-24 w-auto object-contain max-w-[280px]"
+                          onError={(e) => {
+                            console.error(`Failed to load ${marketplaces[activeMarketplace].name} logo`);
+                            e.target.src = "/assets/fallback.png";
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {marketplaces[activeMarketplace].services.map((service, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-3 p-4 rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
+                        >
+                          <CheckCircle className="h-6 w-6 text-green-600" />
+                          <span className="text-gray-700 text-lg">{service}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-8 flex justify-center">
+                      <button
+                        onClick={() => navigate(marketplaces[activeMarketplace].href)}
+                        className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
+                      >
+                        <span>Learn more about {marketplaces[activeMarketplace].name}</span>
+                        <ArrowRight className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {/* Right Column - Quick Commerce Platforms */}
+              <div className="lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <PieChart className="h-5 w-5 mr-2 text-green-600" />
+                  Quick Commerce
+                </h3>
+                <div className="space-y-2">
+                  {quickCommerceMarketplaces.map(({ key, name, logo }) => (
+                    <div
+                      key={key}
+                      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                        activeMarketplace === key
+                          ? "bg-green-100 text-green-700"
+                          : "hover:bg-green-50 hover:text-green-600"
+                      }`}
+                      onMouseEnter={() => setActiveMarketplace(key)}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <img
+                          src={logo}
+                          alt={`${name} logo`}
+                          className="h-8 w-8 object-contain"
+                          onError={(e) => {
+                            console.error(`Failed to load ${name} logo`);
+                            e.target.src = "/assets/fallback.png";
+                          }}
+                        />
+                        <span className="font-medium">{name}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </section>
+
         {/* Services Included */}
-        <section
-          className="py-16 px-4 bg-green-50"
-          aria-labelledby="whats-included-heading"
-        >
+        <section className="py-16 px-4 bg-green-50" aria-labelledby="whats-included-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2
-                id="whats-included-heading"
-                className="text-3xl font-bold text-green-700 mb-4"
-              >
+              <h2 id="whats-included-heading" className="text-3xl font-bold text-green-700 mb-4">
                 What's Included
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Account Management Services (AMS) help sellers manage their
-                accounts and day-to-day operations across marketplaces.
+                Account Management Services (AMS) help sellers manage their accounts and day-to-day operations across marketplaces.
               </p>
             </div>
             <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Settings className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">
-                    Product Listing Maintenance
-                  </span>
+                  <span className="font-semibold text-lg text-gray-900">Product Listing Maintenance</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Regular updates to product listings (price changes, stock
-                    updates, new variants).
-                  </li>
-                  <li>
-                    Optimization of product content to keep up with marketplace
-                    changes.
-                  </li>
+                  <li>Regular updates to product listings (price changes, stock updates, new variants).</li>
+                  <li>Optimization of product content to keep up with marketplace changes.</li>
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">
-                    Inventory & Stock Management
-                  </span>
+                  <span className="font-semibold text-lg text-gray-900">Inventory & Stock Management</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Monitoring inventory levels to avoid out-of-stock issues.
-                  </li>
+                  <li>Monitoring inventory levels to avoid out-of-stock issues.</li>
                   <li>Proactive stock alerts for timely restocking.</li>
                   <li>Syncing inventory across platforms.</li>
                 </ul>
@@ -572,127 +486,78 @@ export default function AccountManagementServices() {
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">
-                    Order Processing & Return Management
-                  </span>
+                  <span className="font-semibold text-lg text-gray-900">Order Processing & Return Management</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Handling order processing (packing, dispatch) for smooth
-                    fulfillment.
-                  </li>
-                  <li>
-                    Managing returns, exchanges, and refunds according to
-                    platform policies.
-                  </li>
+                  <li>Handling order processing (packing, dispatch) for smooth fulfillment.</li>
+                  <li>Managing returns, exchanges, and refunds according to platform policies.</li>
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Headphones className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">
-                    Customer Service Management
-                  </span>
+                  <span className="font-semibold text-lg text-gray-900">Customer Service Management</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Responding to customer queries and issues in a timely
-                    manner.
-                  </li>
-                  <li>
-                    Handling product feedback and customer complaints to
-                    maintain a good seller rating.
-                  </li>
+                  <li>Responding to customer queries and issues in a timely manner.</li>
+                  <li>Handling product feedback and customer complaints to maintain a good seller rating.</li>
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <PieChart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">
-                    Performance Monitoring & Reporting
-                  </span>
+                  <span className="font-semibold text-lg text-gray-900">Performance Monitoring & Reporting</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Tracking performance metrics (sales, returns, reviews,
-                    customer ratings).
-                  </li>
-                  <li>
-                    Monthly reports to help sellers track growth and identify
-                    areas for improvement.
-                  </li>
-                  <li>
-                    Handling account health issues (suspensions, penalties,
-                    etc.).
-                  </li>
+                  <li>Tracking performance metrics (sales, returns, reviews, customer ratings).</li>
+                  <li>Monthly reports to help sellers track growth and identify areas for improvement.</li>
+                  <li>Handling account health issues (suspensions, penalties, etc.).</li>
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">
-                    Compliance & Policy Monitoring
-                  </span>
+                  <span className="font-semibold text-lg text-gray-900">Compliance & Policy Monitoring</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Ensuring compliance with platform policies to avoid
-                    penalties.
-                  </li>
-                  <li>
-                    Updating product listings according to platform-specific
-                    requirements
-                  </li>
+                  <li>Ensuring compliance with platform policies to avoid penalties.</li>
+                  <li>Updating product listings according to platform-specific requirements.</li>
                 </ul>
               </div>
             </div>
           </div>
         </section>
+
         {/* Key Benefits */}
-        <section
-          className="py-16 px-4 bg-white"
-          aria-labelledby="benefits-heading"
-        >
+        <section className="py-16 px-4 bg-white" aria-labelledby="benefits-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2
-                id="benefits-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
+              <h2 id="benefits-heading" className="text-3xl font-bold text-gray-900 mb-4">
                 Key Benefits
               </h2>
               <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Optimize your e-commerce operations with our comprehensive
-                management services.
+                Optimize your e-commerce operations with our comprehensive management services.
               </p>
             </div>
             <ImageSlider slides={steps} />
           </div>
         </section>
+
         {/* Success Story */}
-        <section
-          className="py-16 px-4 bg-white"
-          aria-labelledby="success-heading"
-        >
+        <section className="py-16 px-4 bg-white" aria-labelledby="success-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2
-                id="success-heading"
-                className="text-3xl font-bold text-gray-900 mb-4"
-              >
+              <h2 id="success-heading" className="text-3xl font-bold text-gray-900 mb-4">
                 Success Story
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                A kitchenware brand scaled 180% in 3 months with 99digicom's
-                management support.
+                A kitchenware brand scaled 180% in 3 months with 99digicom's management support.
               </p>
             </div>
             <div className="bg-green-50 rounded-lg p-6">
               <blockquote>
                 <p className="text-gray-600">
-                  By streamlining inventory, optimizing listings, and handling
-                  orders efficiently, we helped a kitchenware brand achieve a
-                  180% sales increase in just three months.
+                  By streamlining inventory, optimizing listings, and handling orders efficiently, we helped a kitchenware brand achieve a 180% sales increase in just three months.
                 </p>
               </blockquote>
             </div>
