@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check } from 'lucide-react';
+import BigBasketLogo from '../../assets/BigBasket.png';
+import { Plus, X } from 'lucide-react';
 
 const Bigbasket = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openQuestions, setOpenQuestions] = useState({});
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +26,58 @@ const Bigbasket = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleToggle = (idx) => {
+    setOpenCategory(openCategory === idx ? null : idx);
+  };
+  const handleQuestionToggle = (catIdx, qIdx) => {
+    setOpenQuestions((prev) => ({
+      ...prev,
+      [catIdx]: prev[catIdx] === qIdx ? null : qIdx
+    }));
+  };
+  const faqCategories = [
+    {
+      title: 'Account & Login',
+      faqs: [
+        { q: 'Can I have multiple family members register with the same address?', a: 'Yes. Up to three users can register with unique email and mobile numbers using the same delivery address. You can also order to different cities under one account.' },
+        { q: 'How do I reset my password?', a: 'Use the “Forgot Password” link on the login page. You’ll receive an email with a reset link. If issues persist, contact customer support.' },
+      ]
+    },
+    {
+      title: 'Payments & Wallet',
+      faqs: [
+        { q: 'What payment methods are accepted on BigBasket?', a: 'BigBasket accepts cash on delivery (COD), credit/debit cards (Visa, Master, RuPay), and Paytm Food Wallet (for food items).' },
+        { q: 'What happens if items aren\'t delivered but I\'ve paid?', a: 'You’ll receive a credit note (store credit) to your account. You can request refund to your card by contacting customer support.' },
+        { q: 'Where do I enter coupon/voucher codes?', a: 'On the payment page during checkout, there is a field to enter coupon or e‑voucher codes. Discounts are applied automatically.' },
+        { q: 'Does bigbasket Wallet expire?', a: 'No. Wallet balance does not have an expiry; you can use it until it’s fully spent.' },
+      ]
+    },
+    {
+      title: 'Delivery & Charges',
+      faqs: [
+        { q: 'Is there a minimum order value for delivery?', a: 'No, there’s no minimum order requirement to place an order.' },
+        { q: 'What are the delivery charges?', a: 'Typically, orders below ₹600 incur ₹50 charge; orders ₹600–₹1,000 have ₹10 charge (Mumbai ₹15); above ₹1,000 delivery is free. Charges vary by location; details are shown at checkout.' },
+        { q: 'Do you offer same-day delivery?', a: 'Yes—when orders are placed before 12 PM, same-day evening slots are available in select metros (e.g. Bengaluru, Mumbai, Delhi‑NCR, Chennai, Hyderabad, Pune).' },
+      ]
+    },
+    {
+      title: 'Orders & Returns',
+      faqs: [
+        { q: 'Can I change or cancel an order?', a: 'You may cancel or modify the order before the slot cut-off (e.g. before 12 PM for same‑day slots). After that, changes are not permitted online—contact support for assistance.' },
+        { q: 'What if some items are out of stock?', a: 'You’ll receive an email/SMS listing unavailable items before delivery. If less is delivered than billed or you find missing items within 48 hours, report them to customer support.' },
+        { q: 'What is the return policy?', a: 'BigBasket has a “5‑day no questions asked” return window (for eligible items). Damaged, expired, or incorrect items can be returned; refund initiated once they reach the warehouse.' },
+      ]
+    },
+    {
+      title: 'Gifting, Promotions & Other Queries',
+      faqs: [
+        { q: 'Can I place a gift order with a message?', a: 'Yes. Add the recipient’s address and optional message when placing the order. Custom gift combos come in decorative packaging.' },
+        { q: 'What’s the return policy for gift items?', a: 'Perishable gifts: return/exchange within 48 hours. Non-perishable: up to 7 days. Policies vary by product type.' },
+        { q: 'How do I get support or give feedback?', a: 'Customer service is available daily from 6 AM–10 PM via phone at 1860-123-1000 or email at customerservice@bigbasket.com. Feedback and quality complaints are welcome.' },
+      ]
+    },
+  ];
 
   return (
     <>
@@ -50,15 +106,12 @@ const Bigbasket = () => {
 
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 via-white to-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-center mb-10">
-            <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
-              <div className="w-16 h-16 bg-green-600 rounded-md flex items-center justify-center mr-4">
-                <span className="text-white text-2xl font-bold">B</span>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Bigbasket Seller Account Setup</h1>
-                <p className="text-green-600">Start selling your products on Bigbasket easily</p>
-              </div>
+          {/* Header Section with Logo */}
+          <div className="flex flex-col items-center justify-center mb-10">
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
+              <img src={BigBasketLogo} alt="BigBasket Logo" className="w-48 h-48 object-contain mb-4" />
+              <h1 className="text-3xl font-bold text-gray-900 text-center">Bigbasket Seller Account Setup</h1>
+              <p className="text-green-600 text-center mt-2">Start selling your products on Bigbasket easily</p>
             </div>
           </div>
 
@@ -167,6 +220,50 @@ const Bigbasket = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+
+          {/* FAQ Section with Collapsible Categories */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">BigBasket FAQs</h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              {faqCategories.map((cat, idx) => (
+                <div key={cat.title} className="bg-white rounded-lg shadow-md">
+                  <button
+                    className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+                    onClick={() => handleToggle(idx)}
+                    aria-expanded={openCategory === idx}
+                  >
+                    <span className="text-xl font-semibold text-green-700">{cat.title}</span>
+                    <span className="ml-4">
+                      {openCategory === idx ? <X className="w-6 h-6 text-green-600" /> : <Plus className="w-6 h-6 text-green-600" />}
+                    </span>
+                  </button>
+                  {openCategory === idx && (
+                    <div className="px-6 pb-4">
+                      {cat.faqs.map((faq, qIdx) => (
+                        <div key={qIdx} className="mb-2 border-b last:border-b-0">
+                          <button
+                            className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
+                            onClick={() => handleQuestionToggle(idx, qIdx)}
+                            aria-expanded={openQuestions[idx] === qIdx}
+                          >
+                            <span className="font-medium text-gray-900">{faq.q}</span>
+                            <span className="ml-2">
+                              {openQuestions[idx] === qIdx ? <X className="w-5 h-5 text-green-600" /> : <Plus className="w-5 h-5 text-green-600" />}
+                            </span>
+                          </button>
+                          {openQuestions[idx] === qIdx && (
+                            <div className="pb-3 pl-2 pr-2">
+                              <p className="text-gray-700 whitespace-pre-line">{faq.a}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
 
