@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check } from 'lucide-react';
+import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, Plus, X, ArrowLeft } from 'lucide-react';
 import BigBasketLogo from '../../assets/BigBasket.png';
-import { Plus, X } from 'lucide-react';
 
 const Bigbasket = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -10,12 +9,16 @@ const Bigbasket = () => {
   const [openCategory, setOpenCategory] = useState(null);
   const [openQuestions, setOpenQuestions] = useState({});
 
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       setScrollProgress(progress);
-
       setShowScrollTop(window.scrollY > 300);
     };
 
@@ -27,15 +30,21 @@ const Bigbasket = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const goBack = () => {
+    window.history.back();
+  };
+
   const handleToggle = (idx) => {
     setOpenCategory(openCategory === idx ? null : idx);
   };
+
   const handleQuestionToggle = (catIdx, qIdx) => {
     setOpenQuestions((prev) => ({
       ...prev,
       [catIdx]: prev[catIdx] === qIdx ? null : qIdx
     }));
   };
+
   const faqCategories = [
     {
       title: 'Account & Login',
@@ -86,6 +95,15 @@ const Bigbasket = () => {
         <meta name="description" content="Guide to set up Bigbasket Seller account: steps, requirements, and FAQs." />
         <meta name="keywords" content="Bigbasket seller account, Bigbasket onboarding, Bigbasket seller setup" />
       </Helmet>
+
+      {/* Back Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
 
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
         <div

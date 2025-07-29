@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus } from 'lucide-react';
+import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus, ArrowLeft } from 'lucide-react';
 import JiomartLogo from '../../assets/Jiomart.png';
 
 const Jiomart = () => {
@@ -8,6 +8,11 @@ const Jiomart = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [openCategory, setOpenCategory] = useState(null);
   const [openQuestions, setOpenQuestions] = useState({});
+
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +38,10 @@ const Jiomart = () => {
       top: 0,
       behavior: 'smooth'
     });
+  };
+
+  const goBack = () => {
+    window.history.back();
   };
 
   const handleToggle = (idx) => {
@@ -138,6 +147,15 @@ const Jiomart = () => {
         <meta name="description" content="Step-by-step guide to setting up a JioMart Seller account and selling on JioMart with ease." />
         <meta name="keywords" content="JioMart seller account, JioMart setup, JioMart marketplace, online selling, grocery marketplace" />
       </Helmet>
+
+      {/* Back Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
       
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
