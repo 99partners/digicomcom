@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   X,
   Plus,
+  ArrowLeft,
 } from "lucide-react";
 import MeeshoLogo from "../../assets/Meesho1.png";
 
@@ -20,6 +21,11 @@ const Meesho = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [openCategory, setOpenCategory] = useState(null);
   const [openQuestions, setOpenQuestions] = useState({});
+
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,15 +55,21 @@ const Meesho = () => {
     });
   };
 
+  const goBack = () => {
+    window.history.back();
+  };
+
   const handleToggle = (idx) => {
     setOpenCategory(openCategory === idx ? null : idx);
   };
+
   const handleQuestionToggle = (catIdx, qIdx) => {
     setOpenQuestions((prev) => ({
       ...prev,
       [catIdx]: prev[catIdx] === qIdx ? null : qIdx,
     }));
   };
+
   const faqCategories = [
     {
       title: "General",
@@ -154,6 +166,15 @@ const Meesho = () => {
           content="Meesho seller account, Meesho setup, Meesho marketplace, social commerce, online selling"
         />
       </Helmet>
+
+      {/* Back Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
 
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">

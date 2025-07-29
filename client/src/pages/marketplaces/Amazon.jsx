@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus } from 'lucide-react';
+import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus, ArrowLeft } from 'lucide-react';
 import AmazonLogo from '../../assets/Amazon.png';
 
 const Amazon = () => {
@@ -10,6 +10,9 @@ const Amazon = () => {
   const [openQuestions, setOpenQuestions] = useState({});
 
   useEffect(() => {
+    // Scroll to top on component mount
+    window.scrollTo(0, 0);
+
     const handleScroll = () => {
       // Calculate scroll progress
       const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -44,6 +47,10 @@ const Amazon = () => {
       ...prev,
       [catIdx]: prev[catIdx] === qIdx ? null : qIdx
     }));
+  };
+
+  const goBack = () => {
+    window.history.back();
   };
 
   const faqCategories = [
@@ -112,6 +119,15 @@ const Amazon = () => {
           style={{ width: `${scrollProgress}%` }}
         ></div>
       </div>
+
+      {/* Back Arrow Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
 
       {/* Scroll to Top Button */}
       {showScrollTop && (

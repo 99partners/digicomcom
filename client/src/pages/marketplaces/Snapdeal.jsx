@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, ShoppingBag, X, Plus } from 'lucide-react';
+import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, ShoppingBag, X, Plus, ArrowLeft } from 'lucide-react';
 import SnapdealLogo from '../../assets/Snapdeal.png';
 
 const Snapdeal = () => {
@@ -8,6 +8,11 @@ const Snapdeal = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [openCategory, setOpenCategory] = useState(null);
   const [openQuestions, setOpenQuestions] = useState({});
+
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,15 +40,21 @@ const Snapdeal = () => {
     });
   };
 
+  const goBack = () => {
+    window.history.back();
+  };
+
   const handleToggle = (idx) => {
     setOpenCategory(openCategory === idx ? null : idx);
   };
+
   const handleQuestionToggle = (catIdx, qIdx) => {
     setOpenQuestions((prev) => ({
       ...prev,
       [catIdx]: prev[catIdx] === qIdx ? null : qIdx
     }));
   };
+
   const faqCategories = [
     {
       title: 'Order Tracking & Delivery',
@@ -97,6 +108,15 @@ const Snapdeal = () => {
         <meta name="description" content="Complete Snapdeal marketplace services including account management, listing optimization, and marketing solutions." />
         <meta name="keywords" content="Snapdeal seller account, Snapdeal setup, Snapdeal marketplace, online selling, e-commerce platform" />
       </Helmet>
+
+      {/* Back Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
       
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
