@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, ShoppingBag, X, Plus } from 'lucide-react';
@@ -125,7 +123,7 @@ const Flipkart = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 z-40 animate-bounce-slow"
+          className="fixed bottom-8 right-8 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300 z-40"
           aria-label="Scroll to top"
         >
           <ArrowUp size={24} />
@@ -137,7 +135,7 @@ const Flipkart = () => {
           {/* Header Section with Logo */}
           <div className="flex flex-col items-center justify-center mb-10">
             <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
-              <img src={FlipkartLogo} alt="Flipkart Logo" className="w-28 h-28 object-contain rounded-md mb-4 bg-white border border-gray-200" />
+              <img src={FlipkartLogo} alt="Flipkart Logo" className="w-48 h-48 object-contain mb-4" />
               <h1 className="text-3xl font-bold text-gray-900 text-center">Flipkart Seller Account Setup</h1>
               <p className="text-green-600 text-center mt-2">Your Gateway to India's Largest Marketplace</p>
             </div>
@@ -267,8 +265,6 @@ const Flipkart = () => {
             </div>
           </section>
 
-          
-          
           {/* Common Questions Section */}
           <section className="mb-12">
             <div className="bg-white rounded-lg shadow-md p-8 border-t-4 border-green-500">
