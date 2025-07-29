@@ -2,11 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, X, ShoppingBag } from 'lucide-react';
+import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, ShoppingBag, X, Plus } from 'lucide-react';
+import MeeshoLogo from '../../assets/Meesho1.png';
 
 const Meesho = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openQuestions, setOpenQuestions] = useState({});
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +36,53 @@ const Meesho = () => {
       behavior: 'smooth'
     });
   };
+
+  const handleToggle = (idx) => {
+    setOpenCategory(openCategory === idx ? null : idx);
+  };
+  const handleQuestionToggle = (catIdx, qIdx) => {
+    setOpenQuestions((prev) => ({
+      ...prev,
+      [catIdx]: prev[catIdx] === qIdx ? null : qIdx
+    }));
+  };
+  const faqCategories = [
+    {
+      title: 'General',
+      faqs: [
+        { q: 'Do I need a GSTIN to start selling on Meesho?', a: 'No, you can sell without a GSTIN if you are selling within your own state. However, having a GSTIN is required for interstate sales and access to certain features like Ads.' },
+        { q: 'How do I start selling on Meesho?', a: 'Sign up on supplier.meesho.com, upload your product catalogues, and start receiving orders. Meesho handles shipping and delivers to customers for you.' },
+        { q: 'What kind of products can I sell on Meesho?', a: 'You can sell a wide range of products including fashion, home decor, beauty, electronics accessories, and more. However, prohibited products like alcohol, tobacco, or counterfeit goods are not allowed.' },
+        { q: 'How long does it take for my catalog to go live after uploading?', a: 'It usually takes around 72 hours for your catalog to be reviewed and become live on the platform.' },
+      ]
+    },
+    {
+      title: 'Fees and Charges',
+      faqs: [
+        { q: 'Does Meesho charge commission on my sales?', a: 'No, Meesho charges 0% commission on all products, meaning you keep 100% of your profit.' },
+        { q: 'Are there any hidden charges?', a: 'No, there are no hidden charges. You only pay for shipping, which is clearly mentioned for each order.' },
+        { q: 'When will I receive payment for my orders?', a: 'You will receive your payment directly into your bank account 7 days after the order is delivered, including COD orders.' },
+        { q: 'Are there penalties for order cancellations or late dispatch?', a: 'Yes, Meesho may apply penalties if you frequently cancel orders or delay dispatch. This affects your seller rating and visibility on the platform.' },
+      ]
+    },
+    {
+      title: 'Managing Your Account',
+      faqs: [
+        { q: 'How do I change my bank account or address on Meesho?', a: 'Log into the Supplier Panel, go to the "Account Settings" section, and update your bank details or pickup address. You may need to verify the new details before changes are applied.' },
+        { q: 'Can I cancel an order if I am out of stock?', a: 'Yes, but frequent cancellations can impact your performance score. It\'s recommended to keep your inventory updated to avoid such issues.' },
+        { q: 'How do I track my orders?', a: 'You can track order status in real-time through the “Orders” tab in the Supplier Panel. Details like shipping, pickup, and delivery are all available.' },
+        { q: 'How do I manage my product listings or inventory?', a: 'You can upload, update, or delete product catalogs directly from the Supplier Panel. Inventory status can also be edited as needed.' },
+      ]
+    },
+    {
+      title: 'Services',
+      faqs: [
+        { q: 'What kind of support is available for Meesho sellers?', a: 'Meesho provides 24/7 seller support through email, chat, and a dedicated help section in the Supplier Panel. Sellers can raise tickets for any technical, order, or payment-related issues.' },
+        { q: 'Are there tools to help me grow my sales on Meesho?', a: 'Yes, Meesho offers tools like price recommendations, business insights, ad services (for GST sellers), and a Quality Dashboard to help sellers improve performance and increase sales.' },
+        { q: 'Can I access training material to learn how to sell effectively?', a: 'Yes, Meesho has a Learning Hub with video tutorials and step-by-step guides for everything from registration to shipping and managing returns.' },
+      ]
+    },
+  ];
 
   return (
     <>
@@ -64,15 +114,11 @@ const Meesho = () => {
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header Section with Logo */}
-          <div className="flex items-center justify-center mb-10">
-            <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
-              <div className="w-16 h-16 bg-green-500 rounded-md flex items-center justify-center mr-4">
-                <ShoppingBag className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Meesho Seller Account Setup</h1>
-                <p className="text-green-600">Your Gateway to India's Social Commerce Platform</p>
-              </div>
+          <div className="flex flex-col items-center justify-center mb-10">
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
+              <img src={MeeshoLogo} alt="Meesho Logo" className="w-28 h-28 object-contain rounded-md mb-4 bg-white border border-gray-200" />
+              <h1 className="text-3xl font-bold text-gray-900 text-center">Meesho Seller Account Setup</h1>
+              <p className="text-green-600 text-center mt-2">Your Gateway to India's Social Commerce Platform</p>
             </div>
           </div>
 
@@ -213,47 +259,47 @@ const Meesho = () => {
             </div>
           </section>
 
-          {/* Common Questions Section */}
-          <section className="mb-12">
-            <div className="bg-white rounded-lg shadow-md p-8 border-t-4 border-green-500">
-              <div className="flex items-center mb-6">
-                <div className="mr-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <HelpCircle className="h-6 w-6 text-green-600" />
-                  </div>
+          {/* FAQ Section with Collapsible Categories */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">Meesho Seller FAQs</h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              {faqCategories.map((cat, idx) => (
+                <div key={cat.title} className="bg-white rounded-lg shadow-md">
+                  <button
+                    className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+                    onClick={() => handleToggle(idx)}
+                    aria-expanded={openCategory === idx}
+                  >
+                    <span className="text-xl font-semibold text-green-700">{cat.title}</span>
+                    <span className="ml-4">
+                      {openCategory === idx ? <X className="w-6 h-6 text-green-600" /> : <Plus className="w-6 h-6 text-green-600" />}
+                    </span>
+                  </button>
+                  {openCategory === idx && (
+                    <div className="px-6 pb-4">
+                      {cat.faqs.map((faq, qIdx) => (
+                        <div key={qIdx} className="mb-2 border-b last:border-b-0">
+                          <button
+                            className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
+                            onClick={() => handleQuestionToggle(idx, qIdx)}
+                            aria-expanded={openQuestions[idx] === qIdx}
+                          >
+                            <span className="font-medium text-gray-900">{faq.q}</span>
+                            <span className="ml-2">
+                              {openQuestions[idx] === qIdx ? <X className="w-5 h-5 text-green-600" /> : <Plus className="w-5 h-5 text-green-600" />}
+                            </span>
+                          </button>
+                          {openQuestions[idx] === qIdx && (
+                            <div className="pb-3 pl-2 pr-2">
+                              <p className="text-gray-700 whitespace-pre-line">{faq.a}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <h2 className="text-2xl font-bold text-green-700">Common Questions</h2>
-              </div>
-              
-              <div className="space-y-6">
-                {[
-                  { 
-                    question: "Is registration free?", 
-                    answer: "Yes, registration is completely free." 
-                  },
-                  { 
-                    question: "Is GSTIN mandatory?", 
-                    answer: "Required for taxable products, optional otherwise." 
-                  },
-                  { 
-                    question: "How long does verification take?", 
-                    answer: "2-5 business days for document verification." 
-                  },
-                  { 
-                    question: "Can individuals sell?", 
-                    answer: "Yes, both individuals and businesses can sell." 
-                  },
-                  { 
-                    question: "Does Meesho handle logistics?", 
-                    answer: "Yes, Meesho offers integrated logistics solutions." 
-                  }
-                ].map((item, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-4 transform hover:bg-gray-100 transition-colors duration-300">
-                    <h3 className="font-semibold text-gray-900 mb-2">{item.question}</h3>
-                    <p className="text-gray-700">{item.answer}</p>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </section>
 
