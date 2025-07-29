@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
-import { ArrowUp, HelpCircle, Check, User, CreditCard, Shield, Building, Package } from "lucide-react";
+import { ArrowUp, HelpCircle, Check, User, CreditCard, Shield, Building, Package, Plus, X } from "lucide-react";
+import ZeptoLogo from '../../assets/Zepto.png';
 
 const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
@@ -58,6 +59,58 @@ const Zepto = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openQuestions, setOpenQuestions] = useState({});
+  const handleToggle = (idx) => {
+    setOpenCategory(openCategory === idx ? null : idx);
+  };
+  const handleQuestionToggle = (catIdx, qIdx) => {
+    setOpenQuestions((prev) => ({
+      ...prev,
+      [catIdx]: prev[catIdx] === qIdx ? null : qIdx
+    }));
+  };
+  const faqCategories = [
+    {
+      title: 'Brand Onboarding & Registration',
+      faqs: [
+        { q: 'How do I register my brand on Zepto?', a: 'Visit the Zepto brand portal to sign up: provide business details, verify documents like GST, FSSAI, and PAN, then await approval to access your seller dashboard.' },
+        { q: 'Is there a registration fee?', a: 'Typically, Zepto does not charge a registration fee, though specific terms may vary.' },
+      ]
+    },
+    {
+      title: 'Selling & Operations',
+      faqs: [
+        { q: 'What categories can I sell on Zepto?', a: 'Zepto supports essentials like groceries, personal care, household supplies, and more—ideal for fast-moving consumables.' },
+        { q: 'What tools are available for brand partners?', a: 'Zepto’s Brand Portal offers live dashboards with sales analytics, market share, customer demographics, and fulfillment metrics.' },
+      ]
+    },
+    {
+      title: 'Fees & Commission',
+      faqs: [
+        { q: 'What commission does Zepto charge?', a: 'Commission rates typically range from 10–25%, depending on the product category.' },
+      ]
+    },
+    {
+      title: 'Fulfillment & Shipping',
+      faqs: [
+        { q: 'How does Zepto manage fast delivery?', a: 'Zepto uses a network of dark stores placed strategically across pin codes to ensure delivery within ~10 minutes. Brands must stock inventory near these stores for quick fulfillment.' },
+      ]
+    },
+    {
+      title: 'Growth & Campaigns',
+      faqs: [
+        { q: 'How can brands boost sales on Zepto?', a: 'Participate in promotional campaigns, maintain high product quality, manage inventory effectively, and leverage data insights from the Brand Portal.' },
+      ]
+    },
+    {
+      title: 'Support & Partnership',
+      faqs: [
+        { q: 'How do I contact Zepto for support or partnership?', a: 'Reach out via the Brand Portal’s support section or contact Zepto’s brand partnership team directly (e.g., via email).' },
+      ]
+    },
+  ];
+
   return (
     <>
       <Helmet>
@@ -73,16 +126,12 @@ const Zepto = () => {
 
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 via-white to-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
-          <div className="flex items-center justify-center mb-10">
-            <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
-              <div className="w-16 h-16 bg-green-500 rounded-md flex items-center justify-center mr-4">
-                <span className="text-white text-2xl font-bold">Z</span>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Zepto Seller Account Setup</h1>
-                <p className="text-green-600">Join Zepto's fast delivery network</p>
-              </div>
+          {/* Header Section with Logo */}
+          <div className="flex flex-col items-center justify-center mb-10">
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
+              <img src={ZeptoLogo} alt="Zepto Logo" className="w-48 h-48 object-contain mb-4" />
+              <h1 className="text-3xl font-bold text-gray-900 text-center">Zepto Seller Account Setup</h1>
+              <p className="text-green-600 text-center mt-2">Join Zepto's fast delivery network</p>
             </div>
           </div>
 
@@ -168,29 +217,47 @@ const Zepto = () => {
             </div>
           </section>
 
-          {/* FAQ */}
-          <section className="mb-12">
-            <div className="bg-white rounded-lg shadow-md p-8 border-t-4 border-green-500">
-              <div className="flex items-center mb-6">
-                <div className="mr-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <HelpCircle className="h-6 w-6 text-green-600" />
-                  </div>
+          {/* FAQ Section with Collapsible Categories */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">Zepto FAQs</h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              {faqCategories.map((cat, idx) => (
+                <div key={cat.title} className="bg-white rounded-lg shadow-md">
+                  <button
+                    className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+                    onClick={() => handleToggle(idx)}
+                    aria-expanded={openCategory === idx}
+                  >
+                    <span className="text-xl font-semibold text-green-700">{cat.title}</span>
+                    <span className="ml-4">
+                      {openCategory === idx ? <X className="w-6 h-6 text-green-600" /> : <Plus className="w-6 h-6 text-green-600" />}
+                    </span>
+                  </button>
+                  {openCategory === idx && (
+                    <div className="px-6 pb-4">
+                      {cat.faqs.map((faq, qIdx) => (
+                        <div key={qIdx} className="mb-2 border-b last:border-b-0">
+                          <button
+                            className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
+                            onClick={() => handleQuestionToggle(idx, qIdx)}
+                            aria-expanded={openQuestions[idx] === qIdx}
+                          >
+                            <span className="font-medium text-gray-900">{faq.q}</span>
+                            <span className="ml-2">
+                              {openQuestions[idx] === qIdx ? <X className="w-5 h-5 text-green-600" /> : <Plus className="w-5 h-5 text-green-600" />}
+                            </span>
+                          </button>
+                          {openQuestions[idx] === qIdx && (
+                            <div className="pb-3 pl-2 pr-2">
+                              <p className="text-gray-700 whitespace-pre-line">{faq.a}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <h2 className="text-2xl font-bold text-green-700">Frequently Asked Questions</h2>
-              </div>
-              <div className="space-y-6">
-                {[
-                  { q: 'Do I need to own a store?', a: 'No, but you must have a storage location and be able to fulfill local deliveries quickly.' },
-                  { q: 'How long is the onboarding process?', a: 'Usually takes 5–10 business days depending on documentation and location.' },
-                  { q: 'Is there a cost to join?', a: 'There is no upfront cost. Zepto may charge a commission per order.' },
-                ].map((item, i) => (
-                  <div key={i} className="bg-gray-50 rounded-lg p-4 transform hover:bg-gray-100 transition-colors duration-300">
-                    <h3 className="font-semibold text-gray-900 mb-2">{item.q}</h3>
-                    <p className="text-gray-700">{item.a}</p>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </section>
 
