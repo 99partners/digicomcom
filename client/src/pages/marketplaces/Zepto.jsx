@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
-import { ArrowUp, HelpCircle, Check, User, CreditCard, Shield, Building, Package, Plus, X } from "lucide-react";
+import { ArrowUp, HelpCircle, Check, User, CreditCard, Shield, Building, Package, Plus, X, ArrowLeft } from "lucide-react";
 import ZeptoLogo from '../../assets/Zepto.png';
 
 const ScrollToTop = () => {
@@ -61,15 +61,22 @@ const Zepto = () => {
 
   const [openCategory, setOpenCategory] = useState(null);
   const [openQuestions, setOpenQuestions] = useState({});
+
+  const goBack = () => {
+    window.history.back();
+  };
+
   const handleToggle = (idx) => {
     setOpenCategory(openCategory === idx ? null : idx);
   };
+
   const handleQuestionToggle = (catIdx, qIdx) => {
     setOpenQuestions((prev) => ({
       ...prev,
       [catIdx]: prev[catIdx] === qIdx ? null : qIdx
     }));
   };
+
   const faqCategories = [
     {
       title: 'Brand Onboarding & Registration',
@@ -120,6 +127,15 @@ const Zepto = () => {
           content="Step-by-step guide for setting up your Zepto seller account. Learn about requirements, process, tips, and FAQs for successful onboarding."
         />
       </Helmet>
+
+      {/* Back Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
 
       <ScrollProgress />
       <ScrollToTop />

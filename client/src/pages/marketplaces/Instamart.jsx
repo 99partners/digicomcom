@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus } from "lucide-react";
+import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus, ArrowLeft } from "lucide-react";
 import InstamartLogo from '../../assets/Instamart.png';
 
 const Instamart = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openQuestions, setOpenQuestions] = useState({});
+
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,17 +30,21 @@ const Instamart = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const [openCategory, setOpenCategory] = useState(null);
-  const [openQuestions, setOpenQuestions] = useState({});
+  const goBack = () => {
+    window.history.back();
+  };
+
   const handleToggle = (idx) => {
     setOpenCategory(openCategory === idx ? null : idx);
   };
+
   const handleQuestionToggle = (catIdx, qIdx) => {
     setOpenQuestions((prev) => ({
       ...prev,
       [catIdx]: prev[catIdx] === qIdx ? null : qIdx
     }));
   };
+
   const faqCategories = [
     {
       title: 'Orders & Delivery',
@@ -79,6 +90,15 @@ const Instamart = () => {
         <title>Swiggy Instamart Seller Setup | 99digicom</title>
         <meta name="description" content="Detailed guide for setting up your Swiggy Instamart seller account with requirements, steps, and FAQs." />
       </Helmet>
+
+      {/* Back Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
 
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
         <div
