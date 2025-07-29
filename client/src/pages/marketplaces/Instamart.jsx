@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X } from "lucide-react";
+import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus } from "lucide-react";
+import InstamartLogo from '../../assets/Instamart.png';
 
 const Instamart = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -21,6 +22,56 @@ const Instamart = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openQuestions, setOpenQuestions] = useState({});
+  const handleToggle = (idx) => {
+    setOpenCategory(openCategory === idx ? null : idx);
+  };
+  const handleQuestionToggle = (catIdx, qIdx) => {
+    setOpenQuestions((prev) => ({
+      ...prev,
+      [catIdx]: prev[catIdx] === qIdx ? null : qIdx
+    }));
+  };
+  const faqCategories = [
+    {
+      title: 'Orders & Delivery',
+      faqs: [
+        { q: 'How do I cancel or modify an order?', a: 'Cancel or edit your order within the app before it’s dispatched. Once processed, changes aren’t possible via the app—contact in‑app support if needed.' },
+        { q: 'What if my order is delayed or missing?', a: 'Use the Swiggy app’s Help section within your order details to report issues. Swiggy handles all such cases through the in-app support—no official phone lines provided.' },
+        { q: 'How is a refund handled if there’s an issue?', a: 'If Swiggy, a merchant, or delivery partner causes a cancellation or delivery failure, no penalty is collected and a refund is issued to you.' },
+      ]
+    },
+    {
+      title: 'Payments & Account',
+      faqs: [
+        { q: 'Can I pay outside the Swiggy app or by phone?', a: 'Payments are only accepted via secure in-app methods. You can also contact support only through the app—Swiggy has no official customer care phone number.' },
+        { q: 'How do I report account or privacy issues?', a: 'For privacy or data concerns, view Swiggy’s policies. If your account is compromised or a security incident occurs, contact Swiggy via the app or email.' },
+      ]
+    },
+    {
+      title: 'Partner Support (For Restaurants & Delivery Partners)',
+      faqs: [
+        { q: 'I’m a restaurant—how do I update my menu?', a: 'For POS-integrated restaurants: ask your POS partner to submit revisions. For non-POS: use the partner portal, submit a menu copy, and expect approval within ~8 business hours.' },
+        { q: 'How and when do restaurant partners receive payment?', a: 'Payments are processed weekly (Wednesdays or Thursdays, depending on the city). Invoices detail charges and payouts.' },
+        { q: 'How can delivery partners join with no vehicle?', a: 'You can still become a delivery partner using cycle/e-bike or renting a vehicle. Swiggy can help with vendor connections in some cities.' },
+      ]
+    },
+    {
+      title: 'Account Security & Incident Reporting',
+      faqs: [
+        { q: 'How do I report a security incident or compromised account?', a: 'Immediately email InfoSec@swiggy.in with the relevant details. They will assist promptly.' },
+      ]
+    },
+    {
+      title: 'Tiering & Performance (Restaurant-side)',
+      faqs: [
+        { q: 'What are the partner tiers (e.g. Platinum, Gold)?', a: 'Restaurants are classified based on criteria like order acceptance, cancellations, edits, customer ratings, and GMV. Each tier offers distinct benefits (e.g. discoverability, ad access).' },
+        { q: 'How can restaurants improve their tier?', a: 'Improve metrics by accepting orders promptly, marking unavailable items, reducing cancellations, and maintaining high food quality and ratings.' },
+      ]
+    },
+  ];
 
   return (
     <>
@@ -48,15 +99,12 @@ const Instamart = () => {
 
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 via-white to-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-center mb-10">
-            <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
-              <div className="w-16 h-16 bg-green-600 rounded-md flex items-center justify-center mr-4">
-                <span className="text-white text-2xl font-bold">S</span>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Swiggy Instamart Seller Setup</h1>
-                <p className="text-green-600">Grow your business by joining Instamart</p>
-              </div>
+          {/* Header Section with Logo */}
+          <div className="flex flex-col items-center justify-center mb-10">
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
+              <img src={InstamartLogo} alt="Instamart Logo" className="w-48 h-48 object-contain mb-4" />
+              <h1 className="text-3xl font-bold text-gray-900 text-center">Swiggy Instamart Seller Setup</h1>
+              <p className="text-green-600 text-center mt-2">Grow your business by joining Instamart</p>
             </div>
           </div>
 
@@ -135,27 +183,47 @@ const Instamart = () => {
             </div>
           </section>
 
-          <section className="mb-12">
-            <div className="bg-white rounded-lg shadow-md p-8 border-t-4 border-green-500">
-              <div className="flex items-center mb-6">
-                <div className="mr-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <HelpCircle className="h-6 w-6 text-green-600" />
-                  </div>
+          {/* FAQ Section with Collapsible Categories */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">Swiggy Instamart FAQs</h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              {faqCategories.map((cat, idx) => (
+                <div key={cat.title} className="bg-white rounded-lg shadow-md">
+                  <button
+                    className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+                    onClick={() => handleToggle(idx)}
+                    aria-expanded={openCategory === idx}
+                  >
+                    <span className="text-xl font-semibold text-green-700">{cat.title}</span>
+                    <span className="ml-4">
+                      {openCategory === idx ? <X className="w-6 h-6 text-green-600" /> : <Plus className="w-6 h-6 text-green-600" />}
+                    </span>
+                  </button>
+                  {openCategory === idx && (
+                    <div className="px-6 pb-4">
+                      {cat.faqs.map((faq, qIdx) => (
+                        <div key={qIdx} className="mb-2 border-b last:border-b-0">
+                          <button
+                            className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
+                            onClick={() => handleQuestionToggle(idx, qIdx)}
+                            aria-expanded={openQuestions[idx] === qIdx}
+                          >
+                            <span className="font-medium text-gray-900">{faq.q}</span>
+                            <span className="ml-2">
+                              {openQuestions[idx] === qIdx ? <X className="w-5 h-5 text-green-600" /> : <Plus className="w-5 h-5 text-green-600" />}
+                            </span>
+                          </button>
+                          {openQuestions[idx] === qIdx && (
+                            <div className="pb-3 pl-2 pr-2">
+                              <p className="text-gray-700 whitespace-pre-line">{faq.a}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <h2 className="text-2xl font-bold text-green-700">FAQs</h2>
-              </div>
-              <div className="space-y-6">
-                {[{ q: "Is there a registration fee?", a: "No, it's free to register as a seller on Swiggy Instamart." },
-                  { q: "Do I need GST to register?", a: "Yes, GST is mandatory for selling on Instamart." },
-                  { q: "How long is the verification process?", a: "Typically 5–7 business days if documents are complete." }
-                ].map((faq, idx) => (
-                  <div key={idx} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                    <h3 className="font-semibold text-gray-900 mb-2">{faq.q}</h3>
-                    <p className="text-gray-700">{faq.a}</p>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </section>
 
