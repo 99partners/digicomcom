@@ -9,12 +9,17 @@ import {
   User,
   Building,
   Check,
-  ChevronRight
+  ChevronRight,
+  Plus,
+  X
 } from 'lucide-react';
+import BlinkitLogo from '../../assets/Blinkit.png';
 
 const Blinkit = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openQuestions, setOpenQuestions] = useState({});
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +36,47 @@ const Blinkit = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleToggle = (idx) => {
+    setOpenCategory(openCategory === idx ? null : idx);
+  };
+  const handleQuestionToggle = (catIdx, qIdx) => {
+    setOpenQuestions((prev) => ({
+      ...prev,
+      [catIdx]: prev[catIdx] === qIdx ? null : qIdx
+    }));
+  };
+  const faqCategories = [
+    {
+      title: 'General',
+      faqs: [
+        { q: 'What is Blinkit and what products do they offer?', a: 'Blinkit is India’s hyper-local delivery service (formerly Grofers), delivering over 7,000 products including groceries, fresh produce, bakery items, meat & seafood, personal care, baby care, electronics, snacks and more.' },
+        { q: 'In which cities does Blinkit operate?', a: 'Blinkit is available in over 100 cities across India—including Ahmedabad, Bengaluru, Delhi, Mumbai, Kolkata, Chennai, Lucknow, Vadodara, Jaipur, Bhavnagar and more.' },
+      ]
+    },
+    {
+      title: 'Delivery',
+      faqs: [
+        { q: 'How does Blinkit deliver within 10 minutes?', a: 'Blinkit uses dense networks of micro warehouses (partner stores) across every ~2 km to pick, pack, and dispatch orders within 2 minutes after checkout, achieving delivery typically within 10 minutes.' },
+        { q: 'Does Blinkit charge for delivery?', a: 'Delivery charges vary by store and location; fees are displayed at checkout before confirming your order.' },
+        { q: 'Can I change the delivery address after placing an order?', a: 'Currently, changing delivery address post-order placement is not supported via the app. You may cancel if needed before processing begins.' },
+        { q: 'Does Blinkit deliver during the night?', a: 'Night-time delivery (12 AM–6 AM) is available in select areas in cities like Delhi, Mumbai, Bengaluru, Chandigarh, Jalandhar, Ludhiana, Ghaziabad, and others.' },
+      ]
+    },
+    {
+      title: 'Product Coverage',
+      faqs: [
+        { q: 'Does Blinkit deliver sensitive items like sanitary pads or condoms?', a: 'Yes—orders of condoms and sanitary pads are delivered across all operating cities, in discreet packaging to ensure privacy.' },
+        { q: 'Can I order ice creams or frozen items?', a: 'Yes—blinkit delivers ice creams and frozen desserts from brands like Amul, Kwality Walls, NIC etc., in almost all cities served.' },
+      ]
+    },
+    {
+      title: 'Safety & Operations',
+      faqs: [
+        { q: 'Are delivery partners\' safety considered in their operational model?', a: 'Yes—Blinkit prioritises safety. Delivery partners cover approx. 2 km per order at an average speed of ~18 km/h using optimized routing and dense hyper-local clusters.' },
+      ]
+    },
+  ];
 
   return (
     <>
@@ -67,16 +113,12 @@ const Blinkit = () => {
 
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 via-white to-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
-          <div className="flex items-center justify-center mb-10">
-            <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
-              <div className="w-16 h-16 bg-yellow-500 rounded-md flex items-center justify-center mr-4">
-                <span className="text-white text-2xl font-bold">B</span>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Blinkit Seller Account Setup</h1>
-                <p className="text-green-600">Your Fast Track to Hyperlocal Delivery</p>
-              </div>
+          {/* Header Section with Logo */}
+          <div className="flex flex-col items-center justify-center mb-10">
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
+              <img src={BlinkitLogo} alt="Blinkit Logo" className="w-48 h-48 object-contain mb-4" />
+              <h1 className="text-3xl font-bold text-gray-900 text-center">Blinkit Seller Account Setup</h1>
+              <p className="text-green-600 text-center mt-2">Your Gateway to Hyperlocal Delivery Success</p>
             </div>
           </div>
 
@@ -170,30 +212,47 @@ const Blinkit = () => {
             </div>
           </section>
 
-          {/* FAQ */}
-          <section className="mb-12">
-            <div className="bg-white rounded-lg shadow-md p-8 border-t-4 border-green-500">
-              <div className="flex items-center mb-6">
-                <div className="mr-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <HelpCircle className="h-6 w-6 text-green-600" />
-                  </div>
+          {/* FAQ Section with Collapsible Categories */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">Blinkit FAQs</h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              {faqCategories.map((cat, idx) => (
+                <div key={cat.title} className="bg-white rounded-lg shadow-md">
+                  <button
+                    className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+                    onClick={() => handleToggle(idx)}
+                    aria-expanded={openCategory === idx}
+                  >
+                    <span className="text-xl font-semibold text-green-700">{cat.title}</span>
+                    <span className="ml-4">
+                      {openCategory === idx ? <X className="w-6 h-6 text-green-600" /> : <Plus className="w-6 h-6 text-green-600" />}
+                    </span>
+                  </button>
+                  {openCategory === idx && (
+                    <div className="px-6 pb-4">
+                      {cat.faqs.map((faq, qIdx) => (
+                        <div key={qIdx} className="mb-2 border-b last:border-b-0">
+                          <button
+                            className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
+                            onClick={() => handleQuestionToggle(idx, qIdx)}
+                            aria-expanded={openQuestions[idx] === qIdx}
+                          >
+                            <span className="font-medium text-gray-900">{faq.q}</span>
+                            <span className="ml-2">
+                              {openQuestions[idx] === qIdx ? <X className="w-5 h-5 text-green-600" /> : <Plus className="w-5 h-5 text-green-600" />}
+                            </span>
+                          </button>
+                          {openQuestions[idx] === qIdx && (
+                            <div className="pb-3 pl-2 pr-2">
+                              <p className="text-gray-700 whitespace-pre-line">{faq.a}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <h2 className="text-2xl font-bold text-green-700">Common Questions</h2>
-              </div>
-              <div className="space-y-6">
-                {[
-                  { question: 'Is there a fee to join?', answer: 'Blinkit doesn’t charge a joining fee, but commissions apply.' },
-                  { question: 'Do I need GST?', answer: 'Yes, GST is mandatory if your products are taxable.' },
-                  { question: 'Can I manage my delivery?', answer: 'Yes, you can self-deliver or use Blinkit’s logistics.' },
-                  { question: 'How long does onboarding take?', answer: 'Usually 2–5 business days after verification.' }
-                ].map((item, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition">
-                    <h3 className="font-semibold text-gray-900 mb-2">{item.question}</h3>
-                    <p className="text-gray-700">{item.answer}</p>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </section>
 
