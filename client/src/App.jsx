@@ -67,10 +67,10 @@ import Footer from './components/Footer';
 import BlogDetails from './pages/BlogDetails';
 import Amazon from './pages/marketplaces/Amazon';
 import Flipkart from './pages/marketplaces/Flipkart';
-import ONDC from './pages/marketplaces/ONDC';
+// import ONDC from './pages/marketplaces/ONDC';
 import JioMart from './pages/marketplaces/JioMart';
 import Meesho from './pages/marketplaces/Meesho';
-import IndiaMART from './pages/marketplaces/IndiaMART';
+// import IndiaMART from './pages/marketplaces/IndiaMART';
 import Snapdeal from './pages/marketplaces/Snapdeal';
 
 function App() {
@@ -161,10 +161,10 @@ function App() {
             <Route path="/partners/partners_Onboarding" element={<PartnersOnboarding />} />
             <Route path="/partners/marketplaces/amazon" element={<Amazon />} />
             <Route path="/partners/marketplaces/flipkart" element={<Flipkart />} />
-            <Route path="/partners/marketplaces/ondc" element={<ONDC />} />
+            {/* <Route path="/partners/marketplaces/ondc" element={<ONDC />} /> */}
             <Route path="/partners/marketplaces/jiomart" element={<JioMart />} />
             <Route path="/partners/marketplaces/meesho" element={<Meesho />} />
-            <Route path="/partners/marketplaces/indiamart" element={<IndiaMART />} />
+            {/* <Route path="/partners/marketplaces/indiamart" element={<IndiaMART />} /> */}
             <Route path="/partners/marketplaces/snapdeal" element={<Snapdeal />} />
             <Route path="/services/grow" element={<AdvertisingMarketing />} />    
             <Route path="/services/manage" element={<AccountManagementServices />} />
