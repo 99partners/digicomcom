@@ -68,8 +68,8 @@ const BlogForm = () => {
               value={formData.title}
               onChange={handleChange}
               required
-              className="w-full min-w-0 max-w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              style={{ boxSizing: 'border-box' }}
+              className="w-full min-w-0 max-w-xs px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              style={{ boxSizing: 'border-box', fontSize: '1rem' }}
             />
           </div>
           <div>
