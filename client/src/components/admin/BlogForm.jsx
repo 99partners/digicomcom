@@ -49,7 +49,7 @@ const BlogForm = () => {
   };
 
   return (
-    <div className="max-w-3xl w-full mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-8 bg-white rounded-2xl shadow-lg mt-8 mb-12">
+    <div className="w-full max-w-xl mx-auto px-4 sm:px-6 py-8 bg-white rounded-2xl shadow-lg mt-8 mb-12">
       <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Create New Blog</h2>
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -58,7 +58,7 @@ const BlogForm = () => {
       )}
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="w-full max-w-md mx-auto md:mx-0">
+          <div className="w-full">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Title
             </label>
