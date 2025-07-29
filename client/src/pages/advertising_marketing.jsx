@@ -380,7 +380,7 @@ export default function AdvertisingMarketing() {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Left Column - E-commerce Platforms */}
-              <div className="lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+              <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <ShoppingCart className="h-5 w-5 mr-2 text-green-600" />
                   E-commerce
@@ -413,7 +413,7 @@ export default function AdvertisingMarketing() {
                 </div>
               </div>
               {/* Center Column - Content */}
-              <div className="lg:col-span-6 bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="lg:col-span-8 bg-white rounded-lg shadow-md overflow-hidden">
                 {activeMarketplace && marketplaces[activeMarketplace] && (
                   <div className="p-8">
                     <div className="flex items-center justify-between mb-8">
@@ -453,7 +453,7 @@ export default function AdvertisingMarketing() {
                 )}
               </div>
               {/* Right Column - Quick Commerce Platforms */}
-              <div className="lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+              <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <Megaphone className="h-5 w-5 mr-2 text-green-600" />
                   Quick Commerce
