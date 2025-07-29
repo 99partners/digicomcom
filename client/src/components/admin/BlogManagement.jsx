@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Pencil, Trash2, Plus, X } from 'lucide-react';
 import { getApiUrl } from '../../config/api.config';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -18,6 +20,21 @@ const BlogManagement = () => {
     image: ''
   });
   const [previewImage, setPreviewImage] = useState('');
+
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+      [{ 'indent': '-1'}, { 'indent': '+1' }],
+      [{ 'direction': 'rtl' }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'align': [] }],
+      ['link', 'image', 'video'],
+      ['clean']
+    ]
+  };
 
   useEffect(() => {
     fetchBlogs();
@@ -64,6 +81,13 @@ const BlogManagement = () => {
     if (name === 'image') {
       setPreviewImage(value);
     }
+  };
+
+  const handleEditorChange = (content) => {
+    setFormData({
+      ...formData,
+      content
+    });
   };
 
   const resetForm = () => {
@@ -210,13 +234,11 @@ const BlogManagement = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Content
               </label>
-              <textarea
-                name="content"
+              <ReactQuill
                 value={formData.content}
-                onChange={handleChange}
-                required
-                rows="6"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                onChange={handleEditorChange}
+                modules={modules}
+                className="h-64 mb-12"
               />
             </div>
 
