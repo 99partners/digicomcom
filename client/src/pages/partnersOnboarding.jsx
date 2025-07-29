@@ -171,16 +171,16 @@ export default function PartnerOnboarding() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
             {[
-              { name: "Organic & Wellness", desc: "Herbal and health-focused products" },
-              { name: "Artisan & Handmade", desc: "Spiritual and unique goods" },
-              { name: "Fashion & Lifestyle", desc: "Apparel and home décor" },
-              { name: "FMCG & Packaged Food", desc: "Consumer goods and food products" },
-              { name: "D2C Niche Brands", desc: "Direct-to-consumer startups" },
-              { name: "Restaurants & Food", desc: "For Zomato/Swiggy onboarding" },
+              { name: "Organic & Wellness", desc: "Herbal and health-focused products", icon: <CheckCircle className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Artisan & Handmade", desc: "Spiritual and unique goods", icon: <Tag className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Fashion & Lifestyle", desc: "Apparel and home décor", icon: <Users className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "FMCG & Packaged Food", desc: "Consumer goods and food products", icon: <Package className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "D2C Niche Brands", desc: "Direct-to-consumer startups", icon: <Rocket className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+              { name: "Restaurants & Food", desc: "For Zomato/Swiggy onboarding", icon: <ShoppingCart className="h-6 w-6 text-green-600" aria-hidden="true" /> },
             ].map((category, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6" role="listitem">
                 <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2" aria-hidden="true">
-                  <ShoppingCart className="h-6 w-6" />
+                  {category.icon}
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
                 <p className="text-gray-600 text-sm">{category.desc}</p>
