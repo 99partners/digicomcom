@@ -80,7 +80,7 @@ const Contact = () => {
       mapLink: "https://maps.google.com/?q=Titanium+City+Center,+Satellite,+Ahmedabad,+380015",
     },
     {
-      city: "Dover",
+      city: "USA",
       address: "8 The Green STE B, Dover, Delaware 19901",
       email: "dover@99partners.com",
       mapLink: "https://maps.google.com/?q=8+The+Green+STE+B,+Dover,+Delaware+19901",

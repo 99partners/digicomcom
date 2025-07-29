@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, ShoppingBag, X, Plus } from 'lucide-react';
+import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, ShoppingBag, X, Plus, ArrowLeft } from 'lucide-react';
 import FlipkartLogo from '../../assets/Flipkart.png';
 
 const Flipkart = () => {
@@ -8,6 +8,11 @@ const Flipkart = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [openCategory, setOpenCategory] = useState(null);
   const [openQuestions, setOpenQuestions] = useState({});
+
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,15 +40,21 @@ const Flipkart = () => {
     });
   };
 
+  const goBack = () => {
+    window.history.back();
+  };
+
   const handleToggle = (idx) => {
     setOpenCategory(openCategory === idx ? null : idx);
   };
+
   const handleQuestionToggle = (catIdx, qIdx) => {
     setOpenQuestions((prev) => ({
       ...prev,
       [catIdx]: prev[catIdx] === qIdx ? null : qIdx
     }));
   };
+
   const faqCategories = [
     {
       title: 'General',
@@ -110,7 +121,16 @@ const Flipkart = () => {
         <meta name="description" content="Complete Flipkart marketplace services including account management, Shopsy, listing optimization, and advertising." />
         <meta name="keywords" content="Flipkart seller account, Flipkart setup, Flipkart marketplace, Shopsy, Flipkart seller central" />
       </Helmet>
-      
+
+      {/* Back Button */}
+      <button
+        onClick={goBack}
+        className="fixed top-20 left-10 bg-white text-green-600 p-2 rounded-full shadow-md hover:bg-green-50 transition-colors duration-300 z-50"
+        aria-label="Go back"
+      >
+        <ArrowLeft size={24} />
+      </button>
+
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
         <div 
@@ -245,7 +265,7 @@ const Flipkart = () => {
                 { step: 3, title: "Verify Your Account", details: "Upload documents and complete KYC" },
                 { step: 4, title: "Set Up Your Seller Profile", details: "Business details and bank information" },
                 { step: 5, title: "List Your First Product", details: "Add product details and images" },
-                { step: 6, title: "Agree to Terms", details: "Review and accept seller agreement" },
+                { step: 6, title: " Agree to Terms", details: "Review and accept seller agreement" },
                 { step: 7, title: "Explore Seller Hub Features", details: "Dashboard, analytics, and tools" },
                 { step: 8, title: "Start Selling", details: "Launch your products and manage orders" }
               ].map((step, index) => (
