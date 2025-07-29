@@ -86,19 +86,6 @@ const Jiomart = () => {
               </ol>
             </div>
           </section>
-          {/* Post-Setup Tips Section */}
-          <section className="mb-12">
-            <div className="bg-green-50 border-l-4 border-green-400 p-8 rounded-lg shadow mb-6">
-              <h2 className="text-2xl font-bold text-green-700 mb-2">Post-Setup Tips</h2>
-              <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                <li><b>Update Inventory Regularly</b></li>
-                <li><b>Use High-Quality Product Images</b></li>
-                <li><b>Respond Quickly to Orders</b></li>
-                <li><b>Maintain Competitive Pricing</b></li>
-                <li><b>Monitor Performance Metrics</b></li>
-              </ul>
-            </div>
-          </section>
           {/* Common Questions Section */}
           <section className="mb-12">
             <div className="bg-white rounded-lg shadow-md p-8">
