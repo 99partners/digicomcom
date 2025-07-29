@@ -13,7 +13,6 @@ import {
 import axios from "axios";
 import { getApiUrl } from "../config/api.config";
 import SEO from "../components/SEO";
-// Import local logos
 import PE1 from "../assets/PE1.png";
 import PE2 from "../assets/PE2.png";
 import PE3 from "../assets/PE3.png";
@@ -30,9 +29,10 @@ import instamartLogo from "../assets/Instamart.png";
 import bigbasketLogo from "../assets/BigBasket.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
+
 export default function PlatformEnablement() {
   const navigate = useNavigate();
-  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon");
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("ecommerce");
   const logos = [
@@ -43,20 +43,17 @@ export default function PlatformEnablement() {
     { src: meeshoLogo, alt: "Meesho logo" },
     { src: bigbasketLogo, alt: "BigBasket logo" },
   ];
-  
-  // Add authentication check function
+
   const isAuthenticated = () => {
-    // Check if token exists in localStorage or sessionStorage
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     return !!token;
   };
-  
-  // Handle Get Started button click
+
   const handleGetStarted = () => {
     if (isAuthenticated()) {
-      navigate('/dashboard'); // Redirect to dashboard if authenticated
+      navigate('/dashboard');
     } else {
-      navigate('/partnerlogin'); // Redirect to login if not authenticated
+      navigate('/partnerlogin');
     }
   };
 
@@ -67,7 +64,16 @@ export default function PlatformEnablement() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-  // Add category property to marketplaces
+
+  // New useEffect to set default marketplace based on category
+  useEffect(() => {
+    if (activeCategory === "ecommerce") {
+      setActiveMarketplace("amazon");
+    } else if (activeCategory === "quick-commerce") {
+      setActiveMarketplace("jiomart");
+    }
+  }, [activeCategory]);
+
   const marketplaces = {
     amazon: {
       name: "Amazon",
@@ -169,12 +175,15 @@ export default function PlatformEnablement() {
       category: "quick-commerce"
     },
   };
+
   const ecommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "ecommerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
+
   const quickCommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "quick-commerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
+
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -194,7 +203,9 @@ export default function PlatformEnablement() {
     additionalNotes: "",
     consent: false,
   });
+
   const [currentStep, setCurrentStep] = useState(0);
+
   const steps = [
     {
       src: PE1,
@@ -221,6 +232,7 @@ export default function PlatformEnablement() {
       description: "Prevent common seller errors.",
     },
   ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -260,6 +272,7 @@ export default function PlatformEnablement() {
       alert("Error submitting form. Please try again.");
     }
   };
+
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
@@ -268,18 +281,22 @@ export default function PlatformEnablement() {
         : prev[field].filter((item) => item !== value),
     }));
   };
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
+
   const handlePrev = () => {
     setCurrentStep((prev) => (prev > 0 ? prev - 1 : 3));
   };
+
   const handleNext = () => {
     setCurrentStep((prev) => (prev < 3 ? prev + 1 : 0));
   };
+
   return (
     <>
       <SEO
@@ -318,7 +335,6 @@ export default function PlatformEnablement() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Start your e-commerce journey with our expert platform enablement services.
             </p>
-            {/* MODIFIED: Added onClick handler to the Get Started button */}
             <button
               onClick={handleGetStarted}
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
@@ -498,7 +514,6 @@ export default function PlatformEnablement() {
               </p>
             </div>
             <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
-              {/* Card 1 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <FileText className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -510,7 +525,6 @@ export default function PlatformEnablement() {
                   <li>Platform-specific tax and payment setup.</li>
                 </ul>
               </div>
-              {/* Card 2 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Package className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -522,7 +536,6 @@ export default function PlatformEnablement() {
                   <li>Creating categories and adding variations (size, color, etc.).</li>
                 </ul>
               </div>
-              {/* Card 3 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Store className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -533,7 +546,6 @@ export default function PlatformEnablement() {
                   <li>Uploading brand story, banners, and images to make your store attractive.</li>
                 </ul>
               </div>
-              {/* Card 4 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Building className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -544,7 +556,6 @@ export default function PlatformEnablement() {
                   <li>Product and inventory syncing with platform APIs (e.g., Amazon Seller Central, Flipkart Seller Hub).</li>
                 </ul>
               </div>
-              {/* Card 5 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Shield className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -555,7 +566,6 @@ export default function PlatformEnablement() {
                   <li>Image and content alignment with platform guidelines.</li>
                 </ul>
               </div>
-              {/* Card 6 */}
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -589,7 +599,6 @@ export default function PlatformEnablement() {
             <ImageSlider slides={steps} />
           </div>
         </section>
-
         {/* Client Testimonials */}
         <section
           className="py-16 px-4 bg-green-50"
@@ -604,8 +613,7 @@ export default function PlatformEnablement() {
                 Client Testimonials
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Hear from small business owners who launched successfully with
-                us.
+                Hear from small business owners who launched successfully with us.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-6" role="list">

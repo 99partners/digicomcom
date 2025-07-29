@@ -36,6 +36,17 @@ export default function AdvertisingMarketing() {
   const navigate = useNavigate();
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("ecommerce");
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
+  
+  // Update active marketplace when category changes
+  useEffect(() => {
+    if (activeCategory === "ecommerce") {
+      setActiveMarketplace("amazon");
+    } else if (activeCategory === "quick-commerce") {
+      setActiveMarketplace("jiomart");
+    }
+  }, [activeCategory]);
+  
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
     { src: flipkartLogo, alt: "Flipkart logo" },
@@ -60,7 +71,7 @@ export default function AdvertisingMarketing() {
       navigate('/partnerlogin'); // Redirect to login if not authenticated
     }
   };
-
+  
   useEffect(() => {
     window.scrollTo(0, 0);
     const interval = setInterval(() => {
@@ -87,7 +98,7 @@ export default function AdvertisingMarketing() {
     additionalNotes: "",
     consent: false,
   });
-  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
+  
   const marketplaces = {
     amazon: {
       name: "Amazon",
@@ -275,6 +286,13 @@ export default function AdvertisingMarketing() {
   const handleNext = () => {
     setCurrentStep((prev) => (prev < 2 ? prev + 1 : 0));
   };
+  
+  // Update the category change handlers to set default marketplaces
+  const handleCategoryChange = (category) => {
+    setActiveCategory(category);
+    // The useEffect will handle setting the default marketplace
+  };
+  
   return (
     <>
       <Helmet>
@@ -387,7 +405,7 @@ export default function AdvertisingMarketing() {
             <div className="flex justify-center mb-8">
               <div className="inline-flex rounded-md shadow-sm">
                 <button
-                  onClick={() => setActiveCategory("ecommerce")}
+                  onClick={() => handleCategoryChange("ecommerce")}
                   className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
                     activeCategory === "ecommerce"
                       ? "bg-green-600 text-white"
@@ -397,7 +415,7 @@ export default function AdvertisingMarketing() {
                   E-commerce
                 </button>
                 <button
-                  onClick={() => setActiveCategory("quick-commerce")}
+                  onClick={() => handleCategoryChange("quick-commerce")}
                   className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
                     activeCategory === "quick-commerce"
                       ? "bg-green-600 text-white"
