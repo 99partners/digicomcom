@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Added this import
+import { useNavigate } from "react-router-dom";
 import {
   Settings,
   ArrowRight,
@@ -20,7 +20,6 @@ import AMS1 from "../assets/AMS1.png";
 import AMS2 from "../assets/AMS2.png";
 import AMS3 from "../assets/AMS3.png";
 import AMS4 from "../assets/AMS4.png";
-// Add these imports for marketplace logos
 import amazonLogo from "../assets/Amazon.png";
 import flipkartLogo from "../assets/Flipkart.png";
 import ondcLogo from "../assets/ONDC1.png";
@@ -31,10 +30,12 @@ import instamartLogo from "../assets/Instamart.png";
 import bigbasketLogo from "../assets/BigBasket.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
+
 export default function AccountManagementServices() {
   const navigate = useNavigate();
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("ecommerce");
+  const [activeMarketplace, setActiveMarketplace] = useState("amazon");
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
     { src: flipkartLogo, alt: "Flipkart logo" },
@@ -43,20 +44,17 @@ export default function AccountManagementServices() {
     { src: meeshoLogo, alt: "Meesho logo" },
     { src: bigbasketLogo, alt: "BigBasket logo" },
   ];
-  
-  // Add authentication check function
+
   const isAuthenticated = () => {
-    // Check if token exists in localStorage or sessionStorage
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     return !!token;
   };
-  
-  // Handle Get Started button click
+
   const handleGetStarted = () => {
     if (isAuthenticated()) {
-      navigate('/dashboard'); // Redirect to dashboard if authenticated
+      navigate('/dashboard');
     } else {
-      navigate('/partnerlogin'); // Redirect to login if not authenticated
+      navigate('/partnerlogin');
     }
   };
 
@@ -67,6 +65,16 @@ export default function AccountManagementServices() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  // New useEffect to set default marketplace based on category
+  useEffect(() => {
+    if (activeCategory === "ecommerce") {
+      setActiveMarketplace("amazon");
+    } else if (activeCategory === "quick-commerce") {
+      setActiveMarketplace("jiomart");
+    }
+  }, [activeCategory]);
+
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -86,7 +94,7 @@ export default function AccountManagementServices() {
     additionalNotes: "",
     consent: false,
   });
-  const [activeMarketplace, setActiveMarketplace] = useState("amazon"); // Set amazon as default
+
   const marketplaces = {
     amazon: {
       name: "Amazon",
@@ -188,12 +196,15 @@ export default function AccountManagementServices() {
       category: "quick-commerce",
     },
   };
+
   const ecommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "ecommerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
+
   const quickCommerceMarketplaces = Object.entries(marketplaces)
     .filter(([_, marketplace]) => marketplace.category === "quick-commerce")
     .map(([key, marketplace]) => ({ key, ...marketplace }));
+
   const steps = [
     {
       src: AMS1,
@@ -220,6 +231,7 @@ export default function AccountManagementServices() {
       description: "Stay connected via WhatsApp for real-time updates.",
     },
   ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -259,6 +271,7 @@ export default function AccountManagementServices() {
       alert("Error submitting form. Please try again.");
     }
   };
+
   const handleCheckboxChange = (field, value, checked) => {
     setFormData((prev) => ({
       ...prev,
@@ -267,12 +280,14 @@ export default function AccountManagementServices() {
         : prev[field].filter((item) => item !== value),
     }));
   };
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
+
   return (
     <>
       <SEO
@@ -315,7 +330,6 @@ export default function AccountManagementServices() {
               Let us handle daily operations, listings, and reports so you can
               focus on business.
             </p>
-            {/* MODIFIED: Added onClick handler to the Get Started button */}
             <button
               onClick={handleGetStarted}
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
@@ -341,7 +355,7 @@ export default function AccountManagementServices() {
             animation: fadeIn 0.5s ease-in-out;
           }
         `}</style>
-        {/* Marketplace Panel Section (copied from platformEnable.jsx) */}
+        {/* Marketplace Panel Section */}
         <section
           className="py-16 px-4 bg-green-50"
           aria-labelledby="marketplaces-heading"
@@ -522,7 +536,6 @@ export default function AccountManagementServices() {
               </p>
             </div>
             <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
-              {/* Card 1 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Settings className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -541,7 +554,6 @@ export default function AccountManagementServices() {
                   </li>
                 </ul>
               </div>
-              {/* Card 2 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -557,7 +569,6 @@ export default function AccountManagementServices() {
                   <li>Syncing inventory across platforms.</li>
                 </ul>
               </div>
-              {/* Card 3 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -576,7 +587,6 @@ export default function AccountManagementServices() {
                   </li>
                 </ul>
               </div>
-              {/* Card 4 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Headphones className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -595,7 +605,6 @@ export default function AccountManagementServices() {
                   </li>
                 </ul>
               </div>
-              {/* Card 5 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <PieChart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
@@ -618,7 +627,6 @@ export default function AccountManagementServices() {
                   </li>
                 </ul>
               </div>
-              {/* Card 6 */}
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
