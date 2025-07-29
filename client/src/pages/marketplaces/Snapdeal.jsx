@@ -2,11 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, X, ShoppingBag } from 'lucide-react';
+import { ArrowUp, ChevronRight, HelpCircle, Package, CreditCard, User, Building, Check, ShoppingBag, X, Plus } from 'lucide-react';
+import SnapdealLogo from '../../assets/Snapdeal.png';
 
 const Snapdeal = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openQuestions, setOpenQuestions] = useState({});
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +36,61 @@ const Snapdeal = () => {
       behavior: 'smooth'
     });
   };
+
+  const handleToggle = (idx) => {
+    setOpenCategory(openCategory === idx ? null : idx);
+  };
+  const handleQuestionToggle = (catIdx, qIdx) => {
+    setOpenQuestions((prev) => ({
+      ...prev,
+      [catIdx]: prev[catIdx] === qIdx ? null : qIdx
+    }));
+  };
+  const faqCategories = [
+    {
+      title: 'Order Tracking & Delivery',
+      faqs: [
+        { q: 'How do I track my order?', a: 'Visit My Orders in your account and click Track Order for real-time status.\nm.snapdeal.com' },
+        { q: 'Why is my order delayed?', a: 'We’ll notify you via email or SMS with the new expected delivery date. Track details are available on your account.\nm.snapdeal.com' },
+        { q: 'Are there any shipping charges?', a: 'No—Snapdeal does not charge for shipping or delivery.\ngethuman.com' },
+        { q: 'Can I choose a courier partner?', a: 'Not currently. We’ll inform you about the delivery partner post-dispatch.\nm.snapdeal.com' },
+      ]
+    },
+    {
+      title: 'Cancellation & Replacement',
+      faqs: [
+        { q: 'How do I cancel before shipping?', a: 'Go to My Orders, click Cancel next to the order, select your reason, and submit—only cancelable before dispatch.\nm.snapdeal.com' },
+        { q: 'Can I request a replacement?', a: 'Yes. Within 7 days of delivery, use Return/Replace in My Orders and choose replacement.\nm.snapdeal.com' },
+        { q: 'Why would Snapdeal cancel my order?', a: 'Possible reasons include out-of-stock items or pricing errors. In such cases, you\'ll be notified and refunded.\nm.snapdeal.com\ntechulator.com' },
+      ]
+    },
+    {
+      title: 'Returns & Refunds',
+      faqs: [
+        { q: 'What are Snapdeal’s return policies?', a: 'Snapdeal offers a 7‑day no‑questions‑asked return/replacement policy. Most unused and original items are eligible.\nSnapdeal.com\nm.snapdeal.com\ngethuman.com' },
+        { q: 'Are any items not eligible for return?', a: 'Yes—innerwear, lingerie, used or washed items, opened electronics, and combo items typically cannot be returned.\nm.snapdeal.com' },
+        { q: 'How and when do I get my refund?', a: 'After product inspection (within about 2 days), refunds for prepaid orders go back immediately to your card. For COD refunds, they often credit via NEFT within ~2 hours. Banks may take 7–10 business days.\nm.snapdeal.com' },
+        { q: 'Do I need to pay return shipping?', a: 'No—for most returns, Snapdeal arranges reverse pickup at no cost. If reverse-pickup isn\'t available, charges are refunded as SD Cash.\nm.snapdeal.com\ntechulator.com' },
+      ]
+    },
+    {
+      title: 'Payments & SD Cash',
+      faqs: [
+        { q: 'What payment methods are accepted?', a: 'Snapdeal accepts Credit/Debit Cards, Net banking, Cash on Delivery (COD), EMI, E‑Gift Vouchers, and Snapdeal Cash (SD Cash).\nm.snapdeal.com' },
+        { q: 'What is SD Cash and does it expire?', a: 'SD Cash is store credit for Snapdeal. It expires 6 months after being credited.\nen.wikipedia.org\nm.snapdeal.com\nSnapdeal.com' },
+        { q: 'Can I use both cash and EMI in one purchase?', a: 'No—you must choose either COD or EMI; each order uses only one payment method.\nGoogle Play\nm.snapdeal.com\ntechulator.com' },
+        { q: 'What happens if a transaction fails but amount is deducted?', a: 'Raise a ticket via the Contact Us form with details. If payment hasn\'t reached Snapdeal, it will be refunded.\nm.snapdeal.com' },
+      ]
+    },
+    {
+      title: 'Account & Login',
+      faqs: [
+        { q: 'Do I need to create an account to shop?', a: 'No—you can shop as a guest. However, registered users get access to order tracking, SD Cash balance, wishlist, and personalized features.\nm.snapdeal.com' },
+        { q: 'Facing login issues or forgot password?', a: 'Use the Forgot Password link on sign-in page. Ensure cookies are enabled. If problems persist, try again after 30 minutes.\nm.snapdeal.com' },
+        { q: 'Is my personal data safe with Snapdeal?', a: 'Yes. Snapdeal uses strict security protocols, does not sell your data, and only collects information needed for order fulfillment.' },
+      ]
+    },
+  ];
 
   return (
     <>
@@ -64,15 +122,11 @@ const Snapdeal = () => {
       <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header Section with Logo */}
-          <div className="flex items-center justify-center mb-10">
-            <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
-              <div className="w-16 h-16 bg-green-500 rounded-md flex items-center justify-center mr-4">
-                <ShoppingBag className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Snapdeal Seller Account Setup</h1>
-                <p className="text-green-600">Your Gateway to India's Growing E-commerce Platform</p>
-              </div>
+          <div className="flex flex-col items-center justify-center mb-10">
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
+              <img src={SnapdealLogo} alt="Snapdeal Logo" className="w-28 h-28 object-contain rounded-md mb-4 bg-white border border-gray-200" />
+              <h1 className="text-3xl font-bold text-gray-900 text-center">Snapdeal Seller Account Setup</h1>
+              <p className="text-green-600 text-center mt-2">Your Gateway to India's Growing E-commerce Platform</p>
             </div>
           </div>
 
@@ -279,6 +333,50 @@ const Snapdeal = () => {
             </div>
             <p className="mt-4 text-gray-600">Our team of Snapdeal experts can help you set up and optimize your account</p>
           </div>
+
+          {/* FAQ Section with Collapsible Categories */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">Snapdeal FAQs</h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              {faqCategories.map((cat, idx) => (
+                <div key={cat.title} className="bg-white rounded-lg shadow-md">
+                  <button
+                    className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+                    onClick={() => handleToggle(idx)}
+                    aria-expanded={openCategory === idx}
+                  >
+                    <span className="text-xl font-semibold text-green-700">{cat.title}</span>
+                    <span className="ml-4">
+                      {openCategory === idx ? <X className="w-6 h-6 text-green-600" /> : <Plus className="w-6 h-6 text-green-600" />}
+                    </span>
+                  </button>
+                  {openCategory === idx && (
+                    <div className="px-6 pb-4">
+                      {cat.faqs.map((faq, qIdx) => (
+                        <div key={qIdx} className="mb-2 border-b last:border-b-0">
+                          <button
+                            className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
+                            onClick={() => handleQuestionToggle(idx, qIdx)}
+                            aria-expanded={openQuestions[idx] === qIdx}
+                          >
+                            <span className="font-medium text-gray-900">{faq.q}</span>
+                            <span className="ml-2">
+                              {openQuestions[idx] === qIdx ? <X className="w-5 h-5 text-green-600" /> : <Plus className="w-5 h-5 text-green-600" />}
+                            </span>
+                          </button>
+                          {openQuestions[idx] === qIdx && (
+                            <div className="pb-3 pl-2 pr-2">
+                              <p className="text-gray-700 whitespace-pre-line">{faq.a}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       </div>
     </>
