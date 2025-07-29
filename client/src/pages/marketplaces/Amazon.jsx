@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { ArrowUp, ChevronRight, HelpCircle, Shield, Package, CreditCard, User, Building, Check, X, Plus } from 'lucide-react';
@@ -18,7 +15,7 @@ const Amazon = () => {
       const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       setScrollProgress(progress);
-      
+
       // Show/hide scroll to top button
       if (window.scrollY > 300) {
         setShowScrollTop(true);
@@ -107,10 +104,10 @@ const Amazon = () => {
         <meta name="description" content="Comprehensive Amazon marketplace services including account management, brand store, listing optimization, and advertising." />
         <meta name="keywords" content="Amazon seller account, Amazon setup, Amazon marketplace, Amazon FBA, Amazon seller central" />
       </Helmet>
-      
+
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-300 ease-out"
           style={{ width: `${scrollProgress}%` }}
         ></div>
@@ -120,7 +117,7 @@ const Amazon = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 z-40 animate-bounce-slow"
+          className="fixed bottom-8 right-8 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300 z-40"
           aria-label="Scroll to top"
         >
           <ArrowUp size={24} />
@@ -132,7 +129,7 @@ const Amazon = () => {
           {/* Header Section with Logo */}
           <div className="flex flex-col items-center justify-center mb-10">
             <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
-              <img src={AmazonLogo} alt="Amazon Logo" className="w-28 h-28 object-contain rounded-md mb-4 bg-white border border-gray-200" />
+              <img src={AmazonLogo} alt="Amazon Logo" className="w-48 h-48 object-contain mb-4" />
               <h1 className="text-3xl font-bold text-gray-900 text-center">Amazon Seller Account Setup</h1>
               <p className="text-green-600 text-center mt-2">Your Gateway to Amazon Marketplace Success</p>
             </div>
@@ -171,7 +168,7 @@ const Amazon = () => {
                   <p className="text-gray-700 mb-4">To create an Amazon Seller account, you'll need the following:</p>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
@@ -210,12 +207,12 @@ const Amazon = () => {
                   <span className="font-medium text-gray-800">Age Requirement: 18+</span>
                 </div>
               </div>
-              
+
               <div className="mt-4 text-center">
-                <a 
-                  href="https://sellercentral.amazon.com/gp/help/external/200405020" 
+                <a
+                  href="https://sellercentral.amazon.com/gp/help/external/200405020"
                   className="inline-flex items-center text-green-700 hover:text-green-900 font-medium transition-colors"
-                  target="_blank" 
+                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   Check Amazon's list of supported countries
@@ -234,7 +231,7 @@ const Amazon = () => {
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">Follow these steps to create your Amazon Seller account quickly and easily</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 { step: 1, title: "Visit Amazon Seller Sign-Up Page", details: "Go to sellercentral.amazon.com" },
@@ -246,8 +243,8 @@ const Amazon = () => {
                 { step: 7, title: "Add Products", details: "Match existing listings or create new ones" },
                 { step: 8, title: "Configure Seller Central", details: "Enable 2FA and set up notifications" }
               ].map((step, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="bg-white rounded-2xl shadow-lg p-6 flex items-start transform hover:scale-105 transition-transform duration-300 hover:shadow-xl"
                 >
                   <div className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold mr-4">
@@ -262,8 +259,7 @@ const Amazon = () => {
             </div>
           </section>
 
-          
-         {/* Common Questions Section */}
+          {/* Common Questions Section */}
           <section className="mb-12">
             <div className="bg-white rounded-lg shadow-md p-8 border-t-4 border-green-500">
               <div className="flex items-center mb-6">
@@ -274,24 +270,24 @@ const Amazon = () => {
                 </div>
                 <h2 className="text-2xl font-bold text-green-700">Common Questions</h2>
               </div>
-              
+
               <div className="space-y-6">
                 {[
-                  { 
-                    question: "Is it free to set up?", 
-                    answer: "Account creation is free; fees apply per sale or with the Professional plan ($39.99/month)." 
+                  {
+                    question: "Is it free to set up?",
+                    answer: "Account creation is free; fees apply per sale or with the Professional plan ($39.99/month)."
                   },
-                  { 
-                    question: "Can I sell internationally?", 
-                    answer: "Yes, with a U.S. account or by creating separate regional accounts for different marketplaces." 
+                  {
+                    question: "Can I sell internationally?",
+                    answer: "Yes, with a U.S. account or by creating separate regional accounts for different marketplaces."
                   },
-                  { 
-                    question: "Do I need a business entity?", 
-                    answer: "No, you can start as an individual seller, but registering a business is recommended for scaling." 
+                  {
+                    question: "Do I need a business entity?",
+                    answer: "No, you can start as an individual seller, but registering a business is recommended for scaling."
                   },
-                  { 
-                    question: "How long does verification take?", 
-                    answer: "Identity verification typically takes 24-48 hours, but can vary depending on your country and verification method." 
+                  {
+                    question: "How long does verification take?",
+                    answer: "Identity verification typically takes 24-48 hours, but can vary depending on your country and verification method."
                   }
                 ].map((item, index) => (
                   <div key={index} className="bg-gray-50 rounded-lg p-4 transform hover:bg-gray-100 transition-colors duration-300">
