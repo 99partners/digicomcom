@@ -7,7 +7,7 @@ import {
   Settings,
   Megaphone,
   Clock,
-  DollarSign,
+  DollarSign, // Keeping this for reference, but will replace with Rupee symbol
   BarChart3,
   Users,
   ShoppingCart,
@@ -138,42 +138,42 @@ export default function ForProductPartners() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8" role="list">
               {[
                 {
-                  icon: <Globe className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <Globe className="h-10 w-10 text-green-600 mb-4" aria-hidden="true" />, 
                   title: "Multi-Platform Presence",
                   description: "Sell on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato with one unified enablement process."
                 },
                 {
-                  icon: <Settings className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <Settings className="h-10 w-10 text-green-600 mb-4" aria-hidden="true" />, 
                   title: "End-to-End Support",
                   description: "From account setup and catalog creation to order fulfillment and returns, we handle it all."
                 },
                 {
-                  icon: <Handshake className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <Handshake className="h-10 w-10 text-green-600 mb-4" aria-hidden="true" />, 
                   title: "Strategic Co-Branding",
                   description: "Unlock new audiences with joint promotions, bundle offerings, and festive campaigns."
                 },
                 {
-                  icon: <Megaphone className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <Megaphone className="h-10 w-10 text-green-600 mb-4" aria-hidden="true" />, 
                   title: "Performance Marketing Expertise",
                   description: "Data-driven ad campaigns on e-commerce and social media with clear ROI tracking."
                 },
                 {
-                  icon: <Clock className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <Clock className="h-10 w-10 text-green-600 mb-4" aria-hidden="true" />, 
                   title: "Fast Onboarding",
                   description: "Go live in 3–7 business days with our streamlined onboarding process."
                 },
                 {
-                  icon: <DollarSign className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <span className="h-12 w-12 text-green-600 mb-4 inline-flex items-center justify-center text-3xl" aria-hidden="true">₹</span>, 
                   title: "Affordable & Transparent Pricing",
                   description: "Tailored plans for startups and scale-ups with no hidden costs or long-term contracts."
                 },
                 {
-                  icon: <BarChart3 className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <BarChart3 className="h-10 w-10 text-green-600 mb-4" aria-hidden="true" />, 
                   title: "Analytics & Insights",
                   description: "Regular reports with sales, ad performance, and platform insights for informed decisions."
                 },
                 {
-                  icon: <Users className="h-8 w-8 text-green-600 mb-4" aria-hidden="true" />, 
+                  icon: <Users className="h-10 w-10 text-green-600 mb-4" aria-hidden="true" />, 
                   title: "Dedicated Partner Success Team",
                   description: "Personalized support with a dedicated relationship manager for your business."
                 }
