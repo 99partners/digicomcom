@@ -58,7 +58,7 @@ const BlogForm = () => {
       )}
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
+          <div className="w-full max-w-md mx-auto md:mx-0">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Title
             </label>
@@ -68,7 +68,8 @@ const BlogForm = () => {
               value={formData.title}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full min-w-0 max-w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              style={{ boxSizing: 'border-box' }}
             />
           </div>
           <div>
