@@ -189,7 +189,8 @@ app.get('/api', (req, res) => {
             '/api/partner',
             '/api/blogs',
             '/api/contact',
-            '/api/newsletter'
+            '/api/newsletter',
+            '/api/google'
         ],
         timestamp: new Date().toISOString()
     });
