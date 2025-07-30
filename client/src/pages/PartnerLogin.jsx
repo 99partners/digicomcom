@@ -7,6 +7,7 @@ import axiosInstance from "../config/api.config"
 import { toast } from "react-toastify"
 import logo from "../assets/99digicom.png"
 import { useAuth } from "../context/AuthContext"
+import GoogleLoginButton from "./GoogleLoginButton.jsx"
 
 const PartnerLogin = () => {
   const [state, setState] = useState("Sign Up")
@@ -253,6 +254,7 @@ const PartnerLogin = () => {
                   </span>
                 </p>
               )}
+                <GoogleLoginButton />
             </div>
           </div>
         </div>
