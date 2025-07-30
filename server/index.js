@@ -50,7 +50,6 @@ const allowedOrigins = [
         'http://127.0.0.1:5051'
     ] : [])
 ];
-
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedOrigins);
 
