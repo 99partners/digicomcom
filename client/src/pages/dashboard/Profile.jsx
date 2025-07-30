@@ -108,10 +108,14 @@ const Profile = () => {
                                     whileHover={{ scale: 1.05 }}
                                     className="relative group"
                                 >
-                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-md">
-                                        <span className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
-                                            {user?.name?.charAt(0) || 'U'}
-                                        </span>
+                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
+                                        {user?.avatar ? (
+                                            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover rounded-full" />
+                                        ) : (
+                                            <span className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
+                                                {user?.name?.charAt(0) || 'U'}
+                                            </span>
+                                        )}
                                     </div>
                                     <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Edit size={16} className="text-green-600" />

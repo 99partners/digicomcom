@@ -39,43 +39,50 @@
 // export default GoogleLoginButton;
 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const GoogleLoginButton = () => {
+  const navigate = useNavigate();
+  const { handleLogin } = useAuth();
+  const initialized = useRef(false);
+
   useEffect(() => {
-    /* global google */
-    window.google?.accounts?.id.initialize({
+    if (!window.google || initialized.current) return;
+    const buttonDiv = document.getElementById('google-button');
+    if (!buttonDiv || buttonDiv.children.length > 0) return;
+    window.google.accounts.id.initialize({
       client_id: '678940763431-ao3o1pqtp1c32tf9ep174vhlb36faaoj.apps.googleusercontent.com',
       callback: handleCredentialResponse,
     });
-
-    window.google?.accounts?.id.renderButton(
-      document.getElementById('google-button'),
-      {
-        theme: 'outline', // or "filled_blue"
-        size: 'large',
-        type: 'standard', // to match the screenshot
-        shape: 'pill',
-        logo_alignment: 'left',
-      }
-    );
-
-    // Optional: show One Tap popup
-    window.google?.accounts?.id.prompt();
+    window.google.accounts.id.renderButton(buttonDiv, {
+      theme: 'outline',
+      size: 'large',
+      type: 'standard',
+      shape: 'pill',
+      logo_alignment: 'left',
+    });
+    window.google.accounts.id.prompt();
+    initialized.current = true;
   }, []);
 
   const handleCredentialResponse = async (response) => {
     const decoded = jwtDecode(response.credential);
-    console.log('Decoded JWT:', decoded);
-
     try {
-      const res = await axios.post('http://localhost:5051/api/auth/google-login', {
+      const res = await axios.post('/api/google/google-login', {
         token: response.credential,
       });
-
-      console.log('Server response:', res.data);
+      // Save app JWT in localStorage and AuthContext
+      const user = res.data.user;
+      const appToken = res.data.token;
+      localStorage.setItem('authToken', appToken); // Save app JWT as authToken
+      if (handleLogin) {
+        await handleLogin(appToken, user, false);
+      }
+      navigate('/dashboard/profile');
     } catch (err) {
       console.error('Login error:', err.response?.data || err.message);
     }

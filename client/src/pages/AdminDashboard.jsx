@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../config/api.config';
 import { toast } from 'react-toastify';
-import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock, Bell } from 'lucide-react';
+import { Users, FileText, Phone, UserCheck, LogOut, Mail, CheckCircle, XCircle, Settings, MessageSquare, BookOpen, Handshake, BarChart2, Clock, Bell, User as UserIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ContactSubmissions from '../components/admin/ContactSubmissions';
@@ -19,12 +19,14 @@ const AdminDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedUser, setSelectedUser] = useState(null);
     const [showUserForm, setShowUserForm] = useState(false);
+    const [googleUsers, setGoogleUsers] = useState([]);
     const navigate = useNavigate();
     const { handleLogout: authLogout } = useAuth();
 
     useEffect(() => {
         console.log('AdminDashboard mounted, fetching data...');
         fetchData();
+        fetchGoogleUsers();
     }, []);
 
     const fetchData = async () => {
@@ -43,6 +45,16 @@ const AdminDashboard = () => {
             console.error('Error fetching data:', error);
             toast.error('Failed to fetch data');
             setIsLoading(false);
+        }
+    };
+
+    const fetchGoogleUsers = async () => {
+        try {
+            const res = await axiosInstance.get('/api/admin/google-users');
+            setGoogleUsers(res.data.data);
+        } catch (error) {
+            console.error('Error fetching Google users:', error);
+            toast.error('Failed to fetch Google users');
         }
     };
 
@@ -116,6 +128,7 @@ const AdminDashboard = () => {
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: Users },
         { id: 'users', label: 'Users', icon: UserCheck },
+        { id: 'google-users', label: 'Google Users', icon: UserIcon },
         { id: 'newsletter', label: 'Newsletter', icon: Mail },
         { id: 'blogs', label: 'Blog Management', icon: BookOpen },
         { id: 'contacts', label: 'Contact Messages', icon: MessageSquare },
@@ -273,6 +286,51 @@ const AdminDashboard = () => {
                                                     >
                                                         Unsubscribe
                                                     </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                );
+
+            case 'google-users':
+                return (
+                    <div className="bg-white rounded-lg shadow overflow-hidden">
+                        <div className="p-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-xl font-semibold">Google Users</h2>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avatar</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Google ID</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {googleUsers.map((user) => (
+                                            <tr key={user._id}>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-500">{user.email}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-xs text-gray-400">{user.googleId}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-xs text-gray-400">{new Date(user.createdAt).toLocaleString()}</div>
                                                 </td>
                                             </tr>
                                         ))}
