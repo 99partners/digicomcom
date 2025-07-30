@@ -254,7 +254,10 @@ const PartnerLogin = () => {
                   </span>
                 </p>
               )}
+              <div className="p-2 text-white"><p>OR</p></div>
+              <div className="flex justify-center">
                 <GoogleLoginButton />
+              </div>
             </div>
           </div>
         </div>
