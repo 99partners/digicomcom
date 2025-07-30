@@ -55,12 +55,12 @@ console.log('Allowed CORS origins:', allowedOrigins);
 
 // Custom CORS middleware to ensure single headers
 app.use((req, res, next) => {
-    const origin = req.headers.origin;
+    const origin = req.headers.origin || 'http://localhost:5173';
     
     console.log('🔍 Request from origin:', origin, 'Method:', req.method);
     
-    // Check if origin is allowed
-    if (allowedOrigins.includes(origin)) {
+    // In development, allow undefined origin and localhost
+    if (process.env.NODE_ENV !== 'production' || allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
         res.setHeader('Vary', 'Origin');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -147,7 +147,7 @@ app.use('/api/ams', amsRoutes);
 app.use('/api/marketing', marketingApplicationRoutes);
 app.use('/api/advertising', advertisingRoutes);
 app.use('/api/notifications', notificationRoutes);
-app.use('/api/auth', auth);
+app.use('/api/auth-google', auth);
 
 // Basic route to test server
 app.get('/', (req, res) => {
