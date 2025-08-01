@@ -1,0 +1,197 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "partners": "Partners",
+    "login": "Login",
+    "signup": "Sign Up",
+    "services": "Services",
+    "solutions": "Solutions",
+    "resources": "Resources",
+    "shop": "Shop",
+    "joinUs": "Join Us",
+    "closeMenu": "Close Menu",
+    "openMenu": "Open Menu"
+  },
+  "home": {
+    "seo": {
+      "title": "Digital Commerce Solutions for Business Growth",
+      "description": "99Digicom helps businesses setup, manage, advertise, and co-brand across top marketplaces. Get expert solutions for e-commerce growth and digital success.",
+      "keywords": "digital commerce, e-commerce solutions, marketplace management, ONDC integration, co-branding, digital marketing, online business"
+    },
+    "hero": {
+      "title1": "Fuel your",
+      "title2": "E-Commerce",
+      "title3": "Growth with",
+      "title4": "Proven Expertise",
+      "subtitle": "Setup, Manage, Advertise, and Co-Brand across all Top marketplaces.",
+      "getStarted": "Get Started",
+      "getStartedAriaLabel": "Get Started with 99Digicom"
+    },
+    "services": {
+      "heading": "Our Core Services",
+      "sellerSetup": {
+        "title": "Seller Account Setup",
+        "frontText": "Amazon, Flipkart, Meesho",
+        "backText": "We offer end-to-end onboarding, document handling, and account activation across major Indian marketplaces to get you selling fast."
+      },
+      "accountManagement": {
+        "title": "Account Management",
+        "frontText": "Listings, Orders, SEO",
+        "backText": "We handle cataloging, listing updates, return resolution, performance monitoring, and keyword-rich SEO optimization."
+      },
+      "advertising": {
+        "title": "Advertising & Marketing",
+        "frontText": "Sponsored Ads, Creatives",
+        "backText": "Our campaigns use keyword targeting, A/B testing, and attractive creatives to improve visibility, clicks, and conversions."
+      },
+      "cobranding": {
+        "title": "Co-Branding Solutions",
+        "frontText": "Influencer Collaborations",
+        "backText": "We connect you with influencers and allied brands for bundled offerings, joint campaigns, and visibility spikes across platforms."
+      }
+    },
+    "features": {
+      "ecosystem": {
+        "headline": "Seamless Integration, Maximum Reach",
+        "content": "We deeply understand the entire landscape. From Amazon & Flipkart to Meesho, Jiomart, ONDC, Swiggy & Zomato, we provide unified expertise across all major platforms. One partner, infinite possibilities."
+      },
+      "strategy": {
+        "headline": "Platform-First Optimization",
+        "content": "We craft bespoke strategies for each channel's unique algorithms, audience, and best practices. Our Platform Enablement & Account Management services ensure your brand thrives where it matters most."
+      },
+      "growth": {
+        "headline": "ROI-Focused Advertising & Marketing",
+        "content": "Your ad spend is an investment. We leverage advanced analytics and platform-specific tools to target precisely, optimize relentlessly, and deliver measurable sales growth and customer acquisition."
+      },
+      "partnership": {
+        "headline": "Amplify Reach Through Smart Alliances",
+        "content": "Unlock exponential growth beyond solo efforts. Our Co-Branding Solutions identify and execute win-win partnerships, leveraging combined audiences and credibility to create unique value and enter new markets effectively."
+      },
+      "brand": {
+        "headline": "Your Brand, Our Obsession",
+        "content": "We protect and elevate your brand equity. From consistent platform presentation and reputation management to strategic co-branding alignment, we ensure every digital touchpoint strengthens your brand identity and trust."
+      },
+      "innovation": {
+        "headline": "Future-Proof Your Digital Presence",
+        "content": "The digital landscape evolves daily. We proactively monitor platform updates, emerging trends, and algorithm shifts, adapting your strategy swiftly to keep you ahead of the curve and capitalize on new opportunities."
+      },
+      "team": {
+        "headline": "Your Dedicated Growth Squad",
+        "content": "Experience true partnership. You get assigned experts in Account Management, Platform Ops, and Marketing who know your business intimately, provide transparent communication, and act as a seamless extension of your team."
+      },
+      "results": {
+        "headline": "We Deliver What Matters: Growth",
+        "content": "Don't just take our word for it. We focus on measurable outcomes: Increased market share, higher conversion rates, reduced customer acquisition costs, stronger brand recall, and scalable revenue growth."
+      }
+    },
+    "logos": {
+      "amazon": {
+        "name": "Amazon",
+        "alt": "Amazon logo"
+      },
+      "flipkart": {
+        "name": "Flipkart",
+        "alt": "Flipkart logo"
+      },
+      "jiomart": {
+        "name": "Jiomart",
+        "alt": "Jiomart logo"
+      },
+      "zepto": {
+        "name": "Zepto",
+        "alt": "Zepto logo"
+      },
+      "blinkit": {
+        "name": "Blinkit",
+        "alt": "Blinkit logo"
+      },
+      "swiggy": {
+        "name": "Swiggy",
+        "alt": "Swiggy logo"
+      },
+      "zomato": {
+        "name": "Zomato",
+        "alt": "Zomato logo"
+      }
+    },
+    "why": {
+      "heading": "Why Choose Us?",
+      "description": "We simplify your selling journey with a hassle-free setup process, dedicated support, and years of marketplace expertise. With a proven 90%+ customer retention rate, we ensure sellers not only launch but grow with us.\n\nTrust 99digicom to deliver excellence at every stage of your e-commerce growth.\n\nThe E-commerce Partner You Can Trust.",
+      "commitment": {
+        "heading": "Our Commitment to Excellence",
+        "setup": {
+          "title": "Hassle-Free Setup",
+          "description": "Enjoy a simplified and smooth onboarding process to get your selling journey started quickly."
+        },
+        "support": {
+          "title": "Dedicated Support",
+          "description": "Benefit from personalized assistance and expert guidance throughout your e-commerce growth."
+        },
+        "expertise": {
+          "title": "Marketplace Expertise",
+          "description": "Leverage years of proven experience in the e-commerce marketplace to optimize your sales."
+        },
+        "retention": {
+          "title": "High Customer Retention",
+          "description": "Join a community of successful sellers, reflected in our over 90% customer retention rate."
+        }
+      }
+    },
+    "benefits": {
+      "heading": "Our Benefits",
+      "description": "Comprehensive solutions to elevate your eCommerce business across all platforms"
+    },
+    "testimonials": {
+      "heading": "Voices of Success",
+      "description": "Hear from our partners and customers who've thrived with 99digicom.com.",
+      "first": {
+        "quote": "ONDC integration was a breeze, and our sales skyrocketed within weeks!",
+        "author": "Neha Patel",
+        "role": "Founder, CraftHaven"
+      },
+      "second": {
+        "quote": "Co-branding with a major retailer boosted our brand's reach overnight.",
+        "author": "Vikram Singh",
+        "role": "CEO, EcoWear"
+      },
+      "third": {
+        "quote": "Their marketing campaigns tripled our website traffic. Amazing team!",
+        "author": "Meera Gupta",
+        "role": "Marketing Lead, PureOrganics"
+      }
+    },
+    "latestBlogs": {
+      "heading": "Latest Insights",
+      "description": "Stay ahead with the latest in digital commerce and business growth strategies.",
+      "loadingText": "Loading blogs...",
+      "error": "Error loading blogs",
+      "readMoreText": "Read More",
+      "readMoreAriaLabel": "Read more about {{title}}",
+      "separator": "•",
+      "categories": {
+        "marketing": "Marketing",
+        "technology": "Technology",
+        "business": "Business",
+        "trends": "Trends"
+      }
+    },
+    "shorts": {
+      "heading": "Quick Tips & Tutorials",
+      "description": "Watch our YouTube Shorts for quick insights on e-commerce success",
+      "first": {
+        "title": "Quick E-commerce Tips",
+        "description": "Learn 3 essential tips for boosting your online sales"
+      },
+      "second": {
+        "title": "Marketplace Setup Guide",
+        "description": "Step-by-step guide to setting up on major platforms"
+      },
+      "third": {
+        "title": "Advertising Strategies",
+        "description": "Proven advertising techniques for e-commerce success"
+      }
+    }
+  }
+}

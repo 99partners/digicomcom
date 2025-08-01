@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Puzzle,
   Target,
@@ -27,9 +28,11 @@ import swiggyLogo from "../assets/Swiggy.png";
 import zomatoLogo from "../assets/Meesho1.png";
 
 const Home = () => {
+  const { t } = useTranslation();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // Add useNavigate hook
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,6 +47,7 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error fetching blogs:", error);
+      setError(t("home.latestBlogs.error"));
     } finally {
       setLoading(false);
     }
@@ -67,24 +71,21 @@ const Home = () => {
 
   const testimonials = [
     {
-      quote:
-        "ONDC integration was a breeze, and our sales skyrocketed within weeks!",
-      author: "Neha Patel",
-      role: "Founder, CraftHaven",
+      quote: t("home.testimonials.first.quote"),
+      author: t("home.testimonials.first.author"),
+      role: t("home.testimonials.first.role"),
       rating: 5,
     },
     {
-      quote:
-        "Co-branding with a major retailer boosted our brand's reach overnight.",
-      author: "Vikram Singh",
-      role: "CEO, EcoWear",
+      quote: t("home.testimonials.second.quote"),
+      author: t("home.testimonials.second.author"),
+      role: t("home.testimonials.second.role"),
       rating: 5,
     },
     {
-      quote:
-        "Their marketing campaigns tripled our website traffic. Amazing team!",
-      author: "Meera Gupta",
-      role: "Marketing Lead, PureOrganics",
+      quote: t("home.testimonials.third.quote"),
+      author: t("home.testimonials.third.author"),
+      role: t("home.testimonials.third.role"),
       rating: 5,
     },
   ];
@@ -92,136 +93,153 @@ const Home = () => {
   const coreServices = [
     {
       icon: Puzzle,
-      title: "Seller Account Setup",
-      frontText: "Amazon, Flipkart, Meesho",
-      backText:
-        "We offer end-to-end onboarding, document handling, and account activation across major Indian marketplaces to get you selling fast.",
+      title: t("home.services.sellerSetup.title"),
+      frontText: t("home.services.sellerSetup.frontText"),
+      backText: t("home.services.sellerSetup.backText"),
     },
     {
       icon: ShieldCheck,
-      title: "Account Management",
-      frontText: "Listings, Orders, SEO",
-      backText:
-        "We handle cataloging, listing updates, return resolution, performance monitoring, and keyword-rich SEO optimization.",
+      title: t("home.services.accountManagement.title"),
+      frontText: t("home.services.accountManagement.frontText"),
+      backText: t("home.services.accountManagement.backText"),
     },
     {
       icon: Target,
-      title: "Advertising & Marketing",
-      frontText: "Sponsored Ads, Creatives",
-      backText:
-        "Our campaigns use keyword targeting, A/B testing, and attractive creatives to improve visibility, clicks, and conversions.",
+      title: t("home.services.advertising.title"),
+      frontText: t("home.services.advertising.frontText"),
+      backText: t("home.services.advertising.backText"),
     },
     {
       icon: Handshake,
-      title: "Co‑Branding Solutions",
-      frontText: "Influencer Collaborations",
-      backText:
-        "We connect you with influencers and allied brands for bundled offerings, joint campaigns, and visibility spikes across platforms.",
+      title: t("home.services.cobranding.title"),
+      frontText: t("home.services.cobranding.frontText"),
+      backText: t("home.services.cobranding.backText"),
     },
   ];
 
-  // Logo data array
   const marketplaceLogos = [
-    { name: "Amazon", src: amazonLogo, alt: "Amazon Logo" },
-    { name: "Flipkart", src: flipkartLogo, alt: "Flipkart Logo" },
-    { name: "JioMart", src: jiomartLogo, alt: "JioMart Logo" },
-    { name: "Zepto", src: zeptoLogo, alt: "Zepto Logo" },
-    { name: "Blinkit", src: blinkitLogo, alt: "Blinkit Logo" },
-    { name: "Swiggy", src: swiggyLogo, alt: "Swiggy Logo" },
-    { name: "Zomato", src: zomatoLogo, alt: "Zomato Logo" },
+    {
+      id: "amazon",
+      name: t("home.logos.amazon.name"),
+      src: amazonLogo,
+      alt: t("home.logos.amazon.alt")
+    },
+    {
+      id: "flipkart",
+      name: t("home.logos.flipkart.name"),
+      src: flipkartLogo,
+      alt: t("home.logos.flipkart.alt")
+    },
+    {
+      id: "jiomart",
+      name: t("home.logos.jiomart.name"),
+      src: jiomartLogo,
+      alt: t("home.logos.jiomart.alt")
+    },
+    {
+      id: "zepto",
+      name: t("home.logos.zepto.name"),
+      src: zeptoLogo,
+      alt: t("home.logos.zepto.alt")
+    },
+    {
+      id: "blinkit",
+      name: t("home.logos.blinkit.name"),
+      src: blinkitLogo,
+      alt: t("home.logos.blinkit.alt")
+    },
+    {
+      id: "swiggy",
+      name: t("home.logos.swiggy.name"),
+      src: swiggyLogo,
+      alt: t("home.logos.swiggy.alt")
+    },
+    {
+      id: "zomato",
+      name: t("home.logos.zomato.name"),
+      src: zomatoLogo,
+      alt: t("home.logos.zomato.alt")
+    }
   ];
 
-  // Add this with your other state variables
-  const [cardsData, setCardsData] = useState([
+  const cardsData = [
     {
       id: "ecosystem",
       icon: Puzzle,
-      headline: "Seamless Integration, Maximum Reach",
-      content:
-        "We deeply understand the entire landscape. From Amazon & Flipkart to Meesho, Jiomart, ONDC, Swiggy & Zomato, we provide unified expertise across all major platforms. One partner, infinite possibilities.",
+      headline: t("home.features.ecosystem.headline"),
+      content: t("home.features.ecosystem.content")
     },
     {
       id: "strategy",
       icon: Target,
-      headline: "Platform-First Optimization",
-      content:
-        "We craft bespoke strategies for each channel's unique algorithms, audience, and best practices. Our Platform Enablement & Account Management services ensure your brand thrives where it matters most.",
+      headline: t("home.features.strategy.headline"),
+      content: t("home.features.strategy.content")
     },
     {
       id: "growth",
       icon: LineChart,
-      headline: "ROI-Focused Advertising & Marketing",
-      content:
-        "Your ad spend is an investment. We leverage advanced analytics and platform-specific tools to target precisely, optimize relentlessly, and deliver measurable sales growth and customer acquisition.",
+      headline: t("home.features.growth.headline"),
+      content: t("home.features.growth.content")
     },
     {
       id: "partnership",
       icon: Handshake,
-      headline: "Amplify Reach Through Smart Alliances",
-      content:
-        "Unlock exponential growth beyond solo efforts. Our Co-Branding Solutions identify and execute win-win partnerships, leveraging combined audiences and credibility to create unique value and enter new markets effectively.",
+      headline: t("home.features.partnership.headline"),
+      content: t("home.features.partnership.content")
     },
     {
       id: "brand",
       icon: ShieldCheck,
-      headline: "Your Brand, Our Obsession",
-      content:
-        "We protect and elevate your brand equity. From consistent platform presentation and reputation management to strategic co-branding alignment, we ensure every digital touchpoint strengthens your brand identity and trust.",
+      headline: t("home.features.brand.headline"),
+      content: t("home.features.brand.content")
     },
     {
       id: "innovation",
       icon: Rocket,
-      headline: "Future-Proof Your Digital Presence",
-      content:
-        "The digital landscape evolves daily. We proactively monitor platform updates, emerging trends, and algorithm shifts, adapting your strategy swiftly to keep you ahead of the curve and capitalize on new opportunities.",
+      headline: t("home.features.innovation.headline"),
+      content: t("home.features.innovation.content")
     },
     {
       id: "team",
       icon: Headset,
-      headline: "Your Dedicated Growth Squad",
-      content:
-        "Experience true partnership. You get assigned experts in Account Management, Platform Ops, and Marketing who know your business intimately, provide transparent communication, and act as a seamless extension of your team.",
+      headline: t("home.features.team.headline"),
+      content: t("home.features.team.content")
     },
     {
       id: "results",
       icon: Trophy,
-      headline: "We Deliver What Matters: Growth",
-      content:
-        "Don't just take our word for it. We focus on measurable outcomes: Increased market share, higher conversion rates, reduced customer acquisition costs, stronger brand recall, and scalable revenue growth.",
-    },
-  ]);
+      headline: t("home.features.results.headline"),
+      content: t("home.features.results.content")
+    }
+  ];
 
-  // YouTube Shorts data
   const youtubeShorts = [
     {
-      id: "short1",
-      title: "Quick E-commerce Tips",
-      description: "Learn 3 essential tips for boosting your online sales",
-      thumbnail: "https://picsum.photos/seed/ecommerce1/400/800.jpg",
-      videoId: "dQw4w9WgXcQ", // Replace with your actual YouTube Short ID
+      id: "first",
+      title: t("home.shorts.first.title"),
+      description: t("home.shorts.first.description"),
+      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
     },
     {
-      id: "short2",
-      title: "Marketplace Setup Guide",
-      description: "Step-by-step guide to setting up on major platforms",
-      thumbnail: "https://picsum.photos/seed/ecommerce2/400/800.jpg",
-      videoId: "dQw4w9WgXcQ", // Replace with your actual YouTube Short ID
+      id: "second",
+      title: t("home.shorts.second.title"),
+      description: t("home.shorts.second.description"),
+      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
     },
     {
-      id: "short3",
-      title: "Advertising Strategies",
-      description: "Proven advertising techniques for e-commerce success",
-      thumbnail: "https://picsum.photos/seed/ecommerce3/400/800.jpg",
-      videoId: "dQw4w9WgXcQ", // Replace with your actual YouTube Short ID
-    },
+      id: "third",
+      title: t("home.shorts.third.title"),
+      description: t("home.shorts.third.description"),
+      videoId: "dQw4w9WgXcQ" // Replace with your actual YouTube Short ID
+    }
   ];
 
   return (
     <>
       <SEO
-        title="Digital Commerce Solutions for Business Growth"
-        description="99Digicom helps businesses setup, manage, advertise, and co-brand across top marketplaces. Get expert solutions for e-commerce growth and digital success."
-        keywords="digital commerce, e-commerce solutions, marketplace management, ONDC integration, co-branding, digital marketing, online business"
+        title={t("home.seo.title")}
+        description={t("home.seo.description")}
+        keywords={t("home.seo.keywords")}
         canonicalUrl="https://99digicom.com"
       />
       <div className="pt-12 sm:pt-8">
@@ -229,27 +247,25 @@ const Home = () => {
         <section className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-50">
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-32 text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight text-gray-900">
-              Fuel your{" "}
+              {t("home.hero.title1")}{" "}
               <span className="bg-gradient-to-r from-green-700 to-green-400 text-transparent bg-clip-text animate-gradient">
-                E‑Commerce
+                {t("home.hero.title2")}
               </span>
-              <br /> Growth with <br />
+              <br /> {t("home.hero.title3")} <br />
               <span className="bg-gradient-to-r from-green-700 to-green-400 text-transparent bg-clip-text animate-gradient">
-                Proven Expertise
+                {t("home.hero.title4")}
               </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 md:mb-12 text-gray-600 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
-              Setup, Manage, Advertise, and Co-Brand across all Top
-              marketplaces.
+              {t("home.hero.subtitle")}
             </p>
             <div className="flex justify-center">
-              {/* Changed to button with onClick handler */}
               <button
                 onClick={handleGetStarted}
                 className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold rounded-lg transition-all duration-300 text-sm sm:text-base"
-                aria-label="Get Started with 99Digicom"
+                aria-label={t("home.hero.getStartedAriaLabel")}
               >
-                Get Started
+                {t("home.hero.getStarted")}
               </button>
             </div>
             {/* Logo Scroll Section */}
@@ -284,7 +300,7 @@ const Home = () => {
       id="services-heading"
       className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 text-center"
     >
-      Our Core Services
+      {t("home.services.heading")}
     </h2>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       {coreServices.map((service, idx) => {
@@ -353,11 +369,10 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
-                Our Benfits
+                {t("home.benefits.heading")}
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
-                Comprehensive solutions to elevate your eCommerce business
-                across all platforms
+                {t("home.benefits.description")}
               </p>
             </div>
             <div className="relative">
@@ -395,23 +410,17 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div className="pr-0 md:pr-8">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-                  Why Choose Us?
-                </h2>
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6">
-                  We simplify your selling journey with a hassle-free setup
-                  process, dedicated support, and years of marketplace
-                  expertise. With a proven 90%+ customer retention rate, we
-                  ensure sellers not only launch but grow with us.<br /><br />
-                  <p> Trust 99digicom to deliver excellence at every stage of your
-                  e-commerce growth.</p> <br />
-                  <p>The E-commerce Partner You Can Trust.</p>
-                </p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
+                {t("home.why.heading")}
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6">
+                {t("home.why.description")}
+              </p>
               </div>
               <div className="pl-0 md:pl-8 border-t md:border-t-0 md:border-l border-green-200 pt-6 md:pt-0 md:pl-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                  Our Commitment to Excellence
-                </h3>
+                {t("home.why.commitment.heading")}
+              </h3>
                 <ul className="space-y-6">
                   <li className="flex items-start group">
                     <div className="flex-shrink-0 mt-1">
@@ -431,11 +440,10 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        Hassle-Free Setup
+                        {t("home.why.commitment.setup.title")}
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        Enjoy a simplified and smooth onboarding process to get
-                        your selling journey started quickly.
+                        {t("home.why.commitment.setup.description")}
                       </p>
                     </div>
                   </li>
@@ -457,11 +465,10 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        Dedicated Support
+                        {t("home.why.commitment.support.title")}
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        Benefit from personalised assistance and expert guidance
-                        throughout your e-commerce growth.
+                        {t("home.why.commitment.support.description")}
                       </p>
                     </div>
                   </li>
@@ -483,11 +490,10 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        Marketplace Expertise
+                        {t("home.why.commitment.expertise.title")}
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        Leverage years of proven experience in the e-commerce
-                        marketplace to optimise your sales.
+                        {t("home.why.commitment.expertise.description")}
                       </p>
                     </div>
                   </li>
@@ -509,11 +515,10 @@ const Home = () => {
                     </div>
                     <div className="ml-4">
                       <h4 className="text-lg font-medium text-gray-900">
-                        High Customer Retention
+                        {t("home.why.commitment.retention.title")}
                       </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        Join a community of successful sellers, reflected in our
-                        over 90% customer retention rate.
+                        {t("home.why.commitment.retention.description")}
                       </p>
                     </div>
                   </li>
@@ -527,11 +532,10 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 sm:mb-12 md:mb-16">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
-                Quick Tips & Tutorials
+                {t("home.shorts.heading")}
               </h2>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
-                Watch our YouTube Shorts for quick insights on e-commerce
-                success
+                {t("home.shorts.description")}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -567,11 +571,10 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 sm:mb-12 md:mb-16">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
-                Voices of Success
+                {t("home.testimonials.heading")}
               </h2>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed">
-                Hear from our partners and customers who've thrived with
-                99digicom.com.
+                {t("home.testimonials.description")}
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -614,11 +617,10 @@ const Home = () => {
               id="blogs-heading"
               className="text-3xl font-bold text-gray-900 mb-4 text-center"
             >
-              Latest Insights
+              {t("home.latestBlogs.heading")}
             </h2>
             <p className="text-lg text-gray-600 text-center mb-12">
-              Stay ahead with the latest in digital commerce and business growth
-              strategies.
+              {t("home.latestBlogs.description")}
             </p>
             {loading ? (
               <div
@@ -626,7 +628,7 @@ const Home = () => {
                 role="status"
                 aria-live="polite"
               >
-                Loading blogs...
+                {t("home.latestBlogs.loadingText")}
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -647,7 +649,7 @@ const Home = () => {
                       />
                       <div className="absolute top-4 left-4">
                         <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                          {blog.category}
+                          {t(`home.latestBlogs.categories.${blog.category}`)}
                         </span>
                       </div>
                     </div>
@@ -663,8 +665,8 @@ const Home = () => {
                         >
                           {new Date(blog.createdAt).toLocaleDateString()}
                         </time>
-                        <span className="mx-2">•</span>
-                        <span>{blog.readTime}</span>
+                        <span className="mx-2">{t("home.latestBlogs.separator")}</span>
+                        <span>{t("home.latestBlogs.readTime", { time: blog.readTime })}</span>
                       </div>
                       <h3
                         className="text-xl font-semibold text-gray-900 mb-3"
@@ -681,9 +683,11 @@ const Home = () => {
                       <Link
                         to={`/resources/blogs/${blog._id}`}
                         className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
-                        aria-label={`Read more about ${blog.title}`}
-                      >
-                        Read More
+                        aria-label={t("home.latestBlogs.readMoreAriaLabel", {
+                            title: blog.title,
+                          })}
+                        >
+                          {t("home.latestBlogs.readMoreText")}
                         <ArrowRight
                           className="ml-1 h-4 w-4"
                           aria-hidden="true"

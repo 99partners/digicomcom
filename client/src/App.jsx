@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
+import { LanguageProvider } from './context/LanguageContext';
 
 // Import pages
 import Home from './pages/Home';
@@ -80,124 +81,119 @@ import Bigbasket from './pages/marketplaces/Bigbasket';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <ToastContainer position="top-right" autoClose={3000} />
-        <Routes>
-          {/* Dashboard Routes - Double Protected */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <DashboardGuard>
+      <LanguageProvider>
+        <Router>
+          <ToastContainer position="top-right" autoClose={3000} />
+          <Routes>
+            {/* Dashboard Routes - Double Protected */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <DashboardGuard>
+                  <DashboardLayout>
+                    <Outlet />
+                  </DashboardLayout>
+                </DashboardGuard>
+              </ProtectedRoute>
+            }>
+              <Route index element={<Profile />} />
+              <Route path="create-application" element={<ServiceSelection />} />
+              <Route path="my-applications" element={<MyApplications />} />
+              <Route path="faq" element={<FAQ />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="subscriptions" element={<Subscriptions />} />
+            </Route>
+
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+
+            {/* Partner Routes */}
+            <Route path="/partner" element={
+              <ProtectedRoute>
                 <DashboardLayout>
                   <Outlet />
                 </DashboardLayout>
-              </DashboardGuard>
-            </ProtectedRoute>
-          }>
-            <Route index element={<Profile />} />
-            <Route path="create-application" element={<ServiceSelection />} />
-            <Route path="my-applications" element={<MyApplications />} />
-            <Route path="faq" element={<FAQ />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="notifications" element={<Notifications />} />
-            <Route path="subscriptions" element={<Subscriptions />} />
-          </Route>
+              </ProtectedRoute>
+            }>
+              <Route path="create-application/platform" element={<PlatformEnablementForm />} />
+              <Route path="create-application/ams" element={<AMSForm />} />
+              <Route path="create-application/advertising" element={<AdvertisingForm />} />
+              <Route path="create-application/cobranding" element={<CoBrandingForm />} />
+            </Route>
 
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-
-          {/* Partner Routes */}
-          <Route path="/partner" element={
-            <ProtectedRoute>
-              <DashboardLayout>
+            {/* Public Routes */}
+            <Route element={
+              <>
+                <Header />
                 <Outlet />
-              </DashboardLayout>
-            </ProtectedRoute>
-          }>
-            <Route path="create-application/platform" element={<PlatformEnablementForm />} />
-            <Route path="create-application/ams" element={<AMSForm />} />
-            <Route path="create-application/advertising" element={<AdvertisingForm />} />
-            <Route path="create-application/cobranding" element={<CoBrandingForm />} />
-          </Route>
+                <Footer />
+              </>
+            }>
+              <Route path="/" element={<Home />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/email-verify" element={<EmailVerify />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
-          {/* Public Routes */}
-          <Route element={
-            <>
-              <Header />
-              <Outlet />
-              <Footer />
-            </>
-          }>
-            <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/email-verify" element={<EmailVerify />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/about_us" element={<About />} />
+              <Route path="/contact_us" element={<Contact />} />
+              <Route path="/partners" element={<Partners />} />
+              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+              <Route path="/termsofservice" element={<TermsOfService />} />
+              <Route path="/cookiepolicy" element={<CookiePolicy />} />
 
-            <Route path="/about_us" element={<About />} />
-            <Route path="/contact_us" element={<Contact />} />
-            <Route path="/partners" element={<Partners />} />
-            {/* <Route path="/resources/careers" element={<Careers />} /> */}
-            {/* <Route path="/shop" element={<Shop />} /> */}
+              <Route path="/resources/blogs" element={<Blogs />} />
+              <Route path="/resources/blogs/:id" element={<BlogDetails />} />
+              <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
+              <Route path="/resources/faq" element={<Faqs />} />
+              <Route path="/customer-login" element={<CustomerLogin />} />
+              <Route path="/partnerlogin" element={<PartnerLogin />} />
+              <Route path="/customerlogin" element={<CustomerLogin />} />
+              
+              <Route path="/platform-enablement-ams" element={<PlatformEnablementAMS />} />
+
+              {/* routes from Services Partner Resources */}
+              <Route path="/partners/why_Partners_with_us" element={<ForProductPartners />} />
+              <Route path="/partners/partners_Onboarding" element={<PartnersOnboarding />} />
+              <Route path="/partners/marketplaces/amazon" element={<Amazon />} />
+              <Route path="/partners/marketplaces/flipkart" element={<Flipkart />} />
+              <Route path="/partners/marketplaces/jiomart" element={<JioMart />} />
+              <Route path="/partners/marketplaces/meesho" element={<Meesho />} />
+              <Route path="/partners/marketplaces/blinkit" element={<Blinkit />} />
+              <Route path="/partners/marketplaces/instamart" element={<Instamart />} />
+              <Route path="/partners/marketplaces/zepto" element={<Zepto />} />
+              <Route path="/partners/marketplaces/bigbasket" element={<Bigbasket />} />
+              <Route path="/partners/marketplaces/snapdeal" element={<Snapdeal />} />
+              <Route path="/services/grow" element={<AdvertisingMarketing />} />    
+              <Route path="/services/manage" element={<AccountManagementServices />} />
+              <Route path="/services/co_branding_solutions" element={<CoBranding />} />
+              <Route path="/services/launch" element={<PlatformEnablement />} />
+              
+              {/* Solution Routes */}
+              <Route path="/solutions/ondc-seller" element={<OndcSeller />} />
+              <Route path="/solutions/ondc-buyer" element={<OndcBuyer />} />
+
+              {/* Home Route */}
+              <Route path="/" element={<Home />} />
+            </Route>
             
-            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-            <Route path="/termsofservice" element={<TermsOfService />} />
-            <Route path="/cookiepolicy" element={<CookiePolicy />} />
-
-            <Route path="/resources/blogs" element={<Blogs />} />
-            <Route path="/resources/blogs/:id" element={<BlogDetails />} />
-            {/* <Route path="/resources/caseStudies" element={<CaseStudies />} /> */}
-            <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
-            <Route path="/resources/faq" element={<Faqs />} />
-            <Route path="/customer-login" element={<CustomerLogin />} />
-            <Route path="/partnerlogin" element={<PartnerLogin />} />
-            <Route path="/customerlogin" element={<CustomerLogin />} />
-            
-            <Route path="/platform-enablement-ams" element={<PlatformEnablementAMS />} />
-
-            {/* routes from Services Partner Resources */}
-            <Route path="/partners/why_Partners_with_us" element={<ForProductPartners />} />
-            <Route path="/partners/partners_Onboarding" element={<PartnersOnboarding />} />
-            <Route path="/partners/marketplaces/amazon" element={<Amazon />} />
-            <Route path="/partners/marketplaces/flipkart" element={<Flipkart />} />
-            {/* <Route path="/partners/marketplaces/ondc" element={<ONDC />} /> */}
-            <Route path="/partners/marketplaces/jiomart" element={<JioMart />} />
-            <Route path="/partners/marketplaces/meesho" element={<Meesho />} />
-            <Route path="/partners/marketplaces/blinkit" element={<Blinkit />} />
-            <Route path="/partners/marketplaces/instamart" element={<Instamart />} />
-            <Route path="/partners/marketplaces/zepto" element={<Zepto />} />
-            <Route path="/partners/marketplaces/bigbasket" element={<Bigbasket />} />
-            
-            {/* <Route path="/partners/marketplaces/indiamart" element={<IndiaMART />} /> */}
-            <Route path="/partners/marketplaces/snapdeal" element={<Snapdeal />} />
-            <Route path="/services/grow" element={<AdvertisingMarketing />} />    
-            <Route path="/services/manage" element={<AccountManagementServices />} />
-            <Route path="/services/co_branding_solutions" element={<CoBranding />} />
-            <Route path="/services/launch" element={<PlatformEnablement />} />
-            
-            {/* Solution Routes */}
-            <Route path="/solutions/ondc-seller" element={<OndcSeller />} />
-            <Route path="/solutions/ondc-buyer" element={<OndcBuyer />} />
-
-            {/* Home Route */}
-            <Route path="/" element={<Home />} />
-          </Route>
-          
-          {/* Catch-all route for unauthorized dashboard access */}
-          <Route path="/dashboard/*" element={
-            <ProtectedRoute>
-              <DashboardGuard>
-                <div>Redirecting...</div>
-              </DashboardGuard>
-            </ProtectedRoute>
-          } />
-        </Routes>
-      </Router>
+            {/* Catch-all route for unauthorized dashboard access */}
+            <Route path="/dashboard/*" element={
+              <ProtectedRoute>
+                <DashboardGuard>
+                  <div>Redirecting...</div>
+                </DashboardGuard>
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </Router>
+      </LanguageProvider>
     </AuthProvider>
   );
 }
