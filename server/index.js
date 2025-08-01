@@ -5,7 +5,7 @@ import { connectDB } from './config/db.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import cors from 'cors'; // Available but using custom CORS implementation
+ // Available but using custom CORS implementation
 import mongoose from 'mongoose';
 import { OAuth2Client } from 'google-auth-library'; 
 
