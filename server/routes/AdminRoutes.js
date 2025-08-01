@@ -3,7 +3,6 @@ import { adminLogin, adminLogout, checkAdminAuth, getDashboardStats, getAllUsers
 import { createNotification, getAllNotifications, getNotificationById, updateNotification, deleteNotification, toggleNotificationStatus, getNotificationStats, getAllUsersForNotifications, testScheduledNotifications } from '../controllers/NotificationController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import PartnerRequest from '../models/PartnerRequestModel.js';
-import GoogleUser from '../models/GoogleUserModel.js';
 
 const router = express.Router();
 
@@ -18,16 +17,6 @@ router.get('/users', adminAuth, getAllUsers);
 router.get('/subscribers', adminAuth, getAllSubscribers);
 router.get('/contacts', adminAuth, getAllContacts);
 router.delete('/contacts/:id', adminAuth, deleteContact);
-
-// Get all Google users
-router.get('/google-users', adminAuth, async (req, res) => {
-  try {
-    const users = await GoogleUser.find().sort({ createdAt: -1 });
-    res.json({ success: true, data: users });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Error fetching Google users', error: error.message });
-  }
-});
 
 // Get all partner requests
 router.get('/partner-requests', adminAuth, async (req, res) => {
@@ -232,4 +221,4 @@ router.put('/notifications/:id', adminAuth, updateNotification);
 router.delete('/notifications/:id', adminAuth, deleteNotification);
 router.patch('/notifications/:id/toggle-status', adminAuth, toggleNotificationStatus);
 
-export default router; 
+export default router;
