@@ -16,9 +16,11 @@
     "check:api": "echo 'Testing API connection...' && curl -f http://localhost:5051/ || echo 'Backend server is not running. Please start it with: npm run start:server'"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.2",
     "axios": "^1.11.0",
     "date-fns": "^3.3.1",
     "framer-motion": "^12.23.6",
+    "jose": "^6.0.12",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.330.0",
     "react": "^18.2.0",

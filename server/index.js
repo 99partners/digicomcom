@@ -7,9 +7,42 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors'; // Available but using custom CORS implementation
 import mongoose from 'mongoose';
+import { OAuth2Client } from 'google-auth-library'; 
 
 const app = express();
 const PORT = process.env.PORT || 5051;
+
+
+
+const client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET
+);
+
+// Middleware to verify Google token
+async function verify(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return next(createError.Unauthorized());
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (payload) {
+      req.user = payload;
+      next();
+    } else {
+      next(createError.Unauthorized());
+    }
+  } catch (err) {
+    next(createError.Unauthorized(err.message));
+  }
+}
 
 // Enhanced production logging
 console.log('🚀 Starting server with configuration:', {

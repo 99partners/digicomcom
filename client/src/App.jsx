@@ -4,6 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 
+import { decodeJwt } from 'jose';
+import { useGoogleOneTapLogin } from '@react-oauth/google';
+
 // Import pages
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
@@ -79,6 +82,37 @@ import Zepto from './pages/marketplaces/Zepto';
 import Bigbasket from './pages/marketplaces/Bigbasket';
 
 function App() {
+
+    useGoogleOneTapLogin({
+    onSuccess: (credentialResponse) => {
+      console.log('Google Credential:', credentialResponse);
+
+      const { credential } = credentialResponse;
+      const payload = credential ? decodeJwt(credential) : undefined;
+
+      if (payload) {
+        console.log('Decoded Payload:', payload);
+
+        axios
+          .get('http://localhost:5000/protected', {
+            headers: {
+              Authorization: `Bearer ${credential}`,
+            },
+          })
+          .then((res) => {
+            console.log('Protected route response:', res.data);
+          })
+          .catch((err) => {
+            console.error('Error calling protected route:', err);
+          });
+      }
+    },
+    onError: (error) => {
+      console.error('Google One Tap Error:', error);
+    },
+  });
+
+
   return (
     <AuthProvider>
       <LanguageProvider>
