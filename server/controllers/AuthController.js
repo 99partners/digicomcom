@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import userModel from '../models/UserModel.js';
 import transporter from '../config/nodemailer.js';
 import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from '../config/emailTemplets.js';
-import GoogleUser from '../models/GoogleUserModel.js';
 
 
 export const register = async (req, res)=>{
@@ -370,12 +369,7 @@ export const isAuth = async (req, res) => {
         }
 
         const decoded = jwt.verify(token, jwtSecret);
-        // Try main user collection first
-        let user = await userModel.findById(decoded.id || decoded.userId).select('-password');
-        // If not found, try GoogleUser collection
-        if (!user) {
-            user = await GoogleUser.findById(decoded.id || decoded.userId);
-        }
+        const user = await userModel.findById(decoded.id).select('-password');
 
         if (!user) {
             return res.status(401).json({
@@ -390,7 +384,6 @@ export const isAuth = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                avatar: user.avatar,
                 phone: user.phone,
                 isAccountVerified: user.isAccountVerified
             }
