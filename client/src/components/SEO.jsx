@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 const SEO = ({ 
   title, 
@@ -8,7 +9,8 @@ const SEO = ({
   ogType = 'website',
   canonicalUrl
 }) => {
-  const siteTitle = '99Digicom - Digital Commerce Solutions';
+  const { t, i18n } = useTranslation();
+  const siteTitle = t('seo.siteTitle');
   const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 
   return (
@@ -38,7 +40,7 @@ const SEO = ({
 
       {/* Additional SEO Tags */}
       <meta name="robots" content="index, follow" />
-      <meta name="language" content="English" />
+      <meta name="language" content={i18n.language} />
     </Helmet>
   );
 };
