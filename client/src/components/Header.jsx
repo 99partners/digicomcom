@@ -23,32 +23,32 @@ const Header = () => {
     {
       name: t('common.services'),
       submenu: [
-        { name: t('services.launch'), href: "/services/launch" },
-        { name: t('services.manage'), href: "/services/manage" },
-        { name: t('services.grow'), href: "/services/grow" },
+        { name: t('Launch'), href: "/services/launch" },
+        { name: t('Manage'), href: "/services/manage" },
+        { name: t('Grow'), href: "/services/grow" },
       ],
     },
     {
       name: t('common.solutions'),
       submenu: [
-        { name: t('solutions.cobranding'), href: "/services/co_branding_solutions" },
-        { name: t('solutions.ondcSeller'), href: "/solutions/ondc-seller" },
-        { name: t('solutions.ondcBuyer'), href: "/solutions/ondc-buyer" },
+        { name: t('Join ONDC Seller Acoount'), href: "/solutions/ondc-seller" },
+        { name: t('Join ONDC Buyer Acoount'), href: "/solutions/ondc-buyer" },
+        { name: t('Cobranding'), href: "/services/co_branding_solutions" }
       ],
     },
     {
       name: t('common.partners'),
       submenu: [
-        { name: t('partners.why'), href: "/partners/why_Partners_with_us" },
-        { name: t('partners.onboarding'), href: "/partners/partners_Onboarding" },
+        { name: t('Why Partners With Us?'), href: "/partners/why_Partners_with_us" },
+        { name: t('Partners Onboarding'), href: "/partners/partners_Onboarding" },
       ],
     },
     {
       name: t('common.resources'),
       submenu: [
-        { name: t('resources.blogs'), href: "/resources/blogs" },
-        { name: t('resources.guides'), href: "/resources/guides_Tutorials" },
-        { name: t('resources.faq'), href: "/resources/faq" },
+        { name: t('Blogs'), href: "/resources/blogs" },
+        { name: t('Guides & Tutorials'), href: "/resources/guides_Tutorials" },
+        { name: t('FAQs'), href: "/resources/faq" },
       ],
     },
     { name: t('common.contact'), href: "/contact_us" },
