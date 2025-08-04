@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminLogin, adminLogout, checkAdminAuth, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact, getAllFormSubmissions, updateFormSubmissionStatus } from '../controllers/AdminController.js';
+import { adminLogin, adminLogout, checkAdminAuth, getDashboardStats, getAllUsers, getAllSubscribers, getAllPartnerRequests, updatePartnerRequestStatus, getAllContacts, deleteContact, getAllFormSubmissions, updateFormSubmissionStatus, getGoogleUsers } from '../controllers/AdminController.js';
 import { createNotification, getAllNotifications, getNotificationById, updateNotification, deleteNotification, toggleNotificationStatus, getNotificationStats, getAllUsersForNotifications, testScheduledNotifications } from '../controllers/NotificationController.js';
 import adminAuth from '../middleware/adminAuth.js';
 import PartnerRequest from '../models/PartnerRequestModel.js';
@@ -13,6 +13,7 @@ router.post('/logout', adminLogout);
 // Protected routes
 router.get('/auth-check', adminAuth, checkAdminAuth);
 router.get('/dashboard-stats', adminAuth, getDashboardStats);
+router.get('/google-users', adminAuth, getGoogleUsers);
 router.get('/users', adminAuth, getAllUsers);
 router.get('/subscribers', adminAuth, getAllSubscribers);
 router.get('/contacts', adminAuth, getAllContacts);

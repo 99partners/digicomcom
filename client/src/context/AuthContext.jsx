@@ -46,15 +46,14 @@ export const AuthProvider = ({ children }) => {
       // Check regular user auth
       if (token) {
         try {
-          const authResponse = await axiosInstance.get('/api/auth/is-auth');
-          if (authResponse.data.success) {
-            const userResponse = await axiosInstance.get('/api/user/data');
-            if (userResponse.data.success) {
-              setUser(userResponse.data.userData);
-              setIsAuthenticated(true);
-            } else {
-              handleLogout();
+          const authResponse = await axiosInstance.get('/api/auth/is-auth', {
+            headers: {
+              Authorization: `Bearer ${token}`
             }
+          });
+          if (authResponse.data.success) {
+            setUser(authResponse.data.user);
+            setIsAuthenticated(true);
           } else {
             handleLogout();
           }
@@ -80,7 +79,10 @@ export const AuthProvider = ({ children }) => {
       
       setUser(userData);
       setIsAuthenticated(true);
-      await checkAuthStatus(); // Refresh user data after login
+      // Don't refresh auth status for Google login to prevent redirect
+      if (!userData?.googleId) {
+        await checkAuthStatus();
+      }
     } catch (error) {
       console.error('Login handler error:', error);
     }

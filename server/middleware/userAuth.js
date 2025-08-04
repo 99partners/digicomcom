@@ -12,6 +12,9 @@ we are getting userId from that token.
 
 
 import jwt from 'jsonwebtoken';
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const userAuth = async (req, res, next) => {
     try {
@@ -75,6 +78,33 @@ const userAuth = async (req, res, next) => {
         return res.status(401).json({
             success: false, 
             message: "Authentication failed. Please login again."
+        });
+    }
+};
+
+export const verifyGoogleToken = async (req, res, next) => {
+    try {
+        const { token } = req.body;
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: "Token is missing"
+            });
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+
+        const payload = ticket.getPayload();
+        req.user = payload;
+        next();
+    } catch (error) {
+        console.error('Google token verification error:', error);
+        return res.status(401).json({
+            success: false,
+            message: "Invalid token"
         });
     }
 };

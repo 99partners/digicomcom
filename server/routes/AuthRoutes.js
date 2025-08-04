@@ -1,6 +1,7 @@
 import express from 'express';
 import { register, login, logout, isAuthenticated, sendRestOtp, sendVerifyOtp, verifyEmail, resetPassword } from '../controllers/AuthController.js';
 import userAuth from '../middleware/userAuth.js';
+import { googleLogin } from '../controllers/GoogleAuthController.js';
 
 const AuthRouter = express.Router();
 
@@ -12,6 +13,7 @@ AuthRouter.post('/verify-account', userAuth, verifyEmail);
 AuthRouter.get('/is-auth', userAuth, isAuthenticated);
 AuthRouter.post('/send-reset-otp', sendRestOtp);
 AuthRouter.post('/reset-password', resetPassword);
+AuthRouter.post('/google/login', googleLogin);
 
 // Test email endpoint (for debugging)
 AuthRouter.post('/test-email', async (req, res) => {

@@ -6,6 +6,8 @@ import { LanguageProvider } from './context/LanguageContext';
 
 import { decodeJwt } from 'jose';
 import { useGoogleOneTapLogin } from '@react-oauth/google';
+import axiosInstance from './config/api.config';
+import { useAuth } from './context/AuthContext';
 
 // Import pages
 import Home from './pages/Home';
@@ -81,42 +83,46 @@ import Instamart from './pages/marketplaces/Instamart';
 import Zepto from './pages/marketplaces/Zepto';
 import Bigbasket from './pages/marketplaces/Bigbasket';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 function App() {
+  const { handleLogin } = useAuth();
 
-    useGoogleOneTapLogin({
-    onSuccess: (credentialResponse) => {
-      console.log('Google Credential:', credentialResponse);
-
+  useGoogleOneTapLogin({
+    onSuccess: async (credentialResponse) => {
       const { credential } = credentialResponse;
-      const payload = credential ? decodeJwt(credential) : undefined;
+      if (!credential) return;
 
-      if (payload) {
-        console.log('Decoded Payload:', payload);
+      try {
+        const payload = decodeJwt(credential);
+        console.log("✅ Decoded Payload:", payload);
 
-        axios
-          .get('http://localhost:5000/protected', {
-            headers: {
-              Authorization: `Bearer ${credential}`,
-            },
-          })
-          .then((res) => {
-            console.log('Protected route response:', res.data);
-          })
-          .catch((err) => {
-            console.error('Error calling protected route:', err);
-          });
+        const res = await axiosInstance.post('/api/google/google-login', {
+          token: credential
+        });
+
+        if (res.data.success) {
+          const { token, user } = res.data;
+          // Use AuthContext to handle login state
+          await handleLogin(token, { ...user, googleId: payload.sub });
+        }
+
+        console.log("🔐 Auth response:", res.data);
+      } catch (error) {
+        console.error("❌ Error authenticating:", error);
       }
     },
     onError: (error) => {
-      console.error('Google One Tap Error:', error);
+      console.error("❌ Google One Tap Error:", error);
     },
   });
 
 
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <Router>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <AuthProvider>
+        <LanguageProvider>
+          <Router>
           <ToastContainer position="top-right" autoClose={3000} />
           <Routes>
             {/* Dashboard Routes - Double Protected */}
@@ -226,9 +232,10 @@ function App() {
               </ProtectedRoute>
             } />
           </Routes>
-        </Router>
-      </LanguageProvider>
-    </AuthProvider>
+          </Router>
+        </LanguageProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }
 

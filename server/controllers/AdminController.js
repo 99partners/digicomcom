@@ -1,6 +1,7 @@
 import Admin from '../models/AdminModel.js';
 import Newsletter from '../models/Newsletter.js';
 import User from '../models/UserModel.js';
+import GoogleUser from '../models/GoogleUserModel.js';
 import jwt from 'jsonwebtoken';
 import PartnerRequest from '../models/PartnerRequestModel.js';
 import Contact from '../models/ContactModel.js';
@@ -56,6 +57,22 @@ export const adminLogin = async (req, res) => {
         res.status(500).json({ 
             success: false, 
             message: error.message 
+        });
+    }
+};
+
+// Get all Google users
+export const getGoogleUsers = async (req, res) => {
+    try {
+        const googleUsers = await GoogleUser.find().sort({ createdAt: -1 });
+        res.json({
+            success: true,
+            users: googleUsers
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
         });
     }
 };
@@ -585,4 +602,4 @@ export const deleteContact = async (req, res) => {
             error: error.message
         });
     }
-}; 
+};

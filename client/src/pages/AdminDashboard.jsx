@@ -14,6 +14,7 @@ import NotificationManagement from '../components/admin/NotificationManagement';
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
+    const [googleUsers, setGoogleUsers] = useState([]);
     const [subscribers, setSubscribers] = useState([]);
     const [activeSection, setActiveSection] = useState('users');
     const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +29,16 @@ const AdminDashboard = () => {
     }, []);
 
     const fetchData = async () => {
+        try {
+            const googleUsersResponse = await axiosInstance.get('/api/admin/google-users');
+            if (googleUsersResponse.data.success) {
+                setGoogleUsers(googleUsersResponse.data.users);
+            }
+        } catch (error) {
+            console.error('Error fetching Google users:', error);
+            toast.error('Failed to fetch Google users');
+        }
+
         try {
             const [statsResponse, usersResponse, subscribersResponse] = await Promise.all([
                 axiosInstance.get('/api/admin/dashboard-stats'),
@@ -116,6 +127,7 @@ const AdminDashboard = () => {
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: Users },
         { id: 'users', label: 'Users', icon: UserCheck },
+        { id: 'google-users', label: 'Google Users', icon: Users },
         { id: 'newsletter', label: 'Newsletter', icon: Mail },
         { id: 'blogs', label: 'Blog Management', icon: BookOpen },
         { id: 'contacts', label: 'Contact Messages', icon: MessageSquare },
@@ -149,6 +161,49 @@ const AdminDashboard = () => {
 
             case 'blogs':
                 return <BlogManagement />;
+
+            case 'google-users':
+                return (
+                    <div className="bg-white rounded-lg shadow overflow-hidden">
+                        <div className="p-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-xl font-semibold">Google Users</h2>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Google ID</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {googleUsers.map((user) => (
+                                            <tr key={user._id}>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-500">{user.email}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-500">{user.googleId}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-500">
+                                                        {new Date(user.createdAt).toLocaleDateString()}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                );
 
             case 'users':
                 return showUserForm ? (

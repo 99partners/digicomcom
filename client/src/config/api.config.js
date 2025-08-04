@@ -63,9 +63,9 @@ const axiosInstance = axios.create({
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    'X-CSRF-Token': '1' // Add a default CSRF token
-  }
+    'X-Requested-With': 'XMLHttpRequest'
+  },
+  validateStatus: status => status >= 200 && status < 500
 });
 
 // Add request interceptor
@@ -86,8 +86,8 @@ axiosInstance.interceptors.request.use((config) => {
   if (adminToken && config.url?.includes('/api/admin')) {
     config.headers.Authorization = `Bearer ${adminToken}`;
   }
-  // Otherwise, if user token exists, use that
-  else if (userToken) {
+  // Otherwise, if user token exists and not already set in request, use that
+  else if (userToken && !config.headers.Authorization) {
     config.headers.Authorization = `Bearer ${userToken}`;
   }
 

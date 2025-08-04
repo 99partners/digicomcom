@@ -5,44 +5,41 @@ import { connectDB } from './config/db.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
- // Available but using custom CORS implementation
 import mongoose from 'mongoose';
-import { OAuth2Client } from 'google-auth-library'; 
+import { OAuth2Client } from 'google-auth-library';
+import { verifyGoogleToken } from './middleware/userAuth.js';
+import GoogleUser from './models/GoogleUserModel.js';
 
 const app = express();
 const PORT = process.env.PORT || 5051;
-
-
 
 const client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET
 );
 
-// Middleware to verify Google token
-async function verify(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return next(createError.Unauthorized());
+// Create API router
+const apiRouter = express.Router();
 
-  const token = authHeader.split(' ')[1];
-
+// Protected Route
+apiRouter.get("/protected", verifyGoogleToken, async (req, res, next) => {
   try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
+    const { sub, email, name, picture } = req.user;
+    const user = await GoogleUser.findOneAndUpdate(
+      { googleId: sub },
+      { email, name, avatar: picture },
+      { new: true, upsert: true }
+    );
+    
+    res.json({ 
+      success: true,
+      message: "Authorized access granted", 
+      user 
     });
-
-    const payload = ticket.getPayload();
-    if (payload) {
-      req.user = payload;
-      next();
-    } else {
-      next(createError.Unauthorized());
-    }
   } catch (err) {
-    next(createError.Unauthorized(err.message));
+    next(err);
   }
-}
+});
 
 // Enhanced production logging
 console.log('🚀 Starting server with configuration:', {
@@ -163,6 +160,7 @@ import amsRoutes from './routes/amsRoutes.js';
 import marketingApplicationRoutes from './routes/marketingApplicationRoutes.js';
 import advertisingRoutes from './routes/advertisingRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import googleRoutes from './routes/googleRoutes.js';
 
 // API routes
 app.use('/api/auth', AuthRouter);
@@ -179,6 +177,7 @@ app.use('/api/ams', amsRoutes);
 app.use('/api/marketing', marketingApplicationRoutes);
 app.use('/api/advertising', advertisingRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/google', googleRoutes);
 
 // Basic route to test server
 app.get('/', (req, res) => {
