@@ -193,5 +193,69 @@
         "description": "Proven advertising techniques for e-commerce success"
       }
     }
+  },
+  "about": {
+    "seo": {
+      "title": "About 99Digicom - Your Partner in Digital Commerce",
+      "description": "99Digicom helps businesses establish and grow their digital presence on India’s top marketplaces. Learn about our story, mission, and expertise.",
+      "keywords": "99Digicom, about us, company profile, digital commerce, e-commerce solutions, mission, vision"
+    },
+    "hero": {
+      "title1": "Our",
+      "title2": "Story",
+      "title3": "and",
+      "title4": "Mission",
+      "subtitle": "Learn more about who we are and what we do at 99Digicom."
+    },
+    "content": {
+      "section1": {
+        "heading": "Our Mission",
+        "paragraph1": "At 99Digicom, our mission is to empower businesses to succeed in India’s rapidly growing digital commerce landscape. We understand that the complexities of online marketplaces can be overwhelming, and our goal is to streamline this process, allowing our clients to focus on their core competencies.",
+        "paragraph2": "We achieve this by providing end-to-end solutions across major platforms like Amazon, Flipkart, Meesho, Jiomart, and ONDC. From account setup and management to advertising and co-branding strategies, we equip our clients with the tools and expertise needed to achieve digital success."
+      },
+      "section2": {
+        "heading": "Our Vision",
+        "paragraph1": "We envision a future where every business, regardless of size, can harness the vast potential of digital marketplaces. We see ourselves as India’s leading provider of digital commerce solutions, known for innovation, reliability, and customer-centricity.",
+        "paragraph2": "Our goal is not just to establish a digital presence but to sustain and optimize it for continuous growth and long-term success."
+      },
+      "section3": {
+        "heading": "Our Team",
+        "paragraph1": "Our team comprises seasoned professionals with deep expertise in all facets of digital commerce. From marketing specialists to technical gurus, we work collaboratively to bring a results-driven approach.",
+        "paragraph2": "We believe our success is inseparable from our clients’ success. Hence, we strive to build strong partnerships with each client, understanding their unique needs and delivering tailored solutions to achieve their business aspirations.",
+        "values": {
+          "partnership": {
+            "title": "Partnership First",
+            "description": "We believe growth is better when shared. Every seller, manufacturer, and collaborator is treated as a long-term partner."
+          },
+          "enable": {
+            "title": "Enable, Don’t Just Offer",
+            "description": "We don’t just provide access — we enable success with services like onboarding, content creation, co-branding, and ads."
+          },
+          "performance": {
+            "title": "Performance with Purpose",
+            "description": "Our strategies are ROI-focused but always aligned with ethical, sustainable, and customer-centric goals."
+          },
+          "simplify": {
+            "title": "Simplify Digital for All",
+            "description": "Our mission is to make digital commerce accessible, affordable, and manageable — even for first-time sellers."
+          }
+        },
+        "goals": {
+          "heading": "Our Long-Term Goals",
+          "first": "Onboard 10,000+ sellers to digital commerce by 2027",
+          "second": "Become the preferred platform for co-branded e-commerce marketing",
+          "third": "Build a network of multi-platform success stories from the heart of India",
+          "fourth": "Expand services to include training, fulfillment, and international market access"
+        },
+        "journey": {
+          "heading": "Our Journey",
+          "paragraph1": "Founded in 2021, 99Digicom began with a vision to empower small and medium businesses in India’s digital commerce ecosystem.",
+          "paragraph2": "Our journey is fueled by innovation, collaboration, and a passion for helping businesses thrive in the digital age.",
+          "paragraph3": "Starting as a small team of digital commerce enthusiasts, we’ve grown into a comprehensive enablement platform. Today, we’re proud to be official integration partners with Amazon, Flipkart, ONDC, and other major platforms.",
+          "paragraph4": "Looking ahead, we’re committed to staying at the forefront of digital commerce innovation, helping Indian businesses reach their full potential in digital marketplaces.",
+          "imageAlt": "99Digicom team collaborating on digital marketplace solutions"
+        }
+      }
+    }
   }
 }
