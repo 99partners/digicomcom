@@ -197,7 +197,7 @@
   "about": {
     "seo": {
       "title": "About 99Digicom - Your Partner in Digital Commerce",
-      "description": "99Digicom helps businesses establish and grow their digital presence on India’s top marketplaces. Learn about our story, mission, and expertise.",
+      "description": "99Digicom helps businesses establish and grow their digital presence on India's top marketplaces. Learn about our story, mission, and expertise.",
       "keywords": "99Digicom, about us, company profile, digital commerce, e-commerce solutions, mission, vision"
     },
     "hero": {
@@ -210,26 +210,26 @@
     "content": {
       "section1": {
         "heading": "Our Mission",
-        "paragraph1": "At 99Digicom, our mission is to empower businesses to succeed in India’s rapidly growing digital commerce landscape. We understand that the complexities of online marketplaces can be overwhelming, and our goal is to streamline this process, allowing our clients to focus on their core competencies.",
+        "paragraph1": "At 99Digicom, our mission is to empower businesses to succeed in India's rapidly growing digital commerce landscape. We understand that the complexities of online marketplaces can be overwhelming, and our goal is to streamline this process, allowing our clients to focus on their core competencies.",
         "paragraph2": "We achieve this by providing end-to-end solutions across major platforms like Amazon, Flipkart, Meesho, Jiomart, and ONDC. From account setup and management to advertising and co-branding strategies, we equip our clients with the tools and expertise needed to achieve digital success."
       },
       "section2": {
         "heading": "Our Vision",
-        "paragraph1": "We envision a future where every business, regardless of size, can harness the vast potential of digital marketplaces. We see ourselves as India’s leading provider of digital commerce solutions, known for innovation, reliability, and customer-centricity.",
+        "paragraph1": "We envision a future where every business, regardless of size, can harness the vast potential of digital marketplaces. We see ourselves as India's leading provider of digital commerce solutions, known for innovation, reliability, and customer-centricity.",
         "paragraph2": "Our goal is not just to establish a digital presence but to sustain and optimize it for continuous growth and long-term success."
       },
       "section3": {
         "heading": "Our Team",
         "paragraph1": "Our team comprises seasoned professionals with deep expertise in all facets of digital commerce. From marketing specialists to technical gurus, we work collaboratively to bring a results-driven approach.",
-        "paragraph2": "We believe our success is inseparable from our clients’ success. Hence, we strive to build strong partnerships with each client, understanding their unique needs and delivering tailored solutions to achieve their business aspirations.",
+        "paragraph2": "We believe our success is inseparable from our clients' success. Hence, we strive to build strong partnerships with each client, understanding their unique needs and delivering tailored solutions to achieve their business aspirations.",
         "values": {
           "partnership": {
             "title": "Partnership First",
             "description": "We believe growth is better when shared. Every seller, manufacturer, and collaborator is treated as a long-term partner."
           },
           "enable": {
-            "title": "Enable, Don’t Just Offer",
-            "description": "We don’t just provide access — we enable success with services like onboarding, content creation, co-branding, and ads."
+            "title": "Enable, Don't Just Offer",
+            "description": "We don't just provide access — we enable success with services like onboarding, content creation, co-branding, and ads."
           },
           "performance": {
             "title": "Performance with Purpose",
@@ -249,12 +249,236 @@
         },
         "journey": {
           "heading": "Our Journey",
-          "paragraph1": "Founded in 2021, 99Digicom began with a vision to empower small and medium businesses in India’s digital commerce ecosystem.",
+          "paragraph1": "Founded in 2021, 99Digicom began with a vision to empower small and medium businesses in India's digital commerce ecosystem.",
           "paragraph2": "Our journey is fueled by innovation, collaboration, and a passion for helping businesses thrive in the digital age.",
-          "paragraph3": "Starting as a small team of digital commerce enthusiasts, we’ve grown into a comprehensive enablement platform. Today, we’re proud to be official integration partners with Amazon, Flipkart, ONDC, and other major platforms.",
-          "paragraph4": "Looking ahead, we’re committed to staying at the forefront of digital commerce innovation, helping Indian businesses reach their full potential in digital marketplaces.",
+          "paragraph3": "Starting as a small team of digital commerce enthusiasts, we've grown into a comprehensive enablement platform. Today, we're proud to be official integration partners with Amazon, Flipkart, ONDC, and other major platforms.",
+          "paragraph4": "Looking ahead, we're committed to staying at the forefront of digital commerce innovation, helping Indian businesses reach their full potential in digital marketplaces.",
           "imageAlt": "99Digicom team collaborating on digital marketplace solutions"
         }
+      }
+    }
+  },
+  "platformEnablement": {
+    "seo": {
+      "title": "Launch Your Online Store - Marketplace Setup Services | 99Digicom",
+      "description": "Get expert help to launch your online store on Amazon, Flipkart & more marketplaces. Start selling online with hassle-free setup and support from 99Digicom.",
+      "keywords": "launch online store, seller account setup, amazon seller, flipkart seller, online store setup, e-commerce launch, marketplace integration"
+    },
+    "hero": {
+      "sellerAccount": "Seller Account Setup",
+      "title1": "Launch",
+      "title2": "Your Online",
+      "title3": "Store on",
+      "subtitle": "Start your e-commerce journey with our expert platform enablement services.",
+      "getStarted": "Get Started"
+    },
+    "marketplaces": {
+      "heading": "Supported Marketplaces",
+      "description": "Choose from our wide range of marketplace integrations for tailored store setup services",
+      "ecommerce": {
+        "title": "E-commerce",
+        "services": {
+          "amazon": {
+            "name": "Amazon",
+            "services": [
+              "Account registration & KYC compliance",
+              "Product listing optimization for Amazon SEO",
+              "Amazon Brand Registry assistance"
+            ]
+          },
+          "flipkart": {
+            "name": "Flipkart",
+            "services": [
+              "Flipkart seller registration & tax setup",
+              "Product upload with Flipkart-specific attributes",
+              "Flipkart SmartBuy program support"
+            ]
+          },
+          "meesho": {
+            "name": "Meesho",
+            "services": [
+              "Meesho onboarding process & GST validation",
+              "Product photography and listing optimization for Meesho",
+              "Meesho catalog expansion (for resellers & brands)"
+            ]
+          },
+          "snapdeal": {
+            "name": "Snapdeal",
+            "services": [
+              "Snapdeal seller registration & product listing",
+              "Integration with Snapdeal's payment & shipping systems",
+              "Catalog optimization based on Snapdeal policies"
+            ]
+          }
+        }
+      },
+      "quickCommerce": {
+        "title": "Quick Commerce",
+        "services": {
+          "jiomart": {
+            "name": "JioMart",
+            "services": [
+              "Jiomart seller registration & onboarding",
+              "Product catalog listing and categorization",
+              "Packaging & delivery integration with Jiomart"
+            ]
+          },
+          "blinkit": {
+            "name": "Blinkit",
+            "services": [
+              "Blinkit seller registration & store setup",
+              "Product catalog listing (grocery, FMCG products)",
+              "Blinkit's delivery zone & logistics integration"
+            ]
+          },
+          "bigbasket": {
+            "name": "BigBasket",
+            "services": [
+              "Bigbasket seller registration & platform setup",
+              "Grocery product catalog setup (packaging, pricing, bulk uploads)",
+              "Integration with Bigbasket's payment and logistics systems"
+            ]
+          },
+          "zepto": {
+            "name": "Zepto",
+            "services": [
+              "Zepto seller registration and onboarding support",
+              "Product upload with categorization for fast delivery",
+              "Integration with Zepto's delivery systems for quick turnaround"
+            ]
+          }
+        }
+      },
+      "learnMore": "Learn more about {{name}}"
+    },
+    "whatsIncluded": {
+      "heading": "What's Included",
+      "description": "Registration & Platform Enablement Services help new sellers get set up and ready to sell across multiple marketplaces.",
+      "services": {
+        "accountRegistration": {
+          "title": "Account Registration & Onboarding",
+          "items": [
+            "Create and register seller accounts across multiple platforms (Amazon, Flipkart, Jiomart, etc.)",
+            "Help with KYC and compliance documentation (GST, PAN, bank details)",
+            "Platform-specific tax and payment setup"
+          ]
+        },
+        "productCatalog": {
+          "title": "Product Catalog Setup",
+          "items": [
+            "Bulk product listing upload (CSV/Excel templates)",
+            "Optimizing product titles, descriptions, and images for better visibility",
+            "Creating categories and adding variations (size, color, etc.)"
+          ]
+        },
+        "brandStore": {
+          "title": "Brand Store Creation",
+          "items": [
+            "Setting up your branded storefront on platforms like Amazon and Flipkart",
+            "Uploading brand story, banners, and images to make your store attractive"
+          ]
+        },
+        "platformIntegration": {
+          "title": "Platform-Specific Integration",
+          "items": [
+            "Connecting your account with required third-party tools (e.g., logistics, payment systems)",
+            "Product and inventory syncing with platform APIs (e.g., Amazon Seller Central, Flipkart Seller Hub)"
+          ]
+        },
+        "listingOptimization": {
+          "title": "Listing Optimization",
+          "items": [
+            "SEO-focused product descriptions to improve search visibility",
+            "Image and content alignment with platform guidelines"
+          ]
+        },
+        "goLiveSupport": {
+          "title": "Go-Live Support",
+          "items": [
+            "Step-by-step assistance to go live on marketplaces",
+            "Final checks to ensure everything is working (products, pricing, stock levels)"
+          ]
+        }
+      }
+    },
+    "whyChooseUs": {
+      "heading": "Why Choose 99digicom for Account Setup?",
+      "description": "Start selling online quickly and confidently with our expert support.",
+      "steps": [
+        {
+          "title": "Hassle-Free Setup Process",
+          "description": "Seamless onboarding on top platforms."
+        },
+        {
+          "title": "Quick Turnaround",
+          "description": "Get live in 3-5 days."
+        },
+        {
+          "title": "Expert Support",
+          "description": "Guidance for documentation and approvals."
+        },
+        {
+          "title": "Avoid Mistakes",
+          "description": "Prevent common seller errors."
+        }
+      ]
+    },
+    "testimonials": {
+      "heading": "Client Testimonials",
+      "description": "Hear from small business owners who launched successfully with us.",
+      "items": [
+        {
+          "quote": "99digicom made our Amazon store setup a breeze. We were live in just 4 days!",
+          "author": "Priya S.",
+          "company": "EcoTrendy Crafts"
+        },
+        {
+          "quote": "Their team handled all our documentation and approvals, saving us weeks of hassle.",
+          "author": "Rajesh K.",
+          "company": "HomeVibe Decor"
+        }
+      ]
+    },
+    "form": {
+      "businessName": "Business Name",
+      "contactPerson": "Contact Person",
+      "email": "Email",
+      "phone": "Phone Number",
+      "website": "Website (if any)",
+      "businessType": "Business Type",
+      "productCategories": "Product Categories",
+      "topProducts": "Top Products",
+      "platforms": "Platforms",
+      "currentSalesVolume": "Current Sales Volume",
+      "targetSalesVolume": "Target Sales Volume",
+      "servicesNeeded": "Services Needed",
+      "marketingGoals": "Marketing Goals",
+      "targetAudience": "Target Audience",
+      "timeline": "Timeline",
+      "additionalNotes": "Additional Notes",
+      "consent": "I agree to 99Digicom's privacy policy",
+      "submit": "Submit",
+      "businessTypes": {
+        "manufacturer": "Manufacturer",
+        "wholesaler": "Wholesaler",
+        "retailer": "Retailer",
+        "brand": "Brand",
+        "startup": "Startup",
+        "other": "Other"
+      },
+      "servicesOptions": {
+        "accountSetup": "Account Setup",
+        "productListing": "Product Listing",
+        "catalogManagement": "Catalog Management",
+        "advertising": "Advertising",
+        "brandStore": "Brand Store Setup",
+        "logistics": "Logistics"
+      },
+      "marketingOptions": {
+        "brandAwareness": "Brand Awareness",
+        "salesGrowth": "Sales Growth",
+        "customerAcquisition": "Customer Acquisition",
+        "marketExpansion": "Market Expansion"
       }
     }
   }

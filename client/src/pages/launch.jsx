@@ -29,19 +29,21 @@ import instamartLogo from "../assets/Instamart.png";
 import bigbasketLogo from "../assets/BigBasket.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
+import { useTranslation } from "react-i18next";
 
 export default function PlatformEnablement() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeMarketplace, setActiveMarketplace] = useState("amazon");
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("ecommerce");
   const logos = [
-    { src: amazonLogo, alt: "Amazon logo" },
-    { src: flipkartLogo, alt: "Flipkart logo" },
-    { src: snapdealLogo, alt: "Snapdeal logo" },
-    { src: jiomartLogo, alt: "JioMart logo" },
-    { src: meeshoLogo, alt: "Meesho logo" },
-    { src: bigbasketLogo, alt: "BigBasket logo" },
+    { src: amazonLogo, alt: t("platformEnablement.marketplaces.ecommerce.services.amazon.name") },
+    { src: flipkartLogo, alt: t("platformEnablement.marketplaces.ecommerce.services.flipkart.name") },
+    { src: snapdealLogo, alt: t("platformEnablement.marketplaces.ecommerce.services.snapdeal.name") },
+    { src: jiomartLogo, alt: t("platformEnablement.marketplaces.quickCommerce.services.jiomart.name") },
+    { src: meeshoLogo, alt: t("platformEnablement.marketplaces.ecommerce.services.meesho.name") },
+    { src: bigbasketLogo, alt: t("platformEnablement.marketplaces.quickCommerce.services.bigbasket.name") },
   ];
 
   const isAuthenticated = () => {
@@ -66,7 +68,6 @@ export default function PlatformEnablement() {
     return () => clearInterval(interval);
   }, []);
 
-  // New useEffect to set default marketplace based on category
   useEffect(() => {
     if (activeCategory === "ecommerce") {
       setActiveMarketplace("amazon");
@@ -77,69 +78,45 @@ export default function PlatformEnablement() {
 
   const marketplaces = {
     amazon: {
-      name: "Amazon",
+      name: t("platformEnablement.marketplaces.ecommerce.services.amazon.name"),
       logo: amazonLogo,
       href: "/partners/marketplaces/amazon",
-      services: [
-        "Account registration & KYC compliance",
-        "Product listing optimization for Amazon SEO",
-        "Amazon Brand Registry assistance",
-      ],
+      services: t("platformEnablement.marketplaces.ecommerce.services.amazon.services", { returnObjects: true }),
       category: "ecommerce",
     },
     flipkart: {
-      name: "Flipkart",
+      name: t("platformEnablement.marketplaces.ecommerce.services.flipkart.name"),
       logo: flipkartLogo,
       href: "/partners/marketplaces/flipkart",
-      services: [
-        "Flipkart seller registration & tax setup",
-        "Product upload with Flipkart-specific attributes",
-        "Flipkart SmartBuy program support",
-      ],
+      services: t("platformEnablement.marketplaces.ecommerce.services.flipkart.services", { returnObjects: true }),
       category: "ecommerce",
     },
     jiomart: {
-      name: "JioMart",
+      name: t("platformEnablement.marketplaces.quickCommerce.services.jiomart.name"),
       logo: jiomartLogo,
       href: "/partners/marketplaces/jiomart",
-      services: [
-        "Jiomart seller registration & onboarding",
-        "Product catalog listing and categorization",
-        "Packaging & delivery integration with Jiomart",
-      ],
+      services: t("platformEnablement.marketplaces.quickCommerce.services.jiomart.services", { returnObjects: true }),
       category: "quick-commerce",
     },
     meesho: {
-      name: "Meesho",
+      name: t("platformEnablement.marketplaces.ecommerce.services.meesho.name"),
       logo: meeshoLogo,
       href: "/partners/marketplaces/meesho",
-      services: [
-        "Meesho onboarding process & GST validation",
-        "Product photography and listing optimization for Meesho",
-        "Meesho catalog expansion (for resellers & brands)",
-      ],
+      services: t("platformEnablement.marketplaces.ecommerce.services.meesho.services", { returnObjects: true }),
       category: "ecommerce",
     },
     snapdeal: {
-      name: "Snapdeal",
+      name: t("platformEnablement.marketplaces.ecommerce.services.snapdeal.name"),
       logo: snapdealLogo,
       href: "/partners/marketplaces/snapdeal",
-      services: [
-        "Snapdeal seller registration & product listing",
-        "Integration with Snapdeal's payment & shipping systems",
-        "Catalog optimization based on Snapdeal policies",
-      ],
+      services: t("platformEnablement.marketplaces.ecommerce.services.snapdeal.services", { returnObjects: true }),
       category: "ecommerce",
     },
     blinkit: {
-      name: "Blinkit",
+      name: t("platformEnablement.marketplaces.quickCommerce.services.blinkit.name"),
       logo: blinkitLogo,
       href: "/partners/marketplaces/blinkit",
-      services: [
-        "Blinkit seller registration & store setup",
-        "Product catalog listing (grocery, FMCG products)",
-        "Blinkit's delivery zone & logistics integration",
-      ],
+      services: t("platformEnablement.marketplaces.quickCommerce.services.blinkit.services", { returnObjects: true }),
       category: "quick-commerce",
     },
     instamart: {
@@ -147,32 +124,24 @@ export default function PlatformEnablement() {
       logo: instamartLogo,
       href: "/partners/marketplaces/instamart",
       services: [
-        "Onboarding on Instamart (through partners like Flipkart)",
-        "Listing products, pricing, and description optimization",
-        "Integration with Instamart's logistics & payment systems",
+        t("platformEnablement.form.servicesOptions.accountSetup"),
+        t("platformEnablement.form.servicesOptions.productListing"),
+        t("platformEnablement.form.servicesOptions.logistics"),
       ],
       category: "quick-commerce",
     },
     zepto: {
-      name: "Zepto",
+      name: t("platformEnablement.marketplaces.quickCommerce.services.zepto.name"),
       logo: zeptoLogo,
       href: "/partners/marketplaces/zepto",
-      services: [
-        "Zepto seller registration and onboarding support",
-        "Product upload with categorization for fast delivery",
-        "Integration with Zepto's delivery systems for quick turnaround",
-      ],
+      services: t("platformEnablement.marketplaces.quickCommerce.services.zepto.services", { returnObjects: true }),
       category: "quick-commerce",
     },
     bigbasket: {
-      name: "BigBasket",
+      name: t("platformEnablement.marketplaces.quickCommerce.services.bigbasket.name"),
       logo: bigbasketLogo,
       href: "/partners/marketplaces/bigbasket",
-      services: [
-        "Bigbasket seller registration & platform setup",
-        "Grocery product catalog setup (packaging, pricing, bulk uploads)",
-        "Integration with Bigbasket's payment and logistics systems",
-      ],
+      services: t("platformEnablement.marketplaces.quickCommerce.services.bigbasket.services", { returnObjects: true }),
       category: "quick-commerce",
     },
   };
@@ -209,27 +178,27 @@ export default function PlatformEnablement() {
   const steps = [
     {
       src: PE1,
-      alt: "Hassle-Free Setup Process illustration",
-      title: "Hassle-Free Setup Process",
-      description: "Seamless onboarding on top platforms.",
+      alt: t("platformEnablement.whyChooseUs.steps.0.title"),
+      title: t("platformEnablement.whyChooseUs.steps.0.title"),
+      description: t("platformEnablement.whyChooseUs.steps.0.description"),
     },
     {
       src: PE2,
-      alt: "Quick Turnaround illustration",
-      title: "Quick Turnaround",
-      description: "Get live in 3–5 days.",
+      alt: t("platformEnablement.whyChooseUs.steps.1.title"),
+      title: t("platformEnablement.whyChooseUs.steps.1.title"),
+      description: t("platformEnablement.whyChooseUs.steps.1.description"),
     },
     {
       src: PE3,
-      alt: "Expert Support illustration",
-      title: "Expert Support",
-      description: "Guidance for documentation and approvals.",
+      alt: t("platformEnablement.whyChooseUs.steps.2.title"),
+      title: t("platformEnablement.whyChooseUs.steps.2.title"),
+      description: t("platformEnablement.whyChooseUs.steps.2.description"),
     },
     {
       src: PE4,
-      alt: "Avoid Mistakes illustration",
-      title: "Avoid Mistakes",
-      description: "Prevent common seller errors.",
+      alt: t("platformEnablement.whyChooseUs.steps.3.title"),
+      title: t("platformEnablement.whyChooseUs.steps.3.title"),
+      description: t("platformEnablement.whyChooseUs.steps.3.description"),
     },
   ];
 
@@ -243,7 +212,7 @@ export default function PlatformEnablement() {
       const data = await response.data;
       if (data.success) {
         alert(
-          "Thank you for your submission! Our team will contact you shortly."
+          t("platformEnablement.form.submitSuccess")
         );
         setFormData({
           businessName: "",
@@ -265,11 +234,11 @@ export default function PlatformEnablement() {
           consent: false,
         });
       } else {
-        alert("Error submitting form: " + data.message);
+        alert(t("platformEnablement.form.submitError") + data.message);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Error submitting form. Please try again.");
+      alert(t("platformEnablement.form.submitErrorGeneric"));
     }
   };
 
@@ -300,9 +269,9 @@ export default function PlatformEnablement() {
   return (
     <>
       <SEO
-        title="Launch Your Online Store - Marketplace Setup Services | 99Digicom"
-        description="Get expert help to launch your online store on Amazon, Flipkart & more marketplaces. Start selling online with hassle-free setup and support from 99Digicom."
-        keywords="launch online store, seller account setup, amazon seller, flipkart seller, online store setup, e-commerce launch, marketplace integration"
+        title={t("platformEnablement.seo.title")}
+        description={t("platformEnablement.seo.description")}
+        keywords={t("platformEnablement.seo.keywords")}
         canonicalUrl="https://99digicom.com/services/launch"
       />
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
@@ -311,15 +280,14 @@ export default function PlatformEnablement() {
           <div className="max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Store className="h-4 w-4" aria-hidden="true" />
-              <span>Seller Account Setup</span>
+              <span>{t("platformEnablement.hero.sellerAccount")}</span>
             </div>
             <h1
               id="hero-heading"
               className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
             >
               <span className="flex items-center flex-wrap justify-center">
-                <span className="text-green-600 mr-2">Launch</span> Your Online
-                Store on
+                <span className="text-green-600 mr-2">{t("platformEnablement.hero.title1")}</span> {t("platformEnablement.hero.title2")} {t("platformEnablement.hero.title3")}
               </span>
               <div className="mt-4">
                 <img
@@ -336,15 +304,14 @@ export default function PlatformEnablement() {
               </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Start your e-commerce journey with our expert platform enablement
-              services.
+              {t("platformEnablement.hero.subtitle")}
             </p>
             <button
               onClick={handleGetStarted}
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
-              aria-label="Start with account management services"
+              aria-label={t("platformEnablement.hero.getStarted")}
             >
-              <span>Get Started</span>
+              <span>{t("platformEnablement.hero.getStarted")}</span>
               <ArrowRight className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
@@ -361,11 +328,10 @@ export default function PlatformEnablement() {
                 id="marketplaces-heading"
                 className="text-3xl font-bold text-gray-900 mb-4"
               >
-                Supported Marketplaces
+                {t("platformEnablement.marketplaces.heading")}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
-                Choose from our wide range of marketplace integrations for
-                tailored store setup services
+                {t("platformEnablement.marketplaces.description")}
               </p>
             </div>
 
@@ -375,7 +341,7 @@ export default function PlatformEnablement() {
               <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <ShoppingCart className="h-5 w-5 mr-2 text-green-600" />
-                  E-commerce
+                  {t("platformEnablement.marketplaces.ecommerce.title")}
                 </h3>
                 <div className="space-y-2">
                   {ecommerceMarketplaces.map(({ key, name, logo }) => (
@@ -447,8 +413,9 @@ export default function PlatformEnablement() {
                         className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-medium"
                       >
                         <span>
-                          Learn more about{" "}
-                          {marketplaces[activeMarketplace].name}
+                          {t("platformEnablement.marketplaces.learnMore", { 
+                            name: marketplaces[activeMarketplace].name 
+                          })}
                         </span>
                         <ArrowRight className="h-5 w-5" />
                       </button>
@@ -461,7 +428,7 @@ export default function PlatformEnablement() {
               <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <Package className="h-5 w-5 mr-2 text-green-600" />
-                  Quick Commerce
+                  {t("platformEnablement.marketplaces.quickCommerce.title")}
                 </h3>
                 <div className="space-y-2">
                   {quickCommerceMarketplaces.map(({ key, name, logo }) => (
@@ -505,11 +472,10 @@ export default function PlatformEnablement() {
                 id="whats-included-heading"
                 className="text-3xl font-bold text-green-700 mb-4"
               >
-                What's Included
+                {t("platformEnablement.whatsIncluded.heading")}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Registration & Platform Enablement Services help new sellers get
-                set up and ready to sell across multiple marketplaces.
+                {t("platformEnablement.whatsIncluded.description")}
               </p>
             </div>
             <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
@@ -517,104 +483,78 @@ export default function PlatformEnablement() {
                 <div className="flex items-center mb-3">
                   <FileText className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
                   <span className="font-semibold text-lg text-gray-900">
-                    Account Registration & Onboarding
+                    {t("platformEnablement.whatsIncluded.services.accountRegistration.title")}
                   </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Create and register seller accounts across multiple
-                    platforms (Amazon, Flipkart, Jiomart, Meesho, etc.)
-                  </li>
-                  <li>
-                    Help with KYC and compliance documentation (GST, PAN, bank
-                    details).
-                  </li>
-                  <li>Platform-specific tax and payment setup.</li>
+                  {t("platformEnablement.whatsIncluded.services.accountRegistration.items", { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Package className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
                   <span className="font-semibold text-lg text-gray-900">
-                    Product Catalog Setup
+                    {t("platformEnablement.whatsIncluded.services.productCatalog.title")}
                   </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Bulk product listing upload (CSV/Excel templates)</li>
-                  <li>
-                    Optimizing product titles, descriptions, and images for
-                    better visibility.
-                  </li>
-                  <li>
-                    Creating categories and adding variations (size, color,
-                    etc.).
-                  </li>
+                  {t("platformEnablement.whatsIncluded.services.productCatalog.items", { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Store className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
                   <span className="font-semibold text-lg text-gray-900">
-                    Brand Store Creation
+                    {t("platformEnablement.whatsIncluded.services.brandStore.title")}
                   </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Setting up your branded storefront on platforms like Amazon
-                    and Flipkart.
-                  </li>
-                  <li>
-                    Uploading brand story, banners, and images to make your
-                    store attractive.
-                  </li>
+                  {t("platformEnablement.whatsIncluded.services.brandStore.items", { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Building className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
                   <span className="font-semibold text-lg text-gray-900">
-                    Platform-Specific Integration
+                    {t("platformEnablement.whatsIncluded.services.platformIntegration.title")}
                   </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    Connecting your account with required third-party tools
-                    (e.g., logistics, payment systems).
-                  </li>
-                  <li>
-                    Product and inventory syncing with platform APIs (e.g.,
-                    Amazon Seller Central, Flipkart Seller Hub).
-                  </li>
+                  {t("platformEnablement.whatsIncluded.services.platformIntegration.items", { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Shield className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
                   <span className="font-semibold text-lg text-gray-900">
-                    Listing Optimization
+                    {t("platformEnablement.whatsIncluded.services.listingOptimization.title")}
                   </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>
-                    SEO-focused product descriptions to improve search
-                    visibility.
-                  </li>
-                  <li>Image and content alignment with platform guidelines.</li>
+                  {t("platformEnablement.whatsIncluded.services.listingOptimization.items", { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-green-50 border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
                   <span className="font-semibold text-lg text-gray-900">
-                    Go-Live Support
+                    {t("platformEnablement.whatsIncluded.services.goLiveSupport.title")}
                   </span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Step-by-step assistance to go live on marketplaces.</li>
-                  <li>
-                    Final checks to ensure everything is working (products,
-                    pricing, stock levels)
-                  </li>
+                  {t("platformEnablement.whatsIncluded.services.goLiveSupport.items", { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -632,11 +572,10 @@ export default function PlatformEnablement() {
                 id="why-choose-heading"
                 className="text-3xl font-bold text-gray-900 mb-4"
               >
-                Why Choose 99digicom for Account Setup?
+                {t("platformEnablement.whyChooseUs.heading")}
               </h2>
               <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Start selling online quickly and confidently with our expert
-                support.
+                {t("platformEnablement.whyChooseUs.description")}
               </p>
             </div>
             <ImageSlider slides={steps} />
@@ -654,28 +593,14 @@ export default function PlatformEnablement() {
                 id="testimonials-heading"
                 className="text-3xl font-bold text-gray-900 mb-4"
               >
-                Client Testimonials
+                {t("platformEnablement.testimonials.heading")}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Hear from small business owners who launched successfully with
-                us.
+                {t("platformEnablement.testimonials.description")}
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-6" role="list">
-              {[
-                {
-                  quote:
-                    "99digicom made our Amazon store setup a breeze. We were live in just 4 days!",
-                  author: "Priya S.",
-                  company: "EcoTrendy Crafts",
-                },
-                {
-                  quote:
-                    "Their team handled all our documentation and approvals, saving us weeks of hassle.",
-                  author: "Rajesh K.",
-                  company: "HomeVibe Decor",
-                },
-              ].map((testimonial, index) => (
+              {t("platformEnablement.testimonials.items", { returnObjects: true }).map((testimonial, index) => (
                 <div
                   key={index}
                   className="bg-white rounded-lg shadow-lg p-6"
