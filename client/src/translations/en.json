@@ -481,5 +481,98 @@
         "marketExpansion": "Market Expansion"
       }
     }
+  },
+  "ams": {
+    "hero": {
+      "badge": "Seller Account Management",
+      "title1": "Manage",
+      "title2": "Your Online Store",
+      "subtitle": "We handle daily operations, listings, and reports so you can focus on your business.",
+      "getStarted": "Get Started"
+    },
+    "marketplaces": {
+      "heading": "Supported Marketplaces",
+      "description": "Choose from our wide marketplace integrations for customized management services",
+      "ecommerce": "E-commerce",
+      "quickCommerce": "Quick Commerce",
+      "learnMore": "Learn more about {{name}}"
+    },
+    "whatsIncluded": {
+      "heading": "What's Included",
+      "description": "Account Management Services (AMS) help sellers manage their account and daily operations across various marketplaces.",
+      "services": {
+        "productListing": {
+          "title": "Product Listing Maintenance",
+          "items": [
+            "Regular updates to product listings (price changes, stock updates, new variants).",
+            "Optimizing product content to stay aligned with marketplace changes."
+          ]
+        },
+        "inventoryManagement": {
+          "title": "Inventory and Stock Management",
+          "items": [
+            "Monitoring inventory levels to avoid stock-outs.",
+            "Proactive stock alerts for timely restocking.",
+            "Syncing inventory across platforms."
+          ]
+        },
+        "orderProcessing": {
+          "title": "Order Processing and Return Management",
+          "items": [
+            "Handling order processing (packing, dispatch) for smooth fulfillment.",
+            "Managing returns, exchanges, and refunds as per platform policies."
+          ]
+        },
+        "customerService": {
+          "title": "Customer Service Management",
+          "items": [
+            "Timely response to customer queries and issues.",
+            "Handling product feedback and customer complaints to maintain good seller ratings."
+          ]
+        },
+        "performanceMonitoring": {
+          "title": "Performance Monitoring and Reporting",
+          "items": [
+            "Tracking performance metrics (sales, returns, reviews, customer ratings).",
+            "Monthly reports to help sellers track growth and identify areas for improvement.",
+            "Handling account health issues (suspensions, penalties, etc.)."
+          ]
+        },
+        "compliance": {
+          "title": "Compliance and Policy Monitoring",
+          "items": [
+            "Ensuring platform policy compliance to avoid penalties.",
+            "Updating product listings as per platform-specific requirements."
+          ]
+        }
+      }
+    },
+    "benefits": {
+      "heading": "Key Benefits",
+      "description": "Optimize your e-commerce operations with our comprehensive management services."
+    },
+    "steps": [
+      {
+        "title": "Hassle-Free Management",
+        "description": "Seamless order and inventory handling."
+      },
+      {
+        "title": "Timely Updates",
+        "description": "Keep your product listings fresh and competitive."
+      },
+      {
+        "title": "Performance-Based Support",
+        "description": "Data-driven strategies to boost sales."
+      },
+      {
+        "title": "Dedicated Coordination",
+        "description": "Stay connected through WhatsApp for real-time updates."
+      }
+    ],
+    "successStory": {
+      "heading": "Success Story",
+      "description": "A kitchenware brand scaled 180% in 3 months with 99Digicom’s management support.",
+      "quote": "By streamlining inventory, optimizing listings, and efficiently handling orders, we helped a kitchenware brand achieve 180% sales growth in just three months."
+    }
   }
 }
