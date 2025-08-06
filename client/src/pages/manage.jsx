@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Settings,
   ArrowRight,
@@ -31,9 +32,12 @@ import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
 
 export default function AccountManagementServices() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeMarketplace, setActiveMarketplace] = useState("amazon");
+  
+  // Define the logos array
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
     { src: flipkartLogo, alt: "Flipkart logo" },
@@ -62,7 +66,7 @@ export default function AccountManagementServices() {
       setCurrentLogoIndex((prevIndex) => (prevIndex + 1) % logos.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [logos.length]);
 
   const [formData, setFormData] = useState({
     businessName: "",
@@ -273,9 +277,9 @@ export default function AccountManagementServices() {
   return (
     <>
       <SEO
-        title="Account Management Services (AMS) - Grow Your E-commerce Business | 99Digicom"
-        description="Let us handle your daily e-commerce operations, listings, and reports. Professional account management services for Amazon, Flipkart & more marketplaces."
-        keywords="account management services, e-commerce management, marketplace management, amazon seller management, flipkart seller management, inventory management, order management"
+        title={t('ams.seo.title')}
+        description={t('ams.seo.description')}
+        keywords={t('ams.seo.keywords')}
         canonicalUrl="https://99digicom.com/services/ams"
       />
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
@@ -284,14 +288,14 @@ export default function AccountManagementServices() {
           <div className="max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Settings className="h-4 w-4" aria-hidden="true" />
-              <span>Seller Account Management</span>
+              <span>{t('ams.hero.badge')}</span>
             </div>
             <h1
               id="hero-heading"
               className="text-5xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center"
             >
               <span className="flex items-center flex-wrap justify-center">
-                <span className="text-green-600 mr-2">Manage</span> Your Online Store on
+                <span className="text-green-600 mr-2">{t('ams.hero.title1')}</span> {t('ams.hero.title2')}
               </span>
               <div className="mt-4">
                 <img
@@ -306,14 +310,14 @@ export default function AccountManagementServices() {
               </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Let us handle daily operations, listings, and reports so you can focus on business.
+              {t('ams.hero.subtitle')}
             </p>
             <button
               onClick={handleGetStarted}
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
-              aria-label="Start with account management services"
+              aria-label={t('ams.hero.getStartedAriaLabel')}
             >
-              <span>Get Started</span>
+              <span>{t('ams.hero.getStarted')}</span>
               <ArrowRight className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
@@ -327,16 +331,15 @@ export default function AccountManagementServices() {
             animation: fadeIn 0.5s ease-in-out;
           }
         `}</style>
-
         {/* Marketplace Panel Section */}
         <section className="py-16 px-4 bg-green-50" aria-labelledby="marketplaces-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 id="marketplaces-heading" className="text-3xl font-bold text-gray-900 mb-4">
-                Supported Marketplaces
+                {t('ams.marketplaces.heading')}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
-                Choose from our wide range of marketplace integrations for tailored management services
+                {t('ams.marketplaces.description')}
               </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -344,7 +347,7 @@ export default function AccountManagementServices() {
               <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <ShoppingCart className="h-5 w-5 mr-2 text-green-600" />
-                  E-commerce
+                  {t('ams.marketplaces.ecommerce')}
                 </h3>
                 <div className="space-y-2">
                   {ecommerceMarketplaces.map(({ key, name, logo }) => (
@@ -417,7 +420,7 @@ export default function AccountManagementServices() {
               <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <PieChart className="h-5 w-5 mr-2 text-green-600" />
-                  Quick Commerce
+                  {t('ams.marketplaces.quickCommerce')}
                 </h3>
                 <div className="space-y-2">
                   {quickCommerceMarketplaces.map(({ key, name, logo }) => (
@@ -449,115 +452,116 @@ export default function AccountManagementServices() {
             </div>
           </div>
         </section>
-
         {/* Services Included */}
         <section className="py-16 px-4 bg-green-50" aria-labelledby="whats-included-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 id="whats-included-heading" className="text-3xl font-bold text-green-700 mb-4">
-                What's Included
+                {t('ams.whatsIncluded.heading')}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Account Management Services (AMS) help sellers manage their accounts and day-to-day operations across marketplaces.
+                {t('ams.whatsIncluded.description')}
               </p>
             </div>
             <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Settings className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Product Listing Maintenance</span>
+                  <span className="font-semibold text-lg text-gray-900">{t('ams.whatsIncluded.services.productListing.title')}</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Regular updates to product listings (price changes, stock updates, new variants).</li>
-                  <li>Optimization of product content to keep up with marketplace changes.</li>
+                  {t('ams.whatsIncluded.services.productListing.items', { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <ShoppingCart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Inventory & Stock Management</span>
+                  <span className="font-semibold text-lg text-gray-900">{t('ams.whatsIncluded.services.inventoryManagement.title')}</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Monitoring inventory levels to avoid out-of-stock issues.</li>
-                  <li>Proactive stock alerts for timely restocking.</li>
-                  <li>Syncing inventory across platforms.</li>
+                  {t('ams.whatsIncluded.services.inventoryManagement.items', { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <BarChart3 className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Order Processing & Return Management</span>
+                  <span className="font-semibold text-lg text-gray-900">{t('ams.whatsIncluded.services.orderProcessing.title')}</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Handling order processing (packing, dispatch) for smooth fulfillment.</li>
-                  <li>Managing returns, exchanges, and refunds according to platform policies.</li>
+                  {t('ams.whatsIncluded.services.orderProcessing.items', { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <Headphones className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Customer Service Management</span>
+                  <span className="font-semibold text-lg text-gray-900">{t('ams.whatsIncluded.services.customerService.title')}</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Responding to customer queries and issues in a timely manner.</li>
-                  <li>Handling product feedback and customer complaints to maintain a good seller rating.</li>
+                  {t('ams.whatsIncluded.services.customerService.items', { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <PieChart className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Performance Monitoring & Reporting</span>
+                  <span className="font-semibold text-lg text-gray-900">{t('ams.whatsIncluded.services.performanceMonitoring.title')}</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Tracking performance metrics (sales, returns, reviews, customer ratings).</li>
-                  <li>Monthly reports to help sellers track growth and identify areas for improvement.</li>
-                  <li>Handling account health issues (suspensions, penalties, etc.).</li>
+                  {t('ams.whatsIncluded.services.performanceMonitoring.items', { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
               <div className="bg-white border-l-4 border-green-500 rounded-xl shadow-sm p-6 flex flex-col h-full">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="h-7 w-7 text-green-600 mr-3 flex-shrink-0" />
-                  <span className="font-semibold text-lg text-gray-900">Compliance & Policy Monitoring</span>
+                  <span className="font-semibold text-lg text-gray-900">{t('ams.whatsIncluded.services.compliance.title')}</span>
                 </div>
                 <ul className="list-disc ml-7 text-gray-700 space-y-1 text-base">
-                  <li>Ensuring compliance with platform policies to avoid penalties.</li>
-                  <li>Updating product listings according to platform-specific requirements.</li>
+                  {t('ams.whatsIncluded.services.compliance.items', { returnObjects: true }).map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </div>
           </div>
         </section>
-
         {/* Key Benefits */}
         <section className="py-16 px-4 bg-white" aria-labelledby="benefits-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 id="benefits-heading" className="text-3xl font-bold text-gray-900 mb-4">
-                Key Benefits
+                {t('ams.benefits.heading')}
               </h2>
               <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Optimize your e-commerce operations with our comprehensive management services.
+                {t('ams.benefits.description')}
               </p>
             </div>
             <ImageSlider slides={steps} />
           </div>
         </section>
-
         {/* Success Story */}
         <section className="py-16 px-4 bg-white" aria-labelledby="success-heading">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 id="success-heading" className="text-3xl font-bold text-gray-900 mb-4">
-                Success Story
+                {t('ams.successStory.heading')}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                A kitchenware brand scaled 180% in 3 months with 99digicom's management support.
+                {t('ams.successStory.description')}
               </p>
             </div>
             <div className="bg-green-50 rounded-lg p-6">
               <blockquote>
                 <p className="text-gray-600">
-                  By streamlining inventory, optimizing listings, and handling orders efficiently, we helped a kitchenware brand achieve a 180% sales increase in just three months.
+                  {t('ams.successStory.quote')}
                 </p>
               </blockquote>
             </div>
