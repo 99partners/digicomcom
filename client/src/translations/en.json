@@ -492,11 +492,83 @@
     },
     "marketplaces": {
       "heading": "Supported Marketplaces",
-      "description": "Choose from our wide marketplace integrations for customized management services",
+      "description": "Choose from our extensive marketplace integrations for tailored management services",
       "ecommerce": "E-commerce",
-      "quickCommerce": "Quick Commerce",
-      "learnMore": "Learn more about {{name}}"
+    "quickCommerce": "Quick Commerce",
+      "ecommerceAmazon": "Amazon",
+      "ecommerceFlipkart": "Flipkart",
+      "ecommerceMeesho": "Meesho",
+      "ecommerceSnapdeal": "Snapdeal",
+      "quickCommerceJiomart": "Jiomart",
+      "quickCommerceInstamart": "Instamart",
+      "quickCommerceBigbasket": "BigBasket",
+      "quickCommerceBlinkit": "Blinkit",
+      "quickCommerceZepto": "Zepto",
+      "amazon": {
+        "services": [
+          "Inventory and order management",
+          "A+ content, review and sales performance metrics tracking",
+          "Account health and suspension management"
+        ]
+      },
+      "flipkart": {
+        "services": [
+          "Order and inventory tracking",
+          "Customer service and return management",
+          "Performance analytics via Flipkart Seller Hub"
+        ]
+      },
+      "jiomart": {
+        "services": [
+          "Regular inventory updates and stock tracking",
+          "Order processing and return management",
+          "Promotional listings and offers management"
+        ]
+      },
+      "meesho": {
+        "services": [
+          "Inventory and order management for resellers and brands",
+          "Meesho discount policy and price management",
+          "Return and refund management via Meesho system"
+        ]
+      },
+      "snapdeal": {
+        "services": [
+          "Seller dashboard management (orders, stock, returns)",
+          "Customer service support and order resolution",
+          "Monitoring seller performance metrics on Snapdeal"
+        ]
+      },
+      "instamart": {
+        "services": [
+          "Real-time inventory tracking and product updates",
+          "Efficient order and return management",
+          "Customer feedback monitoring for service improvement"
+        ]
+      },
+      "bigbasket": {
+        "services": [
+          "Inventory tracking for grocery and FMCG products",
+          "Efficient order processing and customer service support",
+          "Managing seasonal demand changes (festival sales)"
+        ]
+      },
+      "blinkit": {
+        "services": [
+          "Real-time order management and customer communication",
+          "Inventory and stock alerts for perishable goods",
+          "Order fulfillment and last-mile delivery optimization"
+        ]
+      },
+      "zepto": {
+        "services": [
+          "Real-time stock and inventory management for perishables",
+          "Order fulfillment, packing, and dispatch to Zepto hubs",
+          "Product ratings and customer communication management"
+        ]
+      }
     },
+
     "whatsIncluded": {
       "heading": "What's Included",
       "description": "Account Management Services (AMS) help sellers manage their account and daily operations across various marketplaces.",
@@ -573,6 +645,413 @@
       "heading": "Success Story",
       "description": "A kitchenware brand scaled 180% in 3 months with 99Digicom’s management support.",
       "quote": "By streamlining inventory, optimizing listings, and efficiently handling orders, we helped a kitchenware brand achieve 180% sales growth in just three months."
+    }
+  },
+  "advertisingMarketing": {
+    "seo": {
+      "title": "E-commerce Advertising & Marketing Services | 99Digicom",
+      "description": "Boost your product visibility on Amazon, Flipkart, and more with our performance marketing services. Campaign setup starts at ₹4,999.",
+      "keywords": "e-commerce advertising, amazon marketing, flipkart ads, product marketing, digital marketing, performance marketing"
+    },
+    "hero": {
+      "badge": "Advertising & Marketing",
+      "title": "To Grow Your Online Store",
+      "subtitle": "Performance marketing for e-commerce success",
+      "getStarted": "Get Started"
+    },
+    "marketplaces": {
+      "heading": "Supported Marketplaces",
+      "description": "Choose from our marketplace integrations for tailored advertising services",
+      "ecommerce": "E-commerce",
+      "quickCommerce": "Quick Commerce",
+      "learnMore": "Learn more about {{name}}"
+    },
+    "whatsIncluded": {
+      "heading": "What's Included",
+      "description": "Advertising and marketing services help sellers increase their presence, attract customers, and boost sales.",
+      "services": [
+        "PPC campaign setup and management on platforms",
+        "Social media marketing and influencer collaborations",
+        "A+ content and brand store management",
+        "Promotion and discount management",
+        "Multi-platform strategy",
+        "Review management and reputation building"
+      ]
+    },
+    "whyAdvertising": {
+      "heading": "Why is advertising necessary?",
+      "description": "In today's competitive e-commerce, visibility is crucial. The right advertising keeps you ahead of the competition."
+    },
+    "campaignSetup": {
+      "heading": "What's Included in Campaign Setup",
+      "description": "Our advertising services get you ready for faster and higher ROI.",
+      "services": [
+        "Keyword research and campaign setup",
+        "Daily bid and budget optimization",
+        "Negative keyword management",
+        "ASIN and category targeting",
+        "Product listing optimization",
+        "Inventory and order management",
+        "Amazon SEO and keyword ranking",
+        "Customer support and feedback",
+        "Account health and policy compliance"
+      ]
+    },
+    "successStory": {
+      "heading": "Success Story",
+      "description": "A home décor brand achieved 180% sales growth in 3 months.",
+      "results": [
+        "3x ROAS",
+        "Strategic keyword targeting",
+        "Increase in visibility and customer engagement"
+      ]
+    },
+    "faqs": [
+      {
+        "question": "What is PPC advertising?",
+        "answer": "Pay-Per-Click (PPC) advertising means you only pay when a user clicks your ad."
+      },
+      {
+        "question": "How do you optimize product listings?",
+        "answer": "We find the best keywords and optimize titles, bullet points, and descriptions."
+      },
+      {
+        "question": "How can I track campaign results?",
+        "answer": "We provide detailed reports and actionable insights."
+      }
+    ]
+  },
+  "ondcSeller": {
+    "seo": {
+      "title": "ONDC Seller Network Partner | 99Digicom",
+      "description": "Join ONDC as a seller network partner with 99Digicom. Reach millions of customers through the Open Network for Digital Commerce."
+    },
+    "hero": {
+      "heading": "ONDC Seller Network Partner",
+      "subtitle": "Expand your business by joining India's revolutionary Open Network for Digital Commerce (ONDC) as a seller."
+    },
+    "whyJoin": {
+      "heading": "Why join as a seller on ONDC?",
+      "points": [
+        "Access a nationwide buyer network",
+        "Reduce dependence on specific platforms",
+        "Lower commission costs",
+        "Direct communication with customers"
+      ]
+    },
+    "support": {
+      "heading": "Our Support Services",
+      "points": [
+        "ONDC compliance and registration support",
+        "Technical integration assistance",
+        "Catalog optimization for ONDC",
+        "Continuous operational support"
+      ]
+    },
+    "steps": {
+      "heading": "How to Get Started",
+      "items": [
+        {
+          "step": "01",
+          "title": "Initial Consultation",
+          "desc": "Understand your business needs and ONDC readiness"
+        },
+        {
+          "step": "02",
+          "title": "Technical Assessment",
+          "desc": "Evaluate system requirements and integration needs"
+        },
+        {
+          "step": "03",
+          "title": "Implementation",
+          "desc": "Complete setup and go live on the ONDC network"
+        }
+      ]
+    },
+    "cta": "Start with ONDC"
+  },
+  "ondcBuyer": {
+    "seo": {
+      "title": "ONDC Buyer Network Partner | 99Digicom",
+      "description": "Become an ONDC buyer network partner with 99Digicom and connect with various sellers through the Open Network for Digital Commerce to expand your buying options."
+    },
+    "hero": {
+      "heading": "ONDC Buyer Network Partner",
+      "subtitle": "Transform your buying experience by joining India's Open Network for Digital Commerce (ONDC) as a buyer."
+    },
+    "benefits": {
+      "heading": "Benefits for Buyers on ONDC",
+      "points": [
+        "Opportunity to connect with sellers across India",
+        "Competitive pricing through open market",
+        "Standardized buying experience",
+        "Enhanced product discovery"
+      ]
+    },
+    "services": {
+      "heading": "Our Integration Services",
+      "points": [
+        "ONDC buyer app development",
+        "API integration and testing",
+        "Search and discovery optimization",
+        "Transaction flow implementation"
+      ]
+    },
+    "process": {
+      "heading": "Implementation Process",
+      "steps": [
+        {
+          "step": "01",
+          "title": "Needs Analysis",
+          "desc": "Define required features and needs for your buyer app"
+        },
+        {
+          "step": "02",
+          "title": "Development & Integration",
+          "desc": "Build and integrate ONDC-compliant buyer application"
+        },
+        {
+          "step": "03",
+          "title": "Testing & Launch",
+          "desc": "Complete testing and successful deployment"
+        }
+      ]
+    },
+    "cta": "Become an ONDC Buyer"
+  },
+  "coBranding": {
+    "seo": {
+      "title": "Co-Branding Solutions & Brand Collaboration | 99Digicom",
+      "description": "Partner with digital-first brands through 99Digicom. Unlock new growth opportunities, reach wider audiences, and create joint value with co-branding solutions.",
+      "keywords": "co-branding, brand collaboration, marketing partnership, joint promotion, brand partnership, digital marketing"
+    },
+    "hero": {
+      "badge": "Co-Branding Solutions",
+      "heading": "Unlock New Growth Opportunities Through Brand Collaboration",
+      "subtitle": "Collaborate with our network of digital-first brands and reach wider audiences.",
+      "cta": "Start Collaboration"
+    },
+    "features": {
+      "heading": "Features of Co-Branding Solution",
+      "description": "Our co-branding solution is designed to deliver maximum value for your brand.",
+      "items": [
+        {
+          "title": "Shared Customer Base",
+          "description": "Access partner audiences and effectively expand your market reach."
+        },
+        {
+          "title": "Joint Promotion",
+          "description": "Create bundled products or run joint campaigns during festivals for maximum impact."
+        },
+        {
+          "title": "Cross-Platform Exposure",
+          "description": "Gain visibility on partner marketplaces and marketing channels."
+        },
+        {
+          "title": "Mutual Brand Lift",
+          "description": "Strengthen trust and relationships through strategic brand association."
+        }
+      ],
+      "useCase": {
+        "title": "Use Case Example",
+        "description": "A wellness brand partnered with an organic food brand to launch a 'Wellness Hamper' featuring wellness products and festive treats during festivals."
+      }
+    },
+    "collaborations": {
+      "heading": "Brand Collaboration & Co-Marketing",
+      "description": "We bring brands together to do more.",
+      "steps": [
+        {
+          "title": "Niche Product Collaboration",
+          "description": "Create unique product offerings through strategic partnerships."
+        },
+        {
+          "title": "Shared Loyalty Programs",
+          "description": "Build customer loyalty across complementary brands."
+        },
+        {
+          "title": "Co-Branded Storefronts",
+          "description": "Create a unified digital shopping experience together."
+        },
+        {
+          "title": "Joint Content",
+          "description": "Develop campaigns that resonate with both audiences."
+        }
+      ]
+    },
+    "apply": {
+      "heading": "Apply for Co-Branding",
+      "description": "Interested in exploring co-branding opportunities? Fill out our quick form and share your brand, target audience, and collaboration goals. Our team will reach out to find the best opportunities.",
+      "cta": "Start Application"
+    },
+    "successStory": {
+      "heading": "Success Story",
+      "description": "Fashion brand achieved 200% growth through our co-branding efforts.",
+      "quote": "By partnering with 99Digicom, the fashion brand achieved 200% brand visibility and 50% sales growth through our co-branded social media campaign and cross-promotion."
+    },
+    "supportedMarketplaces": {
+      "heading": "Supported Marketplaces",
+      "items": [
+        { "name": "Amazon", "desc": "World's largest e-commerce platform" },
+        { "name": "Flipkart", "desc": "India's leading e-commerce marketplace" },
+        { "name": "Meesho", "desc": "Social commerce platform" },
+        { "name": "Jiomart", "desc": "Reliance's digital commerce platform" },
+        { "name": "Indiamart", "desc": "B2B marketplace for Indian businesses" },
+        { "name": "Snapdeal", "desc": "Popular e-commerce platform" }
+      ]
+    },
+    "benefits": {
+      "heading": "Benefits of Co-Branding",
+      "description": "Unlock new opportunities for your brand by partnering with 99Digicom.",
+      "items": [
+        {
+          "title": "Expanded Audience",
+          "description": "Reach our established customer base."
+        },
+        {
+          "title": "Cross-Promotion",
+          "description": "Get featured in our campaigns and promotions."
+        },
+        {
+          "title": "Shared Expertise",
+          "description": "Leverage our e-commerce and marketing expertise."
+        },
+        {
+          "title": "Value Growth",
+          "description": "Increase ROI with shared campaign costs."
+        }
+      ],
+      "howItWorks": {
+        "title": "How It Works",
+        "steps": [
+          "Submit your application",
+          "We understand and align goals",
+          "Launch co-branded campaign",
+          "Track results together"
+        ]
+      }
+    }
+  },
+  "partners": {
+    "seo": {
+      "title": "Partner with 99Digicom | Collaboration & Growth",
+      "description": "Partner with 99Digicom and grow your brand on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato. Easy onboarding, full support, and transparent pricing.",
+      "keywords": "partner, collaboration, e-commerce, onboarding, marketplace, 99Digicom"
+    },
+    "hero": {
+      "heading": "Why Partner with 99Digicom?",
+      "subtitle": "We're not just a platform — we build partnerships. Empower your brand with visibility, support, and scale.",
+      "cta": "Contact Us"
+    },
+    "benefitsSection": {
+      "heading": "Benefits of Collaboration",
+      "subtitle": "We make selling easy, boost your visibility, and help you grow.",
+      "benefits": [
+        {
+          "icon": "Globe",
+          "title": "Multi-Platform Presence",
+          "description": "Sell on ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, and Zomato through a simple process."
+        },
+        {
+          "icon": "Users",
+          "title": "End-to-End Support",
+          "description": "We handle setup, cataloging, fulfillment, and returns — so you can focus on growth."
+        },
+        {
+          "icon": "TrendingUp",
+          "title": "Strategic Co-Branding",
+          "description": "Run joint promotions and bundled campaigns with complementary brands."
+        },
+        {
+          "icon": "Headphones",
+          "title": "Performance Marketing Expertise",
+          "description": "ROI-focused advertising on e-commerce and social platforms."
+        },
+        {
+          "icon": "Calendar",
+          "title": "Fast Onboarding",
+          "description": "Launch in 3–7 days with expert guidance and platform coordination."
+        },
+        {
+          "icon": "CheckCircle",
+          "title": "Affordable, Transparent Pricing",
+          "description": "Startup-friendly rates, no hidden charges, and no long-term commitments."
+        },
+        {
+          "icon": "Star",
+          "title": "Analytics & Insights",
+          "description": "Sales reports, ad metrics, and platform data — for smarter decisions."
+        },
+        {
+          "icon": "DollarSign",
+          "title": "Dedicated Partner Support Team",
+          "description": "Get a relationship manager for ongoing support, campaign planning, and growth reviews."
+        }
+      ]
+    },
+    "onboardingSection": {
+      "heading": "Partner Onboarding",
+      "subtitle": "Start your journey in 5 easy steps with 99Digicom",
+      "steps": [
+        {
+          "step": "1",
+          "title": "Fill Partner Interest Form",
+          "description": "Tell us about your brand, products, and goals."
+        },
+        {
+          "step": "2",
+          "title": "Consultation & Category Analysis",
+          "description": "We analyze your business and recommend the best platforms."
+        },
+        {
+          "step": "3",
+          "title": "Documentation & Seller Account Setup",
+          "description": "We help with GST, FSSAI, bank details, and account creation."
+        },
+        {
+          "step": "4",
+          "title": "Catalog, Content & Pricing",
+          "description": "We assist with listings, visuals, pricing, and shipping settings."
+        },
+        {
+          "step": "5",
+          "title": "Go Live & Start Selling",
+          "description": "Launch your store, get support, and fulfill orders."
+        }
+      ]
+    },
+    "commitmentsSection": {
+      "heading": "What We Expect from Our Partners",
+      "subtitle": "Collaboration works best when both sides bring clarity and commitment.",
+      "points": [
+        "✅ Submit valid business documents like GST, PAN, FSSAI, etc.",
+        "✅ Provide accurate product information and approve listings on time",
+        "✅ Ensure product authenticity and comply with marketplace rules",
+        "✅ Pack and dispatch orders quickly or coordinate fulfillment with us",
+        "✅ Prioritize customer satisfaction with good packaging and communication",
+        "✅ (Optional) Participate in joint promotions and marketing campaigns"
+      ]
+    },
+    "pricingSection": {
+      "heading": "Transparent Pricing",
+      "subtitle": "No hidden costs. No long-term commitments.",
+      "plans": [
+        {
+          "title": "One-Time Onboarding Fee",
+          "price": "From ₹4,999",
+          "desc": "Account setup, listing, dashboard access"
+        },
+        {
+          "title": "Monthly Management",
+          "price": "From ₹3,500/month",
+          "desc": "Platform support, updates, growth monitoring"
+        },
+        {
+          "title": "Advertising Budget (Optional)",
+          "price": "Flexible",
+          "desc": "Customizable as per campaign goals"
+        }
+      ]
     }
   }
 }

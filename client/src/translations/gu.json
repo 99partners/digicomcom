@@ -491,6 +491,10 @@
       "getStarted": "શરૂ કરો"
     },
   "marketplaces": {
+    "heading": "સમર્થિત માર્કેટપ્લેસ",
+    "description": "અનુકૂળિત મેનેજમેન્ટ સેવાઓ માટે અમારી વિસ્તૃત માર્કેટપ્લેસ એકીકરણમાંથી પસંદ કરો",
+    "ecommerce": "ઈ-કોમર્સ",
+    "quickCommerce": "ક્વિક કોમર્સ",
     "ecommerceAmazon": "અમેઝોન",
     "ecommerceFlipkart": "ફ્લિપકાર્ટ",
     "ecommerceMeesho": "મીશો",
