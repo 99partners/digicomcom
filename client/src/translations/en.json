@@ -1053,5 +1053,338 @@
         }
       ]
     }
+  },
+  "whyPartner": {
+    "seo": {
+      "title": "Why Partner with 99Digicom | Digital Commerce Solutions",
+      "description": "Partner with 99Digicom to scale your brand across multiple e-commerce platforms. Gain end-to-end support, strategic co-branding, and performance marketing expertise.",
+      "keywords": "e-commerce partnership, brand collaboration, digital commerce, multi-platform sales, ONDC partner"
+    },
+    "hero": {
+      "badge": "For Product Partners",
+      "title": "Why Partner with 99Digicom?",
+      "subtitle": "We’re not just a platform — we build partnerships to help your brand succeed in India’s digital commerce landscape."
+    },
+    "benefits": {
+      "heading": "Benefits of Partnering with Us",
+      "description": "Get the tools, visibility, and support to make your brand thrive.",
+      "items": [
+        {
+          "title": "Multi-Platform Presence",
+          "description": "Sell simultaneously on ONDC, Amazon, Flipkart, Meesho, JioMart, Swiggy, and Zomato."
+        },
+        {
+          "title": "End-to-End Support",
+          "description": "From account setup to order fulfillment and returns, we handle it all."
+        },
+        {
+          "title": "Strategic Co-Branding",
+          "description": "Reach new customers through joint promotions, bundle offers, and festive campaigns."
+        },
+        {
+          "title": "Performance Marketing Expertise",
+          "description": "Boost sales with data-driven advertising and ROI tracking."
+        },
+        {
+          "title": "Fast Onboarding",
+          "description": "Go live in 3–7 days with our streamlined process."
+        },
+        {
+          "title": "Affordable and Transparent Pricing",
+          "description": "Plans designed for startups and scale-ups, with no hidden costs."
+        },
+        {
+          "title": "Analytics and Insights",
+          "description": "Make informed decisions with regular reports and platform insights."
+        },
+        {
+          "title": "Dedicated Partner Team",
+          "description": "Personalized support with a dedicated relationship manager."
+        }
+      ]
+    },
+    "whoShouldPartner": {
+      "heading": "Who Should Partner?",
+      "description": "Our services are for brands ready to scale in digital commerce.",
+      "items": [
+        { "name": "D2C Brands", "desc": "Looking to scale across multiple platforms" },
+        { "name": "Manufacturers", "desc": "Seeking digital reach and co-branding support" },
+        { "name": "Artisan Sellers", "desc": "Offering handmade or unique products" },
+        { "name": "Lifestyle Brands", "desc": "Organic, spiritual, fashion, or wellness products" },
+        { "name": "F&B Sellers", "desc": "Targeting Swiggy/Zomato buyers" },
+        { "name": "Emerging Brands", "desc": "Needing e-commerce marketing expertise" }
+      ]
+    }
+  },
+  "faq": {
+    "seo": {
+      "title": "Frequently Asked Questions | 99Digicom Digital Commerce Solutions",
+      "description": "Get answers to frequently asked questions about our digital commerce services, platform capabilities, account management, co-branding partnerships, and marketing solutions.",
+      "keywords": "digital commerce FAQ, e-commerce questions, ONDC support, marketplace management FAQ"
+    },
+    "heading": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about our platform and services.",
+    "searchPlaceholder": "🔎 Type your question here...",
+    "searchLabel": "Search FAQs",
+    "noResults": "No results found.",
+    "categories": {
+      "about": "About 99Digicom",
+      "accountSetup": "Account Setup and Management",
+      "cobranding": "Co-Branding and Collaboration",
+      "marketing": "Marketing and Promotion",
+      "contracts": "Contracts and Reporting"
+    },
+    "questions": {
+      "about": [
+        {
+          "question": "What is 99Digicom?",
+          "answer": "99Digicom is a leading digital commerce enablement platform that helps businesses manage their presence across various e-commerce marketplaces. We empower sellers on ONDC, Amazon, Flipkart, and more."
+        },
+        {
+          "question": "Which platforms does 99Digicom support?",
+          "answer": "We support ONDC, Amazon, Flipkart, Meesho, JioMart, Zomato, Swiggy, and many other major marketplaces. We regularly add new platforms."
+        }
+      ],
+      "accountSetup": [
+        {
+          "question": "How do I get started with 99Digicom?",
+          "answer": "You can start by clicking the 'Get Started' button on our website or contacting our sales team. Our team will guide you through the entire process."
+        },
+        {
+          "question": "Do I need any technical knowledge?",
+          "answer": "No, our platform is user-friendly, and we provide comprehensive training and support. Our team will assist you at every step."
+        }
+      ],
+      "cobranding": [
+        {
+          "question": "What is a co-branding partnership?",
+          "answer": "A co-branding partnership is a strategic alliance where we work with your brand to provide the best digital commerce solutions to your customers."
+        },
+        {
+          "question": "What are the benefits of co-branding?",
+          "answer": "Co-branding offers stronger market presence, shared resources, access to expertise, and enhanced customer service, helping your brand become a trusted name in digital commerce."
+        }
+      ],
+      "marketing": [
+        {
+          "question": "Do you provide marketing support?",
+          "answer": "Yes, we offer comprehensive marketing support to boost your sales across various marketplaces, including SEO, ad management, and promotional strategies."
+        },
+        {
+          "question": "How can I increase my sales?",
+          "answer": "We help with product listing optimization, pricing strategies, promotional campaigns, and analytics-driven decision-making. Our team provides personalized guidance for sales growth."
+        }
+      ],
+      "contracts": [
+        {
+          "question": "What are the membership plans?",
+          "answer": "We offer various membership plans tailored to your business size and needs. Please visit our pricing page or contact our team for detailed information."
+        },
+        {
+          "question": "Is there a lock-in period?",
+          "answer": "Our plans are flexible and can be customized to your needs. Please contact our team for specific terms and conditions."
+        }
+      ]
+    }
+  },
+  "guides": {
+    "seo": {
+      "title": "Digital Commerce Guides and Tutorials | 99Digicom Learning Center",
+      "description": "Master digital commerce with comprehensive guides, tutorials, and downloadable resources for ONDC, Amazon, Flipkart, and other platforms. Step-by-step instructions for sellers.",
+      "keywords": "digital commerce tutorials, seller guides, ONDC guide, Amazon seller tutorial, Flipkart seller guide, Meesho, JioMart, Zomato, Swiggy"
+    },
+    "hero": {
+      "titleHighlight": "Simple",
+      "titleRest": "Guides and Tutorials",
+      "description": "Everything you need to sell smarter. Browse step-by-step guides, platform-specific tutorials, and downloadable resources to set up, manage, and grow your digital commerce presence."
+    },
+    "learning": {
+      "title": "Learn with Us",
+      "description": "Master digital commerce with our comprehensive resources."
+    },
+    "platformFilter": {
+      "ariaLabel": "Platform Filter"
+    },
+    "platforms": {
+      "all": "All",
+      "list": ["All", "ONDC", "Amazon", "Flipkart", "Meesho", "JioMart", "Zomato", "Swiggy", "OwnWebsite"],
+      "ondc": "ONDC",
+      "amazon": "Amazon",
+      "flipkart": "Flipkart",
+      "meesho": "Meesho",
+      "jiomart": "JioMart",
+      "zomato": "Zomato",
+      "swiggy": "Swiggy",
+      "ownwebsite": "Own Website"
+    },
+    "sections": {
+      "gettingStarted": "Getting Started",
+      "productListings": "Product Listings and Store Setup",
+      "orderManagement": "Order Management and Inventory",
+      "marketing": "Marketing and Visibility",
+      "list": [
+        {
+          "title": "Getting Started",
+          "expandedByDefault": true,
+          "content": [
+            {
+              "title": "Basics",
+              "items": [
+                {
+                  "name": "Introduction to Digital Commerce",
+                  "type": "Guide",
+                  "icon": "FileText",
+                  "platforms": ["All"],
+                  "download": true,
+                  "premium": false
+                },
+                {
+                  "name": "Platform Setup Tutorial",
+                  "type": "Video",
+                  "icon": "Video",
+                  "platforms": ["ONDC", "Amazon", "Flipkart"],
+                  "download": false,
+                  "premium": true
+                }
+              ]
+            },
+            {
+              "title": "Account Setup",
+              "items": [
+                {
+                  "name": "Seller Account Registration",
+                  "type": "Step-by-Step Guide",
+                  "icon": "FileText",
+                  "platforms": ["Amazon", "Flipkart", "Meesho", "JioMart"],
+                  "download": true,
+                  "premium": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Product Listings and Store Setup",
+          "expandedByDefault": false,
+          "content": [
+            {
+              "title": "Product Listings",
+              "items": [
+                {
+                  "name": "Product Listing Optimization",
+                  "type": "Guide",
+                  "icon": "FileText",
+                  "platforms": ["Amazon", "Flipkart", "Meesho"],
+                  "download": true,
+                  "premium": false
+                },
+                {
+                  "name": "Store Design Tutorial",
+                  "type": "Video",
+                  "icon": "Video",
+                  "platforms": ["OwnWebsite"],
+                  "download": false,
+                  "premium": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Order Management and Inventory",
+          "expandedByDefault": false,
+          "content": [
+            {
+              "title": "Inventory Management",
+              "items": [
+                {
+                  "name": "Inventory Tracking Guide",
+                  "type": "Checklist",
+                  "icon": "List",
+                  "platforms": ["All"],
+                  "download": true,
+                  "premium": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Marketing and Visibility",
+          "expandedByDefault": false,
+          "content": [
+            {
+              "title": "Promotional Strategies",
+              "items": [
+                {
+                  "name": "Social Media Marketing",
+                  "type": "Guide",
+                  "icon": "Instagram",
+                  "platforms": ["All"],
+                  "download": true,
+                  "premium": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "downloadableResources": [
+      {
+        "name": "Quick Reference Guide",
+        "type": "PDF",
+        "icon": "FileText",
+        "platforms": ["All"],
+        "download": true
+      },
+      {
+        "name": "Seller Checklist",
+        "type": "Checklist",
+        "icon": "List",
+        "platforms": ["Amazon", "Flipkart", "Meesho"],
+        "download": true
+      },
+      {
+        "name": "Marketing Template",
+        "type": "Template",
+        "icon": "FileText",
+        "platforms": ["All"],
+        "download": true
+      }
+    ],
+    "videoTutorials": [
+      {
+        "name": "Getting Started on ONDC",
+        "duration": "10 minutes",
+        "platforms": ["ONDC"]
+      },
+      {
+        "name": "Amazon Seller Tutorial",
+        "duration": "15 minutes",
+        "platforms": ["Amazon"]
+      },
+      {
+        "name": "Flipkart Store Setup",
+        "duration": "12 minutes",
+        "platforms": ["Flipkart"]
+      }
+    ],
+    "accordion": {
+      "collapse": "Collapse",
+      "expand": "Expand"
+    },
+    "resources": {
+      "heading": "Library of Downloadable Resources",
+      "downloadNow": "Download Now",
+      "download": "Download"
+    },
+    "videos": {
+      "heading": "Video Tutorials (Coming Soon)"
+    },
+    "schema": {
+      "name": "99Digicom Guides and Tutorials",
+      "description": "Achieve seller success with digital commerce guides and tutorials for ONDC, Amazon, Flipkart, and more."
+    }
   }
 }
