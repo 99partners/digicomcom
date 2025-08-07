@@ -21,8 +21,11 @@ import step3 from "../assets/step3.png";
 import step4 from "../assets/step4.png";
 import step5 from "../assets/step5.png";
 import ImageSlider from '../components/ImageSlider';
+import { useTranslation } from "react-i18next"; // <-- Add this import
 
 export default function PartnerOnboarding() {
+  const { t } = useTranslation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -43,11 +46,37 @@ export default function PartnerOnboarding() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps = [
-    { src: step1, alt: "Step 1: Fill the Partner Interest Form illustration" },
-    { src: step2, alt: "Step 2: Consultation & Category Assessment illustration" },
-    { src: step3, alt: "Step 3: Documentation & Seller Account Setup illustration" },
-    { src: step4, alt: "Step 4: Catalog, Content & Pricing illustration" },
-    { src: step5, alt: "Step 5: Go Live & Start Selling illustration" },
+    { src: step1, alt: t("partners.onboardingSection.steps.0.title") },
+    { src: step2, alt: t("partners.onboardingSection.steps.1.title") },
+    { src: step3, alt: t("partners.onboardingSection.steps.2.title") },
+    { src: step4, alt: t("partners.onboardingSection.steps.3.title") },
+    { src: step5, alt: t("partners.onboardingSection.steps.4.title") },
+  ];
+
+  // Dashboard features
+  const dashboardFeatures = [
+    { name: t("partners.benefitsSection.benefits.0.title"), icon: <Package className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.benefitsSection.benefits.1.title"), icon: <BarChart3 className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.benefitsSection.benefits.2.title"), icon: <MessageSquare className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.benefitsSection.benefits.3.title"), icon: <Rocket className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+  ];
+
+  // Eligible partners
+  const eligiblePartners = [
+    { name: t("partners.onboardingSection.steps.0.title"), desc: t("partners.onboardingSection.steps.0.description"), icon: <CheckCircle className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.onboardingSection.steps.1.title"), desc: t("partners.onboardingSection.steps.1.description"), icon: <Tag className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.onboardingSection.steps.2.title"), desc: t("partners.onboardingSection.steps.2.description"), icon: <Users className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.onboardingSection.steps.3.title"), desc: t("partners.onboardingSection.steps.3.description"), icon: <Package className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.onboardingSection.steps.4.title"), desc: t("partners.onboardingSection.steps.4.description"), icon: <Rocket className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.benefitsSection.benefits.5.title"), desc: t("partners.benefitsSection.benefits.5.description"), icon: <ShoppingCart className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+  ];
+
+  // Expert support
+  const expertSupport = [
+    { name: t("partners.benefitsSection.benefits.7.title"), icon: <Users className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.benefitsSection.benefits.6.title"), icon: <FileText className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.benefitsSection.benefits.4.title"), icon: <Tag className="h-6 w-6 text-green-600" aria-hidden="true" /> },
+    { name: t("partners.benefitsSection.benefits.0.title"), icon: <Globe className="h-6 w-6 text-green-600" aria-hidden="true" /> },
   ];
 
   const handleSubmit = async (e) => {
@@ -111,13 +140,13 @@ export default function PartnerOnboarding() {
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center space-x-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Rocket className="h-4 w-4" />
-            <span>Partner Onboarding</span>
+            <span>{t("partners.onboardingSection.heading")}</span>
           </div>
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Join <span className="text-green-600">99digicom</span> in 5 Easy Steps
+            {t("partners.onboardingSection.heading")}
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Start your journey with a growing network of digital-first brands. Simple, structured, and supportive onboarding to help you sell, scale, and succeed.
+            {t("partners.onboardingSection.subtitle")}
           </p>
         </div>
       </section>
@@ -126,18 +155,13 @@ export default function PartnerOnboarding() {
       <section aria-labelledby="dashboard-features-heading" className="py-16 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 id="dashboard-features-heading" className="text-3xl font-bold text-gray-900 mb-4">Your Partner Dashboard Includes</h2>
+            <h2 id="dashboard-features-heading" className="text-3xl font-bold text-gray-900 mb-4">{t("partners.benefitsSection.heading")}</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Manage your business with powerful tools and insights.
+              {t("partners.benefitsSection.subtitle")}
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6" role="list">
-            {[
-              { name: "Product & Inventory Controls", icon: <Package className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Sales Reports and Insights", icon: <BarChart3 className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Support Ticketing System", icon: <MessageSquare className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Access to Growth Campaigns", icon: <Rocket className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-            ].map((feature, index) => (
+            {dashboardFeatures.map((feature, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 flex items-center space-x-4" role="listitem">
                 <div className="flex-shrink-0">{feature.icon}</div>
                 <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
@@ -151,9 +175,9 @@ export default function PartnerOnboarding() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Join 99digicom in 5 Easy Steps</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t("partners.onboardingSection.heading")}</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our streamlined process gets you ready to sell quickly.
+              {t("partners.onboardingSection.subtitle")}
             </p>
           </div>
           <ImageSlider slides={steps} />
@@ -164,20 +188,13 @@ export default function PartnerOnboarding() {
       <section aria-labelledby="eligible-partners-heading" className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 id="eligible-partners-heading" className="text-3xl font-bold text-gray-900 mb-4">Who Can Apply?</h2>
+            <h2 id="eligible-partners-heading" className="text-3xl font-bold text-gray-900 mb-4">{t("partners.commitmentsSection.heading")}</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              We welcome a diverse range of brands ready to grow.
+              {t("partners.commitmentsSection.subtitle")}
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
-            {[
-              { name: "Organic & Wellness", desc: "Herbal and health-focused products", icon: <CheckCircle className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Artisan & Handmade", desc: "Spiritual and unique goods", icon: <Tag className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Fashion & Lifestyle", desc: "Apparel and home décor", icon: <Users className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "FMCG & Packaged Food", desc: "Consumer goods and food products", icon: <Package className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "D2C Niche Brands", desc: "Direct-to-consumer startups", icon: <Rocket className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Restaurants & Food", desc: "For Zomato/Swiggy onboarding", icon: <ShoppingCart className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-            ].map((category, index) => (
+            {eligiblePartners.map((category, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center p-6" role="listitem">
                 <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-2" aria-hidden="true">
                   {category.icon}
@@ -194,18 +211,13 @@ export default function PartnerOnboarding() {
       <section aria-labelledby="expert-support-heading" className="py-16 px-4 bg-green-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 id="expert-support-heading" className="text-3xl font-bold text-gray-900 mb-4">Get Expert Support at Every Step</h2>
+            <h2 id="expert-support-heading" className="text-3xl font-bold text-gray-900 mb-4">{t("partners.benefitsSection.benefits.7.title")}</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our team is with you from onboarding to scaling.
+              {t("partners.benefitsSection.benefits.7.description")}
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6" role="list">
-            {[
-              { name: "Dedicated Onboarding Manager", icon: <Users className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Prebuilt Listing Templates", icon: <FileText className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Guidance on Pricing & Compliance", icon: <Tag className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-              { name: "Multi-Platform Enablement", icon: <Globe className="h-6 w-6 text-green-600" aria-hidden="true" /> },
-            ].map((support, index) => (
+            {expertSupport.map((support, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 flex items-center space-x-4" role="listitem">
                 <div className="flex-shrink-0">{support.icon}</div>
                 <h3 className="text-lg font-semibold text-gray-900">{support.name}</h3>
