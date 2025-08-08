@@ -96,7 +96,7 @@ const EmailVerify = () => {
       if (response.data.success) {
         toast.success('Email verified successfully')
         await checkAuthStatus() // Update auth context with new verification status
-        navigate('/partner')
+        navigate('/dashboard/profile')
       } else {
         toast.error(response.data.message || 'Verification failed')
         // Clear OTP fields on error
