@@ -44,6 +44,9 @@ i18n
     },
     interpolation: {
       escapeValue: false
+    },
+    react: {
+      useSuspense: false // This helps prevent issues during language changes
     }
   });
 

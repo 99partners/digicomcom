@@ -1391,5 +1391,43 @@
   },
   "common": {
     "companyName": "99ડિજિકોમ"
+  },
+  "seo": {
+    "siteTitle": "99ડિજિકોમ"
+  },
+  "footer": {
+    "tagline": "તમામ ટોચના માર્કેટપ્લેસ પર તમારા વ્યવસાયને લોન્ચ, મેનેજ અને વિકસાવો.",
+    "quickLinks": "ઝડપી લિંક્સ",
+    "ourDomains": "અમારા ડોમેન્સ",
+    "helpSupport": "મદદ અને સપોર્ટ",
+    "stayConnected": "જોડાયેલા રહો",
+    "followUs": "અમને ફોલો કરો",
+    "allRightsReserved": "બધા હકો અમારી પાસે રાખેલા છે.",
+    "contact": "સંપર્ક",
+    "email": "support@99digicom.com",
+    "emailAddress": "ઈમેલ સરનામું",
+    "emailPlaceholder": "તમારો ઈમેલ દાખલ કરો",
+    "subscribe": "સબ્સ્ક્રાઇબ",
+    "subscribing": "સબ્સ્ક્રાઇબ થઈ રહ્યું છે...",
+    "subscribeSuccess": "સફળતાપૂર્વક સબ્સ્ક્રાઇબ થયું!",
+    "enterEmail": "કૃપા કરીને ઈમેલ સરનામું દાખલ કરો",
+    "invalidEmail": "કૃપા કરીને માન્ય ઈમેલ સરનામું દાખલ કરો",
+    "invalidEmailError": "અમાન્ય ઈમેલ સરનામું.",
+    "subscribeError": "સબ્સ્ક્રાઇબ કરવામાં નિષ્ફળ. કૃપા કરીને ફરી પ્રયાસ કરો.",
+    "timeoutError": "વિનંતી સમય સમાપ્ત થયો. કૃપા કરીને ફરી પ્રયાસ કરો.",
+    "serviceUnavailable": "સેવા અસ્થાયી રૂપે અનુપલબ્ધ છે. કૃપા કરીને પછીથી ફરી પ્રયાસ કરો.",
+    "noInternet": "કોઈ ઇન્ટરનેટ કનેક્શન નથી. કૃપા કરીને તમારા નેટવર્કની તપાસ કરો.",
+    "generalError": "આ સમયે સબ્સ્ક્રાઇબ કરવામાં અસમર્થ. કૃપા કરીને પછીથી ફરી પ્રયાસ કરો.",
+    "newsletterText": "નવી ભાગીદારી અને તકો પર અપડેટ્સ માટે અમારા ન્યૂઝલેટરને સબ્સ્ક્રાઇબ કરો.",
+    "privacyPolicy": "ગોપનીયતા નીતિ",
+    "termsOfService": "સેવાની શરતો",
+    "cookiePolicy": "કૂકી પોલિસી",
+    "faqs": "વારંવાર પૂછાતા પ્રશ્નો",
+    "domains": {
+      "partners": "99partners.in",
+      "infosource": "99infosource.com",
+      "finserv": "99finserv.com",
+      "harmony": "harmonyhights.com"
+    }
   }
-}
+  }

@@ -18,7 +18,13 @@ export const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     // Initialize i18next with the current language
-    i18n.changeLanguage(currentLanguage);
+    const storedLang = localStorage.getItem('appLang');
+    if (storedLang) {
+      i18n.changeLanguage(storedLang);
+      setCurrentLanguage(storedLang);
+    } else {
+      i18n.changeLanguage(currentLanguage);
+    }
   }, []);
 
   const changeLanguage = (langCode) => {

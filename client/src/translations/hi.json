@@ -1382,6 +1382,43 @@
   },
   "common": {
     "companyName": "99डिजिकॉम"
+  },
+  "seo": {
+    "siteTitle": "99डिजिकॉम"
+  },
+  "footer": {
+    "tagline": "सभी टॉप मार्केटप्लेस पर अपने व्यवसाय को लॉन्च, प्रबंधित और विकसित करें।",
+    "quickLinks": "त्वरित लिंक्स",
+    "ourDomains": "हमारे डोमेन",
+    "helpSupport": "सहायता और समर्थन",
+    "stayConnected": "जुड़े रहें",
+    "followUs": "हमें फॉलो करें",
+    "allRightsReserved": "सर्वाधिकार सुरक्षित।",
+    "contact": "संपर्क",
+    "email": "support@99digicom.com",
+    "emailAddress": "ईमेल पता",
+    "emailPlaceholder": "अपना ईमेल दर्ज करें",
+    "subscribe": "सब्सक्राइब",
+    "subscribing": "सब्सक्राइब हो रहा है...",
+    "subscribeSuccess": "सफलतापूर्वक सब्सक्राइब किया गया!",
+    "enterEmail": "कृपया ईमेल पता दर्ज करें",
+    "invalidEmail": "कृपया एक वैध ईमेल पता दर्ज करें",
+    "invalidEmailError": "अमान्य ईमेल पता।",
+    "subscribeError": "सब्सक्राइब करने में विफल। कृपया पुनः प्रयास करें।",
+    "timeoutError": "अनुरोध का समय समाप्त हो गया। कृपया पुनः प्रयास करें।",
+    "serviceUnavailable": "सेवा अस्थायी रूप से अनुपलब्ध है। कृपया बाद में पुनः प्रयास करें।",
+    "noInternet": "कोई इंटरनेट कनेक्शन नहीं। कृपया अपने नेटवर्क की जांच करें।",
+    "generalError": "इस समय सब्सक्राइब करने में असमर्थ। कृपया बाद में पुनः प्रयास करें।",
+    "newsletterText": "नए साझेदारी और अवसरों के अपडेट के लिए हमारे न्यूज़लेटर की सदस्यता लें।",
+    "privacyPolicy": "गोपनीयता नीति",
+    "termsOfService": "सेवा की शर्तें",
+    "cookiePolicy": "कुकी नीति",
+    "faqs": "अक्सर पूछे जाने वाले प्रश्न",
+    "domains": {
+      "partners": "99partners.in",
+      "infosource": "99infosource.com",
+      "finserv": "99finserv.com",
+      "harmony": "harmonyhights.com"
+    }
   }
-
 }

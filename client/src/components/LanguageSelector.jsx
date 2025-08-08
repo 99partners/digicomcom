@@ -15,10 +15,10 @@ const LanguageSelector = () => {
   ];
 
   const handleLanguageChange = (langCode) => {
-    changeLanguage(langCode);
+    // Close dropdown first
     setIsOpen(false);
-    // Reload page to apply language change
-    window.location.reload();
+    // Then change language (which will trigger reload in LanguageContext)
+    changeLanguage(langCode);
   };
 
   const selectedLang = languages.find(lang => lang.code === currentLanguage);

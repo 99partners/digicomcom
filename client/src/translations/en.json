@@ -1389,5 +1389,43 @@
       "name": "99Digicom Guides and Tutorials",
       "description": "Achieve seller success with digital commerce guides and tutorials for ONDC, Amazon, Flipkart, and more."
     }
+  },
+  "seo": {
+    "siteTitle": "99Digicom"
+  },
+  "footer": {
+    "tagline": "Launch, Manage and Grow your business across all Top marketplaces.",
+    "quickLinks": "Quick Links",
+    "ourDomains": "Our Domains",
+    "helpSupport": "Help & Support",
+    "stayConnected": "Stay Connected",
+    "followUs": "Follow Us",
+    "allRightsReserved": "All rights reserved.",
+    "contact": "Contact",
+    "email": "support@99digicom.com",
+    "emailAddress": "Email address",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing...",
+    "subscribeSuccess": "Subscribed successfully!",
+    "enterEmail": "Please enter an email address",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidEmailError": "Invalid email address.",
+    "subscribeError": "Failed to subscribe. Please try again.",
+    "timeoutError": "Request timed out. Please try again.",
+    "serviceUnavailable": "Service temporarily unavailable. Please try again later.",
+    "noInternet": "No internet connection. Please check your network.",
+    "generalError": "Unable to subscribe at the moment. Please try again later.",
+    "newsletterText": "Subscribe to our newsletter for updates on new partnerships and opportunities.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "cookiePolicy": "Cookie Policy",
+    "faqs": "FAQs",
+    "domains": {
+      "partners": "99partners.in",
+      "infosource": "99infosource.com",
+      "finserv": "99finserv.com",
+      "harmony": "harmonyhights.com"
+    }
   }
 }

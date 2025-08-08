@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check i18n</title>
+</head>
+<body>
+    <h1>Check i18n Configuration</h1>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+        
+        // Check localStorage for language settings
+        const appLang = localStorage.getItem('appLang');
+        output.innerHTML += `<p>Current language in localStorage: ${appLang || 'Not set'}</p>`;
+        
+        // List all localStorage items
+        output.innerHTML += '<h2>All localStorage items:</h2>';
+        output.innerHTML += '<ul>';
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const value = localStorage.getItem(key);
+            output.innerHTML += `<li>${key}: ${value}</li>`;
+        }
+        output.innerHTML += '</ul>';
+        
+        // Add buttons to set different languages
+        const languages = ['en', 'hi', 'gu', 'pa', 'mr', 'bn'];
+        
+        output.innerHTML += '<h2>Set language:</h2>';
+        languages.forEach(lang => {
+            const button = document.createElement('button');
+            button.textContent = `Set to ${lang}`;
+            button.onclick = () => {
+                localStorage.setItem('appLang', lang);
+                output.innerHTML += `<p>Language set to ${lang}. Refresh the page to see changes.</p>`;
+            };
+            output.appendChild(button);
+            output.appendChild(document.createTextNode(' '));
+        });
+        
+        // Add button to clear language setting
+        const clearButton = document.createElement('button');
+        clearButton.textContent = 'Clear language setting';
+        clearButton.onclick = () => {
+            localStorage.removeItem('appLang');
+            output.innerHTML += '<p>Language setting cleared. Refresh the page to see changes.</p>';
+        };
+        output.appendChild(document.createElement('br'));
+        output.appendChild(document.createElement('br'));
+        output.appendChild(clearButton);
+    </script>
+</body>
+</html>

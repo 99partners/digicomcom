@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import logo from "../assets/99digicom.png";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from './LanguageSelector';
 
 const Header = () => {
@@ -15,7 +16,18 @@ const Header = () => {
   const pathname = location.pathname;
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+  const { t, i18n } = useTranslation();
+  
+  // Force re-render when language changes
+  const [, forceUpdate] = useState();
+  useEffect(() => {
+    const handleLanguageChanged = () => forceUpdate({});
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, [i18n]);
 
   const navigation = [
     { name: t('common.home'), href: "/" },
@@ -72,7 +84,12 @@ const Header = () => {
               height="56"
             />
             <span className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
-              Digicom
+              {currentLanguage === 'en' && 'Digicom'}
+              {currentLanguage === 'hi' && 'डिजिकॉम'}
+              {currentLanguage === 'gu' && 'ડિજિકોમ'}
+              {currentLanguage === 'pa' && 'ਡਿਜੀਕੋਮ'}
+              {currentLanguage === 'mr' && 'डिजिकॉम'}
+              {currentLanguage === 'bn' && 'ডিজিকম'}
             </span>
           </Link>
         </div>

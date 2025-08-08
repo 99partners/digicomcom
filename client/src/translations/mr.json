@@ -118,5 +118,43 @@
       "heading": "यशाचे आवाज",
       "description": "99digicom.com सह यशस्वी झालेल्या आमच्या भागीदार आणि ग्राहकांकडून ऐका."
     }
+  },
+  "seo": {
+    "siteTitle": "99डिजिकॉम"
+  },
+  "footer": {
+    "tagline": "सर्व प्रमुख मार्केटप्लेसवर आपला व्यवसाय लाँच, व्यवस्थापित आणि वाढवा.",
+    "quickLinks": "क्विक लिंक्स",
+    "ourDomains": "आमचे डोमेन",
+    "helpSupport": "मदत आणि सपोर्ट",
+    "stayConnected": "कनेक्टेड रहा",
+    "followUs": "आम्हाला फॉलो करा",
+    "allRightsReserved": "सर्व हक्क राखीव.",
+    "contact": "संपर्क",
+    "email": "support@99digicom.com",
+    "emailAddress": "ईमेल पत्ता",
+    "emailPlaceholder": "तुमचा ईमेल टाका",
+    "subscribe": "सबस्क्राइब",
+    "subscribing": "सबस्क्राइब करत आहे...",
+    "subscribeSuccess": "यशस्वीरित्या सबस्क्राइब केले!",
+    "enterEmail": "कृपया ईमेल पत्ता टाका",
+    "invalidEmail": "कृपया वैध ईमेल पत्ता टाका",
+    "invalidEmailError": "अवैध ईमेल पत्ता.",
+    "subscribeError": "सबस्क्राइब करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.",
+    "timeoutError": "विनंती टाइमआउट झाली. कृपया पुन्हा प्रयत्न करा.",
+    "serviceUnavailable": "सेवा तात्पुरती अनुपलब्ध आहे. कृपया नंतर पुन्हा प्रयत्न करा.",
+    "noInternet": "इंटरनेट कनेक्शन नाही. कृपया तुमचे नेटवर्क तपासा.",
+    "generalError": "सध्या सबस्क्राइब करण्यात अक्षम. कृपया नंतर पुन्हा प्रयत्न करा.",
+    "newsletterText": "नवीन भागीदारी आणि संधींवरील अपडेट्ससाठी आमच्या न्यूजलेटरला सबस्क्राइब करा.",
+    "privacyPolicy": "गोपनीयता धोरण",
+    "termsOfService": "सेवेच्या अटी",
+    "cookiePolicy": "कुकी धोरण",
+    "faqs": "वारंवार विचारले जाणारे प्रश्न",
+    "domains": {
+      "partners": "99partners.in",
+      "infosource": "99infosource.com",
+      "finserv": "99finserv.com",
+      "harmony": "harmonyhights.com"
+    }
   }
 }

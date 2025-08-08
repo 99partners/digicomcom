@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test i18next</title>
+    <script src="https://unpkg.com/i18next@25.3.2/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector@8.2.0/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+</head>
+<body>
+    <h1>Test i18next Configuration</h1>
+    <div id="output"></div>
+    <div id="translation"></div>
+
+    <script>
+        const output = document.getElementById('output');
+        const translationDiv = document.getElementById('translation');
+        
+        // Check localStorage for language settings
+        const appLang = localStorage.getItem('appLang');
+        output.innerHTML += `<p>Current language in localStorage: ${appLang || 'Not set'}</p>`;
+        
+        // Initialize i18next
+        const resources = {
+            en: {
+                translation: {
+                    "test": "This is a test in English",
+                    "header": {
+                        "home": "Home",
+                        "about": "About"
+                    },
+                    "footer": {
+                        "copyright": "Copyright © 2023"
+                    }
+                }
+            },
+            hi: {
+                translation: {
+                    "test": "यह हिंदी में एक परीक्षण है",
+                    "header": {
+                        "home": "होम",
+                        "about": "हमारे बारे में"
+                    },
+                    "footer": {
+                        "copyright": "कॉपीराइट © 2023"
+                    }
+                }
+            },
+            gu: {
+                translation: {
+                    "test": "આ ગુજરાતીમાં એક પરીક્ષણ છે",
+                    "header": {
+                        "home": "હોમ",
+                        "about": "અમારા વિશે"
+                    },
+                    "footer": {
+                        "copyright": "કૉપિરાઇટ © 2023"
+                    }
+                }
+            }
+        };
+
+        i18next
+            .use(i18nextBrowserLanguageDetector)
+            .init({
+                resources,
+                fallbackLng: 'en',
+                detection: {
+                    order: ['localStorage', 'navigator'],
+                    lookupLocalStorage: 'appLang',
+                    caches: ['localStorage']
+                },
+                interpolation: {
+                    escapeValue: false
+                }
+            }, function(err, t) {
+                if (err) {
+                    console.error('i18next initialization error:', err);
+                    translationDiv.innerHTML += `<p style="color: red;">Error initializing i18next: ${err.message}</p>`;
+                    return;
+                }
+                
+                // Display current language
+                translationDiv.innerHTML += `<p>i18next current language: ${i18next.language}</p>`;
+                
+                // Display translations
+                translationDiv.innerHTML += `<h2>Translations:</h2>`;
+                translationDiv.innerHTML += `<p>test: ${t('test')}</p>`;
+                translationDiv.innerHTML += `<p>header.home: ${t('header.home')}</p>`;
+                translationDiv.innerHTML += `<p>header.about: ${t('header.about')}</p>`;
+                translationDiv.innerHTML += `<p>footer.copyright: ${t('footer.copyright')}</p>`;
+                
+                // Add buttons to change language
+                translationDiv.innerHTML += '<h2>Change language:</h2>';
+                ['en', 'hi', 'gu'].forEach(lang => {
+                    const button = document.createElement('button');
+                    button.textContent = `Change to ${lang}`;
+                    button.onclick = () => {
+                        i18next.changeLanguage(lang, (err, t) => {
+                            if (err) {
+                                console.error('Language change error:', err);
+                                return;
+                            }
+                            localStorage.setItem('appLang', lang);
+                            // Update translations
+                            document.getElementById('translation').innerHTML = '';
+                            translationDiv.innerHTML += `<p>i18next current language: ${i18next.language}</p>`;
+                            translationDiv.innerHTML += `<h2>Translations:</h2>`;
+                            translationDiv.innerHTML += `<p>test: ${t('test')}</p>`;
+                            translationDiv.innerHTML += `<p>header.home: ${t('header.home')}</p>`;
+                            translationDiv.innerHTML += `<p>header.about: ${t('header.about')}</p>`;
+                            translationDiv.innerHTML += `<p>footer.copyright: ${t('footer.copyright')}</p>`;
+                        });
+                    };
+                    translationDiv.appendChild(button);
+                    translationDiv.appendChild(document.createTextNode(' '));
+                });
+            });
+    </script>
+</body>
+</html>

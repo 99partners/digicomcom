@@ -118,5 +118,43 @@
       "heading": "ਸਫਲਤਾ ਦੀਆਂ ਆਵਾਜ਼ਾਂ",
       "description": "99digicom.com ਨਾਲ ਸਫਲ ਹੋਏ ਸਾਡੇ ਭਾਗੀਦਾਰਾਂ ਅਤੇ ਗਾਹਕਾਂ ਤੋਂ ਸੁਣੋ।"
     }
+  },
+  "seo": {
+    "siteTitle": "99ਡਿਜੀਕੌਮ"
+  },
+  "footer": {
+    "tagline": "ਸਾਰੇ ਮੁੱਖ ਮਾਰਕੀਟਪਲੇਸ 'ਤੇ ਆਪਣੇ ਵਪਾਰ ਨੂੰ ਲਾਂਚ, ਪ੍ਰਬੰਧਿਤ ਅਤੇ ਵਿਕਸਿਤ ਕਰੋ।",
+    "quickLinks": "ਤੇਜ਼ ਲਿੰਕ",
+    "ourDomains": "ਸਾਡੇ ਡੋਮੇਨ",
+    "helpSupport": "ਮਦਦ ਅਤੇ ਸਹਾਇਤਾ",
+    "stayConnected": "ਜੁੜੇ ਰਹੋ",
+    "followUs": "ਸਾਨੂੰ ਫਾਲੋ ਕਰੋ",
+    "allRightsReserved": "ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ।",
+    "contact": "ਸੰਪਰਕ",
+    "email": "support@99digicom.com",
+    "emailAddress": "ਈਮੇਲ ਪਤਾ",
+    "emailPlaceholder": "ਆਪਣੀ ਈਮੇਲ ਦਰਜ ਕਰੋ",
+    "subscribe": "ਸਬਸਕ੍ਰਾਈਬ",
+    "subscribing": "ਸਬਸਕ੍ਰਾਈਬ ਕਰ ਰਿਹਾ ਹੈ...",
+    "subscribeSuccess": "ਸਫਲਤਾਪੂਰਵਕ ਸਬਸਕ੍ਰਾਈਬ ਕੀਤਾ ਗਿਆ!",
+    "enterEmail": "ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਪਤਾ ਦਰਜ ਕਰੋ",
+    "invalidEmail": "ਕਿਰਪਾ ਕਰਕੇ ਵੈਧ ਈਮੇਲ ਪਤਾ ਦਰਜ ਕਰੋ",
+    "invalidEmailError": "ਅਵੈਧ ਈਮੇਲ ਪਤਾ।",
+    "subscribeError": "ਸਬਸਕ੍ਰਾਈਬ ਕਰਨ ਵਿੱਚ ਅਸਫਲ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "timeoutError": "ਬੇਨਤੀ ਦਾ ਸਮਾਂ ਸਮਾਪਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "serviceUnavailable": "ਸੇਵਾ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਅਣਉਪਲਬਧ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "noInternet": "ਕੋਈ ਇੰਟਰਨੈੱਟ ਕਨੈਕਸ਼ਨ ਨਹੀਂ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਨੈੱਟਵਰਕ ਦੀ ਜਾਂਚ ਕਰੋ।",
+    "generalError": "ਇਸ ਸਮੇਂ ਸਬਸਕ੍ਰਾਈਬ ਕਰਨ ਵਿੱਚ ਅਸਮਰੱਥ। ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "newsletterText": "ਨਵੀਆਂ ਭਾਈਵਾਲੀਆਂ ਅਤੇ ਮੌਕਿਆਂ ਬਾਰੇ ਅਪਡੇਟਾਂ ਲਈ ਸਾਡੇ ਨਿਊਜ਼ਲੈਟਰ ਦੀ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਲਓ।",
+    "privacyPolicy": "ਪਰਾਈਵੇਸੀ ਪਾਲਿਸੀ",
+    "termsOfService": "ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ",
+    "cookiePolicy": "ਕੁਕੀ ਪਾਲਿਸੀ",
+    "faqs": "ਅਕਸਰ ਪੁੱਛੇ ਜਾਣ ਵਾਲੇ ਸਵਾਲ",
+    "domains": {
+      "partners": "99partners.in",
+      "infosource": "99infosource.com",
+      "finserv": "99finserv.com",
+      "harmony": "harmonyhights.com"
+    }
   }
 }

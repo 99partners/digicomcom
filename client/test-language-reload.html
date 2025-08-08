@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Language Reload</title>
+</head>
+<body>
+    <h1>Test Language Reload</h1>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+        
+        // Check localStorage for language settings
+        const appLang = localStorage.getItem('appLang');
+        output.innerHTML += `<p>Current language in localStorage: ${appLang || 'Not set'}</p>`;
+        
+        // Add buttons to set different languages and reload the main app
+        const languages = ['en', 'hi', 'gu', 'pa', 'mr', 'bn'];
+        
+        output.innerHTML += '<h2>Set language and reload main app:</h2>';
+        languages.forEach(lang => {
+            const button = document.createElement('button');
+            button.textContent = `Set to ${lang} and reload main app`;
+            button.onclick = () => {
+                localStorage.setItem('appLang', lang);
+                output.innerHTML += `<p>Language set to ${lang}. Redirecting to main app...</p>`;
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            };
+            output.appendChild(button);
+            output.appendChild(document.createElement('br'));
+            output.appendChild(document.createElement('br'));
+        });
+        
+        // Add button to clear language setting
+        const clearButton = document.createElement('button');
+        clearButton.textContent = 'Clear language setting and reload main app';
+        clearButton.onclick = () => {
+            localStorage.removeItem('appLang');
+            output.innerHTML += '<p>Language setting cleared. Redirecting to main app...</p>';
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        };
+        output.appendChild(clearButton);
+    </script>
+</body>
+</html>
