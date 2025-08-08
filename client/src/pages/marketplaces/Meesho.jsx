@@ -15,33 +15,27 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import MeeshoLogo from "../../assets/Meesho1.png";
+import { useTranslation } from "react-i18next";
 
 const Meesho = () => {
+  const { t } = useTranslation();
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [openCategory, setOpenCategory] = useState(null);
   const [openQuestions, setOpenQuestions] = useState({});
 
-  // Scroll to top on component mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Calculate scroll progress
       const totalHeight =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       setScrollProgress(progress);
-
-      // Show/hide scroll to top button
-      if (window.scrollY > 300) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
+      setShowScrollTop(window.scrollY > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -70,101 +64,26 @@ const Meesho = () => {
     }));
   };
 
-  const faqCategories = [
-    {
-      title: "General",
-      faqs: [
-        {
-          q: "Do I need a GSTIN to start selling on Meesho?",
-          a: "No, you can sell without a GSTIN if you are selling within your own state. However, having a GSTIN is required for interstate sales and access to certain features like Ads.",
-        },
-        {
-          q: "How do I start selling on Meesho?",
-          a: "Sign up on supplier.meesho.com, upload your product catalogues, and start receiving orders. Meesho handles shipping and delivers to customers for you.",
-        },
-        {
-          q: "What kind of products can I sell on Meesho?",
-          a: "You can sell a wide range of products including fashion, home decor, beauty, electronics accessories, and more. However, prohibited products like alcohol, tobacco, or counterfeit goods are not allowed.",
-        },
-        {
-          q: "How long does it take for my catalog to go live after uploading?",
-          a: "It usually takes around 72 hours for your catalog to be reviewed and become live on the platform.",
-        },
-      ],
-    },
-    {
-      title: "Fees and Charges",
-      faqs: [
-        {
-          q: "Does Meesho charge commission on my sales?",
-          a: "No, Meesho charges 0% commission on all products, meaning you keep 100% of your profit.",
-        },
-        {
-          q: "Are there any hidden charges?",
-          a: "No, there are no hidden charges. You only pay for shipping, which is clearly mentioned for each order.",
-        },
-        {
-          q: "When will I receive payment for my orders?",
-          a: "You will receive your payment directly into your bank account 7 days after the order is delivered, including COD orders.",
-        },
-        {
-          q: "Are there penalties for order cancellations or late dispatch?",
-          a: "Yes, Meesho may apply penalties if you frequently cancel orders or delay dispatch. This affects your seller rating and visibility on the platform.",
-        },
-      ],
-    },
-    {
-      title: "Managing Your Account",
-      faqs: [
-        {
-          q: "How do I change my bank account or address on Meesho?",
-          a: 'Log into the Supplier Panel, go to the "Account Settings" section, and update your bank details or pickup address. You may need to verify the new details before changes are applied.',
-        },
-        {
-          q: "Can I cancel an order if I am out of stock?",
-          a: "Yes, but frequent cancellations can impact your performance score. It's recommended to keep your inventory updated to avoid such issues.",
-        },
-        {
-          q: "How do I track my orders?",
-          a: "You can track order status in real-time through the “Orders” tab in the Supplier Panel. Details like shipping, pickup, and delivery are all available.",
-        },
-        {
-          q: "How do I manage my product listings or inventory?",
-          a: "You can upload, update, or delete product catalogs directly from the Supplier Panel. Inventory status can also be edited as needed.",
-        },
-      ],
-    },
-    {
-      title: "Services",
-      faqs: [
-        {
-          q: "What kind of support is available for Meesho sellers?",
-          a: "Meesho provides 24/7 seller support through email, chat, and a dedicated help section in the Supplier Panel. Sellers can raise tickets for any technical, order, or payment-related issues.",
-        },
-        {
-          q: "Are there tools to help me grow my sales on Meesho?",
-          a: "Yes, Meesho offers tools like price recommendations, business insights, ad services (for GST sellers), and a Quality Dashboard to help sellers improve performance and increase sales.",
-        },
-        {
-          q: "Can I access training material to learn how to sell effectively?",
-          a: "Yes, Meesho has a Learning Hub with video tutorials and step-by-step guides for everything from registration to shipping and managing returns.",
-        },
-      ],
-    },
-  ];
+  // Hindi data from hi.json
+  const seo = t("marketplaces.meesho.seo", { returnObjects: true });
+  const header = t("marketplaces.meesho.header", { returnObjects: true });
+  const overview = t("marketplaces.meesho.overview", { returnObjects: true });
+  const requirements = t("marketplaces.meesho.requirements", { returnObjects: true });
+  const steps = t("marketplaces.meesho.steps", { returnObjects: true });
+  const faq = t("marketplaces.meesho.faq", { returnObjects: true });
+  const resources = t("marketplaces.meesho.resources.list", { returnObjects: true });
+  const notes = t("marketplaces.meesho.notes", { returnObjects: true });
+  const cta = t("marketplaces.meesho.cta", { returnObjects: true });
+
+  // Icon mapping for requirements
+  const reqIcons = [ShoppingBag, User, CreditCard, User, CreditCard, Building, Package, ShoppingBag];
 
   return (
     <>
       <Helmet>
-        <title>Meesho Services | 99digicom</title>
-        <meta
-          name="description"
-          content="Complete Meesho marketplace services including account management, listing optimization, and advertising."
-        />
-        <meta
-          name="keywords"
-          content="Meesho seller account, Meesho setup, Meesho marketplace, social commerce, online selling"
-        />
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description} />
+        <meta name="keywords" content={seo.keywords} />
       </Helmet>
 
       {/* Back Button */}
@@ -206,10 +125,10 @@ const Meesho = () => {
                 className="w-48 h-48 object-contain mb-4"
               />
               <h1 className="text-3xl font-bold text-gray-900 text-center">
-                Meesho Seller Account Setup
+                {header.title}
               </h1>
               <p className="text-green-600 text-center mt-2">
-                Your Gateway to India's Social Commerce Platform
+                {header.subtitle}
               </p>
             </div>
           </div>
@@ -225,14 +144,10 @@ const Meesho = () => {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-green-700 mb-2">
-                    Overview
+                    {overview.title}
                   </h2>
                   <p className="text-gray-700">
-                    Meesho empowers sellers with over 100 million users. Offers
-                    zero commission fees and social media integration. Our
-                    comprehensive guide walks you through every step of
-                    registering and optimizing your store on India's leading
-                    social commerce platform.
+                    {overview.description}
                   </p>
                 </div>
               </div>
@@ -250,78 +165,23 @@ const Meesho = () => {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-green-700 mb-2">
-                    Requirements
+                    {requirements.title}
                   </h2>
                   <p className="text-gray-700 mb-4">
-                    To create a Meesho Seller account, you'll need the
-                    following:
+                    {requirements.description}
                   </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <ShoppingBag className="h-5 w-5 text-green-600" />
+                {requirements.items.map((item, idx) => (
+                  <div key={idx} className="flex items-center bg-white p-3 rounded-lg shadow-sm">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                      {React.createElement(reqIcons[idx], { className: "h-5 w-5 text-green-600" })}
+                    </div>
+                    <span className="font-medium text-gray-800">{item}</span>
                   </div>
-                  <span className="font-medium text-gray-800">
-                    Active Mobile Number
-                  </span>
-                </div>
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <User className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span className="font-medium text-gray-800">
-                    Email Address
-                  </span>
-                </div>
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <CreditCard className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span className="font-medium text-gray-800">
-                    GSTIN (for taxable products)
-                  </span>
-                </div>
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <User className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span className="font-medium text-gray-800">PAN Card</span>
-                </div>
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <CreditCard className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span className="font-medium text-gray-800">
-                    Bank Account
-                  </span>
-                </div>
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <Building className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span className="font-medium text-gray-800">
-                    Business Details
-                  </span>
-                </div>
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <Package className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span className="font-medium text-gray-800">
-                    Address Proof
-                  </span>
-                </div>
-                <div className="flex items-center bg-white p-3 rounded-lg shadow-sm">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <ShoppingBag className="h-5 w-5 text-green-600" />
-                  </div>
-                  <span className="font-medium text-gray-800">
-                    Product Information
-                  </span>
-                </div>
+                ))}
               </div>
 
               <div className="mt-4 text-center">
@@ -331,20 +191,46 @@ const Meesho = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Visit Meesho Supplier Portal
+                  {requirements.supplierPortal}
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </a>
               </div>
             </div>
           </section>
 
+          {/* Step-by-Step Section */}
+          <section className="mb-12">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 relative inline-block">
+                {steps.title}
+                <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-green-500 rounded-full"></span>
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">{steps.description}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {steps.list.map((text, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl shadow-lg p-6 flex items-start hover:scale-105 transition-transform duration-300 hover:shadow-xl"
+                >
+                  <div className="h-12 w-12 flex items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold mr-4">
+                    {idx + 1}
+                  </div>
+                  <div>
+                    <p className="text-gray-700">{text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* FAQ Section with Collapsible Categories */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-center text-green-700 mb-8">
-              Meesho Seller FAQs
+              {faq.title}
             </h2>
             <div className="max-w-3xl mx-auto space-y-4">
-              {faqCategories.map((cat, idx) => (
+              {faq.categories.map((cat, idx) => (
                 <div key={cat.title} className="bg-white rounded-lg shadow-md">
                   <button
                     className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -405,60 +291,45 @@ const Meesho = () => {
           <section className="mb-12">
             <div className="bg-green-100 rounded-lg shadow-md p-8">
               <h2 className="text-2xl font-bold text-green-700 mb-4">
-                Resources
+                {t("marketplaces.meesho.resources.title")}
               </h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                <li>
-                  <a
-                    href="https://supplier.meesho.com"
-                    className="text-green-700 underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Meesho Supplier Portal
-                  </a>
-                </li>
-                <li>Meesho Supplier App</li>
-                <li>
-                  <a
-                    href="mailto:seller@meesho.com"
-                    className="text-green-700 underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Meesho Seller Support
-                  </a>{" "}
-                  or in-app chat
-                </li>
-                <li>
-                  Third-party resources: Seller Rocket, Unicommerce, ClearTax
-                </li>
+                {resources.map((res, idx) =>
+                  res.url ? (
+                    <li key={idx}>
+                      <a
+                        href={res.url}
+                        className="text-green-700 underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {res.name}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={idx}>{res.name}</li>
+                  )
+                )}
               </ul>
               <h2 className="text-2xl font-bold text-green-700 mt-8 mb-4">
-                Notes
+                {notes.title}
               </h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                <li>Zero-commission model requires strategic pricing.</li>
-                <li>Ideal for social media-savvy sellers.</li>
-                <li>Review policies regularly.</li>
-                <li>Leverage WhatsApp and social platforms.</li>
+                {notes.list.map((note, idx) => (
+                  <li key={idx}>{note}</li>
+                ))}
               </ul>
-              <p className="text-gray-700 mt-4">
-                By following these steps and leveraging Meesho's tools, you can
-                build a successful online business.{" "}
-                <b>Start your Meesho selling journey today!</b>
-              </p>
+              <p className="text-gray-700 mt-4" dangerouslySetInnerHTML={{ __html: notes.summary }} />
             </div>
           </section>
 
           {/* Call to Action */}
           <div className="text-center mt-12 mb-8">
             <div className="inline-block bg-gradient-to-r from-green-600 to-green-700 text-white font-bold text-xl py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl">
-              Ready to Start Selling on Meesho?
+              {cta.title}
             </div>
             <p className="mt-4 text-gray-600">
-              Our team of Meesho experts can help you set up and optimize your
-              account
+              {cta.subtitle}
             </p>
           </div>
         </div>

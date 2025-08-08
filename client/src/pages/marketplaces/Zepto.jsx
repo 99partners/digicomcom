@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { motion } from "framer-motion";
 import { ArrowUp, HelpCircle, Check, User, CreditCard, Shield, Building, Package, Plus, X, ArrowLeft } from "lucide-react";
 import ZeptoLogo from '../../assets/Zepto.png';
+import { useTranslation } from "react-i18next";
 
 const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
@@ -55,6 +55,8 @@ const ScrollProgress = () => {
 };
 
 const Zepto = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -77,55 +79,23 @@ const Zepto = () => {
     }));
   };
 
-  const faqCategories = [
-    {
-      title: 'Brand Onboarding & Registration',
-      faqs: [
-        { q: 'How do I register my brand on Zepto?', a: 'Visit the Zepto brand portal to sign up: provide business details, verify documents like GST, FSSAI, and PAN, then await approval to access your seller dashboard.' },
-        { q: 'Is there a registration fee?', a: 'Typically, Zepto does not charge a registration fee, though specific terms may vary.' },
-      ]
-    },
-    {
-      title: 'Selling & Operations',
-      faqs: [
-        { q: 'What categories can I sell on Zepto?', a: 'Zepto supports essentials like groceries, personal care, household supplies, and more—ideal for fast-moving consumables.' },
-        { q: 'What tools are available for brand partners?', a: 'Zepto’s Brand Portal offers live dashboards with sales analytics, market share, customer demographics, and fulfillment metrics.' },
-      ]
-    },
-    {
-      title: 'Fees & Commission',
-      faqs: [
-        { q: 'What commission does Zepto charge?', a: 'Commission rates typically range from 10–25%, depending on the product category.' },
-      ]
-    },
-    {
-      title: 'Fulfillment & Shipping',
-      faqs: [
-        { q: 'How does Zepto manage fast delivery?', a: 'Zepto uses a network of dark stores placed strategically across pin codes to ensure delivery within ~10 minutes. Brands must stock inventory near these stores for quick fulfillment.' },
-      ]
-    },
-    {
-      title: 'Growth & Campaigns',
-      faqs: [
-        { q: 'How can brands boost sales on Zepto?', a: 'Participate in promotional campaigns, maintain high product quality, manage inventory effectively, and leverage data insights from the Brand Portal.' },
-      ]
-    },
-    {
-      title: 'Support & Partnership',
-      faqs: [
-        { q: 'How do I contact Zepto for support or partnership?', a: 'Reach out via the Brand Portal’s support section or contact Zepto’s brand partnership team directly (e.g., via email).' },
-      ]
-    },
-  ];
+  // Hindi data from hi.json
+  const seo = t('marketplaces.zepto.seo', { returnObjects: true });
+  const header = t('marketplaces.zepto.header', { returnObjects: true });
+  const overview = t('marketplaces.zepto.overview', { returnObjects: true });
+  const requirements = t('marketplaces.zepto.requirements', { returnObjects: true });
+  const steps = t('marketplaces.zepto.steps', { returnObjects: true });
+  const faq = t('marketplaces.zepto.faq', { returnObjects: true });
+  const cta = t('marketplaces.zepto.cta', { returnObjects: true });
+
+  const reqIcons = [User, CreditCard, Shield, Building, Package, User];
 
   return (
     <>
       <Helmet>
-        <title>Zepto Seller Setup Guide | 99digicom</title>
-        <meta
-          name="description"
-          content="Step-by-step guide for setting up your Zepto seller account. Learn about requirements, process, tips, and FAQs for successful onboarding."
-        />
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description} />
+        <meta name="keywords" content={seo.keywords} />
       </Helmet>
 
       {/* Back Button */}
@@ -146,8 +116,8 @@ const Zepto = () => {
           <div className="flex flex-col items-center justify-center mb-10">
             <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
               <img src={ZeptoLogo} alt="Zepto Logo" className="w-48 h-48 object-contain mb-4" />
-              <h1 className="text-3xl font-bold text-gray-900 text-center">Zepto Seller Account Setup</h1>
-              <p className="text-green-600 text-center mt-2">Join Zepto's fast delivery network</p>
+              <h1 className="text-3xl font-bold text-gray-900 text-center">{header.title}</h1>
+              <p className="text-green-600 text-center mt-2">{header.subtitle}</p>
             </div>
           </div>
 
@@ -161,8 +131,8 @@ const Zepto = () => {
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-green-700 mb-2">Overview</h2>
-                  <p className="text-gray-700">Zepto is a 10-minute grocery delivery platform focused on ultra-fast delivery. Becoming a Zepto seller helps you tap into a high-demand customer base for everyday essentials.</p>
+                  <h2 className="text-2xl font-bold text-green-700 mb-2">{overview.title}</h2>
+                  <p className="text-gray-700">{overview.description}</p>
                 </div>
               </div>
             </div>
@@ -178,24 +148,17 @@ const Zepto = () => {
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-green-700 mb-2">Requirements</h2>
-                  <p className="text-gray-700 mb-4">To become a Zepto seller, you'll need the following:</p>
+                  <h2 className="text-2xl font-bold text-green-700 mb-2">{requirements.title}</h2>
+                  <p className="text-gray-700 mb-4">{requirements.description}</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[ 
-                  { icon: User, text: 'Business PAN Card' },
-                  { icon: CreditCard, text: 'Bank Account Details' },
-                  { icon: Shield, text: 'GST Certificate' },
-                  { icon: Building, text: "Owner's Aadhaar & PAN" },
-                  { icon: Package, text: 'FSSAI License (if applicable)' },
-                  { icon: User, text: 'Mobile Number and Email ID' },
-                ].map(({ icon: Icon, text }, i) => (
+                {requirements.items.map((item, i) => (
                   <div key={i} className="flex items-center bg-white p-3 rounded-lg shadow-sm">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                      <Icon className="h-5 w-5 text-green-600" />
+                      {React.createElement(reqIcons[i], { className: "h-5 w-5 text-green-600" })}
                     </div>
-                    <span className="font-medium text-gray-800">{text}</span>
+                    <span className="font-medium text-gray-800">{item}</span>
                   </div>
                 ))}
               </div>
@@ -206,21 +169,13 @@ const Zepto = () => {
           <section className="mb-12">
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 relative inline-block">
-                Step-by-Step Setup Process
+                {steps.title}
                 <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-green-500 rounded-full"></span>
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">Follow these steps to onboard as a Zepto Seller:</p>
+              <p className="text-gray-600 max-w-2xl mx-auto">{steps.description}</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                'Go to Zepto Partner Onboarding Page.',
-                'Fill out the application form with business details.',
-                'Upload required documents.',
-                'Wait for Zepto representative contact.',
-                'Complete contract and training.',
-                'Receive dashboard access & set up inventory.',
-                'Start accepting and fulfilling orders.'
-              ].map((step, index) => (
+              {steps.list.map((step, index) => (
                 <div key={index} className="bg-white rounded-2xl shadow-lg p-6 flex items-start transform hover:scale-105 transition-transform duration-300 hover:shadow-xl">
                   <div className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold mr-4">
                     {index + 1}
@@ -235,9 +190,9 @@ const Zepto = () => {
 
           {/* FAQ Section with Collapsible Categories */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">Zepto FAQs</h2>
+            <h2 className="text-3xl font-bold text-center text-green-700 mb-8">{faq.title}</h2>
             <div className="max-w-3xl mx-auto space-y-4">
-              {faqCategories.map((cat, idx) => (
+              {faq.categories.map((cat, idx) => (
                 <div key={cat.title} className="bg-white rounded-lg shadow-md">
                   <button
                     className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -251,21 +206,21 @@ const Zepto = () => {
                   </button>
                   {openCategory === idx && (
                     <div className="px-6 pb-4">
-                      {cat.faqs.map((faq, qIdx) => (
+                      {cat.faqs.map((faqItem, qIdx) => (
                         <div key={qIdx} className="mb-2 border-b last:border-b-0">
                           <button
                             className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
                             onClick={() => handleQuestionToggle(idx, qIdx)}
                             aria-expanded={openQuestions[idx] === qIdx}
                           >
-                            <span className="font-medium text-gray-900">{faq.q}</span>
+                            <span className="font-medium text-gray-900">{faqItem.q}</span>
                             <span className="ml-2">
                               {openQuestions[idx] === qIdx ? <X className="w-5 h-5 text-green-600" /> : <Plus className="w-5 h-5 text-green-600" />}
                             </span>
                           </button>
                           {openQuestions[idx] === qIdx && (
                             <div className="pb-3 pl-2 pr-2">
-                              <p className="text-gray-700 whitespace-pre-line">{faq.a}</p>
+                              <p className="text-gray-700 whitespace-pre-line">{faqItem.a}</p>
                             </div>
                           )}
                         </div>
@@ -280,9 +235,9 @@ const Zepto = () => {
           {/* Call to Action */}
           <div className="text-center mt-12 mb-8">
             <div className="inline-block bg-gradient-to-r from-green-600 to-green-700 text-white font-bold text-xl py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl">
-              Need Help With Zepto Seller Setup?
+              {cta.title}
             </div>
-            <p className="mt-4 text-gray-600">We assist with documentation, onboarding, and inventory setup for Zepto sellers.</p>
+            <p className="mt-4 text-gray-600">{cta.subtitle}</p>
           </div>
         </div>
       </div>
