@@ -193,6 +193,7 @@ function App() {
               <Route path="/resources/blogs/:id" element={<BlogDetails />} />
               <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
               <Route path="/resources/faq" element={<Faqs />} />
+              <Route path="/faqss" element={<Faqs />} />
               <Route path="/customer-login" element={<CustomerLogin />} />
               <Route path="/partnerlogin" element={<PartnerLogin />} />
               <Route path="/customerlogin" element={<CustomerLogin />} />
