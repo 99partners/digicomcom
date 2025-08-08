@@ -9,7 +9,7 @@ import logo from "../assets/99digicom.png"
 import { useAuth } from "../context/AuthContext"
 
 const PartnerLogin = () => {
-  const [formType, setFormType] = useState("Sign Up")
+  const [formType, setFormType] = useState("Login") // Changed default to "Login" instead of "Sign Up"
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
@@ -117,7 +117,7 @@ const PartnerLogin = () => {
         <div className="bg-slate-900 p-10 rounded-2xl shadow-2xl w-full max-w-md text-green-300 text-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-emerald-500/5 rounded-full -translate-y-16 translate-x-16"></div>
 
-          <div className="md:hidden mb-4">
+          <div className="mb-4">
             <Link
               to="/"
               className="inline-flex items-center text-green-400 hover:text-green-300 transition-colors group text-sm"
