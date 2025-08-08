@@ -16,7 +16,7 @@ import {
   X,
   ArrowLeft
 } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import logo from '../../assets/99digicom.png';
 import { useAuth } from '../../context/AuthContext';
 import axiosInstance from '../../config/api.config';
@@ -186,8 +186,10 @@ const DashboardLayout = ({ children }) => {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <img src={logo} alt="Logo" className="h-8 w-auto" />
-              <span className="ml-3 text-xl font-semibold text-gray-900">Partner Portal</span>
+              <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
+                <img src={logo} alt="Logo" className="h-8 w-auto cursor-pointer" />
+                <span className="ml-3 text-xl font-semibold text-gray-900 cursor-pointer">Partner Portal</span>
+              </Link>
             </div>
             <div className="flex items-center space-x-4">
               {/* Quick Actions */}
@@ -359,4 +361,4 @@ const DashboardLayout = ({ children }) => {
   );
 };
 
-export default DashboardLayout; 
+export default DashboardLayout;
