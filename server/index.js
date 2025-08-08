@@ -1,5 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env.production' });
+
 import express from 'express';
-import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import multer from 'multer';
