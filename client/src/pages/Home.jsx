@@ -18,7 +18,7 @@ import {
 import axios from "axios";
 import { getApiUrl } from "../config/api.config";
 import SEO from "../components/SEO";
-
+import Countdown from "../components/Countdown";
 // Import local logos
 import amazonLogo from "../assets/Amazon.png";
 import flipkartLogo from "../assets/Flipkart.png";
@@ -243,7 +243,7 @@ const Home = () => {
         keywords={t("home.seo.keywords")}
         canonicalUrl="https://99digicom.com"
       />
-      
+      <Countdown />
       <div className="pt-12 sm:pt-8">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-50">
