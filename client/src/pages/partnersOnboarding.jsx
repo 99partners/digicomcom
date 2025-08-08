@@ -30,6 +30,10 @@ export default function PartnerOnboarding() {
     window.scrollTo(0, 0);
   }, []);
 
+  const onboardingHeading = t("partners.onboardingSection.heading");
+  const onboardingTarget = "onboarding";
+  const onboardingIdx = onboardingHeading.toLowerCase().indexOf(onboardingTarget);
+
   const [formData, setFormData] = useState({
     brandName: "",
     contactPerson: "",
@@ -143,7 +147,15 @@ export default function PartnerOnboarding() {
             <span>{t("partners.onboardingSection.heading")}</span>
           </div>
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            {t("partners.onboardingSection.heading")}
+            {onboardingIdx === -1 ? (
+              onboardingHeading
+            ) : (
+              <>
+                {onboardingHeading.slice(0, onboardingIdx)}
+                <span className="text-green-600">{onboardingHeading.slice(onboardingIdx, onboardingIdx + onboardingTarget.length)}</span>
+                {onboardingHeading.slice(onboardingIdx + onboardingTarget.length)}
+              </>
+            )}
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             {t("partners.onboardingSection.subtitle")}

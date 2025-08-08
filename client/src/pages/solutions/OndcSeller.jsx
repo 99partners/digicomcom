@@ -13,6 +13,9 @@ const OndcSeller = () => {
   const supportPoints = t('ondcSeller.support.points', { returnObjects: true });
   const steps = t('ondcSeller.steps.items', { returnObjects: true });
 
+  const ondcSellerHeading = t('ondcSeller.hero.heading');
+  const ondcSellerIdx = ondcSellerHeading.indexOf('ONDC');
+
   return (
     <>
       <Helmet>
@@ -27,7 +30,15 @@ const OndcSeller = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {t('ondcSeller.hero.heading')}
+              {ondcSellerIdx === -1 ? (
+                ondcSellerHeading
+              ) : (
+                <>
+                  {ondcSellerHeading.slice(0, ondcSellerIdx)}
+                  <span className="text-green-600">ONDC</span>
+                  {ondcSellerHeading.slice(ondcSellerIdx + 4)}
+                </>
+              )}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               {t('ondcSeller.hero.subtitle')}

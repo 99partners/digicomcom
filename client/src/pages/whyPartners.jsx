@@ -25,6 +25,10 @@ export default function ForProductPartners() {
     window.scrollTo(0, 0);
   }, []);
 
+  const whyHeading = t("whyPartner.hero.title");
+  const whyHighlight = "with 99digicom";
+  const whyIdx = whyHeading.toLowerCase().indexOf(whyHighlight);
+
   const [formData, setFormData] = useState({
     brandName: "",
     contactPerson: "",
@@ -125,7 +129,15 @@ export default function ForProductPartners() {
               <span>{t("whyPartner.hero.badge")}</span>
             </div>
             <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {t("whyPartner.hero.title")}
+              {whyIdx === -1 ? (
+                whyHeading
+              ) : (
+                <>
+                  {whyHeading.slice(0, whyIdx)}
+                  <span className="text-green-600">{whyHeading.slice(whyIdx, whyIdx + whyHighlight.length)}</span>
+                  {whyHeading.slice(whyIdx + whyHighlight.length)}
+                </>
+              )}
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               {t("whyPartner.hero.subtitle")}

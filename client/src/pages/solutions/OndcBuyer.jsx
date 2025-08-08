@@ -13,6 +13,9 @@ const OndcBuyer = () => {
   const services = t('ondcBuyer.services.points', { returnObjects: true });
   const steps = t('ondcBuyer.process.steps', { returnObjects: true });
 
+  const ondcBuyerHeading = t('ondcBuyer.hero.heading');
+  const ondcBuyerIdx = ondcBuyerHeading.indexOf('ONDC');
+
   return (
     <>
       <Helmet>
@@ -27,7 +30,15 @@ const OndcBuyer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {t('ondcBuyer.hero.heading')}
+              {ondcBuyerIdx === -1 ? (
+                ondcBuyerHeading
+              ) : (
+                <>
+                  {ondcBuyerHeading.slice(0, ondcBuyerIdx)}
+                  <span className="text-green-600">ONDC</span>
+                  {ondcBuyerHeading.slice(ondcBuyerIdx + 4)}
+                </>
+              )}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               {t('ondcBuyer.hero.subtitle')}
