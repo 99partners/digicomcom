@@ -25,13 +25,28 @@ import indiamartLogo from "../assets/Indiamart.png";
 import snapdealLogo from "../assets/Snapdeal.png";
 import ImageSlider from '../components/ImageSlider';
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export default function CoBranding() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const isAuthenticated = () => {
+    const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    return !!token;
+  };
+
+  const handleStartCollaboration = () => {
+    if (isAuthenticated()) {
+      navigate("/dashboard/profile");
+    } else {
+      navigate("/partnerlogin");
+    }
+  };
 
   // Steps for Brand Collaborations
   const steps = t('coBranding.collaborations.steps', { returnObjects: true }).map((step, idx) => ({
@@ -80,14 +95,15 @@ export default function CoBranding() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               {t('coBranding.hero.subtitle')}
             </p>
-            <a
-              href="#get-started"
+            <button
+              type="button"
+              onClick={handleStartCollaboration}
               className="inline-flex items-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
               aria-label={t('coBranding.hero.cta')}
             >
               {t('coBranding.hero.cta')}
               <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-            </a>
+            </button>
           </div>
         </section>
 
