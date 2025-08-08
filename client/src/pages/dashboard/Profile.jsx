@@ -4,14 +4,8 @@ import { motion } from 'framer-motion';
 import { 
     Mail, 
     Phone, 
-    User, 
-    Crown, 
     CheckCircle, 
     Calendar,
-    MapPin,
-    Building,
-    Globe,
-    Shield,
     Edit
 } from 'lucide-react';
 import axiosInstance from '../../config/api.config';
@@ -108,10 +102,14 @@ const Profile = () => {
                                     whileHover={{ scale: 1.05 }}
                                     className="relative group"
                                 >
-                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-md">
-                                        <span className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
-                                            {user?.name?.charAt(0) || 'U'}
-                                        </span>
+                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
+                                        {user?.avatar ? (
+                                            <img src={user.avatar} alt={user?.name || 'User'} className="w-full h-full object-cover rounded-full" />
+                                        ) : (
+                                            <span className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
+                                                {user?.name?.charAt(0) || 'U'}
+                                            </span>
+                                        )}
                                     </div>
                                     <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Edit size={16} className="text-green-600" />
@@ -123,10 +121,6 @@ const Profile = () => {
                                     </h1>
                                     <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                                         <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/80 rounded-full text-green-700 text-xs sm:text-sm flex items-center">
-                                            <Crown size={16} className="mr-1" />
-                                            {user?.plan || 'Free Plan'}
-                                        </span>
-                                        <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/80 rounded-full text-green-700 text-xs sm:text-sm flex items-center">
                                             <Calendar size={16} className="mr-1" />
                                             Joined {formatDate(user?.createdAt)}
                                         </span>
@@ -137,85 +131,23 @@ const Profile = () => {
                     </div>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <div className="space-y-6 md:space-y-8">
-                        {/* Contact Information */}
-                        <ProfileSection title="Contact Information">
-                            <div className="space-y-3 sm:space-y-4">
-                                <InfoItem
-                                    icon={Mail}
-                                    label="Email Address"
-                                    value={user?.email}
-                                    verified={user?.emailVerified}
-                                />
-                                <InfoItem
-                                    icon={Phone}
-                                    label="Phone Number"
-                                    value={user?.phone}
-                                />
-                            </div>
-                        </ProfileSection>
-
-                        {/* Account Information */}
-                        <ProfileSection title="Account Information">
-                            <div className="space-y-3 sm:space-y-4">
-                                <InfoItem
-                                    icon={Shield}
-                                    label="Account Status"
-                                    value="Active"
-                                />
-                                <InfoItem
-                                    icon={Crown}
-                                    label="Subscription Plan"
-                                    value={user?.plan || 'Free Plan'}
-                                />
-                                <InfoItem
-                                    icon={Calendar}
-                                    label="Member Since"
-                                    value={formatDate(user?.createdAt)}
-                                />
-                            </div>
-                        </ProfileSection>
-                    </div>
-
-                    <div className="space-y-6 md:space-y-8">
-                        {/* Business Information */}
-                        <ProfileSection title="Business Information">
-                            <div className="space-y-3 sm:space-y-4">
-                                <InfoItem
-                                    icon={Building}
-                                    label="Company Name"
-                                    value={user?.companyName}
-                                />
-                                <InfoItem
-                                    icon={Globe}
-                                    label="Website"
-                                    value={user?.website}
-                                />
-                                <InfoItem
-                                    icon={MapPin}
-                                    label="Location"
-                                    value={user?.location}
-                                />
-                            </div>
-                        </ProfileSection>
-
-                        {/* Additional Section for Future Use */}
-                        <ProfileSection title="Preferences">
-                            <div className="space-y-3 sm:space-y-4">
-                                <InfoItem
-                                    icon={User}
-                                    label="Language"
-                                    value="English"
-                                />
-                                <InfoItem
-                                    icon={Globe}
-                                    label="Time Zone"
-                                    value="UTC+05:30"
-                                />
-                            </div>
-                        </ProfileSection>
-                    </div>
+                {/* Only Contact Information section */}
+                <div className="max-w-3xl mx-auto">
+                    <ProfileSection title="Contact Information">
+                        <div className="space-y-3 sm:space-y-4">
+                            <InfoItem
+                                icon={Mail}
+                                label="Email Address"
+                                value={user?.email}
+                                verified={user?.emailVerified}
+                            />
+                            <InfoItem
+                                icon={Phone}
+                                label="Phone Number"
+                                value={user?.phone}
+                            />
+                        </div>
+                    </ProfileSection>
                 </div>
             </div>
         </div>
