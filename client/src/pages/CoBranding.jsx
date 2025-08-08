@@ -73,7 +73,9 @@ export default function CoBranding() {
               <span>{t('coBranding.hero.badge')}</span>
             </div>
             <h1 id="hero-heading" className="text-5xl font-bold text-gray-900 mb-6">
-              {t('coBranding.hero.heading')}
+              <span>Unlock New Growth Opportunities Through</span>
+              <br />
+              <span className="text-green-600">Brand Collaboration</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               {t('coBranding.hero.subtitle')}
