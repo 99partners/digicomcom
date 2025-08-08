@@ -166,6 +166,10 @@ function App() {
               <Route path="create-application/cobranding" element={<CoBrandingForm />} />
             </Route>
 
+            {/* Auth Routes without Header/Footer */}
+            <Route path="/email-verify" element={<EmailVerify />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
             {/* Public Routes */}
             <Route element={
               <>
@@ -178,9 +182,6 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/email-verify" element={<EmailVerify />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-
               <Route path="/about_us" element={<About />} />
               <Route path="/contact_us" element={<Contact />} />
               <Route path="/partners" element={<Partners />} />
