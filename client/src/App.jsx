@@ -31,7 +31,6 @@ import OndcSeller from './pages/solutions/OndcSeller';
 import OndcBuyer from './pages/solutions/OndcBuyer';
 
 import DashboardLayout from './components/partner/DashboardLayout';
-import PartnerDashboard from './pages/PartnerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardGuard from './components/DashboardGuard';
 import ServiceSelection from './components/partner/ServiceSelection';
@@ -152,19 +151,7 @@ function App() {
               </ProtectedRoute>
             } />
 
-            {/* Partner Routes */}
-            <Route path="/partner" element={
-              <ProtectedRoute>
-                <DashboardLayout>
-                  <Outlet />
-                </DashboardLayout>
-              </ProtectedRoute>
-            }>
-              <Route path="create-application/platform" element={<PlatformEnablementForm />} />
-              <Route path="create-application/ams" element={<AMSForm />} />
-              <Route path="create-application/advertising" element={<AdvertisingForm />} />
-              <Route path="create-application/cobranding" element={<CoBrandingForm />} />
-            </Route>
+            {/* Partner Routes removed as requested */}
 
             {/* Auth Routes without Header/Footer */}
             <Route path="/email-verify" element={<EmailVerify />} />
