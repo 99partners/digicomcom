@@ -1117,11 +1117,14 @@
     }
   },
   "faq": {
+    
     "seo": {
       "title": "Frequently Asked Questions | 99Digicom Digital Commerce Solutions",
       "description": "Get answers to frequently asked questions about our digital commerce services, platform capabilities, account management, co-branding partnerships, and marketing solutions.",
       "keywords": "digital commerce FAQ, e-commerce questions, ONDC support, marketplace management FAQ"
     },
+    "title": "Frequently Asked Questions",
+    "description": "Get answers to common questions about our platform and services.",
     "heading": "Frequently Asked Questions",
     "subtitle": "Find answers to common questions about our platform and services.",
     "searchPlaceholder": "🔎 Type your question here...",
