@@ -1428,4 +1428,396 @@
       "harmony": "harmonyhights.com"
     }
   }
+,
+  "marketplaces": {
+    "amazon": {
+      "seo": {
+        "title": "Amazon Seller Services | 99Digicom",
+        "description": "Amazon marketplace services: account setup/management, brand store, listing optimization and advertising.",
+        "keywords": "amazon seller account, amazon setup, amazon marketplace, FBA, seller central"
+      },
+      "header": {
+        "title": "Amazon Seller Account Setup",
+        "subtitle": "Your gateway to success on Amazon"
+      },
+      "overview": {
+        "title": "Overview",
+        "description": "Set up your Amazon seller account and start selling on the world's largest online marketplace. Our guide helps at every step from registration to listing optimization."
+      },
+      "requirements": {
+        "title": "Requirements",
+        "description": "To create an Amazon seller account, you need:",
+        "items": [
+          "Business email address",
+          "Bank account information",
+          "Government ID",
+          "Business details (if applicable)",
+          "Credit card",
+          "Age requirement: 18+"
+        ],
+        "countryList": "See Amazon's list of supported countries"
+      },
+      "steps": {
+        "title": "Step-by-step setup process",
+        "description": "Follow these steps to create your Amazon seller account quickly and easily",
+        "list": [
+          "Go to the Amazon Seller sign-up page",
+          "Choose a selling plan",
+          "Enter your business information",
+          "Provide billing information",
+          "Verify your identity",
+          "Set up your store",
+          "Add products",
+          "Configure Seller Central"
+        ]
+      },
+      "commonQuestions": {
+        "title": "Common Questions",
+        "list": [
+          { "q": "Is setup free?", "a": "Creating an account is free; fees apply on sales or on a Professional plan." },
+          { "q": "Can I sell internationally?", "a": "Yes. Use a US/Global account or create regional accounts as needed." },
+          { "q": "Do I need a business entity?", "a": "You can start as an individual, though business registration is recommended for scaling." },
+          { "q": "When do I get paid?", "a": "Payouts typically occur ~7 days after order delivery to your bank account." }
+        ]
+      },
+      "faq": {
+        "title": "Amazon Seller FAQ",
+        "categories": [
+          {
+            "title": "General",
+            "faqs": [
+              { "q": "What is Sell on Amazon (SOA)?", "a": "A program that lets you list and sell products on Amazon.in." },
+              { "q": "Who handles shipping?", "a": "With FBA/Easy Ship, Amazon handles shipping; with Self-Ship, you handle it." }
+            ]
+          },
+          {
+            "title": "Fees & Charges",
+            "faqs": [
+              { "q": "Is there a listing fee?", "a": "Listing is free; various marketplace fees apply per order." }
+            ]
+          },
+          {
+            "title": "Account Management",
+            "faqs": [
+              { "q": "How do I list products?", "a": "Add one-by-one or bulk upload in Seller Central. If no barcode, apply for GTIN exemption." }
+            ]
+          }
+        ]
+      }
+    },
+    "bigbasket": {
+      "seo": {
+        "title": "BigBasket Seller Setup | 99Digicom",
+        "description": "BigBasket seller account setup: steps, requirements and common questions.",
+        "keywords": "bigbasket seller account, bigbasket onboarding, setup"
+      },
+      "header": { "title": "BigBasket Seller Account Setup", "subtitle": "Start selling on BigBasket" },
+      "overview": { "title": "Overview", "description": "BigBasket is a leading grocery platform. Start selling easily with the right documents." },
+      "requirements": {
+        "title": "Requirements",
+        "description": "You will need:",
+        "items": ["GST certificate", "FSSAI license (for food)", "Bank details", "PAN card", "Product catalog with pricing", "Identity proof"]
+      },
+      "steps": {
+        "title": "Step-by-step process",
+        "description": "Set up like this",
+        "list": [
+          { "step": 1, "title": "Go to the seller page", "details": "Visit partners.bigbasket.com" },
+          { "step": 2, "title": "Enter information", "details": "Fill business and personal details" },
+          { "step": 3, "title": "Upload documents", "details": "GST, PAN, bank, etc." },
+          { "step": 4, "title": "List products", "details": "Add products with pricing" },
+          { "step": 5, "title": "Verification", "details": "3–5 days after submission" },
+          { "step": 6, "title": "Go live and sell", "details": "Start selling after approval" }
+        ]
+      },
+      "commonQuestions": {
+        "title": "Common Questions",
+        "list": [
+          { "q": "Is there a registration fee?", "a": "Registration is free; transaction fees apply." },
+          { "q": "Is FSSAI required?", "a": "Yes, for food/beverage categories." }
+        ]
+      },
+      "faq": {
+        "title": "BigBasket FAQ",
+        "categories": [
+          { "title": "Account", "faqs": [ { "q": "How to reset password?", "a": "Use 'Forgot Password' on the login page." } ] },
+          { "title": "Payments", "faqs": [ { "q": "What payment options are available?", "a": "Cards, UPI, COD and more are supported." } ] }
+        ]
+      },
+      "cta": { "title": "Ready to sell on BigBasket?", "subtitle": "99Digicom will help with setup and growth" }
+    },
+    "blinkit": {
+      "seo": { "title": "Blinkit Seller Services | 99Digicom", "description": "Step-by-step guide for Blinkit seller setup.", "keywords": "Blinkit seller, hyperlocal delivery" },
+      "header": { "title": "Blinkit Seller Account Setup", "subtitle": "Your gateway to hyperlocal success" },
+      "overview": { "title": "Overview", "description": "Become a Blinkit partner and reach nearby customers." },
+      "requirements": { "title": "Requirements", "description": "Required for registration:", "items": ["Valid email", "Bank account", "GST number", "Shop address", "Available stock", "Age 18+"] },
+      "steps": {
+        "title": "Setup process",
+        "description": "Follow these steps",
+        "list": [
+          { "step": 1, "title": "Go to seller portal", "details": "seller.blinkit.com" },
+          { "step": 2, "title": "Business registration", "details": "Email, phone, location" },
+          { "step": 3, "title": "Store details", "details": "Address, category, service area" },
+          { "step": 4, "title": "Upload documents", "details": "GST, PAN, address proof" },
+          { "step": 5, "title": "Verification", "details": "2–5 days" },
+          { "step": 6, "title": "Go live", "details": "Start receiving orders on the app" }
+        ]
+      },
+      "faq": {
+        "title": "Blinkit FAQ",
+        "categories": [
+          {
+            "title": "General",
+            "faqs": [
+              { "q": "What is Blinkit and what do they deliver?", "a": "Blinkit is a hyperlocal delivery service in India (formerly Grofers) delivering groceries, fresh produce, personal care and more." },
+              { "q": "Where is Blinkit available?", "a": "Available in 100+ cities across India." }
+            ]
+          },
+          {
+            "title": "Delivery",
+            "faqs": [
+              { "q": "How does 10-minute delivery work?", "a": "A network of micro-warehouses and optimized routing enables very fast delivery." },
+              { "q": "Are there delivery charges?", "a": "Fees vary by store and location and are shown before checkout." }
+            ]
+          }
+        ]
+      },
+      "cta": { "title": "Want to partner with Blinkit?", "subtitle": "We can assist with registration and fast onboarding" }
+    },
+    "flipkart": {
+      "seo": {
+        "title": "Flipkart Seller Services | 99Digicom",
+        "description": "Flipkart marketplace services: account management, Shopsy, listing optimization and advertising.",
+        "keywords": "flipkart seller account, flipkart setup, flipkart marketplace, Shopsy, seller hub"
+      },
+      "header": { "title": "Flipkart Seller Account Setup", "subtitle": "Your gateway to India's largest marketplace" },
+      "overview": { "title": "Overview", "description": "Selling on Flipkart gives access to 300M+ users. Our guide helps from account creation to store setup." },
+      "requirements": {
+        "title": "Requirements",
+        "description": "To create a Flipkart seller account, you need:",
+        "items": ["Valid GSTIN", "PAN card", "Bank account", "Business registration", "Identity & address proof", "Pickup address"],
+        "sellerHub": "Visit Flipkart Seller Hub"
+      },
+      "steps": {
+        "title": "Step-by-step setup process",
+        "description": "Follow these steps to create your Flipkart seller account quickly",
+        "list": [
+          { "step": 1, "title": "Visit Flipkart Seller Hub", "details": "seller.flipkart.com" },
+          { "step": 2, "title": "Enter business information", "details": "Location, type and contacts" },
+          { "step": 3, "title": "Verify account", "details": "Upload documents and complete KYC" },
+          { "step": 4, "title": "Set up seller profile", "details": "Business details and bank info" },
+          { "step": 5, "title": "List first product", "details": "Add details and images" },
+          { "step": 6, "title": "Accept policies", "details": "Review and accept the seller agreement" },
+          { "step": 7, "title": "Explore Seller Hub features", "details": "Dashboard, analytics and tools" },
+          { "step": 8, "title": "Start selling", "details": "Launch products and manage orders" }
+        ]
+      },
+      "commonQuestions": {
+        "title": "Common Questions",
+        "list": [
+          { "q": "Is GSTIN mandatory?", "a": "Required for most categories except exempt ones like books." },
+          { "q": "Is there a listing fee?", "a": "No, only a commission on sales (varies by category)." },
+          { "q": "Can individuals sell?", "a": "Yes, as sole proprietors with proper documents." },
+          { "q": "How long does verification take?", "a": "Account creation is fast; document verification usually takes 3–5 business days." }
+        ]
+      },
+      "resources": {
+        "title": "Resources",
+        "list": [
+          { "name": "Flipkart Seller Hub", "url": "https://seller.flipkart.com" },
+          { "name": "Flipkart Seller Hub Mobile App" },
+          { "name": "Flipkart Help Center", "url": "https://seller.flipkart.com/support" },
+          { "name": "Third-party resources: Unicommerce, RevBoosters, ClearTax" }
+        ]
+      },
+      "notes": {
+        "title": "Important Notes",
+        "list": [
+          "High commission fees (up to ~50%) and return costs can impact margins.",
+          "Ensure compliance with Flipkart policies and catalog guidelines.",
+          "Confirm GST exemptions eligibility to optimize pricing."
+        ],
+        "summary": "Using these steps and Flipkart tools, you can build a successful online business. <b>Start your selling journey today!</b>"
+      },
+      "cta": { "title": "Want to sell on Flipkart?", "subtitle": "Our team can help with setup and optimization" },
+      "faq": {
+        "title": "Flipkart Seller FAQ",
+        "categories": [
+          {
+            "title": "General",
+            "faqs": [
+              { "q": "Why sell on Flipkart?", "a": "Flipkart has 450M+ customers and pan-India reach. Big events like Big Billion Days boost demand." },
+              { "q": "How does selling work?", "a": "Create an account with GSTIN, phone, email, bank and address. List products and manage orders. You can self-ship or use Flipkart Fulfilment. Payments are credited after dispatch." }
+            ]
+          },
+          {
+            "title": "Fees & Charges",
+            "faqs": [
+              { "q": "Who decides product pricing?", "a": "You set your own prices. Analytics and suggestions are available in the dashboard." },
+              { "q": "What are the fees?", "a": "Listing is free; marketplace fees apply on sales." }
+            ]
+          }
+        ]
+      }
+    },
+    "instamart": {
+      "seo": {
+        "title": "Swiggy Instamart Seller Setup | 99Digicom",
+        "description": "Instamart seller account setup guide: requirements, step-by-step process and common questions.",
+        "keywords": "instamart seller, instamart setup, instamart partner, grocery delivery"
+      },
+      "header": { "title": "Swiggy Instamart Seller Setup", "subtitle": "Grow your business by joining Instamart" },
+      "overview": { "title": "Overview", "description": "Instamart is a fast-growing grocery delivery platform. As a partner, reach thousands of customers with quick delivery." },
+      "requirements": {
+        "title": "Requirements",
+        "description": "To register as an Instamart seller, you need:",
+        "items": ["Business PAN", "GST certificate", "Bank account details", "FSSAI license (if applicable)", "Business address proof", "Authorized person's ID proof"]
+      },
+      "steps": {
+        "title": "Step-by-step setup process",
+        "description": "Follow these steps to onboard as an Instamart seller",
+        "list": [
+          "Visit the Swiggy Instamart partner registration page",
+          "Fill your business details in the application form",
+          "Upload all required documents",
+          "Wait for Swiggy's verification process",
+          "After approval, access your seller dashboard",
+          "List products with correct price and stock",
+          "Start fulfilling incoming orders"
+        ]
+      },
+      "faq": {
+        "title": "Swiggy Instamart FAQ",
+        "categories": [
+          {
+            "title": "Orders & Delivery",
+            "faqs": [
+              { "q": "How can I cancel or modify an order?", "a": "Cancel/edit in-app before dispatch. After processing, changes aren't possible in-app." },
+              { "q": "What if my order is delayed or missing?", "a": "Use the Help section in the Swiggy app to report issues. Support is handled in-app." }
+            ]
+          },
+          {
+            "title": "Payments & Account",
+            "faqs": [
+              { "q": "Can I pay outside the app or via phone?", "a": "Payments are accepted only via secure in-app methods. Official support is in-app only." },
+              { "q": "How to report account/privacy issues?", "a": "Refer to Swiggy policies. Contact via app/email if your account is compromised." }
+            ]
+          }
+        ]
+      },
+      "cta": { "title": "Need help setting up Instamart?", "subtitle": "We can assist with registration, onboarding and quick start" }
+    },
+    "jiomart": {
+      "seo": {
+        "title": "JioMart Seller Services | 99Digicom",
+        "description": "JioMart seller account setup guide: registration, requirements, process and FAQs.",
+        "keywords": "jiomart seller account, jiomart setup, jiomart marketplace, online selling"
+      },
+      "header": { "title": "JioMart Seller Account Setup", "subtitle": "Your gateway to success on JioMart" },
+      "overview": { "title": "Overview", "description": "Create your JioMart seller account and sell online. This guide helps from registration to go-live." },
+      "requirements": {
+        "title": "Requirements",
+        "description": "To create a JioMart seller account, you need:",
+        "items": ["PAN", "Aadhaar", "GST number", "Bank account details", "Mobile number", "Email ID", "Business address", "Product details & images"]
+      },
+      "steps": {
+        "title": "Step-by-step setup process",
+        "description": "Follow these steps to create your JioMart seller account",
+        "list": [
+          { "step": 1, "title": "Visit JioMart Partner Portal", "details": "Go to the JioMart Seller registration website" },
+          { "step": 2, "title": "Register with mobile and email", "details": "Provide contact details and verify" },
+          { "step": 3, "title": "Complete KYC", "details": "Upload Aadhaar and PAN, verify bank details" },
+          { "step": 4, "title": "Add business details", "details": "Enter business info and address" },
+          { "step": 5, "title": "Upload GST and product catalog", "details": "Provide GST details and product listings" },
+          { "step": 6, "title": "Start selling after approval", "details": "Sell after account verification and approval" }
+        ]
+      },
+      "commonQuestions": {
+        "title": "Common Questions",
+        "list": [
+          { "q": "Is there a registration fee?", "a": "Currently JioMart seller registration is free." },
+          { "q": "Is GST required?", "a": "Yes, GST is mandatory for listing and selling." },
+          { "q": "How long does approval take?", "a": "Typically 2–5 business days after document verification." }
+        ]
+      },
+      "faq": {
+        "title": "JioMart Seller FAQ",
+        "categories": [
+          { "title": "Registration & Account", "faqs": [ { "q": "How do I register on JioMart?", "a": "Click Sign In, fill details, verify via OTP and start shopping/selling." } ] },
+          { "title": "Ordering", "faqs": [ { "q": "How do I find products?", "a": "Use the search bar or browse categories." } ] },
+          { "title": "Payments", "faqs": [ { "q": "What payment options are accepted?", "a": "UPI, cards, net banking, wallets, meal cards, Pay Later and COD." } ] },
+          { "title": "Delivery & Charges", "faqs": [ { "q": "Are there delivery charges?", "a": "Fees vary by order value and location and are shown at checkout." } ] },
+          { "title": "Returns & Cancellation", "faqs": [ { "q": "How to cancel an order?", "a": "Cancel from My Orders before dispatch; after dispatch contact support." } ] }
+        ]
+      }
+    },
+    "meesho": {
+      "seo": {
+        "title": "Meesho Seller Services | 99Digicom",
+        "description": "Meesho marketplace services: account management, listing optimization, zero commission and advertising.",
+        "keywords": "meesho seller account, meesho setup, meesho marketplace, social commerce"
+      },
+      "header": { "title": "Meesho Seller Account Setup", "subtitle": "Your gateway to India's leading social commerce platform" },
+      "overview": { "title": "Overview", "description": "Meesho empowers sellers with 100M+ users and social commerce integrations. This guide helps you register and optimize your store." },
+      "requirements": {
+        "title": "Requirements",
+        "description": "To create a Meesho seller account, you need:",
+        "items": ["Active mobile number", "Email address", "GSTIN (for taxable products)", "PAN", "Bank account", "Business details", "Address proof", "Product info"],
+        "supplierPortal": "Visit Meesho Supplier Portal"
+      },
+      "steps": {
+        "title": "Step-by-step setup process",
+        "description": "Follow these steps to become a Meesho seller",
+        "list": [
+          "Go to supplier.meesho.com and sign up",
+          "Fill business and contact details",
+          "Upload required documents (GSTIN, PAN, bank)",
+          "Upload product catalog",
+          "Wait for Meesho team verification",
+          "Receive orders after catalog goes live",
+          "Fulfil orders and receive payments"
+        ]
+      },
+      "faq": {
+        "title": "Meesho Seller FAQ",
+        "categories": [
+          { "title": "General", "faqs": [ { "q": "Is zero commission applicable?", "a": "Meesho often runs zero-commission programs for select categories; check current policies." } ] }
+        ]
+      }
+    },
+    "snapdeal": {
+      "seo": {
+        "title": "Snapdeal Seller Services | 99Digicom",
+        "description": "Snapdeal marketplace services: seller registration, product listing, policy-compliant catalog optimization.",
+        "keywords": "snapdeal seller account, snapdeal setup, snapdeal marketplace"
+      },
+      "header": { "title": "Snapdeal Seller Account Setup", "subtitle": "Start selling on Snapdeal" },
+      "overview": { "title": "Overview", "description": "Sign up as a Snapdeal seller and reach customers across India." },
+      "requirements": { "title": "Requirements", "description": "To register as a Snapdeal seller, you need:", "items": ["GSTIN", "PAN", "Bank account", "Business details"] },
+      "steps": {
+        "title": "Step-by-step process",
+        "description": "Follow these steps",
+        "list": [
+          "Register on the Snapdeal seller portal",
+          "Complete KYC and business details",
+          "Upload products with category attributes",
+          "Go live after approval"
+        ]
+      },
+      "commonQuestions": { "title": "Common Questions", "list": [ { "q": "Is there a listing fee?", "a": "Listing is free; fees apply on successful orders." } ] },
+      "resources": { "title": "Resources", "list": [ { "name": "Snapdeal Seller Help" } ] },
+      "notes": { "title": "Notes", "list": [ "Follow Snapdeal policies to avoid penalties." ] },
+      "cta": { "title": "Need help with Snapdeal setup?", "subtitle": "We can assist with onboarding and catalog" },
+      "faq": { "title": "Snapdeal FAQ", "categories": [ { "title": "General", "faqs": [ { "q": "How to start?", "a": "Register, upload documents, list products, and start selling after approval." } ] } ] }
+    },
+    "zepto": {
+      "seo": { "title": "Zepto Seller Services | 99Digicom", "description": "Partner with Zepto for quick commerce.", "keywords": "zepto seller, quick commerce" },
+      "header": { "title": "Zepto Seller Account Setup", "subtitle": "Sell with rapid delivery" },
+      "overview": { "title": "Overview", "description": "Join Zepto to deliver essentials quickly in your area." },
+      "requirements": { "title": "Requirements", "description": "To register as a Zepto seller, you need:", "items": ["Valid email & phone", "Business documents", "Bank account", "Inventory ready for dispatch"] },
+      "steps": { "title": "Steps", "description": "How to get started", "list": ["Apply on Zepto partner portal", "Submit required documents", "Set up catalog and pricing", "Go live and start receiving orders"] },
+      "commonQuestions": { "title": "Common Questions", "list": [ { "q": "Is there a fee?", "a": "Platform fees/commissions may apply based on category." } ] },
+      "faq": { "title": "Zepto FAQ", "categories": [ { "title": "General", "faqs": [ { "q": "What products can I sell?", "a": "Groceries and FMCG suited for fast delivery." } ] } ] }
+    }
+  }
 }

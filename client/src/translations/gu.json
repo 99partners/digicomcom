@@ -514,7 +514,7 @@
         "title": "ઇ-કોમર્સ",
         "services": {
           "amazon": {
-            "name": "અમેઝોન",
+            "name": "Amazon",
             "services": [
               "એકાઉન્ટ રજિસ્ટ્રેશન અને KYC કમ્પ્લાયન્સ",
               "અમેઝોન SEO માટે પ્રોડક્ટ લિસ્ટિંગ ઑપ્ટિમાઇઝેશન",
@@ -522,7 +522,7 @@
             ]
           },
           "flipkart": {
-            "name": "ફ્લિપકાર્ટ",
+            "name": "Flipkart",
             "services": [
               "ફ્લિપકાર્ટ સેલર રજિસ્ટ્રેશન અને ટેક્સ સેટઅપ",
               "ફ્લિપકાર્ટ-સ્પેસિફિક એટ્રિબ્યુટ્સ સાથે પ્રોડક્ટ અપલોડ",
@@ -530,7 +530,7 @@
             ]
           },
           "meesho": {
-            "name": "મીશો",
+            "name": "Meesho",
             "services": [
               "મીશો ઑનબોર્ડિંગ પ્રોસેસ અને GST વેલિડેશન",
               "મીશો માટે પ્રોડક્ટ ફોટોગ્રાફી અને લિસ્ટિંગ ઑપ્ટિમાઇઝેશન",
@@ -538,7 +538,7 @@
             ]
           },
           "snapdeal": {
-            "name": "સ્નેપડીલ",
+            "name": "Snapdeal",
             "services": [
               "સ્નેપડીલ સેલર રજિસ્ટ્રેશન અને પ્રોડક્ટ લિસ્ટિંગ",
               "સ્નેપડીલના પેમેન્ટ અને શિપિંગ સિસ્ટમ્સ સાથે ઇન્ટિગ્રેશન",
@@ -551,7 +551,7 @@
         "title": "ક્વિક કોમર્સ",
         "services": {
           "jiomart": {
-            "name": "જીઓમાર્ટ",
+            "name": "Jiomart",
             "services": [
               "જીઓમાર્ટ સેલર રજિસ્ટ્રેશન અને ઑનબોર્ડિંગ",
               "પ્રોડક્ટ કેટલોગ લિસ્ટિંગ અને કેટેગરાઇઝેશન",
@@ -559,7 +559,7 @@
             ]
           },
           "blinkit": {
-            "name": "બ્લિંકિટ",
+            "name": "Blinkit",
             "services": [
               "બ્લિંકિટ સેલર રજિસ્ટ્રેશન અને સ્ટોર સેટઅપ",
               "પ્રોડક્ટ કેટલોગ લિસ્ટિંગ (ગ્રોસરી, FMCG પ્રોડક્ટ્સ)",
@@ -567,7 +567,7 @@
             ]
           },
           "bigbasket": {
-            "name": "બિગબાસ્કેટ",
+            "name": "Bigbasket",
             "services": [
               "બિગબાસ્કેટ સેલર રજિસ્ટ્રેશન અને પ્લેટફોર્મ સેટઅપ",
               "ગ્રોસરી પ્રોડક્ટ કેટલોગ સેટઅપ (પેકેજિંગ, પ્રાઇસિંગ, બલ્ક અપલોડ્સ)",
@@ -575,7 +575,7 @@
             ]
           },
           "zepto": {
-            "name": "ઝેપ્ટો",
+            "name": "Zepto",
             "services": [
               "ઝેપ્ટો સેલર રજિસ્ટ્રેશન અને ઑનબોર્ડિંગ સપોર્ટ",
               "ફાસ્ટ ડિલિવરી માટે કેટેગરાઇઝેશન સાથે પ્રોડક્ટ અપલોડ",
@@ -730,15 +730,15 @@
     "description": "અનુકૂળિત મેનેજમેન્ટ સેવાઓ માટે અમારી વિસ્તૃત માર્કેટપ્લેસ એકીકરણમાંથી પસંદ કરો",
     "ecommerce": "ઈ-કોમર્સ",
     "quickCommerce": "ક્વિક કોમર્સ",
-    "ecommerceAmazon": "અમેઝોન",
-    "ecommerceFlipkart": "ફ્લિપકાર્ટ",
-    "ecommerceMeesho": "મીશો",
-    "ecommerceSnapdeal": "સ્નેપડીલ",
-    "quickCommerceJiomart": "જીઓમાર્ટ",
-    "quickCommerceInstamart": "ઇન્સ્ટામાર્ટ",
-    "quickCommerceBigbasket": "બિગબાસ્કેટ",
-    "quickCommerceBlinkit": "બ્લિંકિટ",
-    "quickCommerceZepto": "ઝેપ્ટો",
+    "ecommerceAmazon": "Amazon",
+    "ecommerceFlipkart": "Flipkart",
+    "ecommerceMeesho": "Meesho",
+    "ecommerceSnapdeal": "Snapdeal",
+    "quickCommerceJiomart": "Jiomart",
+    "quickCommerceInstamart": "Instamart",
+    "quickCommerceBigbasket": "BigBasket",
+    "quickCommerceBlinkit": "Blinkit",
+    "quickCommerceZepto": "Zepto",
     "amazon": {
       "services": [
         "ઇન્વેન્ટરી અને ઓર્ડર મેનેજમેન્ટ",
