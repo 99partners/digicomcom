@@ -19,6 +19,7 @@ import Partners from './pages/Partners';
 // import Shop from './pages/Shop';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import RefundPolicy from './pages/RefundPolicy';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
@@ -166,20 +167,6 @@ function App() {
               <Route path="create-application/cobranding" element={<CoBrandingForm />} />
             </Route>
 
-            {/* Partner Routes */}
-            <Route path="/partner" element={
-              <ProtectedRoute>
-                <DashboardLayout>
-                  <Outlet />
-                </DashboardLayout>
-              </ProtectedRoute>
-            }>
-              <Route path="create-application/platform" element={<PlatformEnablementForm />} />
-              <Route path="create-application/ams" element={<AMSForm />} />
-              <Route path="create-application/advertising" element={<AdvertisingForm />} />
-              <Route path="create-application/cobranding" element={<CoBrandingForm />} />
-            </Route>
-
             {/* Auth Routes without Header/Footer */}
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -203,6 +190,7 @@ function App() {
               <Route path="/privacypolicy" element={<PrivacyPolicy />} />
               <Route path="/termsofservice" element={<TermsOfService />} />
               <Route path="/cookiepolicy" element={<CookiePolicy />} />
+              <Route path="/refundpolicy" element={<RefundPolicy />} />
 
               <Route path="/resources/blogs" element={<Blogs />} />
               <Route path="/resources/blogs/:id" element={<BlogDetails />} />

@@ -111,10 +111,11 @@ const Footer = () => {
   ];
 
   const helpLinks = [
-    { name: t('footer.privacyPolicy'), path: "/privacypolicy" },
-    { name: t('footer.termsOfService'), path: "/termsofservice" },
-    { name: t('footer.cookiePolicy'), path: "/cookiepolicy" },
-    { name: t('footer.faqs'), path: "/faqss" },
+    { name: t('footer.refundPolicy', 'Refund Policy'), path: "/refundpolicy" },
+    { name: t('footer.privacyPolicy', 'Privacy Policy'), path: "/privacypolicy" },
+    { name: t('footer.termsOfService', 'Terms of Service'), path: "/termsofservice" },
+    { name: t('footer.cookiePolicy', 'Cookie Policy'), path: "/cookiepolicy" },
+    { name: t('footer.faqs', 'FAQs'), path: "/faqss" },
   ];
 
   const socialLinks = [
