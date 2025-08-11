@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { getApiUrl } from '../config/api.config';
+import { Helmet } from 'react-helmet';
 
 const Contact = () => {
   useEffect(() => {
@@ -99,8 +100,36 @@ const Contact = () => {
     },
   ];
 
+  const contactLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact 99Digicom",
+    url: "https://99digicom.com/contact_us",
+    description: "Get in touch with 99Digicom for support and inquiries.",
+    contactPoint: [
+      { "@type": "ContactPoint", email: "ahmedabad@99partners.com", contactType: "customer support" },
+      { "@type": "ContactPoint", email: "dover@99partners.com", contactType: "customer support" },
+      { "@type": "ContactPoint", email: "sydney@99partners.com", contactType: "customer support" },
+      { "@type": "ContactPoint", email: "bhavnagar@99partners.com", contactType: "customer support" }
+    ]
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+    <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      <Helmet>
+        <title>Contact Us | 99Digicom</title>
+        <meta name="description" content="Get in touch with 99Digicom for support and inquiries. Visit our offices or send us a message." />
+        <link rel="canonical" href="https://99digicom.com/contact_us" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Contact Us | 99Digicom" />
+        <meta property="og:description" content="Reach out to 99Digicom for support and inquiries." />
+        <meta property="og:url" content="https://99digicom.com/contact_us" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us | 99Digicom" />
+        <meta name="twitter:description" content="Reach out to 99Digicom for support and inquiries." />
+        <script type="application/ld+json">{JSON.stringify(contactLd)}</script>
+      </Helmet>
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4 bg-white text-center">
         <div className="max-w-7xl mx-auto">
@@ -132,12 +161,12 @@ const Contact = () => {
 
               <div className="p-4 sm:p-6 md:p-8">
                 {error && (
-                  <div className="mb-4 sm:mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm sm:text-base">
+                  <div className="mb-4 sm:mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm sm:text-base" role="alert" aria-live="assertive">
                     {error}
                   </div>
                 )}
                 {success && (
-                  <div className="mb-4 sm:mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm sm:text-base">
+                  <div className="mb-4 sm:mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm sm:text-base" role="status" aria-live="polite">
                     {success}
                   </div>
                 )}
@@ -160,6 +189,7 @@ const Contact = () => {
                       }
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base"
                       placeholder="Enter your full name"
+                      autoComplete="name"
                     />
                   </div>
 
@@ -180,6 +210,7 @@ const Contact = () => {
                       }
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base"
                       placeholder="Enter your email address"
+                      autoComplete="email"
                     />
                   </div>
 
@@ -202,6 +233,7 @@ const Contact = () => {
                       maxLength="10"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base"
                       placeholder="Enter 10-digit phone number"
+                      autoComplete="tel"
                     />
                   </div>
 
@@ -222,6 +254,7 @@ const Contact = () => {
                       }
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base resize-none"
                       placeholder="Describe your question or issue in detail"
+                      autoComplete="off"
                     />
                   </div>
 
@@ -315,7 +348,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

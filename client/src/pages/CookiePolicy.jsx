@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail } from 'lucide-react';
 import { useEffect } from "react";
+import { Helmet } from 'react-helmet';
 
 const CookiePolicy = () => {
   // Scroll to top on component mount
@@ -11,7 +12,27 @@ const CookiePolicy = () => {
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
-      <main className="pt-32 container mx-auto px-4 py-16 max-w-4xl">
+      <Helmet>
+        <title>Cookie Policy | 99Digicom</title>
+        <meta name="description" content="Understand how 99Digicom uses cookies and how you can control them." />
+        <link rel="canonical" href="https://99digicom.com/cookiepolicy" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Cookie Policy | 99Digicom" />
+        <meta property="og:description" content="Understand how 99Digicom uses cookies and how you can control them." />
+        <meta property="og:url" content="https://99digicom.com/cookiepolicy" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Cookie Policy | 99Digicom" />
+        <meta name="twitter:description" content="Understand how 99Digicom uses cookies and how you can control them." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Cookie Policy",
+          url: "https://99digicom.com/cookiepolicy",
+          description: "Understand how 99Digicom uses cookies and how you can control them."
+        })}</script>
+      </Helmet>
+      <main id="main-content" className="pt-32 container mx-auto px-4 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-10 text-center text-green-700">Cookie Policy</h1>
         <div className="space-y-8 text-base leading-7">
           <p>

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Mail } from 'lucide-react'
 import { useEffect } from "react";
+import { Helmet } from 'react-helmet';
 
 const TermsOfService = () => {
   useEffect(() => {
@@ -9,7 +10,27 @@ const TermsOfService = () => {
   }, []);
   return (
     <div className="min-h-screen bg-white text-gray-800">
-      <main className="pt-24 sm:pt-32 px-4 sm:px-6 lg:px-8 py-10 sm:py-16 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto">
+      <Helmet>
+        <title>Terms of Service | 99Digicom</title>
+        <meta name="description" content="Read the 99Digicom Terms of Service governing your use of our website and services." />
+        <link rel="canonical" href="https://99digicom.com/termsofservice" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Terms of Service | 99Digicom" />
+        <meta property="og:description" content="Read the 99Digicom Terms of Service governing your use of our website and services." />
+        <meta property="og:url" content="https://99digicom.com/termsofservice" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Terms of Service | 99Digicom" />
+        <meta name="twitter:description" content="Read the 99Digicom Terms of Service governing your use of our website and services." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Terms of Service",
+          url: "https://99digicom.com/termsofservice",
+          description: "Read the 99Digicom Terms of Service governing your use of our website and services."
+        })}</script>
+      </Helmet>
+      <main id="main-content" className="pt-24 sm:pt-32 px-4 sm:px-6 lg:px-8 py-10 sm:py-16 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10 text-center text-green-700">
           Terms of Service
         </h1>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail } from 'lucide-react'
+import { Helmet } from 'react-helmet'
 
 const PrivacyPolicy = () => {
   // Scroll to top on component mount
@@ -9,7 +10,27 @@ const PrivacyPolicy = () => {
   }, []);
   return (
     <div className="min-h-screen bg-white text-gray-800">
-      <main className="pt-32 container mx-auto px-4 py-16 max-w-4xl">
+      <Helmet>
+        <title>Privacy Policy | 99Digicom</title>
+        <meta name="description" content="Read the 99Digicom Privacy Policy to understand how we collect, use, and protect your information." />
+        <link rel="canonical" href="https://99digicom.com/privacypolicy" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Privacy Policy | 99Digicom" />
+        <meta property="og:description" content="How 99Digicom collects, uses, and protects your information." />
+        <meta property="og:url" content="https://99digicom.com/privacypolicy" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Privacy Policy | 99Digicom" />
+        <meta name="twitter:description" content="How 99Digicom collects, uses, and protects your information." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Privacy Policy",
+          url: "https://99digicom.com/privacypolicy",
+          description: "Read the 99Digicom Privacy Policy to understand how we collect, use, and protect your information."
+        })}</script>
+      </Helmet>
+      <main id="main-content" className="pt-32 container mx-auto px-4 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-10 text-center text-green-700">Privacy Policy</h1>
         <div className="space-y-8 text-base leading-7">
           <p>
