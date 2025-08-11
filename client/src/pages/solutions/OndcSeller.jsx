@@ -20,13 +20,26 @@ const OndcSeller = () => {
     <>
       <Helmet>
         <title>{t('ondcSeller.seo.title')}</title>
-        <meta 
-          name="description" 
-          content={t('ondcSeller.seo.description')} 
-        />
+        <meta name="description" content={t('ondcSeller.seo.description')} />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://99digicom.com/solutions/ondc-seller" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={t('ondcSeller.seo.title')} />
+        <meta property="og:description" content={t('ondcSeller.seo.description')} />
+        <meta property="og:url" content="https://99digicom.com/solutions/ondc-seller" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t('ondcSeller.seo.title')} />
+        <meta name="twitter:description" content={t('ondcSeller.seo.description')} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: t('ondcSeller.seo.title'),
+          url: "https://99digicom.com/solutions/ondc-seller",
+          description: t('ondcSeller.seo.description')
+        })}</script>
       </Helmet>
 
-      <main className="py-20 bg-white">
+      <main id="main-content" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">

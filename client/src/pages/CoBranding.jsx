@@ -77,9 +77,24 @@ export default function CoBranding() {
         <meta name="description" content={t('coBranding.seo.description')} />
         <meta name="keywords" content={t('coBranding.seo.keywords')} />
         <link rel="canonical" href="https://99digicom.com/co-branding" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={t('coBranding.seo.title')} />
+        <meta property="og:description" content={t('coBranding.seo.description')} />
+        <meta property="og:url" content="https://99digicom.com/co-branding" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t('coBranding.seo.title')} />
+        <meta name="twitter:description" content={t('coBranding.seo.description')} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: t('coBranding.seo.title'),
+          url: "https://99digicom.com/co-branding",
+          description: t('coBranding.seo.description')
+        })}</script>
       </Helmet>
 
-      <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
         <section aria-labelledby="hero-heading" className="pt-24 pb-16 px-4">
           <div className="max-w-7xl mx-auto text-center">
@@ -192,6 +207,7 @@ export default function CoBranding() {
                     alt={platform.alt}
                     className="h-12 w-auto object-contain mx-auto mb-2"
                     loading="lazy"
+                    decoding="async"
                   />
                   <h3 className="text-lg font-semibold text-gray-900">{platform.name}</h3>
                   <p className="text-gray-600 text-sm">{platform.desc}</p>
