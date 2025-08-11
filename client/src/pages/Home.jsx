@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Helmet } from 'react-helmet';
 import {
   Puzzle,
   Target,
@@ -235,6 +236,21 @@ const Home = () => {
     }
   ];
 
+  const organizationLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Digicom",
+    url: "https://99digicom.com",
+    logo: "https://99digicom.com/favicon.png"
+  };
+
+  const webSiteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "99Digicom",
+    url: "https://99digicom.com"
+  };
+
   return (
     <>
       <SEO
@@ -243,8 +259,13 @@ const Home = () => {
         keywords={t("home.seo.keywords")}
         canonicalUrl="https://99digicom.com"
       />
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+        <script type="application/ld+json">{JSON.stringify(organizationLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(webSiteLd)}</script>
+      </Helmet>
       {/* <Countdown /> */}
-      <div className="pt-12 sm:pt-8">
+      <main id="main-content" className="pt-12 sm:pt-8">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-50">
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-32 text-center">
@@ -284,6 +305,7 @@ const Home = () => {
                         alt={logo.alt}
                         className="h-24 w-24 sm:h-32 sm:w-32 object-contain"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   )
@@ -647,6 +669,7 @@ const Home = () => {
                         alt={blog.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                         loading="lazy"
+                        decoding="async"
                         itemProp="image"
                       />
                       <div className="absolute top-4 left-4">
@@ -702,7 +725,7 @@ const Home = () => {
             )}
           </div>
         </section>
-      </div>
+      </main>
     </>
   );
 };

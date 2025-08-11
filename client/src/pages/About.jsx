@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Helmet } from 'react-helmet';
 import {
   Handshake,
   Target,
@@ -58,7 +59,16 @@ const About = () => {
         keywords={t("about.seo.keywords")}
         canonicalUrl="https://99digicom.com/about"
       />
-      <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: "About 99Digicom",
+          url: "https://99digicom.com/about"
+        })}</script>
+      </Helmet>
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         <article>
           <header className="pt-24 pb-16 px-4 sm:px-6 md:px-10 bg-white">
             <div className="max-w-7xl mx-auto text-center">
@@ -201,6 +211,7 @@ const About = () => {
                   width="600"
                   height="400"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
