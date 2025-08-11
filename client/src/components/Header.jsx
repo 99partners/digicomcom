@@ -71,7 +71,14 @@ const Header = () => {
   if (pathname === "/customerlogin" || pathname === "/partnerlogin") return null;
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100">
+    <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow z-50 border-b border-gray-100" role="banner">
+      {/* Skip to main content for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:text-green-700 focus:ring-2 focus:ring-green-600 focus:px-3 focus:py-2 rounded"
+      >
+        {t('common.skipToMain', 'Skip to main content')}
+      </a>
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo */}
         <div className="flex-shrink-0">
@@ -82,6 +89,8 @@ const Header = () => {
               className="h-10 w-auto object-contain sm:h-12 lg:h-14"
               width="56"
               height="56"
+              decoding="async"
+              fetchpriority="high"
             />
             <span className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
               {currentLanguage === 'en' && 'Digicom'}
@@ -95,9 +104,14 @@ const Header = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-1" role="navigation">
-          {navigation.map((item) => (
-            <div key={item.name} className="relative group">
+        <nav className="hidden lg:flex items-center space-x-1" role="navigation" aria-label="Primary">
+          {navigation.map((item, index) => (
+            <div
+              key={item.name}
+              className="relative group"
+              onMouseEnter={item.submenu ? () => setActiveDropdown(item.name) : undefined}
+              onMouseLeave={item.submenu ? () => setActiveDropdown(null) : undefined}
+            >
               {item.submenu ? (
                 <div className="relative">
                   <button
@@ -106,12 +120,20 @@ const Header = () => {
                         ? "text-green-700 bg-green-100"
                         : "text-gray-700 hover:text-green-700 hover:bg-green-50"
                     } flex items-center`}
+                    aria-haspopup="menu"
+                    aria-expanded={activeDropdown === item.name}
+                    aria-controls={`desktop-submenu-${index}`}
                   >
                     {item.name}
                     <ChevronDown className="ml-1 h-4 w-4" />
                   </button>
                   {/* Dropdown */}
-                  <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2 z-50">
+                  <div
+                    id={`desktop-submenu-${index}`}
+                    className={`absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg transition-all duration-200 py-2 z-50 ${
+                      activeDropdown === item.name ? 'opacity-100 visible' : 'opacity-0 invisible'
+                    } group-hover:opacity-100 group-hover:visible`}
+                  >
                     {item.submenu.map((subItem) => (
                       <Link
                         key={subItem.name}
@@ -121,6 +143,7 @@ const Header = () => {
                             ? "text-green-700 bg-green-50"
                             : "text-gray-700 hover:text-green-700 hover:bg-green-50"
                         }`}
+                        aria-current={isActive(subItem.href) ? "page" : undefined}
                       >
                         {subItem.name}
                       </Link>
@@ -135,6 +158,7 @@ const Header = () => {
                       ? "text-green-700 bg-green-100"
                       : "text-gray-700 hover:text-green-700 hover:bg-green-50"
                   }`}
+                  aria-current={isActive(item.href) ? "page" : undefined}
                 >
                   {item.name}
                 </Link>
@@ -179,6 +203,8 @@ const Header = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="lg:hidden p-2 text-gray-600 hover:text-green-700"
           aria-label={isMenuOpen ? t('common.closeMenu') : t('common.openMenu')}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
         >
           {isMenuOpen ? (
             <X className="h-6 w-6" />
@@ -189,9 +215,9 @@ const Header = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className={`lg:hidden bg-white shadow-md overflow-y-auto max-h-[calc(100vh-4rem)] ${isMenuOpen ? "block" : "hidden"}`}>
+      <div id="mobile-menu" className={`lg:hidden bg-white shadow-md overflow-y-auto max-h-[calc(100vh-4rem)] ${isMenuOpen ? "block" : "hidden"}`} role="navigation" aria-label="Mobile">
         <div className="p-4 space-y-1">
-          {navigation.map((item) => (
+          {navigation.map((item, index) => (
             <div key={item.name}>
               {item.submenu ? (
                 <div className="mb-1">
@@ -202,6 +228,8 @@ const Header = () => {
                         ? "text-green-700 bg-green-100"
                         : "text-gray-700"
                     }`}
+                    aria-expanded={activeDropdown === item.name}
+                    aria-controls={`mobile-submenu-${index}`}
                   >
                     {item.name}
                     <ChevronDown
@@ -211,9 +239,11 @@ const Header = () => {
                     />
                   </button>
                   <div
+                    id={`mobile-submenu-${index}`}
                     className={`overflow-hidden transition-all duration-200 ${
                       activeDropdown === item.name ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
                     }`}
+                    aria-hidden={activeDropdown === item.name ? "false" : "true"}
                   >
                     {item.submenu.map((subItem) => (
                       <Link
@@ -226,6 +256,7 @@ const Header = () => {
                         className={`block pl-8 pr-4 py-2.5 text-base ${
                           isActive(subItem.href) ? "text-green-700 font-medium" : "text-gray-700"
                         }`}
+                        aria-current={isActive(subItem.href) ? "page" : undefined}
                       >
                         {subItem.name}
                       </Link>
@@ -239,6 +270,7 @@ const Header = () => {
                   className={`block px-4 py-2.5 text-base ${
                     isActive(item.href) ? "text-green-700 font-medium" : "text-gray-700"
                   }`}
+                  aria-current={isActive(item.href) ? "page" : undefined}
                 >
                   {item.name}
                 </Link>

@@ -149,6 +149,7 @@ const Footer = () => {
     <footer
       className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white"
       role="contentinfo"
+      aria-label="Footer"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10">
@@ -163,6 +164,7 @@ const Footer = () => {
                   width="64"
                   height="64"
                   loading="lazy"
+                  decoding="async"
                 />
               </Link>
               <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent group-hover:from-green-500 group-hover:to-green-600">
@@ -200,6 +202,7 @@ const Footer = () => {
                   alt="Our global locations"
                   className="rounded-md shadow-md max-w-md w-full h-auto"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
@@ -218,6 +221,7 @@ const Footer = () => {
                       <Link
                         to={link.path}
                         className="hover:text-white transition-colors"
+                        aria-label={link.name}
                       >
                         {link.name}
                       </Link>
@@ -235,7 +239,7 @@ const Footer = () => {
                       <a
                         href={domain.url}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer nofollow external"
                         className="hover:text-blue-400 transition-colors"
                       >
                         {domain.name}
@@ -321,13 +325,13 @@ const Footer = () => {
 
                 <div>
                   <p className="text-sm font-semibold mb-2">{t('footer.followUs', 'Follow Us')}</p>
-                  <div className="flex flex-wrap justify-center sm:justify-start gap-3">
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-3" role="list">
                     {socialLinks.map(({ icon: Icon, url, label }, i) => (
                       <a
                         key={i}
                         href={url}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer nofollow external"
                         aria-label={label}
                         className="w-9 h-9 bg-gray-800 rounded-md flex items-center justify-center hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 transition-transform hover:scale-110"
                       >
