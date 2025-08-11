@@ -77,6 +77,11 @@ const Meesho = () => {
   const notesList = Array.isArray(notes?.list) ? notes.list : (notes?.list ? Object.values(notes.list) : []);
   const cta = t("marketplaces.meesho.cta", { returnObjects: true });
 
+  const sanitizeBulletText = (text) => {
+    if (typeof text !== 'string') return text;
+    return text.replace(/^([•\-\u2022]+\s*)+/, '').trim();
+  };
+
   // Icon mapping for requirements
   const reqIcons = [ShoppingBag, User, CreditCard, User, CreditCard, Building, Package, ShoppingBag];
 
@@ -318,29 +323,32 @@ const Meesho = () => {
                 {t("marketplaces.meesho.resources.title")}
               </h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                {resourcesList.map((res, idx) => (
-                  res.url ? (
+                {resourcesList.map((res, idx) => {
+                  const name = typeof res === 'string' ? res : res?.name;
+                  const url = typeof res === 'object' && res?.url ? res.url : null;
+                  const displayName = sanitizeBulletText(name || '');
+                  return url ? (
                     <li key={idx}>
                       <a
-                        href={res.url}
+                        href={url}
                         className="text-green-700 underline"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {res.name}
+                        {displayName}
                       </a>
                     </li>
                   ) : (
-                    <li key={idx}>{res.name}</li>
-                  )
-                ))}
+                    <li key={idx}>{displayName}</li>
+                  );
+                })}
               </ul>
               <h2 className="text-2xl font-bold text-green-700 mt-8 mb-4">
                 {notes.title}
               </h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
                 {notesList.map((note, idx) => (
-                  <li key={idx}>{note}</li>
+                  <li key={idx}>{sanitizeBulletText(note)}</li>
                 ))}
               </ul>
               <p className="text-gray-700 mt-4" dangerouslySetInnerHTML={{ __html: notes?.summary || '' }} />
@@ -349,7 +357,7 @@ const Meesho = () => {
 
           {/* Call to Action */}
           <div className="text-center mt-12 mb-8">
-            <div className="inline-block bg-gradient-to-r from-green-600 to-green-700 text-white font-bold text-xl py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl">
+            <div className="inline-block bg-gradient-to-r from-green-600 to-green-700 text-white font-bold text-xl py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl whitespace-normal leading-snug text-center">
               {cta.title}
             </div>
             <p className="mt-4 text-gray-600">
