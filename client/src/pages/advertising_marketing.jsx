@@ -47,6 +47,16 @@ export default function AdvertisingMarketing() {
     { src: bigbasketLogo, alt: t('home.logos.bigbasket.alt') },
   ];
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": t('advertisingMarketing.seo.title'),
+    "description": t('advertisingMarketing.seo.description'),
+    "provider": { "@type": "Organization", "name": "99digicom" },
+    "serviceType": t('advertisingMarketing.seo.title'),
+    "url": "https://99digicom.com/services/advertising_marketing"
+  };
+
   const isAuthenticated = () => {
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     return !!token;
@@ -226,6 +236,19 @@ export default function AdvertisingMarketing() {
         <meta name="description" content={t('advertisingMarketing.seo.description')} />
         <meta name="keywords" content={t('advertisingMarketing.seo.keywords')} />
         <link rel="canonical" href="https://99digicom.com/services/advertising_marketing" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <meta property="og:type" content="service" />
+        <meta property="og:title" content={t('advertisingMarketing.seo.title')} />
+        <meta property="og:description" content={t('advertisingMarketing.seo.description')} />
+        <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+        <meta property="og:url" content="https://99digicom.com/services/advertising_marketing" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t('advertisingMarketing.seo.title')} />
+        <meta name="twitter:description" content={t('advertisingMarketing.seo.description')} />
+        <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
+        <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
       </Helmet>
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
@@ -244,6 +267,7 @@ export default function AdvertisingMarketing() {
                   src={logos[currentLogoIndex].src}
                   alt={logos[currentLogoIndex].alt}
                   className="h-12 w-auto object-contain animate-fadeIn"
+                  loading="lazy"
                 />
               </div>
             </h1>
@@ -293,6 +317,7 @@ export default function AdvertisingMarketing() {
                           src={logo}
                           alt={name}
                           className="h-8 w-8 object-contain"
+                          loading="lazy"
                         />
                         <span className="font-medium">{name}</span>
                       </div>
@@ -310,6 +335,7 @@ export default function AdvertisingMarketing() {
                           src={marketplaces[activeMarketplace].logo}
                           alt={marketplaces[activeMarketplace].name}
                           className="h-24 w-auto object-contain max-w-[280px]"
+                          loading="lazy"
                         />
                       </div>
                     </div>
@@ -358,6 +384,7 @@ export default function AdvertisingMarketing() {
                           src={logo}
                           alt={name}
                           className="h-8 w-8 object-contain"
+                          loading="lazy"
                         />
                         <span className="font-medium">{name}</span>
                       </div>

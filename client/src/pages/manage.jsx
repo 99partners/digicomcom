@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
 import {
   Settings,
   ArrowRight,
@@ -37,6 +38,17 @@ export default function AccountManagementServices() {
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
   const [activeMarketplace, setActiveMarketplace] = useState("amazon");
   
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": t('ams.seo.title'),
+    "description": t('ams.seo.description'),
+    "provider": { "@type": "Organization", "name": "99digicom" },
+    "serviceType": t('ams.seo.title'),
+    "url": "https://99digicom.com/services/ams",
+    "areaServed": "IN"
+  };
+
   // Define the logos array
   const logos = [
     { src: amazonLogo, alt: "Amazon logo" },
@@ -246,6 +258,11 @@ export default function AccountManagementServices() {
         keywords={t('ams.seo.keywords')}
         canonicalUrl="https://99digicom.com/services/ams"
       />
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
+      </Helmet>
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
         <section className="pt-24 pb-16 px-4" aria-labelledby="hero-heading">

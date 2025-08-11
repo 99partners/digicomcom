@@ -30,6 +30,7 @@ import bigbasketLogo from "../assets/BigBasket.png";
 import blinkitLogo from "../assets/Blinkit.png";
 import zeptoLogo from "../assets/Zepto.png";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
 
 export default function PlatformEnablement() {
   const { t } = useTranslation();
@@ -45,6 +46,20 @@ export default function PlatformEnablement() {
     { src: meeshoLogo, alt: t("platformEnablement.marketplaces.ecommerce.services.meesho.name") },
     { src: bigbasketLogo, alt: t("platformEnablement.marketplaces.quickCommerce.services.bigbasket.name") },
   ];
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": t("platformEnablement.seo.title"),
+    "description": t("platformEnablement.seo.description"),
+    "provider": {
+      "@type": "Organization",
+      "name": "99digicom"
+    },
+    "serviceType": t("platformEnablement.seo.title"),
+    "url": "https://99digicom.com/services/launch",
+    "areaServed": "IN"
+  };
 
   const isAuthenticated = () => {
     const token =
@@ -274,6 +289,12 @@ export default function PlatformEnablement() {
         keywords={t("platformEnablement.seo.keywords")}
         canonicalUrl="https://99digicom.com/services/launch"
       />
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
+      </Helmet>
+
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
         <section className="pt-24 pb-16 px-4" aria-labelledby="hero-heading">
