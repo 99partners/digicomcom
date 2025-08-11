@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axiosInstance from '../../config/api.config';
+import { Helmet } from 'react-helmet';
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -36,14 +37,34 @@ const MyApplications = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <main id="main-content" className="min-h-screen flex items-center justify-center" aria-busy="true">
+        <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin" role="status" aria-label="Loading"></div>
+      </main>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-2 sm:px-4 py-8">
+    <main id="main-content" className="max-w-5xl mx-auto px-2 sm:px-4 py-8">
+      <Helmet>
+        <title>My Applications | 99Digicom</title>
+        <meta name="description" content="View the status and details of your service applications on 99Digicom." />
+        <link rel="canonical" href="https://99digicom.com/dashboard/my-applications" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="My Applications | 99Digicom" />
+        <meta property="og:description" content="View the status and details of your service applications on 99Digicom." />
+        <meta property="og:url" content="https://99digicom.com/dashboard/my-applications" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="My Applications | 99Digicom" />
+        <meta name="twitter:description" content="View the status and details of your service applications on 99Digicom." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "My Applications",
+          url: "https://99digicom.com/dashboard/my-applications",
+          description: "User applications overview"
+        })}</script>
+      </Helmet>
       <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-center sm:text-left">My Applications</h1>
       
       {applications.length === 0 ? (
@@ -59,7 +80,8 @@ const MyApplications = () => {
       ) : (
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <table className="min-w-full divide-y divide-gray-200 text-sm" aria-label="My applications table">
+              <caption className="sr-only">List of your applications with status and submission date</caption>
               <thead className="bg-gray-50">
                 <tr>
                   <th scope="col" className="px-3 sm:px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
@@ -110,7 +132,7 @@ const MyApplications = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

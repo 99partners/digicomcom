@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import axiosInstance from '../../config/api.config';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
 const Subscriptions = () => {
     const [billingHistory, setBillingHistory] = useState([]);
@@ -90,14 +91,34 @@ const Subscriptions = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 flex items-center justify-center">
-                <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
+            <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 flex items-center justify-center" aria-busy="true">
+                <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin" role="status" aria-label="Loading"></div>
+            </main>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8">
+        <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8">
+            <Helmet>
+                <title>Subscriptions | 99Digicom</title>
+                <meta name="description" content="View your subscription billing history and download invoices." />
+                <link rel="canonical" href="https://99digicom.com/dashboard/subscriptions" />
+                <meta name="robots" content="noindex, nofollow" />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="Subscriptions | 99Digicom" />
+                <meta property="og:description" content="View your subscription billing history and download invoices." />
+                <meta property="og:url" content="https://99digicom.com/dashboard/subscriptions" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Subscriptions | 99Digicom" />
+                <meta name="twitter:description" content="View your subscription billing history and download invoices." />
+                <script type="application/ld+json">{JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "CollectionPage",
+                    name: "Subscriptions",
+                    url: "https://99digicom.com/dashboard/subscriptions",
+                    description: "User subscription billing history"
+                })}</script>
+            </Helmet>
             <div className="max-w-7xl mx-auto px-2 sm:px-4">
                 {/* Billing History */}
                 <motion.div
@@ -161,7 +182,7 @@ const Subscriptions = () => {
                     )}
                 </motion.div>
             </div>
-        </div>
+        </main>
     );
 };
 

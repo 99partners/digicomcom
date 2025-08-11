@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet';
 
 const FAQ = () => {
     const [expandedCategory, setExpandedCategory] = useState(null);
@@ -94,7 +95,29 @@ const FAQ = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-2 sm:px-4">
+        <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-2 sm:px-4">
+            <Helmet>
+                <title>FAQ | 99Digicom</title>
+                <meta name="description" content="Frequently asked questions about 99Digicom services and processes." />
+                <link rel="canonical" href="https://99digicom.com/dashboard/faq" />
+                <meta name="robots" content="noindex, nofollow" />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="FAQ | 99Digicom" />
+                <meta property="og:description" content="Frequently asked questions about 99Digicom services and processes." />
+                <meta property="og:url" content="https://99digicom.com/dashboard/faq" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="FAQ | 99Digicom" />
+                <meta name="twitter:description" content="Frequently asked questions about 99Digicom services and processes." />
+                <script type="application/ld+json">{JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    mainEntity: [].concat(...faqs.map(cat => cat.questions.map(q => ({
+                        "@type": "Question",
+                        name: q.question,
+                        acceptedAnswer: { "@type": "Answer", text: q.answer }
+                    }))))
+                })}</script>
+            </Helmet>
             <div className="max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-700 mb-8">
                     Frequently Asked Questions
@@ -168,7 +191,7 @@ const FAQ = () => {
                     </AnimatePresence>
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 
