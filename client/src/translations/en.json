@@ -1753,37 +1753,109 @@
     },
     "meesho": {
       "seo": {
-        "title": "Meesho Seller Services | 99Digicom",
-        "description": "Meesho marketplace services: account management, listing optimization, zero commission and advertising.",
-        "keywords": "meesho seller account, meesho setup, meesho marketplace, social commerce"
-      },
-      "header": { "title": "Meesho Seller Account Setup", "subtitle": "Your gateway to India's leading social commerce platform" },
-      "overview": { "title": "Overview", "description": "Meesho empowers sellers with 100M+ users and social commerce integrations. This guide helps you register and optimize your store." },
-      "requirements": {
-        "title": "Requirements",
-        "description": "To create a Meesho seller account, you need:",
-        "items": ["Active mobile number", "Email address", "GSTIN (for taxable products)", "PAN", "Bank account", "Business details", "Address proof", "Product info"],
-        "supplierPortal": "Visit Meesho Supplier Portal"
-      },
-      "steps": {
-        "title": "Step-by-step setup process",
-        "description": "Follow these steps to become a Meesho seller",
-        "list": [
-          "Go to supplier.meesho.com and sign up",
-          "Fill business and contact details",
-          "Upload required documents (GSTIN, PAN, bank)",
-          "Upload product catalog",
-          "Wait for Meesho team verification",
-          "Receive orders after catalog goes live",
-          "Fulfil orders and receive payments"
+    "title": "Meesho Seller Services | 99DigiCom",
+    "description": "Meesho Marketplace Services: Account Management, Listing Optimization, Zero Commission, and Advertising.",
+    "keywords": "Meesho Seller Account, Meesho Setup, Meesho Marketplace, Social Commerce, Online Selling"
+  },
+  "header": {
+    "title": "Meesho Seller Account Setup",
+    "subtitle": "Your Gateway to India's Social Commerce Platform"
+  },
+  "overview": {
+    "title": "Overview",
+    "description": "Meesho empowers sellers with over 100 million users. It offers zero commission fees and social media integration. Our guide helps you with every step of store registration and optimization on India's leading social commerce platform."
+  },
+  "requirements": {
+    "title": "Requirements",
+    "description": "To create a Meesho seller account, you need:",
+    "items": [
+      "Active mobile number",
+      "Email address",
+      "GSTIN (for taxable products)",
+      "PAN card",
+      "Bank account",
+      "Business details",
+      "Address proof",
+      "Product information"
+    ],
+    "supplierPortal": "Visit Meesho Supplier Portal"
+  },
+  "steps": {
+    "title": "Step-by-Step Setup Process",
+    "description": "Follow these steps to become a Meesho seller",
+    "list": [
+      "Visit supplier.meesho.com and sign up",
+      "Fill in business and contact details",
+      "Upload required documents (GSTIN, PAN, bank)",
+      "Upload product catalog",
+      "Wait for verification by the Meesho team",
+      "Receive orders once the catalog is live",
+      "Fulfill orders and receive payments"
+    ]
+  },
+  "faq": {
+    "title": "Meesho Seller FAQ",
+    "categories": [
+      {
+        "title": "General",
+        "faqs": [
+          { "q": "Is GSTIN required to sell on Meesho?", "a": "No, you can sell within your state without GSTIN. However, GSTIN is required for interstate sales and advertising." },
+          { "q": "How do I start selling on Meesho?", "a": "Sign up at supplier.meesho.com, upload your product catalog, and start receiving orders. Meesho handles shipping." },
+          { "q": "What products can be sold on Meesho?", "a": "Fashion, home decor, beauty, electronics accessories, etc. Restricted products like alcohol, tobacco, and counterfeit items are not allowed." },
+          { "q": "How long does it take for a catalog to go live?", "a": "Typically, the catalog is reviewed and goes live within 72 hours." }
         ]
       },
-      "faq": {
-        "title": "Meesho Seller FAQ",
-        "categories": [
-          { "title": "General", "faqs": [ { "q": "Is zero commission applicable?", "a": "Meesho often runs zero-commission programs for select categories; check current policies." } ] }
+      {
+        "title": "Fees and Charges",
+        "faqs": [
+          { "q": "Does Meesho charge a commission on sales?", "a": "No, Meesho charges 0% commission on all products. You keep 100% of the profit." },
+          { "q": "Are there any hidden fees?", "a": "No, only shipping fees apply, which are clearly shown for each order." },
+          { "q": "When will I receive payments?", "a": "Payments are transferred to your bank account 7 days after order delivery, including COD orders." },
+          { "q": "Is there a penalty for order cancellation or late dispatch?", "a": "Yes, frequent cancellations or late dispatches may lead to penalties, affecting seller rating and platform visibility." }
+        ]
+      },
+      {
+        "title": "Account Management",
+        "faqs": [
+          { "q": "How do I change my bank account or address on Meesho?", "a": "Update your bank or pickup address in the Supplier Panel under 'Account Settings.' New details may require verification." },
+          { "q": "Can I cancel an order if stock runs out?", "a": "Yes, but frequent cancellations impact your performance score. It’s better to keep inventory updated." },
+          { "q": "How do I track orders?", "a": "Check real-time order status in the Supplier Panel under the 'Orders' tab, including shipping, pickup, and delivery details." },
+          { "q": "How do I manage product listings or inventory?", "a": "Upload, update, or delete catalogs and edit inventory status directly from the Supplier Panel." }
+        ]
+      },
+      {
+        "title": "Services",
+        "faqs": [
+          { "q": "What support is available for Meesho sellers?", "a": "Meesho offers 24/7 support via email, chat, and the Supplier Panel’s help section. Raise tickets for technical, order, or payment issues." },
+          { "q": "What tools are available to boost sales on Meesho?", "a": "Tools like price recommendations, business insights, ad services (for GST sellers), and quality dashboards are available." },
+          { "q": "Is training material available?", "a": "Yes, Meesho’s Learning Hub provides video tutorials and step-by-step guides on everything from registration to shipping and returns." }
         ]
       }
+    ]
+  },
+  "resources": {
+    "title": "Resources",
+    "list": [
+      { "name": "Meesho Supplier Portal", "url": "https://supplier.meesho.com" },
+      { "name": "Meesho Supplier App" },
+      { "name": "Meesho Seller Support", "url": "mailto:seller@meesho.com" },
+      { "name": "Third-Party Resources: Seller Rocket, Unicommerce, ClearTax" }
+    ]
+  },
+  "notes": {
+    "title": "Important Notes",
+    "list": [
+      "Strategic pricing is essential for the zero-commission model.",
+      "Ideal for social media-savvy sellers.",
+      "Regularly review policies.",
+      "Leverage WhatsApp and social platforms."
+    ],
+    "summary": "Use these steps and Meesho’s tools to build a successful online business. <b>Start your Meesho selling journey today!</b>"
+  },
+  "cta": {
+    "title": "Ready to Start Selling on Meesho?",
+    "subtitle": "Our team can assist with account setup and optimization"
+  }
     },
     "snapdeal": {
       "seo": {
