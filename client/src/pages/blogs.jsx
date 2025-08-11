@@ -58,6 +58,17 @@ const Blogs = () => {
         <meta name="description" content="Explore expert insights, trends, and strategies for digital commerce success. Stay updated with the latest business growth tactics and industry developments." />
         <meta name="keywords" content="digital commerce, business growth, ecommerce trends, digital marketing insights" />
         <link rel="canonical" href={window.location.href} />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Digital Commerce Insights & Trends | 99DigiCom Blog" />
+        <meta property="og:description" content="Explore expert insights, trends, and strategies for digital commerce success. Stay updated with the latest business growth tactics and industry developments." />
+        <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Digital Commerce Insights & Trends | 99DigiCom Blog" />
+        <meta name="twitter:description" content="Explore expert insights, trends, and strategies for digital commerce success. Stay updated with the latest business growth tactics and industry developments." />
+        <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(blogListingSchema)}
         </script>
@@ -113,6 +124,7 @@ const Blogs = () => {
                         src={blog.image || "/placeholder.svg"}
                         alt={`Featured image for article: ${blog.title}`}
                         className="w-full h-48 object-cover rounded-lg"
+                        loading="lazy"
                       />
                       <div className="absolute top-4 left-4">
                         <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">

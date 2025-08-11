@@ -82,6 +82,19 @@ const Faqs = () => {
         canonicalUrl="https://99digicom.com/faq"
         schema={faqSchema}
       />
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={t('faq.seo.title')} />
+        <meta property="og:description" content={t('faq.seo.description')} />
+        <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+        <meta property="og:url" content="https://99digicom.com/faq" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t('faq.seo.title')} />
+        <meta name="twitter:description" content={t('faq.seo.description')} />
+        <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
+      </Helmet>
 
       <main className="py-20 bg-white text-gray-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

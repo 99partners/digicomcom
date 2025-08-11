@@ -113,6 +113,17 @@ const GuidesTutorials = () => {
         <meta name="description" content={t("guides.seo.description")} />
         <meta name="keywords" content={t("guides.seo.keywords")} />
         <link rel="canonical" href={window.location.href} />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={t("guides.seo.title")} />
+        <meta property="og:description" content={t("guides.seo.description")} />
+        <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t("guides.seo.title")} />
+        <meta name="twitter:description" content={t("guides.seo.description")} />
+        <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(learningResourceSchema)}</script>
       </Helmet>
 
