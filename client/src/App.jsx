@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
@@ -12,7 +12,6 @@ import { useAuth } from './context/AuthContext';
 // Import pages
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
-import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -153,6 +152,34 @@ function App() {
 
             {/* Partner Routes removed as requested */}
 
+            {/* Partner Routes */}
+            <Route path="/partner" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <Outlet />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }>
+              <Route path="create-application/platform" element={<PlatformEnablementForm />} />
+              <Route path="create-application/ams" element={<AMSForm />} />
+              <Route path="create-application/advertising" element={<AdvertisingForm />} />
+              <Route path="create-application/cobranding" element={<CoBrandingForm />} />
+            </Route>
+
+            {/* Partner Routes */}
+            <Route path="/partner" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <Outlet />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }>
+              <Route path="create-application/platform" element={<PlatformEnablementForm />} />
+              <Route path="create-application/ams" element={<AMSForm />} />
+              <Route path="create-application/advertising" element={<AdvertisingForm />} />
+              <Route path="create-application/cobranding" element={<CoBrandingForm />} />
+            </Route>
+
             {/* Auth Routes without Header/Footer */}
             <Route path="/email-verify" element={<EmailVerify />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -167,7 +194,8 @@ function App() {
             }>
               <Route path="/" element={<Home />} />
               <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
+              {/* Keep login page removed; redirect legacy /login to partner login */}
+              <Route path="/login" element={<Navigate to="/partnerlogin" replace />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/about_us" element={<About />} />
               <Route path="/contact_us" element={<Contact />} />
@@ -203,6 +231,10 @@ function App() {
               <Route path="/services/manage" element={<AccountManagementServices />} />
               <Route path="/services/co_branding_solutions" element={<CoBranding />} />
               <Route path="/services/launch" element={<PlatformEnablement />} />
+              {/* Service Form Routes */}
+              <Route path="/services/launch/form" element={<PlatformEnablementForm />} />
+              <Route path="/services/manage/form" element={<AMSForm />} />
+              <Route path="/services/grow/form" element={<AdvertisingForm />} />
               
               {/* Solution Routes */}
               <Route path="/solutions/ondc-seller" element={<OndcSeller />} />
