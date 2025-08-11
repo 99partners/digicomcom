@@ -96,6 +96,27 @@ const Zepto = () => {
         <title>{seo.title}</title>
         <meta name="description" content={seo.description} />
         <meta name="keywords" content={seo.keywords} />
+        <link rel="canonical" href="https://99digicom.com/partners/marketplaces/zepto" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={seo.title} />
+        <meta property="og:description" content={seo.description} />
+        <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+        <meta property="og:url" content="https://99digicom.com/partners/marketplaces/zepto" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seo.title} />
+        <meta name="twitter:description" content={seo.description} />
+        <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: seo.title,
+          description: seo.description,
+          provider: { "@type": "Organization", name: "99digicom" },
+          serviceType: seo.title,
+          url: "https://99digicom.com/partners/marketplaces/zepto"
+        })}</script>
       </Helmet>
 
       {/* Back Button */}
@@ -115,7 +136,7 @@ const Zepto = () => {
           {/* Header Section with Logo */}
           <div className="flex flex-col items-center justify-center mb-10">
             <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
-              <img src={ZeptoLogo} alt="Zepto Logo" className="w-48 h-48 object-contain mb-4" />
+              <img src={ZeptoLogo} alt="Zepto Logo" className="w-48 h-48 object-contain mb-4" loading="lazy" />
               <h1 className="text-3xl font-bold text-gray-900 text-center">{header.title}</h1>
               <p className="text-green-600 text-center mt-2">{header.subtitle}</p>
             </div>

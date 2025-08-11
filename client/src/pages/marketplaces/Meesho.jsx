@@ -72,7 +72,9 @@ const Meesho = () => {
   const steps = t("marketplaces.meesho.steps", { returnObjects: true });
   const faq = t("marketplaces.meesho.faq", { returnObjects: true });
   const resources = t("marketplaces.meesho.resources.list", { returnObjects: true });
+  const resourcesList = Array.isArray(resources) ? resources : (resources ? Object.values(resources) : []);
   const notes = t("marketplaces.meesho.notes", { returnObjects: true });
+  const notesList = Array.isArray(notes?.list) ? notes.list : (notes?.list ? Object.values(notes.list) : []);
   const cta = t("marketplaces.meesho.cta", { returnObjects: true });
 
   // Icon mapping for requirements
@@ -84,6 +86,27 @@ const Meesho = () => {
         <title>{seo.title}</title>
         <meta name="description" content={seo.description} />
         <meta name="keywords" content={seo.keywords} />
+        <link rel="canonical" href="https://99digicom.com/partners/marketplaces/meesho" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={seo.title} />
+        <meta property="og:description" content={seo.description} />
+        <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+        <meta property="og:url" content="https://99digicom.com/partners/marketplaces/meesho" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seo.title} />
+        <meta name="twitter:description" content={seo.description} />
+        <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: seo.title,
+          description: seo.description,
+          provider: { "@type": "Organization", name: "99digicom" },
+          serviceType: seo.title,
+          url: "https://99digicom.com/partners/marketplaces/meesho"
+        })}</script>
       </Helmet>
 
       {/* Back Button */}
@@ -123,6 +146,7 @@ const Meesho = () => {
                 src={MeeshoLogo}
                 alt="Meesho Logo"
                 className="w-48 h-48 object-contain mb-4"
+                loading="lazy"
               />
               <h1 className="text-3xl font-bold text-gray-900 text-center">
                 {header.title}
@@ -294,7 +318,7 @@ const Meesho = () => {
                 {t("marketplaces.meesho.resources.title")}
               </h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                {resources.map((res, idx) =>
+                {resourcesList.map((res, idx) => (
                   res.url ? (
                     <li key={idx}>
                       <a
@@ -309,17 +333,17 @@ const Meesho = () => {
                   ) : (
                     <li key={idx}>{res.name}</li>
                   )
-                )}
+                ))}
               </ul>
               <h2 className="text-2xl font-bold text-green-700 mt-8 mb-4">
                 {notes.title}
               </h2>
               <ul className="list-disc ml-6 text-gray-700 space-y-2">
-                {notes.list.map((note, idx) => (
+                {notesList.map((note, idx) => (
                   <li key={idx}>{note}</li>
                 ))}
               </ul>
-              <p className="text-gray-700 mt-4" dangerouslySetInnerHTML={{ __html: notes.summary }} />
+              <p className="text-gray-700 mt-4" dangerouslySetInnerHTML={{ __html: notes?.summary || '' }} />
             </div>
           </section>
 
