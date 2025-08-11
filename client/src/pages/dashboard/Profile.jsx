@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import axiosInstance from '../../config/api.config';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
 const Profile = () => {
     const { user, refreshUserData } = useAuth();
@@ -87,70 +88,95 @@ const Profile = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50/50 py-8">
-            <div className="max-w-7xl mx-auto px-2 sm:px-4">
-                {/* Profile Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-2xl shadow-sm overflow-hidden mb-8"
-                >
-                    <div className="bg-gradient-to-r from-green-100 to-emerald-100 px-4 sm:px-8 py-8 sm:py-10 relative">
-                        <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between">
-                            <div className="flex items-center">
-                                <motion.div 
-                                    whileHover={{ scale: 1.05 }}
-                                    className="relative group"
-                                >
-                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
-                                        {user?.avatar ? (
-                                            <img src={user.avatar} alt={user?.name || 'User'} className="w-full h-full object-cover rounded-full" />
-                                        ) : (
-                                            <span className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
-                                                {user?.name?.charAt(0) || 'U'}
+        <>
+            <Helmet>
+                <title>Dashboard Profile | 99Digicom</title>
+                <meta name="description" content="View your partner profile and contact information." />
+                <link rel="canonical" href={window.location.href} />
+                <meta name="robots" content="noindex, nofollow" />
+                <meta name="googlebot" content="noindex, nofollow" />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="Dashboard Profile | 99Digicom" />
+                <meta property="og:description" content="View your partner profile and contact information." />
+                <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+                <meta property="og:url" content={window.location.href} />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Dashboard Profile | 99Digicom" />
+                <meta name="twitter:description" content="View your partner profile and contact information." />
+                <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
+                <script type="application/ld+json">{JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebPage",
+                    "name": "Dashboard Profile",
+                    "url": window.location.href,
+                    "description": "View your partner profile and contact information."
+                })}</script>
+            </Helmet>
+            <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50/50 py-8">
+                <div className="max-w-7xl mx-auto px-2 sm:px-4">
+                    {/* Profile Header */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white rounded-2xl shadow-sm overflow-hidden mb-8"
+                    >
+                        <div className="bg-gradient-to-r from-green-100 to-emerald-100 px-4 sm:px-8 py-8 sm:py-10 relative">
+                            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between">
+                                <div className="flex items-center">
+                                    <motion.div 
+                                        whileHover={{ scale: 1.05 }}
+                                        className="relative group"
+                                    >
+                                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
+                                            {user?.avatar ? (
+                                                <img src={user.avatar} alt={user?.name || 'User'} className="w-full h-full object-cover rounded-full" loading="lazy" />
+                                            ) : (
+                                                <span className="text-xl sm:text-2xl md:text-3xl font-bold text-green-600">
+                                                    {user?.name?.charAt(0) || 'U'}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Edit size={16} className="text-green-600" />
+                                        </button>
+                                    </motion.div>
+                                    <div className="ml-3 sm:ml-4 md:ml-6">
+                                        <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2">
+                                            {user?.name || 'Partner'}
+                                        </h1>
+                                        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                                            <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/80 rounded-full text-green-700 text-xs sm:text-sm flex items-center">
+                                                <Calendar size={16} className="mr-1" />
+                                                Joined {formatDate(user?.createdAt)}
                                             </span>
-                                        )}
-                                    </div>
-                                    <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <Edit size={16} className="text-green-600" />
-                                    </button>
-                                </motion.div>
-                                <div className="ml-3 sm:ml-4 md:ml-6">
-                                    <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2">
-                                        {user?.name || 'Partner'}
-                                    </h1>
-                                    <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-                                        <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/80 rounded-full text-green-700 text-xs sm:text-sm flex items-center">
-                                            <Calendar size={16} className="mr-1" />
-                                            Joined {formatDate(user?.createdAt)}
-                                        </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
 
-                {/* Only Contact Information section */}
-                <div className="max-w-3xl mx-auto">
-                    <ProfileSection title="Contact Information">
-                        <div className="space-y-3 sm:space-y-4">
-                            <InfoItem
-                                icon={Mail}
-                                label="Email Address"
-                                value={user?.email}
-                                verified={user?.emailVerified}
-                            />
-                            <InfoItem
-                                icon={Phone}
-                                label="Phone Number"
-                                value={user?.phone}
-                            />
-                        </div>
-                    </ProfileSection>
+                    {/* Only Contact Information section */}
+                    <div className="max-w-3xl mx-auto">
+                        <ProfileSection title="Contact Information">
+                            <div className="space-y-3 sm:space-y-4">
+                                <InfoItem
+                                    icon={Mail}
+                                    label="Email Address"
+                                    value={user?.email}
+                                    verified={user?.emailVerified}
+                                />
+                                <InfoItem
+                                    icon={Phone}
+                                    label="Phone Number"
+                                    value={user?.phone}
+                                />
+                            </div>
+                        </ProfileSection>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

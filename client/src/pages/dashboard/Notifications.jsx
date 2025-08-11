@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import axiosInstance from '../../config/api.config';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
@@ -153,172 +154,197 @@ const Notifications = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-2 sm:px-4">
-            <div className="max-w-4xl mx-auto">
-                <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
-                    {/* Header */}
-                    <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 sm:px-6 py-4">
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-                            <div className="flex items-center space-x-2">
-                                <Bell className="w-6 h-6 text-white" />
-                                <h1 className="text-2xl font-bold text-white">Notifications</h1>
-                            </div>
-                            <div className="flex items-center space-x-2 mt-2 sm:mt-0">
-                                <button
-                                    onClick={() => setFilter('all')}
-                                    className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                                        filter === 'all'
-                                            ? 'bg-white text-green-700'
-                                            : 'bg-green-500 bg-opacity-30 text-white hover:bg-opacity-50'
-                                    }`}
-                                >
-                                    All
-                                </button>
-                                <button
-                                    onClick={() => setFilter('unread')}
-                                    className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                                        filter === 'unread'
-                                            ? 'bg-white text-green-700'
-                                            : 'bg-green-500 bg-opacity-30 text-white hover:bg-opacity-50'
-                                    }`}
-                                >
-                                    Unread
-                                </button>
-                                <button
-                                    onClick={fetchNotifications}
-                                    className="p-2 bg-green-500 bg-opacity-30 text-white rounded-full hover:bg-opacity-50 transition-colors"
-                                    title="Refresh"
-                                >
-                                    <RefreshCw className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Notifications List */}
-                    <div className="divide-y divide-green-100">
-                        {loading ? (
-                            <div className="flex items-center justify-center py-8">
-                                <div className="w-6 h-6 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
-                            </div>
-                        ) : filteredNotifications.length === 0 ? (
-                            <div className="text-center py-12">
-                                <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                    {filter === 'unread' ? 'No unread notifications' : 'No notifications'}
-                                </h3>
-                                <p className="text-gray-500">
-                                    {filter === 'unread' 
-                                        ? 'All caught up! Check back later for new updates.' 
-                                        : 'You\'ll see notifications here when they arrive.'}
-                                </p>
-                            </div>
-                        ) : (
-                            <AnimatePresence>
-                                {filteredNotifications.map((notification) => (
-                                    <motion.div
-                                        key={notification._id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                        className={`p-4 sm:p-6 hover:bg-green-50 transition-colors border-l-4 ${
-                                            getPriorityColor(notification.priority)
-                                        } ${
-                                            isUnread(notification) ? 'bg-green-50' : 'bg-white'
+        <>
+            <Helmet>
+                <title>Dashboard Notifications | 99Digicom</title>
+                <meta name="description" content="View your latest account and system notifications." />
+                <link rel="canonical" href={window.location.href} />
+                <meta name="robots" content="noindex, nofollow" />
+                <meta name="googlebot" content="noindex, nofollow" />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="Dashboard Notifications | 99Digicom" />
+                <meta property="og:description" content="View your latest account and system notifications." />
+                <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+                <meta property="og:url" content={window.location.href} />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Dashboard Notifications | 99Digicom" />
+                <meta name="twitter:description" content="View your latest account and system notifications." />
+                <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
+                <script type="application/ld+json">{JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebPage",
+                    "name": "Dashboard Notifications",
+                    "url": window.location.href,
+                    "description": "View your latest account and system notifications."
+                })}</script>
+            </Helmet>
+            <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-2 sm:px-4">
+                <div className="max-w-4xl mx-auto">
+                    <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
+                        {/* Header */}
+                        <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 sm:px-6 py-4">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                                <div className="flex items-center space-x-2">
+                                    <Bell className="w-6 h-6 text-white" />
+                                    <h1 className="text-2xl font-bold text-white">Notifications</h1>
+                                </div>
+                                <div className="flex items-center space-x-2 mt-2 sm:mt-0">
+                                    <button
+                                        onClick={() => setFilter('all')}
+                                        className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                                            filter === 'all'
+                                                ? 'bg-white text-green-700'
+                                                : 'bg-green-500 bg-opacity-30 text-white hover:bg-opacity-50'
                                         }`}
                                     >
-                                        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                                            <div className="flex-shrink-0">
-                                                {getIcon(notification.type)}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
-                                                    <p className="text-sm font-medium text-gray-900">
-                                                        {notification.title}
-                                                    </p>
-                                                    <div className="flex items-center space-x-2 mt-2 sm:mt-0">
-                                                        <span className="flex items-center text-xs text-gray-500">
-                                                            <Clock className="w-3 h-3 mr-1" />
-                                                            {formatTimestamp(notification.createdAt)}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <p className="mt-1 text-sm text-gray-600">
-                                                    {notification.message}
-                                                </p>
-                                                <div className="mt-2 flex flex-col sm:flex-row items-center justify-between gap-2">
-                                                    <div className="flex items-center space-x-2">
-                                                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                            {getCategoryIcon(notification.category)}
-                                                            <span className="ml-1">{notification.category}</span>
-                                                        </span>
-                                                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                                            notification.priority === 'high' ? 'bg-red-100 text-red-800' :
-                                                            notification.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                                                            'bg-gray-100 text-gray-800'
-                                                        }`}>
-                                                            {notification.priority}
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-center space-x-2">
-                                                        {notification.metadata?.actionUrl && notification.metadata?.actionText && (
-                                                            <a
-                                                                href={notification.metadata.actionUrl}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="inline-flex items-center text-xs text-green-600 hover:text-green-700"
-                                                            >
-                                                                {notification.metadata.actionText}
-                                                                <ExternalLink className="w-3 h-3 ml-1" />
-                                                            </a>
-                                                        )}
-                                                        {isUnread(notification) && (
-                                                            <button
-                                                                onClick={() => markAsRead(notification._id)}
-                                                                className="text-xs text-green-600 hover:text-green-700"
-                                                            >
-                                                                Mark as read
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                        )}
-                    </div>
-
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <div className="px-4 sm:px-6 py-4 border-t border-green-100 bg-gray-50">
-                            <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-                                <p className="text-sm text-gray-700">
-                                    Page {page} of {totalPages}
-                                </p>
-                                <div className="flex space-x-2">
-                                    <button
-                                        onClick={() => setPage(page - 1)}
-                                        disabled={page === 1}
-                                        className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-                                    >
-                                        Previous
+                                        All
                                     </button>
                                     <button
-                                        onClick={() => setPage(page + 1)}
-                                        disabled={page === totalPages}
-                                        className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+                                        onClick={() => setFilter('unread')}
+                                        className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                                            filter === 'unread'
+                                                ? 'bg-white text-green-700'
+                                                : 'bg-green-500 bg-opacity-30 text-white hover:bg-opacity-50'
+                                        }`}
                                     >
-                                        Next
+                                        Unread
+                                    </button>
+                                    <button
+                                        onClick={fetchNotifications}
+                                        className="p-2 bg-green-500 bg-opacity-30 text-white rounded-full hover:bg-opacity-50 transition-colors"
+                                        title="Refresh"
+                                    >
+                                        <RefreshCw className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    )}
+
+                        {/* Notifications List */}
+                        <div className="divide-y divide-green-100">
+                            {loading ? (
+                                <div className="flex items-center justify-center py-8">
+                                    <div className="w-6 h-6 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                            ) : filteredNotifications.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                        {filter === 'unread' ? 'No unread notifications' : 'No notifications'}
+                                    </h3>
+                                    <p className="text-gray-500">
+                                        {filter === 'unread' 
+                                            ? 'All caught up! Check back later for new updates.' 
+                                            : 'You\'ll see notifications here when they arrive.'}
+                                    </p>
+                                </div>
+                            ) : (
+                                <AnimatePresence>
+                                    {filteredNotifications.map((notification) => (
+                                        <motion.div
+                                            key={notification._id}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -20 }}
+                                            className={`p-4 sm:p-6 hover:bg-green-50 transition-colors border-l-4 ${
+                                                getPriorityColor(notification.priority)
+                                            } ${
+                                                isUnread(notification) ? 'bg-green-50' : 'bg-white'
+                                            }`}
+                                        >
+                                            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                                                <div className="flex-shrink-0">
+                                                    {getIcon(notification.type)}
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                                                        <p className="text-sm font-medium text-gray-900">
+                                                            {notification.title}
+                                                        </p>
+                                                        <div className="flex items-center space-x-2 mt-2 sm:mt-0">
+                                                            <span className="flex items-center text-xs text-gray-500">
+                                                                <Clock className="w-3 h-3 mr-1" />
+                                                                {formatTimestamp(notification.createdAt)}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <p className="mt-1 text-sm text-gray-600">
+                                                        {notification.message}
+                                                    </p>
+                                                    <div className="mt-2 flex flex-col sm:flex-row items-center justify-between gap-2">
+                                                        <div className="flex items-center space-x-2">
+                                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                {getCategoryIcon(notification.category)}
+                                                                <span className="ml-1">{notification.category}</span>
+                                                            </span>
+                                                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                                                notification.priority === 'high' ? 'bg-red-100 text-red-800' :
+                                                                notification.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                                                                'bg-gray-100 text-gray-800'
+                                                            }`}>
+                                                                {notification.priority}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center space-x-2">
+                                                            {notification.metadata?.actionUrl && notification.metadata?.actionText && (
+                                                                <a
+                                                                    href={notification.metadata.actionUrl}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center text-xs text-green-600 hover:text-green-700"
+                                                                >
+                                                                    {notification.metadata.actionText}
+                                                                    <ExternalLink className="w-3 h-3 ml-1" />
+                                                                </a>
+                                                            )}
+                                                            {isUnread(notification) && (
+                                                                <button
+                                                                    onClick={() => markAsRead(notification._id)}
+                                                                    className="text-xs text-green-600 hover:text-green-700"
+                                                                >
+                                                                    Mark as read
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </AnimatePresence>
+                            )}
+                        </div>
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <div className="px-4 sm:px-6 py-4 border-t border-green-100 bg-gray-50">
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+                                    <p className="text-sm text-gray-700">
+                                        Page {page} of {totalPages}
+                                    </p>
+                                    <div className="flex space-x-2">
+                                        <button
+                                            onClick={() => setPage(page - 1)}
+                                            disabled={page === 1}
+                                            className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+                                        >
+                                            Previous
+                                        </button>
+                                        <button
+                                            onClick={() => setPage(page + 1)}
+                                            disabled={page === totalPages}
+                                            className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
