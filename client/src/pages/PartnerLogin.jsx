@@ -7,6 +7,7 @@ import axiosInstance from "../config/api.config"
 import { toast } from "react-toastify"
 import logo from "../assets/99digicom.png"
 import { useAuth } from "../context/AuthContext"
+import { Helmet } from "react-helmet"
 
 const PartnerLogin = () => {
   const [formType, setFormType] = useState("Login") // Changed default to "Login" instead of "Sign Up"
@@ -69,7 +70,31 @@ const PartnerLogin = () => {
 }
 
   return (
-    <div className="flex min-h-screen">
+    <>
+      <Helmet>
+        <title>Partner Login | 99Digicom</title>
+        <meta name="description" content="Sign in or create your partner account to access the 99Digicom dashboard." />
+        <link rel="canonical" href={window.location.href} />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Partner Login | 99Digicom" />
+        <meta property="og:description" content="Sign in or create your partner account to access the 99Digicom dashboard." />
+        <meta property="og:image" content="https://99digicom.com/og-image.jpg" />
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Partner Login | 99Digicom" />
+        <meta name="twitter:description" content="Sign in or create your partner account to access the 99Digicom dashboard." />
+        <meta name="twitter:image" content="https://99digicom.com/og-image.jpg" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Partner Login",
+          "url": window.location.href,
+          "description": "Sign in or create your partner account to access the 99Digicom dashboard."
+        })}</script>
+      </Helmet>
+      <div className="flex min-h-screen">
       {/* Left Side */}
       <div className="w-1/2 hidden md:flex flex-col justify-center items-center bg-gradient-to-br from-green-700 via-emerald-700 to-teal-700 text-white p-10 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -90,6 +115,7 @@ const PartnerLogin = () => {
             src={logo}
             alt="99digicom Logo"
             className="w-20 h-20 object-contain mb-6 mx-auto"
+            loading="lazy"
           />
           <h1 className="text-4xl font-bold mb-2">99 Digicom</h1>
           <h2 className="text-xl font-semibold mt-4 mb-6">
@@ -250,6 +276,7 @@ const PartnerLogin = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 
