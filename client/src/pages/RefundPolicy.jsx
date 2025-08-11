@@ -39,7 +39,7 @@ const RefundPolicy = () => {
 
       <main id="main-content" className="pt-24 sm:pt-32 px-4 sm:px-6 lg:px-8 py-10 sm:py-16 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10 text-center text-green-700">
-          Refund Policy – 99digicom.com
+          Refund Policy
         </h1>
         <p className="text-sm text-gray-500 text-center mb-6">Last updated: <strong>{lastUpdated}</strong></p>
 
