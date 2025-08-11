@@ -99,6 +99,21 @@ export default function ForProductPartners() {
         <meta name="description" content={t("whyPartner.seo.description")} />
         <meta name="keywords" content={t("whyPartner.seo.keywords")} />
         <link rel="canonical" href="https://99digicom.com/why-partners" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={t("whyPartner.seo.title")} />
+        <meta property="og:description" content={t("whyPartner.seo.description")} />
+        <meta property="og:url" content="https://99digicom.com/why-partners" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t("whyPartner.seo.title")} />
+        <meta name="twitter:description" content={t("whyPartner.seo.description")} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: t("whyPartner.seo.title"),
+          url: "https://99digicom.com/why-partners",
+          description: t("whyPartner.seo.description")
+        })}</script>
         <script type="application/ld+json">
           {`
             {
@@ -120,7 +135,7 @@ export default function ForProductPartners() {
         </script>
       </Helmet>
 
-      <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-white">
         {/* Hero Section */}
         <section aria-labelledby="hero-heading" className="pt-20 pb-12 px-4 sm:pt-24 sm:pb-16 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">

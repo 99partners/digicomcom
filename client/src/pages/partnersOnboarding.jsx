@@ -134,9 +134,26 @@ export default function PartnerOnboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+    <div id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       <Helmet>
-        <style>{``}</style>
+        <title>{t("partners.seo.title", "Partners Onboarding | 99Digicom")}</title>
+        <meta name="description" content={t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces.")} />
+        <link rel="canonical" href="https://99digicom.com/partners/partners_Onboarding" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={t("partners.seo.title", "Partners Onboarding | 99Digicom")} />
+        <meta property="og:description" content={t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces.")} />
+        <meta property="og:url" content="https://99digicom.com/partners/partners_Onboarding" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t("partners.seo.title", "Partners Onboarding | 99Digicom")} />
+        <meta name="twitter:description" content={t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces.")} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: t("partners.seo.title", "Partners Onboarding | 99Digicom"),
+          url: "https://99digicom.com/partners/partners_Onboarding",
+          description: t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces.")
+        })}</script>
       </Helmet>
 
       {/* Hero Section */}
