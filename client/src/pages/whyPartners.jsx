@@ -124,6 +124,7 @@ export default function ForProductPartners() {
                 "@type": "Organization",
                 "name": "99digicom"
               },
+              "title": "99digicom Partner Program",
               "description": "End-to-end digital commerce enablement and marketing services for product partners",
               "keywords": "99digicom, partner program, e-commerce partnership, digital commerce enablement, marketing services, product partners, ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, Zomato",
               "serviceType": "E-commerce Partnership",
