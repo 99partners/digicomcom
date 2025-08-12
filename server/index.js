@@ -71,6 +71,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS Configuration - Manual implementation to prevent duplicate headers
+const extraAllowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
 const allowedOrigins = [
     'https://99digicom.com',
     'https://www.99digicom.com',
@@ -80,7 +85,8 @@ const allowedOrigins = [
         'http://localhost:5051',
         'http://127.0.0.1:5173',
         'http://127.0.0.1:5051'
-    ] : [])
+    ] : []),
+    ...extraAllowedOrigins
 ];
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedOrigins);
