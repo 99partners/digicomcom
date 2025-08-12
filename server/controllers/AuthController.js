@@ -4,6 +4,37 @@ import userModel from '../models/UserModel.js';
 import transporter from '../config/nodemailer.js';
 import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from '../config/emailTemplets.js';
 
+// Token helpers
+const getAccessSecret = () => {
+    return process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+};
+
+const getRefreshSecret = () => {
+    return process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+};
+
+const generateAccessToken = (userId) => {
+    const secret = getAccessSecret();
+    if (!secret) throw new Error('JWT access secret not configured');
+    // Short-lived access token (15 minutes)
+    return jwt.sign({ id: userId }, secret, { expiresIn: '15m' });
+};
+
+const generateRefreshToken = (userId) => {
+    const secret = getRefreshSecret();
+    if (!secret) throw new Error('JWT refresh secret not configured');
+    // Long-lived refresh token (7 days)
+    return jwt.sign({ id: userId }, secret, { expiresIn: '7d' });
+};
+
+const getCookieBaseOptions = () => ({
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined,
+    path: '/',
+});
+
 
 export const register = async (req, res)=>{
 
@@ -40,17 +71,14 @@ export const register = async (req, res)=>{
         })
         await user.save()
 
-        //+++++++++++++++++ Now Generate Token For Auth++++++++++++++++++++++++
+        // Issue tokens (access + refresh)
+        const accessToken = generateAccessToken(user._id);
+        const refreshToken = generateRefreshToken(user._id);
 
-        //we are send this token using cookie.
-         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
-
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            maxAge: 1*24*60*60*1000
-        });
+        // Set cookies
+        const baseCookie = getCookieBaseOptions();
+        res.cookie('token', accessToken, { ...baseCookie, maxAge: 15 * 60 * 1000 });
+        res.cookie('refreshToken', refreshToken, { ...baseCookie, maxAge: 7 * 24 * 60 * 60 * 1000 });
 
         //send OTP verification email to user
         const mailOptions = {
@@ -73,7 +101,7 @@ export const register = async (req, res)=>{
 
         return res.json({
             success: true,
-            token,
+            token: accessToken,
             user: userData
         });
 
@@ -101,29 +129,14 @@ export const login = async(req, res) => {
             return res.json({success:false, message:"Invalid Password"})
         }
 
-        // Use consistent JWT secret
-        const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
-        if (!jwtSecret) {
-            console.error('JWT secret is not configured');
-            return res.status(500).json({
-                success: false,
-                message: "Server configuration error"
-            });
-        }
+        // Issue tokens (access + refresh)
+        const accessToken = generateAccessToken(user._id);
+        const refreshToken = generateRefreshToken(user._id);
 
-        const token = jwt.sign({id: user._id}, jwtSecret, {expiresIn: '1d'})
-
-        // Set cookie with proper settings for cross-origin
-        const cookieOptions = {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined,
-            path: '/'
-        };
-
-        res.cookie('token', token, cookieOptions);
+        // Set cookies
+        const cookieOptions = getCookieBaseOptions();
+        res.cookie('token', accessToken, { ...cookieOptions, maxAge: 15 * 60 * 1000 });
+        res.cookie('refreshToken', refreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 });
 
         // If user is not verified, send OTP automatically
         if (!user.isAccountVerified) {
@@ -155,7 +168,7 @@ export const login = async(req, res) => {
 
         return res.json({
             success: true,
-            token,
+            token: accessToken,
             user: userData
         });
 
@@ -167,21 +180,47 @@ export const login = async(req, res) => {
 
 export const logout = (req, res) => {
     try {
-        const cookieOptions = {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined,
-            path: '/'
-        };
-
+        const cookieOptions = getCookieBaseOptions();
         res.clearCookie('token', cookieOptions);
+        res.clearCookie('refreshToken', cookieOptions);
         return res.json({success: true, message: "Logged Out Successfully"});
     } catch (err) {
         console.error('Logout error:', err);
         res.status(500).json({success: false, message: err.message});
     }
 }
+
+// Refresh access token using refresh token cookie
+export const refreshToken = async (req, res) => {
+    try {
+        const tokenFromCookie = req.cookies?.refreshToken;
+        if (!tokenFromCookie) {
+            return res.status(401).json({ success: false, message: 'Refresh token missing' });
+        }
+
+        const secret = getRefreshSecret();
+        let decoded;
+        try {
+            decoded = jwt.verify(tokenFromCookie, secret);
+        } catch (err) {
+            return res.status(401).json({ success: false, message: 'Invalid or expired refresh token' });
+        }
+
+        const user = await userModel.findById(decoded.id).select('_id');
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'User not found' });
+        }
+
+        const newAccessToken = generateAccessToken(user._id);
+        const cookieOptions = getCookieBaseOptions();
+        res.cookie('token', newAccessToken, { ...cookieOptions, maxAge: 15 * 60 * 1000 });
+
+        return res.json({ success: true, token: newAccessToken });
+    } catch (error) {
+        console.error('Refresh token error:', error);
+        return res.status(500).json({ success: false, message: 'Server error during token refresh' });
+    }
+};
 
 
 //Send verification OPT to user email

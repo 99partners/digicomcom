@@ -37,8 +37,8 @@ const userAuth = async (req, res, next) => {
             });
         }
 
-        // Use consistent JWT secret
-        const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+        // Use access token secret
+        const jwtSecret = process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
         if (!jwtSecret) {
             console.error('JWT secret is not configured');
             return res.status(500).json({
@@ -63,11 +63,37 @@ const userAuth = async (req, res, next) => {
         next();
     } catch (error) {
         console.error('Auth middleware error:', error);
+        // Attempt silent refresh on expired access token
         if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({
-                success: false,
-                message: "Token expired. Please login again."
-            });
+            try {
+                const refreshToken = req.cookies?.refreshToken;
+                if (!refreshToken) {
+                    return res.status(401).json({ success: false, message: "Token expired. Please login again." });
+                }
+
+                const refreshSecret = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+                const decodedRefresh = jwt.verify(refreshToken, refreshSecret);
+
+                const accessSecret = process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+                const newAccessToken = jwt.sign({ id: decodedRefresh.id }, accessSecret, { expiresIn: '15m' });
+
+                const cookieOptions = {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                    domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined,
+                    path: '/',
+                    maxAge: 15 * 60 * 1000
+                };
+                res.cookie('token', newAccessToken, cookieOptions);
+
+                req.user = { id: decodedRefresh.id };
+                req.body.userId = decodedRefresh.id;
+                return next();
+            } catch (refreshError) {
+                console.error('Silent refresh failed:', refreshError);
+                return res.status(401).json({ success: false, message: "Session expired. Please login again." });
+            }
         }
         if (error.name === 'JsonWebTokenError') {
             return res.status(401).json({

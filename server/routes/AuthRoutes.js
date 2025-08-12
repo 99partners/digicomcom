@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, logout, isAuthenticated, sendRestOtp, sendVerifyOtp, verifyEmail, resetPassword } from '../controllers/AuthController.js';
+import { register, login, logout, isAuthenticated, sendRestOtp, sendVerifyOtp, verifyEmail, resetPassword, refreshToken } from '../controllers/AuthController.js';
 import userAuth from '../middleware/userAuth.js';
 import { googleLogin } from '../controllers/GoogleAuthController.js';
 
@@ -8,6 +8,7 @@ const AuthRouter = express.Router();
 AuthRouter.post('/register', register);
 AuthRouter.post('/login', login);
 AuthRouter.post('/logout', logout);
+AuthRouter.post('/refresh', refreshToken);
 AuthRouter.post('/send-verify-otp', userAuth, sendVerifyOtp);
 AuthRouter.post('/verify-account', userAuth, verifyEmail);
 AuthRouter.get('/is-auth', userAuth, isAuthenticated);

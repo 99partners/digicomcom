@@ -43,26 +43,26 @@ export const googleLogin = async (req, res) => {
             });
         }
 
-        // Generate JWT token
-        const jwtToken = jwt.sign(
-            { id: user._id }, 
-            process.env.JWT_SECRET_KEY, 
-            { expiresIn: '1d' }
-        );
+        // Generate tokens
+        const accessSecret = process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+        const refreshSecret = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+        const accessToken = jwt.sign({ id: user._id }, accessSecret, { expiresIn: '15m' });
+        const refreshToken = jwt.sign({ id: user._id }, refreshSecret, { expiresIn: '7d' });
 
-        // Set cookie
-        res.cookie('token', jwtToken, {
+        // Set cookies
+        const cookieBase = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
             domain: process.env.NODE_ENV === 'production' ? '.99digicom.com' : undefined,
-            path: '/'
-        });
+            path: '/',
+        };
+        res.cookie('token', accessToken, { ...cookieBase, maxAge: 15 * 60 * 1000 });
+        res.cookie('refreshToken', refreshToken, { ...cookieBase, maxAge: 7 * 24 * 60 * 60 * 1000 });
 
         return res.json({
             success: true,
-            token: jwtToken,
+            token: accessToken,
             user: {
                 id: user._id,
                 name: user.name,
