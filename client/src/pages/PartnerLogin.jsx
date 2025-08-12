@@ -91,7 +91,9 @@ const PartnerLogin = () => {
           "@type": "WebPage",
           "name": "Partner Login",
           "url": window.location.href,
-          "description": "Sign in or create your partner account to access the 99Digicom dashboard."
+          "description": "Sign in or create your partner account to access the 99Digicom dashboard.",
+          "title": "Partner Login | 99Digicom",
+          "keywords": "99digicom, partner login, e-commerce partnership, digital commerce enablement, marketing services, product partners, ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, Zomato"
         })}</script>
       </Helmet>
       <div className="flex min-h-screen">

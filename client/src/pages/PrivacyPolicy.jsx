@@ -27,7 +27,9 @@ const PrivacyPolicy = () => {
           "@type": "WebPage",
           name: "Privacy Policy",
           url: "https://99digicom.com/privacypolicy",
-          description: "Read the 99Digicom Privacy Policy to understand how we collect, use, and protect your information."
+          description: "Read the 99Digicom Privacy Policy to understand how we collect, use, and protect your information.",
+          title: "Privacy Policy | 99Digicom",
+          keywords: "99digicom, privacy policy, data collection, information protection, data usage, data disclosure, data security, data changes, contact us, website privacy, user privacy, personal information, usage data, cookies, website analytics, performance tracking, legal disclosure, technical security, policy updates, customer support, website terms, service terms, user agreement, privacy policy, legal terms, website policies, terms of use"
         })}</script>
       </Helmet>
       <main id="main-content" className="pt-32 container mx-auto px-4 py-16 max-w-4xl">

@@ -33,7 +33,9 @@ const RefundPolicy = () => {
           "@type": "WebPage",
           name: "Refund Policy",
           url: "https://99digicom.com/refundpolicy",
-          description: "Read the 99Digicom Refund Policy regarding eligibility, process, and timelines for refunds."
+          description: "Read the 99Digicom Refund Policy regarding eligibility, process, and timelines for refunds.",
+          title: "Refund Policy | 99Digicom",
+          keywords: "99digicom, refund policy, eligibility, process, timelines, refunds, digital products, services, customer support, refund process, refund timeline, refund eligibility, refund policy, refund process, refund timeline, refund eligibility"
         })}</script>
       </Helmet>
 

@@ -152,7 +152,9 @@ export default function PartnerOnboarding() {
           "@type": "WebPage",
           name: t("partners.seo.title", "Partners Onboarding | 99Digicom"),
           url: "https://99digicom.com/partners/partners_Onboarding",
-          description: t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces.")
+          description: t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces."),
+          title: t("partners.seo.title", "Partners Onboarding | 99Digicom"),
+          keywords: "99digicom, partners onboarding, e-commerce partnership, digital commerce enablement, marketing services, product partners, ONDC, Amazon, Flipkart, Meesho, Jiomart, Swiggy, Zomato"
         })}</script>
       </Helmet>
 

@@ -27,7 +27,9 @@ const TermsOfService = () => {
           "@type": "WebPage",
           name: "Terms of Service",
           url: "https://99digicom.com/termsofservice",
-          description: "Read the 99Digicom Terms of Service governing your use of our website and services."
+          description: "Read the 99Digicom Terms of Service governing your use of our website and services.",
+          title: "Terms of Service | 99Digicom",
+          keywords: "99digicom, terms of service, website terms, service terms, user agreement, privacy policy, legal terms, website policies, terms of use, service terms, user agreement, privacy policy, legal terms, website policies, terms of use"
         })}</script>
       </Helmet>
       <main id="main-content" className="pt-24 sm:pt-32 px-4 sm:px-6 lg:px-8 py-10 sm:py-16 max-w-2xl sm:max-w-3xl lg:max-w-4xl mx-auto">
