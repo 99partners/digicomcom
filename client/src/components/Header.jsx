@@ -170,10 +170,17 @@ const Header = () => {
 
         {/* Action Buttons */}
         <div className="hidden lg:flex items-center space-x-4">
-          <Link
+          {/* <Link
             to="https://shop.99digicom.com"
             className="px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
+          > */}
+            <Link
+            to="https://shop.99digicom.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
           >
+
             {t('common.shop')}
           </Link>
           {isAuthenticated ? (
