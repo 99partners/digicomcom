@@ -189,7 +189,7 @@ app.use('/api/marketing', marketingApplicationRoutes);
 app.use('/api/advertising', advertisingRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/google', googleRoutes);
-app.use('/api/ondc', ondc);
+app.use('/ondc', ondc);
 
 // Basic route to test server
 app.get('/', (req, res) => {
