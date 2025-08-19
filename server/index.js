@@ -91,37 +91,6 @@ const allowedOrigins = [
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedOrigins);
 
-// Custom CORS middleware to ensure single headers
-// app.use((req, res, next) => {
-//     const origin = req.headers.origin || 'http://localhost:5173';
-    
-//     console.log('🔍 Request from origin:', origin, 'Method:', req.method);
-    
-//     // In development, allow undefined origin and localhost
-//     if (process.env.NODE_ENV !== 'production' || allowedOrigins.includes(origin)) {
-//         res.setHeader('Access-Control-Allow-Origin', origin);
-//         res.setHeader('Vary', 'Origin');
-//         res.setHeader('Access-Control-Allow-Credentials', 'true');
-//         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-//         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-CSRF-Token, x-csrf-token');
-//         res.setHeader('Access-Control-Expose-Headers', 'Content-Length, X-Requested-With');
-//         res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours cache for preflight
-        
-//         // Handle preflight requests
-//         if (req.method === 'OPTIONS') {
-//             res.status(200).end();
-//             return;
-//         }
-//     } else {
-//         console.warn('❌ Origin blocked:', origin);
-//         res.status(403).json({ error: 'Not allowed by CORS' });
-//         return;
-//     }
-    
-//     next();
-// });
-
-
 app.use((req, res, next) => {
     const origin = req.headers.origin;
     
@@ -202,6 +171,7 @@ import marketingApplicationRoutes from './routes/marketingApplicationRoutes.js';
 import advertisingRoutes from './routes/advertisingRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import googleRoutes from './routes/googleRoutes.js';
+import ondc from './routes/ondc.js';
 
 // API routes
 app.use('/api/auth', AuthRouter);
@@ -219,6 +189,7 @@ app.use('/api/marketing', marketingApplicationRoutes);
 app.use('/api/advertising', advertisingRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/google', googleRoutes);
+app.use('/api/ondc', ondc);
 
 // Basic route to test server
 app.get('/', (req, res) => {
