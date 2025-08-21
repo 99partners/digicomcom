@@ -172,6 +172,7 @@ import advertisingRoutes from './routes/advertisingRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import googleRoutes from './routes/googleRoutes.js';
 import ondc from './routes/ondc.js';
+import onSubscribeRoute from "./routes/on_subscribe.js";
 
 // API routes
 app.use('/api/auth', AuthRouter);
@@ -190,6 +191,7 @@ app.use('/api/advertising', advertisingRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/google', googleRoutes);
 app.use('/ondc', ondc);
+app.use("/", onSubscribeRoute);
 
 // Basic route to test server
 app.get('/', (req, res) => {
