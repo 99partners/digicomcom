@@ -1,5 +1,6 @@
 "use client";
 
+import AboutUsImage from '../assets/aboutus.png';
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -205,7 +206,7 @@ const About = () => {
               </div>
               <div className="relative space-y-6">
                 <img
-                  src="https://bing.com/th/id/BCO.b1906b9e-e58b-4c29-a213-b3f9b4b8aac6.png"
+                  src={AboutUsImage}
                   alt={t("about.content.section3.journey.imageAlt")}
                   className="rounded-lg shadow-lg w-full h-auto object-cover mb-6"
                   width="600"
