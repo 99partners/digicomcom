@@ -99,7 +99,7 @@ const Footer = () => {
   const quickLinks = [
     { name: t('common.home'), path: "/" },
     { name: t('common.about'), path: "/about_us" },
-    { name: t('common.shop'), path: "/shop" },
+    { name: t('common.shop'), path: "https://shop.99digicom.com/" },
     { name: t('common.contact'), path: "/contact_us" },
   ];
 
