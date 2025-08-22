@@ -53,7 +53,7 @@ console.log('🚀 Starting server with configuration:', {
 
 // Set production environment variables if not set
 if (!process.env.NODE_ENV) {
-    process.env.NODE_ENV = 'production';
+    process.env.NODE_ENV = 'development';
 }
 
 // Production JWT secret fallback
@@ -172,7 +172,7 @@ import advertisingRoutes from './routes/advertisingRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import googleRoutes from './routes/googleRoutes.js';
 import ondc from './routes/ondc.js';
-import onSubscribeRoute from "./routes/on_subscribe.js";
+import onSubscribeRoute from './routes/on_subscribe.js';
 
 // API routes
 app.use('/api/auth', AuthRouter);
