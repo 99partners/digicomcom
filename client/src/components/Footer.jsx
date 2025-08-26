@@ -350,12 +350,12 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-700 text-center text-xs sm:text-sm text-gray-400">
-          <p>©️ {currentYear} {currentLanguage === 'en' ? 'Digicom' : 
-                currentLanguage === 'hi' ? 'डिजिकॉम' : 
-                currentLanguage === 'gu' ? 'ડિજિકોમ' : 
-                currentLanguage === 'pa' ? 'ਡਿਜੀਕੋਮ' : 
-                currentLanguage === 'mr' ? 'डिजिकॉम' : 
-                currentLanguage === 'bn' ? 'ডিজিকম' : 'Digicom'}. {t('footer.allRightsReserved', 'All rights reserved.')}</p>
+          <p>©️ {currentYear} {currentLanguage === 'en' ? '99 PARTNERS DIGICOM PRIVATE LIMITED' : 
+                currentLanguage === 'hi' ? '99 पार्टनर्स डिजिकॉम प्राइवेट लिमिटेड' : 
+                currentLanguage === 'gu' ? '99 પાર્ટનર્સ ડિજીકોમ પ્રાઇવેટ લિમિટેડ' : 
+                currentLanguage === 'pa' ? '99 ਪਾਰਟਨਰਜ਼ ਡਿਜੀਕਾਮ ਪ੍ਰਾਈਵੇਟ ਲਿਮਟਿਡ' : 
+                currentLanguage === 'mr' ? '९९ भागीदार डिजिकॉम प्रायव्हेट लिमिटेड' : 
+                currentLanguage === 'bn' ? '৯৯ জন অংশীদার ডিজিকম প্রাইভেট লিমিটেড' : 'Digicom'}. {t('footer.allRightsReserved', 'All rights reserved.')}</p>
         </div>
       </div>
     </footer>
