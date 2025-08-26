@@ -32,14 +32,14 @@ const Header = () => {
   const navigation = [
     { name: t('common.home'), href: "/" },
     { name: t('common.about'), href: "/about_us" },
-    {
-      name: t('common.services'),
-      submenu: [
-        { name: t('Launch'), href: "/services/launch" },
-        { name: t('Manage'), href: "/services/manage" },
-        { name: t('Grow'), href: "/services/grow" },
-      ],
-    },
+    // {
+    //   name: t('common.services'),
+    //   submenu: [
+    //     { name: t('Launch'), href: "/services/launch" },
+    //     { name: t('Manage'), href: "/services/manage" },
+    //     { name: t('Grow'), href: "/services/grow" },
+    //   ],
+    // },
     {
       name: t('common.solutions'),
       submenu: [
@@ -96,9 +96,9 @@ const Header = () => {
               {currentLanguage === 'en' && 'Digicom'}
               {currentLanguage === 'hi' && 'डिजिकॉम'}
               {currentLanguage === 'gu' && 'ડિજિકોમ'}
-              {currentLanguage === 'pa' && 'ਡਿਜੀਕੋਮ'}
+              {/* {currentLanguage === 'pa' && 'ਡਿਜੀਕੋਮ'}
               {currentLanguage === 'mr' && 'डिजिकॉम'}
-              {currentLanguage === 'bn' && 'ডিজিকম'}
+              {currentLanguage === 'bn' && 'ডিজিকম'} */}
             </span>
           </Link>
         </div>

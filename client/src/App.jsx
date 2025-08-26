@@ -43,11 +43,14 @@ import Notifications from './pages/dashboard/Notifications';
 import Subscriptions from './pages/dashboard/Subscriptions';
 
 // Import from Services Partner Resources
-import PlatformEnablement from './pages/launch';
-import AccountManagementServices from './pages/manage';
+
+// import PlatformEnablement from './pages/launch';
+// import AccountManagementServices from './pages/manage';
+// import AdvertisingMarketing from './pages/advertising_marketing';
+
 import ForProductPartners from './pages/whyPartners';
 import PartnersOnboarding from './pages/partnersOnboarding';
-import AdvertisingMarketing from './pages/advertising_marketing';
+
 import Blogs from './pages/blogs';
 // import CaseStudies from './pages/caseStudies';
 import GuidesTutorials from './pages/guidesTutorials';
@@ -215,10 +218,11 @@ function App() {
               <Route path="/partners/marketplaces/zepto" element={<Zepto />} />
               <Route path="/partners/marketplaces/bigbasket" element={<Bigbasket />} />
               <Route path="/partners/marketplaces/snapdeal" element={<Snapdeal />} />
-              <Route path="/services/grow" element={<AdvertisingMarketing />} />    
-              <Route path="/services/manage" element={<AccountManagementServices />} />
               <Route path="/services/co_branding_solutions" element={<CoBranding />} />
-              <Route path="/services/launch" element={<PlatformEnablement />} />
+
+              {/* <Route path="/services/grow" element={<AdvertisingMarketing />} />    
+              <Route path="/services/manage" element={<AccountManagementServices />} />
+              <Route path="/services/launch" element={<PlatformEnablement />} /> */}
               {/* Service Form Routes */}
               <Route path="/services/launch/form" element={<PlatformEnablementForm />} />
               <Route path="/services/manage/form" element={<AMSForm />} />
