@@ -53,7 +53,7 @@ import PartnersOnboarding from './pages/partnersOnboarding';
 
 import Blogs from './pages/blogs';
 // import CaseStudies from './pages/caseStudies';
-import GuidesTutorials from './pages/guidesTutorials';
+// import GuidesTutorials from './pages/guidesTutorials';
 import Faqs from './pages/faq';
 import CoBranding from './pages/CoBranding';
 // import Careers from './pages/Careers';
@@ -197,7 +197,7 @@ function App() {
 
               <Route path="/resources/blogs" element={<Blogs />} />
               <Route path="/resources/blogs/:id" element={<BlogDetails />} />
-              <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
+              {/* <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} /> */}
               <Route path="/resources/faq" element={<Faqs />} />
               <Route path="/faqss" element={<Faqs />} />
               <Route path="/customer-login" element={<CustomerLogin />} />

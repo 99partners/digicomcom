@@ -99,7 +99,7 @@ const Footer = () => {
   const quickLinks = [
     { name: t('common.home'), path: "/" },
     { name: t('common.about'), path: "/about_us" },
-    { name: t('common.shop'), path: "https://shop.99digicom.com/" },
+    // { name: t('common.shop'), path: "https://shop.99digicom.com/" },
     { name: t('common.contact'), path: "/contact_us" },
   ];
 
@@ -230,7 +230,7 @@ const Footer = () => {
                   ))}
                 </ul>
               </nav>
-              <div>
+              {/* <div>
                 <p className="text-base sm:text-lg font-semibold border-b border-gray-600 pb-2 mb-4">
                   {t('footer.ourDomains', 'Our Domains')}
                 </p>
@@ -248,7 +248,7 @@ const Footer = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </div>
 
             <div className="space-y-6">

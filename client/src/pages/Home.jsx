@@ -291,7 +291,7 @@ const Home = () => {
                 {t("home.hero.getStarted")}
               </button>
             </div>
-            {/* Logo Scroll Section */}
+            {/* Logo Scroll Section 
             <div className="mt-8 sm:mt-12 overflow-hidden pause-on-hover">
               <div className="flex animate-scroll-x">
                 {[...marketplaceLogos, ...marketplaceLogos].map(
@@ -312,6 +312,7 @@ const Home = () => {
                 )}
               </div>
             </div>
+            */}
           </div>
         </section>
         {/* Core Services Section */}
@@ -551,6 +552,28 @@ const Home = () => {
             </div>
           </div>
         </section>
+
+        <section
+            className="py-16 px-4 sm:px-6 md:px-10 bg-white"
+            aria-labelledby="pricing-heading"
+          >
+            <div className="max-w-7xl mx-auto text-center space-y-6">
+              <h2
+                id="pricing-heading"
+                className="text-2xl sm:text-3xl font-bold text-gray-900"
+              >
+                {t("about.content.section4.heading")}
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+                {t("about.content.section4.paragraph1")}
+              </p>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+                {t("about.content.section4.paragraph2")}
+              </p>
+            </div>
+          </section>
+
+          
         {/* YouTube Shorts Section - NEW */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
