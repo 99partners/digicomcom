@@ -93,7 +93,7 @@ console.log('Allowed CORS origins:', allowedOrigins);
 
 
 
-app.post("/ondc/on_subscribe", (req, res) => {
+app.post("/on_subscribe", (req, res) => {
   console.log("ONDC Subscribe request:", req.body);
   res.json({ message: "on_subscribe works" }); // must return JSON
 });
