@@ -91,6 +91,17 @@ const allowedOrigins = [
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('Allowed CORS origins:', allowedOrigins);
 
+
+
+app.post("/ondc/on_subscribe", (req, res) => {
+  console.log("ONDC Subscribe request:", req.body);
+  res.json({ message: "on_subscribe works" }); // must return JSON
+});
+
+
+
+
+
 app.use((req, res, next) => {
     const origin = req.headers.origin;
     
