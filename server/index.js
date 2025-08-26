@@ -16,8 +16,8 @@ const app = express();
 const PORT = process.env.PORT || 5051;
 
 const client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET
 );
 
 // Create API router
@@ -25,22 +25,22 @@ const apiRouter = express.Router();
 
 // Protected Route
 apiRouter.get("/protected", verifyGoogleToken, async (req, res, next) => {
-  try {
-    const { sub, email, name, picture } = req.user;
-    const user = await GoogleUser.findOneAndUpdate(
-      { googleId: sub },
-      { email, name, avatar: picture },
-      { new: true, upsert: true }
-    );
-    
-    res.json({ 
-      success: true,
-      message: "Authorized access granted", 
-      user 
-    });
-  } catch (err) {
-    next(err);
-  }
+    try {
+        const { sub, email, name, picture } = req.user;
+        const user = await GoogleUser.findOneAndUpdate(
+            { googleId: sub },
+            { email, name, avatar: picture },
+            { new: true, upsert: true }
+        );
+
+        res.json({
+            success: true,
+            message: "Authorized access granted",
+            user
+        });
+    } catch (err) {
+        next(err);
+    }
 });
 
 // Enhanced production logging
@@ -93,18 +93,26 @@ console.log('Allowed CORS origins:', allowedOrigins);
 
 
 
-app.post("/on_subscribe", (req, res) => {
-  console.log("ONDC Subscribe request:", req.body);
-  res.json({ message: "on_subscribe works" }); // must return JSON
+app.all("/on_subscribe", (req, res) => {
+    if (req.method === "GET") {
+        console.log("GET request for verification:", req.query);
+        res.json({ status: "ready", timestamp: new Date().toISOString() });
+    } else if (req.method === "POST") {
+        console.log("POST subscription request:", req.body);
+        res.json({
+            answer: req.body.challenge || "subscription_accepted",
+            message: "Subscription processed"
+        });
+    } else {
+        res.status(405).json({ error: "Method not allowed" });
+    }
 });
-
-
 
 
 
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    
+
     console.log('🔍 Request from origin:', origin || 'NO ORIGIN', 'Method:', req.method);
 
     if (
@@ -112,14 +120,14 @@ app.use((req, res, next) => {
         !origin || // allow requests without Origin (curl, ONDC registry, etc.)
         allowedOrigins.includes(origin)
     ) {
-        res.setHeader('Access-Control-Allow-Origin', origin || '*'); 
+        res.setHeader('Access-Control-Allow-Origin', origin || '*');
         res.setHeader('Vary', 'Origin');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-CSRF-Token, x-csrf-token');
         res.setHeader('Access-Control-Expose-Headers', 'Content-Length, X-Requested-With');
         res.setHeader('Access-Control-Max-Age', '86400');
-        
+
         if (req.method === 'OPTIONS') {
             res.status(200).end();
             return;
@@ -129,7 +137,7 @@ app.use((req, res, next) => {
         res.status(403).json({ error: 'Not allowed by CORS' });
         return;
     }
-    
+
     next();
 });
 
@@ -206,7 +214,7 @@ app.use("/", onSubscribeRoute);
 
 // Basic route to test server
 app.get('/', (req, res) => {
-    res.json({ 
+    res.json({
         message: 'Server is running successfully!',
         environment: process.env.NODE_ENV,
         timestamp: new Date().toISOString(),
@@ -262,12 +270,12 @@ app.use((req, res) => {
 const startServer = async () => {
     try {
         console.log('🔄 Initializing server...');
-        
+
         // Connect to MongoDB
         console.log('🔄 Connecting to database...');
         await connectDB();
         console.log('✅ Database connected successfully');
-        
+
         // Start listening only after successful DB connection
         const server = app.listen(PORT, '0.0.0.0', () => {
             console.log(`🚀 Server running successfully!`);
@@ -298,7 +306,7 @@ const startServer = async () => {
                 });
             });
         });
-        
+
     } catch (error) {
         console.error('❌ Failed to start server:', error);
         console.error('Error details:', error.message);

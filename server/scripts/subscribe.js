@@ -45,7 +45,7 @@ function createSignature(privateKey, data) {
 // Your request payload
 const requestBody = {
     subscriber_id: "staging.99digicom.com",
-    subscriber_url: "https://staging.99digicom.com/ondc/on_subscribe", // ✅ FIXED: Full URL
+    subscriber_url: "https://staging.99digicom.com/ondc/on_subscribe",
     domain: "nic2004:60232",
     country: "IND",
     city: "std:0278",
