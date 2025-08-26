@@ -1,10 +1,10 @@
 "use client";
 
-import AboutUsImage from '../assets/aboutus.png';
+import AboutUsImage from "../assets/aboutus.png";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 import {
   Handshake,
   Target,
@@ -62,14 +62,19 @@ const About = () => {
       />
       <Helmet>
         <meta name="robots" content="noindex, nofollow" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "AboutPage",
-          name: "About 99Digicom",
-          url: "https://99digicom.com/about"
-        })}</script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: "About 99Digicom",
+            url: "https://99digicom.com/about",
+          })}
+        </script>
       </Helmet>
-      <main id="main-content" className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      <main
+        id="main-content"
+        className="min-h-screen bg-gradient-to-br from-green-50 to-white"
+      >
         <article>
           <header className="pt-24 pb-16 px-4 sm:px-6 md:px-10 bg-white">
             <div className="max-w-7xl mx-auto text-center">
@@ -95,7 +100,8 @@ const About = () => {
                   id="mission-vision-heading"
                   className="text-3xl font-bold text-gray-900 mb-4"
                 >
-                  {t("about.content.section1.heading")} & {t("about.content.section2.heading")}
+                  {t("about.content.section1.heading")} &{" "}
+                  {t("about.content.section2.heading")}
                 </h2>
                 <p className="text-base sm:text-lg text-gray-600">
                   {t("about.hero.subtitle")}
@@ -152,7 +158,9 @@ const About = () => {
                         <h4 className="font-semibold text-gray-900 mb-1">
                           {val.title}
                         </h4>
-                        <p className="text-sm text-gray-600">{val.description}</p>
+                        <p className="text-sm text-gray-600">
+                          {val.description}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -215,6 +223,26 @@ const About = () => {
                   decoding="async"
                 />
               </div>
+            </div>
+          </section>
+
+          <section
+            className="py-16 px-4 sm:px-6 md:px-10 bg-white"
+            aria-labelledby="pricing-heading"
+          >
+            <div className="max-w-7xl mx-auto text-center space-y-6">
+              <h2
+                id="pricing-heading"
+                className="text-2xl sm:text-3xl font-bold text-gray-900"
+              >
+                {t("about.content.section4.heading")}
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+                {t("about.content.section4.paragraph1")}
+              </p>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+                {t("about.content.section4.paragraph2")}
+              </p>
             </div>
           </section>
         </article>
