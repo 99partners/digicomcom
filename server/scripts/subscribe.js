@@ -46,7 +46,7 @@ function createSignature(privateKey, data) {
 const requestBody = {
     subscriber_id: "staging.99digicom.com",
     subscriber_url: "https://staging.99digicom.com/ondc/on_subscribe",
-    domain: "nic2004:60232",
+    domain: "nic2004:52110",
     country: "IND",
     city: "std:0278",
     signing_public_key: "MCowBQYDK2VwAyEAkACXYYSQ9v4M6316htJZEDAPn/qr+cDIrqEZyoH6bkQ=",
@@ -60,7 +60,7 @@ const signature = createSignature(privateKey, requestBody);
 // Make the subscription request
 async function subscribe() {
     try {
-        const response = await fetch("https://pilot-gateway-1.beckn.nsdl.co.in/subscribe", {
+        const response = await fetch("https://staging.99digicom.com/ondc/on_subscribe", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
