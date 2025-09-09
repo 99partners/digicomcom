@@ -16,7 +16,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Partners from './pages/Partners';
-// import Shop from './pages/Shop';
+import Shop from './pages/Shop';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import RefundPolicy from './pages/RefundPolicy';
@@ -44,19 +44,19 @@ import Subscriptions from './pages/dashboard/Subscriptions';
 
 // Import from Services Partner Resources
 
-// import PlatformEnablement from './pages/launch';
-// import AccountManagementServices from './pages/manage';
-// import AdvertisingMarketing from './pages/advertising_marketing';
+import PlatformEnablement from './pages/launch';
+import AccountManagementServices from './pages/manage';
+import AdvertisingMarketing from './pages/advertising_marketing';
 
 import ForProductPartners from './pages/whyPartners';
 import PartnersOnboarding from './pages/partnersOnboarding';
 
 import Blogs from './pages/blogs';
-// import CaseStudies from './pages/caseStudies';
-// import GuidesTutorials from './pages/guidesTutorials';
+import CaseStudies from './pages/caseStudies';
+import GuidesTutorials from './pages/guidesTutorials';
 import Faqs from './pages/faq';
 import CoBranding from './pages/CoBranding';
-// import Careers from './pages/Careers';
+import Careers from './pages/Careers';
 import EmailVerify from './components/EmailVerify';
 import ResetPassword from './components/ResetPassword';
 
@@ -197,7 +197,7 @@ function App() {
 
               <Route path="/resources/blogs" element={<Blogs />} />
               <Route path="/resources/blogs/:id" element={<BlogDetails />} />
-              {/* <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} /> */}
+              <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
               <Route path="/resources/faq" element={<Faqs />} />
               <Route path="/faqss" element={<Faqs />} />
               <Route path="/customer-login" element={<CustomerLogin />} />
@@ -220,9 +220,9 @@ function App() {
               <Route path="/partners/marketplaces/snapdeal" element={<Snapdeal />} />
               <Route path="/services/co_branding_solutions" element={<CoBranding />} />
 
-              {/* <Route path="/services/grow" element={<AdvertisingMarketing />} />    
+              <Route path="/services/grow" element={<AdvertisingMarketing />} />    
               <Route path="/services/manage" element={<AccountManagementServices />} />
-              <Route path="/services/launch" element={<PlatformEnablement />} /> */}
+              <Route path="/services/launch" element={<PlatformEnablement />} />
               {/* Service Form Routes */}
               <Route path="/services/launch/form" element={<PlatformEnablementForm />} />
               <Route path="/services/manage/form" element={<AMSForm />} />

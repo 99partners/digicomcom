@@ -32,14 +32,14 @@ const Header = () => {
   const navigation = [
     { name: t('common.home'), href: "/" },
     { name: t('common.about'), href: "/about_us" },
-    // {
-    //   name: t('common.services'),
-    //   submenu: [
-    //     { name: t('Launch'), href: "/services/launch" },
-    //     { name: t('Manage'), href: "/services/manage" },
-    //     { name: t('Grow'), href: "/services/grow" },
-    //   ],
-    // },
+    {
+      name: t('common.services'),
+      submenu: [
+        { name: t('Launch'), href: "/services/launch" },
+        { name: t('Manage'), href: "/services/manage" },
+        { name: t('Grow'), href: "/services/grow" },
+      ],
+    },
     {
       name: t('common.solutions'),
       submenu: [
@@ -59,7 +59,7 @@ const Header = () => {
       name: t('common.resources'),
       submenu: [
         { name: t('Blogs'), href: "/resources/blogs" },
-        // { name: t('Guides & Tutorials'), href: "/resources/guides_Tutorials" },
+        { name: t('Guides & Tutorials'), href: "/resources/guides_Tutorials" },
         { name: t('FAQs'), href: "/resources/faq" },
       ],
     },
@@ -96,9 +96,9 @@ const Header = () => {
               {currentLanguage === 'en' && 'Digicom'}
               {currentLanguage === 'hi' && 'डिजिकॉम'}
               {currentLanguage === 'gu' && 'ડિજિકોમ'}
-              {/* {currentLanguage === 'pa' && 'ਡਿਜੀਕੋਮ'}
+              {currentLanguage === 'pa' && 'ਡਿਜੀਕੋਮ'}
               {currentLanguage === 'mr' && 'डिजिकॉम'}
-              {currentLanguage === 'bn' && 'ডিজিকম'} */}
+              {currentLanguage === 'bn' && 'ডিজিকম'}
             </span>
           </Link>
         </div>
@@ -174,7 +174,7 @@ const Header = () => {
             to="https://shop.99digicom.com"
             className="px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
           > */}
-            {/* <Link
+            <Link
             to="https://shop.99digicom.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -182,7 +182,7 @@ const Header = () => {
           >
 
             {t('common.shop')}
-          </Link> */}
+          </Link>
           {isAuthenticated ? (
             <button
               onClick={() => navigate('/dashboard/profile')}
