@@ -133,12 +133,53 @@ const Contact = () => {
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4 bg-white text-center">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-3 md:-mb-6">
             Get in <span className="text-green-600">Touch</span>
           </h1>
-          {/* <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-8 max-w-2xl mx-auto">
-            Ready to transform your business? Have questions about our services? We're here to help you succeed.
-          </p> */}
+        </div>
+      </section>
+
+      {/* Company Contact Card */}
+      <section className="py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 md:p-10">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
+                99 Partners Digicom Private Limited
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <MapPin className="h-5 sm:h-6 w-5 sm:w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <a
+                    href="https://maps.app.goo.gl/Wq8ACCPD6HafkqFh8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-green-800 transition-colors text-sm sm:text-base hover:underline"
+                  >
+                    306, Aristo Complex, Waghawadi Road, Bhavnagar-364001, Gujarat, India
+                  </a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 sm:h-6 w-5 sm:w-6 text-green-600 flex-shrink-0" />
+                  <a
+                    href="tel:+916352653306"
+                    className="text-gray-600 hover:text-green-800 transition-colors text-sm sm:text-base hover:underline"
+                  >
+                    +91 6352 653306
+                  </a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="h-5 sm:h-6 w-5 sm:w-6 text-green-600 flex-shrink-0" />
+                  <a
+                    href="mailto:99partners.in@gmail.com"
+                    className="text-gray-600 hover:text-green-800 transition-colors text-sm sm:text-base hover:underline"
+                  >
+                    99partners.in@gmail.com
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
