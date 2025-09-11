@@ -231,7 +231,7 @@ const Footer = () => {
                   href="https://maps.google.com/?q=306, Aristo Complex, Waghawadi Road, Bhavnagar-364001, Gujarat, India"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs sm:text-sm text-gray-400 hover:text-green-400 underline transition-colors"
+                  className="text-xs sm:text-sm text-gray-400 hover:text-white underline transition-colors"
                   aria-label="View address on Google Maps"
                 >
                   306, Aristo Complex, Waghawadi Road, Bhavnagar-364001, Gujarat, India
