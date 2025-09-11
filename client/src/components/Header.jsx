@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -19,7 +19,7 @@ const Header = () => {
   const { currentLanguage } = useLanguage();
   const { t, i18n } = useTranslation();
 
-  // Force re-render when language changes
+  // Force re-render when language changes.
   const [, forceUpdate] = useState();
   useEffect(() => {
     const handleLanguageChanged = () => forceUpdate({});
@@ -47,7 +47,7 @@ const Header = () => {
         { name: t('Join ONDC Seller Acoount'), href: "/solutions/ondc-seller" },
         { name: t('Join ONDC Buyer Acoount'), href: "/solutions/ondc-buyer" },
         { name: t('Cobranding'), href: "/services/co_branding_solutions" },
-        { name: t('Profit Calculator'), href: "/calculator" }
+        { name: t('Profit Calculator '), href: "/calculator" }
 
         { name: t("Join ONDC Seller Acoount"), href: "/solutions/ondc-seller" },
         { name: t("Join ONDC Buyer Acoount"), href: "/solutions/ondc-buyer" },
