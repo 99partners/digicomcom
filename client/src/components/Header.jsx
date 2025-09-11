@@ -39,13 +39,14 @@ const Header = () => {
         { name: t('Manage'), href: "/services/manage" },
         { name: t('Grow'), href: "/services/grow" },
       ],
-    },
+    }, 
     {
       name: t('common.solutions'),
       submenu: [
         { name: t('Join ONDC Seller Acoount'), href: "/solutions/ondc-seller" },
         { name: t('Join ONDC Buyer Acoount'), href: "/solutions/ondc-buyer" },
-        { name: t('Cobranding'), href: "/services/co_branding_solutions" }
+        { name: t('Cobranding'), href: "/services/co_branding_solutions" },
+        { name: t('Profit Calculator'), href: "/calculator" }
       ],
     },
     {

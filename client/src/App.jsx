@@ -25,6 +25,7 @@ import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import FAQ from './pages/dashboard/FAQ';
 import MyApplications from './pages/dashboard/MyApplications';
+import CalculatorPage from './pages/calculator/CalculatorPage';
 
 // Import ONDC Solutions
 import OndcSeller from './pages/solutions/OndcSeller';
@@ -227,6 +228,9 @@ function App() {
               <Route path="/services/launch/form" element={<PlatformEnablementForm />} />
               <Route path="/services/manage/form" element={<AMSForm />} />
               <Route path="/services/grow/form" element={<AdvertisingForm />} />
+              
+              {/* Calculator Route */}
+              <Route path="/calculator" element={<CalculatorPage />} />
               
               {/* Solution Routes */}
               <Route path="/solutions/ondc-seller" element={<OndcSeller />} />
