@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Mail, Linkedin, Instagram, Youtube, Twitter } from "lucide-react";
+import { Mail, Linkedin, Instagram, Youtube, Twitter, MapPin } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
 import mapImage from "../assets/map.png"; // your image file
@@ -219,21 +219,36 @@ const Footer = () => {
               {t(
                 "footer.tagline",
                 "Launch, Manage and Grow your business across all Top marketplaces."
+                
               )}
             </p>
 
             <div className="text-xs sm:text-sm text-gray-400 space-y-3">
+
               <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" aria-hidden="true" />
+                <a
+                  href="https://maps.google.com/?q=306, Aristo Complex, Waghawadi Road, Bhavnagar-364001, Gujarat, India"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs sm:text-sm text-gray-400 hover:text-green-400 underline transition-colors"
+                  aria-label="View address on Google Maps"
+                >
+                  306, Aristo Complex, Waghawadi Road, Bhavnagar-364001, Gujarat, India
+                </a>
+              </div>
+
+              <div className="flex items-center gap-2 mt-1">
                 <Mail
                   className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400"
                   aria-hidden="true"
                 />
                 <a
-                  href="mailto:support@99digicom.com"
+                  href="mailto:99partners.in@gmail.com"
                   className="hover:text-white transition-colors"
-                  aria-label="Email us at support@99digicom.com"
+                  aria-label="Email us at 99partners.in@gmail.com"
                 >
-                  {t("footer.email", "support@99digicom.com")}
+                  99partners.in@gmail.com
                 </a>
               </div>
 
