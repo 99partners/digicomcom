@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Profit Calculators | DigiCom</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">E-Commerce Profit Calculators</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link active" id="amazon-tab" data-bs-toggle="pill" data-bs-target="#amazon" type="button" role="tab">Amazon</button>
+                    <button class="nav-link" id="flipkart-tab" data-bs-toggle="pill" data-bs-target="#flipkart" type="button" role="tab">Flipkart</button>
+                    <button class="nav-link" id="meesho-tab" data-bs-toggle="pill" data-bs-target="#meesho" type="button" role="tab">Meesho</button>
+                    <button class="nav-link" id="swiggy-tab" data-bs-toggle="pill" data-bs-target="#swiggy" type="button" role="tab">Swiggy</button>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <!-- Amazon Calculator -->
+                    <div class="tab-pane fade show active" id="amazon" role="tabpanel" aria-labelledby="amazon-tab">
+                        <div class="card">
+                            <div class="card-header bg-warning text-dark">
+                                <h3>Amazon Profit Calculator</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="amazon-calculator">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="amazon-product-price" class="form-label">Product Price (₹)</label>
+                                            <input type="number" class="form-control" id="amazon-product-price" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="amazon-product-cost" class="form-label">Product Cost (₹)</label>
+                                            <input type="number" class="form-control" id="amazon-product-cost" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="amazon-category" class="form-label">Product Category</label>
+                                            <select class="form-select" id="amazon-category" required>
+                                                <option value="">Select Category</option>
+                                                <option value="electronics">Electronics</option>
+                                                <option value="fashion">Fashion</option>
+                                                <option value="home">Home & Kitchen</option>
+                                                <option value="beauty">Beauty & Personal Care</option>
+                                                <option value="books">Books</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="amazon-weight" class="form-label">Product Weight (kg)</label>
+                                            <input type="number" step="0.01" class="form-control" id="amazon-weight" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="amazon-fba" class="form-label">Fulfillment Method</label>
+                                            <select class="form-select" id="amazon-fba" required>
+                                                <option value="fba">Fulfilled by Amazon (FBA)</option>
+                                                <option value="fbm">Fulfilled by Merchant (FBM)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="amazon-referral-fee" class="form-label">Referral Fee (%)</label>
+                                            <input type="number" class="form-control" id="amazon-referral-fee" value="15" required>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-warning" onclick="calculateAmazonProfit()">Calculate Profit</button>
+                                </form>
+                                <div class="mt-4 d-none" id="amazon-results">
+                                    <h4>Profit Breakdown</h4>
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td>Selling Price</td>
+                                                <td id="amazon-selling-price">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Product Cost</td>
+                                                <td id="amazon-cost">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Referral Fee</td>
+                                                <td id="amazon-referral">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Closing Fee</td>
+                                                <td id="amazon-closing-fee">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Shipping Fee</td>
+                                                <td id="amazon-shipping-fee">₹0.00</td>
+                                            </tr>
+                                            <tr class="table-warning">
+                                                <th>Net Profit</th>
+                                                <th id="amazon-profit">₹0.00</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Profit Margin</td>
+                                                <td id="amazon-margin">0%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ROI</td>
+                                                <td id="amazon-roi">0%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Flipkart Calculator -->
+                    <div class="tab-pane fade" id="flipkart" role="tabpanel" aria-labelledby="flipkart-tab">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h3>Flipkart Profit Calculator</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="flipkart-calculator">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="flipkart-product-price" class="form-label">Product Price (₹)</label>
+                                            <input type="number" class="form-control" id="flipkart-product-price" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="flipkart-product-cost" class="form-label">Product Cost (₹)</label>
+                                            <input type="number" class="form-control" id="flipkart-product-cost" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="flipkart-category" class="form-label">Product Category</label>
+                                            <select class="form-select" id="flipkart-category" required>
+                                                <option value="">Select Category</option>
+                                                <option value="electronics">Electronics</option>
+                                                <option value="fashion">Fashion</option>
+                                                <option value="home">Home & Kitchen</option>
+                                                <option value="beauty">Beauty & Personal Care</option>
+                                                <option value="books">Books</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="flipkart-weight" class="form-label">Product Weight (kg)</label>
+                                            <input type="number" step="0.01" class="form-control" id="flipkart-weight" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="flipkart-fulfillment" class="form-label">Fulfillment Method</label>
+                                            <select class="form-select" id="flipkart-fulfillment" required>
+                                                <option value="flipkart-assured">Flipkart Assured</option>
+                                                <option value="seller-fulfilled">Seller Fulfilled</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="flipkart-commission" class="form-label">Commission Rate (%)</label>
+                                            <input type="number" class="form-control" id="flipkart-commission" value="12" required>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" onclick="calculateFlipkartProfit()">Calculate Profit</button>
+                                </form>
+                                <div class="mt-4 d-none" id="flipkart-results">
+                                    <h4>Profit Breakdown</h4>
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td>Selling Price</td>
+                                                <td id="flipkart-selling-price">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Product Cost</td>
+                                                <td id="flipkart-cost">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Commission</td>
+                                                <td id="flipkart-commission-amount">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fixed Fee</td>
+                                                <td id="flipkart-fixed-fee">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Shipping Fee</td>
+                                                <td id="flipkart-shipping-fee">₹0.00</td>
+                                            </tr>
+                                            <tr class="table-primary">
+                                                <th>Net Profit</th>
+                                                <th id="flipkart-profit">₹0.00</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Profit Margin</td>
+                                                <td id="flipkart-margin">0%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ROI</td>
+                                                <td id="flipkart-roi">0%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Meesho Calculator -->
+                    <div class="tab-pane fade" id="meesho" role="tabpanel" aria-labelledby="meesho-tab">
+                        <div class="card">
+                            <div class="card-header bg-danger text-white">
+                                <h3>Meesho Profit Calculator</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="meesho-calculator">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="meesho-product-price" class="form-label">Product Price (₹)</label>
+                                            <input type="number" class="form-control" id="meesho-product-price" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="meesho-product-cost" class="form-label">Product Cost (₹)</label>
+                                            <input type="number" class="form-control" id="meesho-product-cost" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="meesho-category" class="form-label">Product Category</label>
+                                            <select class="form-select" id="meesho-category" required>
+                                                <option value="">Select Category</option>
+                                                <option value="fashion">Fashion</option>
+                                                <option value="home">Home & Kitchen</option>
+                                                <option value="beauty">Beauty & Personal Care</option>
+                                                <option value="electronics">Electronics</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="meesho-weight" class="form-label">Product Weight (kg)</label>
+                                            <input type="number" step="0.01" class="form-control" id="meesho-weight" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="meesho-commission" class="form-label">Commission Rate (%)</label>
+                                            <input type="number" class="form-control" id="meesho-commission" value="17" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="meesho-return-rate" class="form-label">Expected Return Rate (%)</label>
+                                            <input type="number" class="form-control" id="meesho-return-rate" value="10" required>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-danger" onclick="calculateMeeshoProfit()">Calculate Profit</button>
+                                </form>
+                                <div class="mt-4 d-none" id="meesho-results">
+                                    <h4>Profit Breakdown</h4>
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td>Selling Price</td>
+                                                <td id="meesho-selling-price">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Product Cost</td>
+                                                <td id="meesho-cost">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Commission</td>
+                                                <td id="meesho-commission-amount">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Collection Fee</td>
+                                                <td id="meesho-collection-fee">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Shipping Fee</td>
+                                                <td id="meesho-shipping-fee">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Return Cost</td>
+                                                <td id="meesho-return-cost">₹0.00</td>
+                                            </tr>
+                                            <tr class="table-danger">
+                                                <th>Net Profit</th>
+                                                <th id="meesho-profit">₹0.00</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Profit Margin</td>
+                                                <td id="meesho-margin">0%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ROI</td>
+                                                <td id="meesho-roi">0%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Swiggy Calculator -->
+                    <div class="tab-pane fade" id="swiggy" role="tabpanel" aria-labelledby="swiggy-tab">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h3>Swiggy Profit Calculator</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="swiggy-calculator">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="swiggy-item-price" class="form-label">Item Price (₹)</label>
+                                            <input type="number" class="form-control" id="swiggy-item-price" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="swiggy-food-cost" class="form-label">Food Cost (₹)</label>
+                                            <input type="number" class="form-control" id="swiggy-food-cost" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="swiggy-packaging" class="form-label">Packaging Cost (₹)</label>
+                                            <input type="number" class="form-control" id="swiggy-packaging" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="swiggy-commission" class="form-label">Swiggy Commission (%)</label>
+                                            <input type="number" class="form-control" id="swiggy-commission" value="25" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="swiggy-gst" class="form-label">GST (%)</label>
+                                            <input type="number" class="form-control" id="swiggy-gst" value="5" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="swiggy-delivery-type" class="form-label">Delivery Type</label>
+                                            <select class="form-select" id="swiggy-delivery-type" required>
+                                                <option value="swiggy-delivery">Swiggy Delivery</option>
+                                                <option value="self-delivery">Self Delivery</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-success" onclick="calculateSwiggyProfit()">Calculate Profit</button>
+                                </form>
+                                <div class="mt-4 d-none" id="swiggy-results">
+                                    <h4>Profit Breakdown</h4>
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td>Item Price</td>
+                                                <td id="swiggy-selling-price">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Food Cost</td>
+                                                <td id="swiggy-cost">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Packaging Cost</td>
+                                                <td id="swiggy-packaging-cost">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Swiggy Commission</td>
+                                                <td id="swiggy-commission-amount">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>GST</td>
+                                                <td id="swiggy-gst-amount">₹0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Delivery Fee</td>
+                                                <td id="swiggy-delivery-fee">₹0.00</td>
+                                            </tr>
+                                            <tr class="table-success">
+                                                <th>Net Profit</th>
+                                                <th id="swiggy-profit">₹0.00</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Profit Margin</td>
+                                                <td id="swiggy-margin">0%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ROI</td>
+                                                <td id="swiggy-roi">0%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="calculator.js"></script>
+</body>
+</html>
