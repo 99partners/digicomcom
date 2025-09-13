@@ -204,28 +204,47 @@ const categories = {
     'Small Appliances - Electric Kettles',
     ''
   ],
-  'Others': [
-    'Miscellaneous Items',
-    'Gifts',
-    'Stationery'
-  ],
   'Sports, Gym & Sporting Equipment': [
     'Fitness Equipment',
     'Team Sports Gear',
     'Outdoor Sports'
+  ],
+  'Others': [
+    'Miscellaneous Items',
+    'Gifts',
+    'Stationery'
   ]
+};
+
+// Default referral fees by category (approximate 2025 rates, adjusted for zero under ₹300)
+const referralFees = {
+  'Automotive, Car & Accessories': 12,
+  'Baby Products, Toys & Education': 10,
+  'Books, Music, Movies, Video Games, Entertainment': 8,
+  'Clothing, Fashion, Jewellery, Luggage, Shoes': 13.5,
+  'Electronics (Camera, Mobile, PC, Wireless) & Accessories': 6,
+  'Grocery, Food & Pet Supplies': 15,
+  'Health, Beauty, Personal Care & Personal Care Appliances': 12,
+  'Home, Decor, Home Improvement, Furniture, Outdoor, Lawn & Garden': 12,
+  'Industrial, Medical, Scientific Supplies & Office Products': 10,
+  'Kitchen, Large & Small Appliances': 8,
+  'Others': 15,
+  'Sports, Gym & Sporting Equipment': 10
 };
 
 const AmazonCalculator = () => {
   // State for input values
   const [sellingPrice, setSellingPrice] = useState('');
   const [costPrice, setCostPrice] = useState('');
-  const [referralFeePercent, setReferralFeePercent] = useState('15'); // Default 15%
+  const [referralFeePercent, setReferralFeePercent] = useState('15');
   const [closingFee, setClosingFee] = useState('');
   const [shippingFee, setShippingFee] = useState('');
-  const [gstPercent, setGstPercent] = useState('18'); // Default 18%
+  const [gstPercent, setGstPercent] = useState('18');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  const [weight, setWeight] = useState(''); // Weight in grams
+  const [shippingMethod, setShippingMethod] = useState('');
+  const [area, setArea] = useState('');
 
   // State for calculated values
   const [calculations, setCalculations] = useState({
@@ -243,19 +262,79 @@ const AmazonCalculator = () => {
     return '₹' + parseFloat(amount).toFixed(2);
   };
 
+  // Calculate closing fee based on price range and fulfillment method
+  const calculateClosingFee = (price, method) => {
+    const p = parseFloat(price) || 0;
+    let cf = 0;
+    if (p <= 250) {
+      cf = 7;
+    } else if (p <= 500) {
+      cf = 10;
+    } else if (p <= 1000) {
+      cf = 20;
+    } else {
+      cf = 70; // For higher prices or certain categories
+    }
+    // For Self Ship, higher closing fee for low price items (2025 change)
+    if (method === 'Self Ship' && p < 300) {
+      cf = 45;
+    }
+    return cf;
+  };
+
+  // Calculate shipping fee based on weight, method, and area
+  const calculateShippingFee = () => {
+    const wt = parseFloat(weight) || 0;
+    if (wt === 0 || shippingMethod === 'Self Ship') {
+      return parseFloat(shippingFee) || 0;
+    }
+
+    let baseRate = 0;
+    let additionalPer500g = 0;
+
+    if (shippingMethod === 'Amazon Easy Ship' || shippingMethod === 'Seller Flex') {
+      baseRate = 29; // First 500g
+      additionalPer500g = 17;
+      // Flat rate adjustments for 2025
+      if (area === 'National') baseRate = 65;
+    } else if (shippingMethod === 'Amazon FBA') {
+      baseRate = 40; // Approximate fulfillment fee
+      additionalPer500g = 20;
+    }
+
+    const num500g = Math.ceil(wt / 500);
+    let fee = baseRate + Math.max(0, (num500g - 1)) * additionalPer500g;
+
+    // Adjust for area
+    if (area === 'Local') {
+      fee *= 0.8;
+    } else if (area === 'Regional') {
+      fee *= 1.1;
+    } else if (area === 'National') {
+      fee *= 1.3;
+    }
+
+    return Math.round(fee * 100) / 100; // Round to 2 decimals
+  };
+
   // Calculate profit whenever input values change
   useEffect(() => {
     calculateProfit();
-  }, [sellingPrice, costPrice, referralFeePercent, closingFee, shippingFee, gstPercent]);
+  }, [sellingPrice, costPrice, referralFeePercent, closingFee, shippingFee, gstPercent, selectedCategory, weight, shippingMethod, area]);
 
   // Calculate profit function
   const calculateProfit = () => {
     const sp = parseFloat(sellingPrice) || 0;
     const cp = parseFloat(costPrice) || 0;
-    const rfPercent = parseFloat(referralFeePercent) || 0;
-    const cf = parseFloat(closingFee) || 0;
-    const sf = parseFloat(shippingFee) || 0;
+    let rfPercent = parseFloat(referralFeePercent) || 15;
+    const cf = calculateClosingFee(sp, shippingMethod);
+    const sf = calculateShippingFee();
     const gstPerc = parseFloat(gstPercent) || 0;
+
+    // Auto-set referral fee based on category if selected
+    if (selectedCategory && referralFees[selectedCategory]) {
+      rfPercent = sp < 300 ? 0 : referralFees[selectedCategory];
+    }
 
     const referralFee = (sp * rfPercent) / 100;
     const totalFeesBeforeGST = referralFee + cf + sf;
@@ -272,6 +351,8 @@ const AmazonCalculator = () => {
       totalCost,
       profit
     });
+    // Update closing fee state if auto-calculated
+    setClosingFee(cf.toString());
   };
 
   // Handle input changes
@@ -372,6 +453,11 @@ const AmazonCalculator = () => {
                   <span className="text-gray-500">%</span>
                 </div>
               </div>
+              {selectedCategory && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Auto: {parseFloat(sellingPrice) < 300 ? 0 : referralFees[selectedCategory]}% (for {selectedCategory})
+                </p>
+              )}
             </div>
             
             <div>
@@ -389,22 +475,64 @@ const AmazonCalculator = () => {
                 />
               </div>
             </div>
-            
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Shipping Fee</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500">₹</span>
-                </div>
-                <input
-                  type="number"
-                  value={shippingFee}
-                  onChange={(e) => handleInputChange(e, setShippingFee)}
-                  placeholder="0.00"
-                  className="pl-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2"
-                />
-              </div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Weight (grams)</label>
+              <input
+                type="number"
+                value={weight}
+                onChange={(e) => handleInputChange(e, setWeight)}
+                placeholder="500"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2"
+              />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Shipping Method</label>
+              <select
+                value={shippingMethod}
+                onChange={(e) => handleInputChange(e, setShippingMethod)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2"
+              >
+                <option value="">Select Shipping Method</option>
+                <option value="Amazon FBA">Amazon FBA</option>
+                <option value="Self Ship">Self Ship</option>
+                <option value="Amazon Easy Ship">Amazon Easy Ship</option>
+                <option value="Seller Flex">Seller Flex</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Area</label>
+              <select
+                value={area}
+                onChange={(e) => handleInputChange(e, setArea)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2"
+              >
+                <option value="">Select Area</option>
+                <option value="Local">Local</option>
+                <option value="Regional">Regional</option>
+                <option value="National">National</option>
+              </select>
+            </div>
+
+            {shippingMethod === 'Self Ship' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Manual Shipping Fee (₹)</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500">₹</span>
+                  </div>
+                  <input
+                    type="number"
+                    value={shippingFee}
+                    onChange={(e) => handleInputChange(e, setShippingFee)}
+                    placeholder="0.00"
+                    className="pl-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2"
+                  />
+                </div>
+              </div>
+            )}
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">GST %</label>
