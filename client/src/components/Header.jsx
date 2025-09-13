@@ -48,11 +48,6 @@ const Header = () => {
         { name: t('Join ONDC Buyer Acoount'), href: "/solutions/ondc-buyer" },
         { name: t('Cobranding'), href: "/services/co_branding_solutions" },
         { name: t('Profit Calculator '), href: "/calculator" },
-
-        { name: t("Join ONDC Seller Acoount"), href: "/solutions/ondc-seller" },
-        { name: t("Join ONDC Buyer Acoount"), href: "/solutions/ondc-buyer" },
-        { name: t("Cobranding"), href: "/services/co_branding_solutions" },
-
       ],
     },
     {
