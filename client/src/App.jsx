@@ -25,11 +25,11 @@ import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import FAQ from './pages/dashboard/FAQ';
 import MyApplications from './pages/dashboard/MyApplications';
-import CalculatorPage from './pages/calculator/CalculatorPage';
 
 // Import ONDC Solutions
 import OndcSeller from './pages/solutions/OndcSeller';
 import OndcBuyer from './pages/solutions/OndcBuyer';
+import ProfitCalculator from './pages/calculator/ProfitCalculator';
 
 import DashboardLayout from './components/partner/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -230,7 +230,7 @@ function App() {
               <Route path="/services/grow/form" element={<AdvertisingForm />} />
               
               {/* Calculator Route */}
-              <Route path="/calculator" element={<CalculatorPage />} />
+              <Route path="/calculator" element={<ProfitCalculator />} />
               
               {/* Solution Routes */}
               <Route path="/solutions/ondc-seller" element={<OndcSeller />} />
