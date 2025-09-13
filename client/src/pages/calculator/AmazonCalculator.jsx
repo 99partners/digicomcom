@@ -1,5 +1,201 @@
 import React, { useState, useEffect } from 'react';
 
+// Category and subcategory data
+const categories = {
+  'Automotive, Car & Accessories': [
+    'Automotive - Helmets & Riding Gloves',
+    'Automotive Vehicles - 2-Wheelers',
+    'Automotive Vehicles - 4-Wheelers',
+    'Automotive Vehicles - Electric Vehicles',
+    'Automotive - Car and Bike parts',
+    'Automotive - Brakes',
+    'Automotive - Styling and body fittings',
+    'Automotive - Transmission',
+    'Automotive - Engine parts',
+    'Automotive - Exhaust systems',
+    'Automotive - Interior fitting',
+    'Automotive - Suspension',
+    'Automotive - Wipers',
+    'Automotive - Cleaning kits - Sponges',
+    'Automotive - Cleaning kits - Brush',
+    'Automotive - Cleaning kits - Duster',
+    'Automotive - Cleaning kits - Cloths and liquids',
+    'Car interior & exterior care - Waxes',
+    'Car interior & exterior care - Polish',
+    'Car interior & exterior care - Shampoo',
+    'Car interior & exterior care - Other',
+    'Car and Bike Lighting and Paints',
+    'Automotive Accessories - Floor Mats',
+    'Automotive Accessories - Seat/Car/Bike Covers',
+    'Riding Gear - Face Covers and Gloves',
+    'Vehicle Tools and Appliances',
+    'Oils',
+    'Lubricants',
+    'Automotive - Batteries',
+    'Automotive - Air fresheners',
+    'Car Electronics Devices',
+    'Car Electronics Accessories',
+    'Automotive - Tyres',
+    'Automotive - Rims'
+  ],
+  'Baby Products, Toys & Education': [
+    'Baby Hardlines - Swings, Bouncers and Rockers, Carriers, Walkers',
+    'Baby Safety - Guards & Locks',
+    'Baby Room Decor Baby Furniture',
+    'Baby Car Seats & Accessories',
+    'Baby Strollers',
+    'Baby diapers',
+    'Toys - Drones',
+    'Toys - Balloons and Soft Toys'
+  ],
+  'Books, Music, Movies, Video Games, Entertainment': [
+    'Books',
+    'Movies',
+    'Music',
+    'Musical Instruments - Guitars',
+    'Musical Instruments - Keyboards',
+    'Musical Instruments - Microphones',
+    'Musical Instruments - Others',
+    'Musical Instruments - DJ & VJ Equipment, Recording and Computer, Cables & Leads, PA & Stage',
+    'Video Games - Online game services',
+    'Video Games - Accessories',
+    'Video Games - Consoles',
+    'Video Games'
+  ],
+  'Clothing, Fashion, Jewellery, Luggage, Shoes': [
+    'Apparel - Sweat Shirts and Jackets',
+    'Apparel - Shorts',
+    'Apparel - Baby',
+    'Apparel - Ethnic wear',
+    'Apparel - Other innerwear',
+    'Apparel - Sleepwear',
+    'Apparel - Sarees and Dress Materials',
+    'Apparel - Men\'s T-shirts',
+    'Apparel - Women\'s Innerwear / Lingerie',
+    'Backpacks',
+    'Eyewear - Sunglasses, Frames and zero power eye glasses',
+    'Fashion Jewellery',
+    'Fine Jewellery - Gold Coins',
+    'Fine Jewellery - Studded',
+    'Fine Jewellery - Unstudded and Solitaire',
+    'Silver Jewellery',
+    'Flip Flops, Fashion Sandals and Slippers',
+    'Handbags',
+    'Luggage - Suitcase & Trolleys',
+    'Luggage - Travel Accessories',
+    'Kids Shoes',
+    'Shoes',
+    'Shoes - Sandals & Floaters',
+    'Wallets',
+    'Watches'
+  ],
+  'Electronics (Camera, Mobile, PC, Wireless) & Accessories': [
+    'Cables and Adapters',
+    'Camera Accessories',
+    'Camera Lenses',
+    'Camera and Camcorder',
+    'Cases, Covers, Skins, Screen Guards',
+    'Desktops',
+    'Electronic Accessories (Electronics, PC & Wireless)',
+    'Electronic Devices',
+    'Entertainment Collectibles',
+    'Fashion Smartwatches',
+    'GPS Devices',
+    'Hard Disks',
+    'Headsets, Headphones and Earphones',
+    'Keyboards and Mouse',
+    'Kindle Accessories',
+    'Laptop Bags & Sleeves',
+    'Laptop and Camera Battery',
+    'Laptops',
+    'Memory Cards',
+    'Mobile phones',
+    'Tablets',
+    'Modems & Networking Devices',
+    'Monitors',
+    'PC Components',
+    'Power Banks & Chargers',
+    'Printers & Scanners',
+    'Software Products',
+    'Speakers',
+    'Television',
+    'Landline Phones',
+    'Smart Watches & Accessories',
+    'USB Flash Drives',
+    'Projectors, Home Theatre Systems, Binoculars and Telescopes'
+  ],
+  'Grocery, Food & Pet Supplies': [
+    'Grocery - herbs and spices',
+    'Grocery & Gourmet - Oils',
+    'Grocery - Dried fruits and nuts',
+    'Grocery - Hampers and gifting',
+    'Pet food'
+  ],
+  'Health, Beauty, Personal Care & Personal Care Appliances': [
+    'Beauty - Fragrance',
+    'Beauty - Haircare, Bath and Shower',
+    'Beauty - Makeup',
+    'Face Wash',
+    'Moisturizer Cream',
+    'Sunscreen',
+    'Deodorants',
+    'Facial Steamers',
+    'Prescription Medicine',
+    'Medical Equipment & Contact Lens',
+    'Ayurvedic Products, Oral Care, Hand Sanitizers, Pooja Supplies',
+    'Sports Nutrition and Meal Replacement Shakes',
+    'Contact Lens and Reading Glasses',
+    'Household Cleaning, Laundry, Air Fresheners, Personal Hygiene',
+    'Vitamins & Mineral Health Supplements',
+    'Luxury Beauty',
+    'Car Cradles, Lens Kits, and Tablet Cases',
+    'Electric Massagers',
+    'Glucometer and Glucometer Strips',
+    'Thermometers',
+    'Weighing Scales and Fat Analyzers'
+  ],
+  'Home, Decor, Home Improvement, Furniture, Outdoor, Lawn & Garden': [
+    'Bean Bags & Inflatables',
+    'Mattresses',
+    'Rugs and Doormats',
+    'Clocks',
+    'Wall Art',
+    'Bedsheets, Blankets and covers',
+    'Home furnishing (Excluding curtain and curtain accessories)',
+    'Containers, Boxes, Bottles, and Kitchen Storage',
+    'Home improvement - Accessories',
+    'Home improvement (excl. accessories), including Home Security Systems',
+    'Tiles & Flooring Accessories',
+    'Wires (Electrical Wires/cables for house wiring, adhoc usage)',
+    'Ladders, Kitchen and Bath fixtures',
+    'Home Storage (Excluding Kitchen Containers, Boxes, Bottles, and Kitchen Storage)',
+    'Wallpapers & Wallpaper Accessories',
+    'Home Decor Products',
+    'Lawn & Garden - Outdoor equipments (Saws, Lawn Mowers, etc.)'
+  ],
+  'Industrial, Medical, Scientific Supplies & Office Products': [
+    'Business and Industrial Supplies - Scientific Supplies',
+    'OTC Medicine',
+    'Masks',
+    'Weighing Scales & Fat Analyzers',
+    '3D Printers',
+    'Business and Industrial Supplies - Material Handling Equipment Janitorial & Sanitation Medical & Dental Supplies Com...',
+    'Business and Industrial Supplies - Electrical Testing Dimensional Measurement Thermal Printers Barcode Scanners',
+    'Business and Industrial Supplies - Power tools & accessories Welding machines Microscopes Industrial Electrical produ...',
+    'Occupational Safety Supplies (Mask gloves Safety shoes Face shields & other PPE products)',
+    'Stethoscopes',
+    'Packing materials',
+    'Power & hand Tools and Water Dispenser',
+    'Office products - Office supplies',
+    'Office products - Electronic Devices',
+    'Office products - Arts and Crafts',
+    'Office products - Writing Instruments'
+  ],
+  'Kitchen, Large & Small Appliances': [],
+  'Others': [],
+  'Sports, Gym & Sporting Equipment': []
+};
+
 const AmazonCalculator = () => {
   // State for input values
   const [sellingPrice, setSellingPrice] = useState('');
@@ -8,6 +204,8 @@ const AmazonCalculator = () => {
   const [closingFee, setClosingFee] = useState('');
   const [shippingFee, setShippingFee] = useState('');
   const [gstPercent, setGstPercent] = useState('18'); // Default 18%
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
 
   // State for calculated values
   const [calculations, setCalculations] = useState({
@@ -32,7 +230,6 @@ const AmazonCalculator = () => {
 
   // Calculate profit function
   const calculateProfit = () => {
-    // Convert input values to numbers, defaulting to 0 if empty
     const sp = parseFloat(sellingPrice) || 0;
     const cp = parseFloat(costPrice) || 0;
     const rfPercent = parseFloat(referralFeePercent) || 0;
@@ -40,14 +237,12 @@ const AmazonCalculator = () => {
     const sf = parseFloat(shippingFee) || 0;
     const gstPerc = parseFloat(gstPercent) || 0;
 
-    // Calculate fees
     const referralFee = (sp * rfPercent) / 100;
     const totalFeesBeforeGST = referralFee + cf + sf;
     const gst = (totalFeesBeforeGST * gstPerc) / 100;
     const totalCost = cp + totalFeesBeforeGST + gst;
     const profit = sp - totalCost;
 
-    // Update calculations state
     setCalculations({
       referralFee,
       closingFee: cf,
@@ -66,6 +261,7 @@ const AmazonCalculator = () => {
 
   return (
     <div className="w-full">
+      <div className="text-sm text-gray-600 mb-2">Date & Time: Saturday, September 13, 2025, 11:15 AM IST</div>
       <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6 border-b pb-2 border-gray-200">Amazon Profit Calculator</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
@@ -74,6 +270,42 @@ const AmazonCalculator = () => {
           <h3 className="text-lg font-semibold text-gray-700 mb-4">Input Details</h3>
           
           <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setSelectedSubcategory('');
+                }}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2"
+              >
+                <option value="">Select a Category</option>
+                {Object.keys(categories).map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
+              <select
+                value={selectedSubcategory}
+                onChange={(e) => setSelectedSubcategory(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2"
+                disabled={!selectedCategory}
+              >
+                <option value="">Select a Subcategory</option>
+                {selectedCategory && categories[selectedCategory].map((subcategory) => (
+                  <option key={subcategory} value={subcategory}>
+                    {subcategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Selling Price</label>
               <div className="relative">
