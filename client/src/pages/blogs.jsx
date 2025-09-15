@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Calendar, ArrowRight } from "lucide-react"
 import axios from "axios"
-import { getApiUrl } from '../config/api.config'
+import { getApiUrl, getImageUrl } from '../config/api.config'
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([])
@@ -121,7 +121,7 @@ const Blogs = () => {
                   >
                     <div className="relative">
                       <img
-                        src={blog.image || "/placeholder.svg"}
+                        src={getImageUrl(blog.image) || "/placeholder.svg"}
                         alt={`Featured image for article: ${blog.title}`}
                         className="w-full h-48 object-cover rounded-lg"
                         loading="lazy"

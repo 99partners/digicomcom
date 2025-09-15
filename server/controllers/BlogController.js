@@ -6,7 +6,19 @@ import { BLOG_NOTIFICATION_TEMPLATE, sendEmail } from '../config/emailTemplets.j
 // Create a new blog
 export const createBlog = async (req, res) => {
   try {
-    const { title, excerpt, content, category, image } = req.body;
+    const { title, excerpt, content, category } = req.body;
+    let image;
+
+    // Check if image is uploaded as a file
+    if (req.file) {
+      // Create path relative to server root
+      image = `/uploads/blogs/${req.file.filename}`;
+    } else if (req.body.image) {
+      // If no file but image URL is provided (backward compatibility)
+      image = req.body.image;
+    } else {
+      return res.status(400).json({ success: false, error: 'Image is required' });
+    }
 
     const newBlog = new Blog({
       title,
@@ -136,17 +148,28 @@ export const getBlogById = async (req, res) => {
 // Update blog
 export const updateBlog = async (req, res) => {
   try {
-    const { title, excerpt, content, category, image } = req.body;
+    const { title, excerpt, content, category } = req.body;
+    
+    // Prepare update object
+    const updateData = {
+      title,
+      excerpt,
+      content,
+      category
+    };
+
+    // Check if image is uploaded as a file
+    if (req.file) {
+      // Create path relative to server root
+      updateData.image = `/uploads/blogs/${req.file.filename}`;
+    } else if (req.body.image) {
+      // If no file but image URL is provided (existing image or URL)
+      updateData.image = req.body.image;
+    }
 
     const blog = await Blog.findByIdAndUpdate(
       req.params.id,
-      {
-        title,
-        excerpt,
-        content,
-        category,
-        image
-      },
+      updateData,
       { new: true }
     );
 
@@ -171,4 +194,4 @@ export const deleteBlog = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
-}; 
+};

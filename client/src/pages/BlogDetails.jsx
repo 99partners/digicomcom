@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import { Calendar, ArrowLeft } from "lucide-react"
 import axios from "axios"
-import { getApiUrl } from '../config/api.config'
+import { getApiUrl, getImageUrl } from '../config/api.config'
 import SEO from '../components/SEO';
 
 const BlogDetails = () => {
@@ -118,7 +118,7 @@ const BlogDetails = () => {
 
             {/* Featured Image */}
             <img
-              src={blog.image || "/placeholder.svg"}
+              src={getImageUrl(blog.image) || "/placeholder.svg"}
               alt={blog.title}
               className="w-full h-[400px] object-cover rounded-xl shadow-lg mb-8"
               loading="lazy"
@@ -185,7 +185,7 @@ const BlogDetails = () => {
                   >
                     <div className="relative">
                       <img
-                        src={relatedBlog.image || "/placeholder.svg"}
+                        src={getImageUrl(relatedBlog.image) || "/placeholder.svg"}
                         alt={relatedBlog.title}
                         className="w-full h-48 object-cover rounded-lg"
                         loading="lazy"

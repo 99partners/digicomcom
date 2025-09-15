@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Pencil, Trash2, Plus, X } from 'lucide-react';
-import { getApiUrl } from '../../config/api.config';
+import { Pencil, Trash2, Plus, X, Upload } from 'lucide-react';
+import { getApiUrl, getImageUrl } from '../../config/api.config';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -19,6 +19,8 @@ const BlogManagement = () => {
     category: '',
     image: ''
   });
+  const [imageFile, setImageFile] = useState(null);
+  const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState('');
 
   const modules = {
@@ -73,13 +75,17 @@ const BlogManagement = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-    if (name === 'image') {
-      setPreviewImage(value);
+    const { name, value, files } = e.target;
+    
+    if (name === 'imageFile' && files && files.length > 0) {
+      const file = files[0];
+      setImageFile(file);
+      setPreviewImage(URL.createObjectURL(file));
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
     }
   };
 
@@ -98,9 +104,13 @@ const BlogManagement = () => {
       category: '',
       image: ''
     });
+    setImageFile(null);
     setPreviewImage('');
     setEditingBlogId(null);
     setShowForm(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -109,16 +119,37 @@ const BlogManagement = () => {
     setError('');
 
     try {
+      // Create FormData object for file upload
+      const blogFormData = new FormData();
+      blogFormData.append('title', formData.title);
+      blogFormData.append('excerpt', formData.excerpt);
+      blogFormData.append('content', formData.content);
+      blogFormData.append('category', formData.category);
+      
+      // If there's a new image file, append it
+      if (imageFile) {
+        blogFormData.append('image', imageFile);
+      } else if (formData.image) {
+        // If editing and no new image is selected, pass the existing image URL
+        blogFormData.append('image', formData.image);
+      }
+
       let response;
       if (editingBlogId) {
         // Update existing blog
-        response = await axios.put(getApiUrl(`api/blogs/${editingBlogId}`), formData, {
-          withCredentials: true
+        response = await axios.put(getApiUrl(`api/blogs/${editingBlogId}`), blogFormData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         });
       } else {
         // Create new blog
-        response = await axios.post(getApiUrl('api/blogs'), formData, {
-          withCredentials: true
+        response = await axios.post(getApiUrl('api/blogs'), blogFormData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         });
       }
 
@@ -143,8 +174,12 @@ const BlogManagement = () => {
       category: blog.category,
       image: blog.image
     });
-    setPreviewImage(blog.image);
+    setImageFile(null);
+    setPreviewImage(getImageUrl(blog.image));
     setShowForm(true);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   if (loading && !blogs.length) {
@@ -245,21 +280,52 @@ const BlogManagement = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Image URL
+                  Blog Image
                 </label>
-                <input
-                  type="url"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleChange}
-                  required
-                  placeholder="Enter image URL"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
+                <div className="flex items-center space-x-2">
+                  <label className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer">
+                    <Upload className="h-5 w-5 mr-2" />
+                    {imageFile ? 'Change Image' : 'Upload Image'}
+                    <input
+                      type="file"
+                      name="imageFile"
+                      onChange={handleChange}
+                      accept="image/*"
+                      className="sr-only"
+                      ref={fileInputRef}
+                    />
+                  </label>
+                  {editingBlogId && !imageFile && (
+                    <span className="text-xs text-gray-500">Using existing image</span>
+                  )}
+                </div>
                 {previewImage && (
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500 mb-2">Preview:</p>
-                    <img src={previewImage} alt="Preview" className="h-32 object-cover rounded" />
+                  <div className="relative mb-4">
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+                      onClick={() => {
+                        setPreviewImage('');
+                        setImageFile(null);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = '';
+                        }
+                        // If editing and removing image, clear the image field
+                        if (editingBlogId) {
+                          setFormData({
+                            ...formData,
+                            image: ''
+                          });
+                        }
+                      }}
+                    >
+                      <X size={16} />
+                    </button>
                   </div>
                 )}
               </div>

@@ -55,6 +55,22 @@ export const getApiUrl = (endpoint) => {
   return `${currentConfig.baseUrl}/${cleanEndpoint}`;
 };
 
+// Helper function to handle image URLs
+export const getImageUrl = (imagePath) => {
+  // If the image path is already a full URL or a placeholder, return it as is
+  if (!imagePath || imagePath.startsWith('http') || imagePath.startsWith('/placeholder')) {
+    return imagePath;
+  }
+  
+  // If the image path starts with '/uploads', prepend the API base URL
+  if (imagePath.startsWith('/uploads')) {
+    return `${currentConfig.baseUrl}${imagePath}`;
+  }
+  
+  // Otherwise, assume it's a relative path and construct the full URL
+  return `${currentConfig.baseUrl}/${imagePath.startsWith('/') ? imagePath.slice(1) : imagePath}`;
+};
+
 // Configure axios defaults
 const axiosInstance = axios.create({
   baseURL: currentConfig.baseUrl,

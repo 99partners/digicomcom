@@ -17,7 +17,7 @@ import {
   Play,
 } from "lucide-react";
 import axios from "axios";
-import { getApiUrl } from "../config/api.config";
+import { getApiUrl, getImageUrl } from "../config/api.config";
 import SEO from "../components/SEO";
 // import Countdown from "../components/Countdown";
 // Import local logos
@@ -688,7 +688,7 @@ const Home = () => {
                   >
                     <div className="relative">
                       <img
-                        src={blog.image || "/placeholder.svg"}
+                        src={getImageUrl(blog.image) || "/placeholder.svg"}
                         alt={blog.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                         loading="lazy"
