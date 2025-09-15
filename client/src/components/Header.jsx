@@ -2,7 +2,7 @@
  
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Calculator } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import logo from "../assets/99digicom.png";
 import { useAuth } from "../context/AuthContext";
@@ -202,10 +202,12 @@ const Header = () => {
 
         {/* Action Buttons */}
         <div className="hidden lg:flex items-center space-x-4">
-          {/* <Link
-            to="https://shop.99digicom.com"
+          <Link
+            to="/calculator"
             className="px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
-          > */}
+          >
+            <Calculator className="h-4 w-4 mr-1" />
+          </Link>
           <Link
             to="https://shop.99digicom.com"
             target="_blank"
@@ -214,6 +216,7 @@ const Header = () => {
           >
             {t("common.shop")}
           </Link>
+          
           {isAuthenticated ? (
             <button
               onClick={() => navigate("/dashboard/profile")}
@@ -344,12 +347,20 @@ const Header = () => {
         {/* Mobile Action Buttons */}
         <div className="p-4 space-y-2 border-t border-gray-100">
           <Link
+            to="/calculator"
+            onClick={() => setIsMenuOpen(false)}
+            className="block w-full px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200"
+          >
+            <Calculator className="h-4 w-4 mr-1" />
+          </Link>
+          <Link
             to="/shop"
             onClick={() => setIsMenuOpen(false)}
             className="block w-full px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg text-center font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200"
           >
             {t("common.shop")}
           </Link>
+          
           {isAuthenticated ? (
             <button
               onClick={() => {
