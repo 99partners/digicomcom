@@ -8,7 +8,7 @@ import { getApiUrl } from '../config/api.config'
 import SEO from '../components/SEO';
 
 const BlogDetails = () => {
-  const { id } = useParams()
+  const { title } = useParams()
   const [blog, setBlog] = useState(null)
   const [relatedBlogs, setRelatedBlogs] = useState([])
   const [loading, setLoading] = useState(true)
@@ -17,18 +17,31 @@ const BlogDetails = () => {
   useEffect(() => {
     const fetchBlogAndRelated = async () => {
       try {
-        // Fetch single blog
-        const response = await axios.get(getApiUrl(`api/blogs/${id}`))
-        if (response.data.success) {
-          setBlog(response.data.data)
-
-          // Fetch related blogs
-          const allBlogsResponse = await axios.get(getApiUrl('api/blogs'))
-          if (allBlogsResponse.data.success) {
+        // Fetch all blogs
+        const allBlogsResponse = await axios.get(getApiUrl('api/blogs'))
+        if (allBlogsResponse.data.success) {
+          // Find the blog with matching title slug
+          const decodedTitle = decodeURIComponent(title.toLowerCase())
+          const foundBlog = allBlogsResponse.data.data.find(b => {
+            // Try multiple matching approaches to improve reliability
+            const blogTitleSlug = b.title.replace(/\s+/g, '-').toLowerCase()
+            const blogTitleSlugNoSpecial = b.title.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase()
+            
+            return blogTitleSlug === decodedTitle || 
+                   blogTitleSlugNoSpecial === decodedTitle ||
+                   b._id === decodedTitle // Fallback to ID matching
+          })
+          
+          if (foundBlog) {
+            setBlog(foundBlog)
+            
+            // Get related blogs (excluding current blog)
             const filtered = allBlogsResponse.data.data
-              .filter(b => b._id !== id)
+              .filter(b => b._id !== foundBlog._id)
               .slice(0, 3) // Get only 3 related blogs
             setRelatedBlogs(filtered)
+          } else {
+            setError('Blog not found')
           }
         }
       } catch (error) {
@@ -41,7 +54,7 @@ const BlogDetails = () => {
 
     fetchBlogAndRelated()
     window.scrollTo(0, 0)
-  }, [id])
+  }, [title])
 
   const getCategoryColor = (category) => {
     const colors = {
@@ -88,7 +101,7 @@ const BlogDetails = () => {
           keywords={`${blog.category}, digital commerce, business growth, ${blog.title.toLowerCase()}`}
           ogImage={blog.image}
           ogType="article"
-          canonicalUrl={`https://99digicom.com/resources/blogs/${id}`}
+          canonicalUrl={`https://99digicom.com/resources/blogs/${blog.title.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase()}`}
         />
       )}
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
@@ -141,9 +154,18 @@ const BlogDetails = () => {
                 itemProp="articleBody"
                 className="blog-content"
                 dangerouslySetInnerHTML={{ 
-                  __html: blog.content.split('\n').map(paragraph => 
-                    paragraph.trim() ? `<p>${paragraph}</p>` : ''
-                  ).join('')
+                  __html: blog.content.split('\n').map(paragraph => {
+                    // Handle paragraphs with image tags
+                    if (paragraph.includes('<img') && paragraph.includes('BCO.')) {
+                      return paragraph.replace(/src="(BCO\.[a-f0-9-]+\.png)"/g, 'src="/assets/$1"');
+                    }
+                    // Handle direct image references
+                    else if (paragraph.includes('BCO.')) {
+                      return `<p><img src="/assets/${paragraph.trim()}" alt="Blog image" class="w-full rounded-lg my-4" /></p>`;
+                    }
+                    // Regular paragraph
+                    return paragraph.trim() ? `<p>${paragraph}</p>` : '';
+                  }).join('')
                 }} 
               />
             </article>
@@ -190,7 +212,7 @@ const BlogDetails = () => {
                         {relatedBlog.excerpt}
                       </p>
                       <Link
-                        to={`/resources/blogs/${relatedBlog._id}`}
+                        to={`/resources/blogs/${relatedBlog.title.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase()}`}
                         className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
                       >
                         Read More

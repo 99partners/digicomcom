@@ -729,7 +729,7 @@ const Home = () => {
                         {blog.excerpt}
                       </p>
                       <Link
-                        to={`/resources/blogs/${blog._id}`}
+                        to={`/resources/blogs/${blog.title.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase()}`}
                         className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
                         aria-label={t("home.latestBlogs.readMoreAriaLabel", {
                             title: blog.title,

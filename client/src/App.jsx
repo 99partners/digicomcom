@@ -197,7 +197,7 @@ function App() {
               <Route path="/refundpolicy" element={<RefundPolicy />} />
 
               <Route path="/resources/blogs" element={<Blogs />} />
-              <Route path="/resources/blogs/:id" element={<BlogDetails />} />
+              <Route path="/resources/blogs/:title" element={<BlogDetails />} />
               <Route path="/resources/guides_Tutorials" element={<GuidesTutorials />} />
               <Route path="/resources/faq" element={<Faqs />} />
               <Route path="/faqss" element={<Faqs />} />
