@@ -326,6 +326,22 @@ const AmazonCalculator = () => {
   const calculateProfit = () => {
     const sp = parseFloat(sellingPrice) || 0;
     const cp = parseFloat(costPrice) || 0;
+
+    // If selling price is empty or zero, show all results as zero
+    if (!sp) {
+      setCalculations({
+        referralFee: 0,
+        closingFee: 0,
+        shippingFee: 0,
+        totalFees: 0,
+        gst: 0,
+        totalCost: 0,
+        profit: 0
+      });
+      setClosingFee('');
+      return;
+    }
+
     let rfPercent = parseFloat(referralFeePercent) || 15;
     const cf = calculateClosingFee(sp, shippingMethod);
     const sf = calculateShippingFee();

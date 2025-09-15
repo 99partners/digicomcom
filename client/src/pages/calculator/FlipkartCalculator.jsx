@@ -32,7 +32,19 @@ const FlipkartCalculator = () => {
     // Convert input values to numbers, defaulting to 0 if empty
     const sp = parseFloat(sellingPrice) || 0;
     const weightInGrams = parseFloat(weight) || 0;
-    
+
+    // If selling price is empty or zero, show all results as zero
+    if (!sp) {
+      setCalculations({
+        commissionFee: 0,
+        fixedFee: 0,
+        shippingFee: 0,
+        totalFees: 0,
+        grossMargin: 0
+      });
+      return;
+    }
+
     // Commission Fee calculation based on Seller Tier
     let commissionPercent = 15; // Default
     
