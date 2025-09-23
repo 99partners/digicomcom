@@ -249,6 +249,23 @@ function App() {
               </ProtectedRoute>
             } />
           </Routes>
+          {/* Global Floating WhatsApp Button */}
+          <a
+            href="https://api.whatsapp.com/send/?phone=916352653306&text&type=phone_number&app_absent=0"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
+            className="fixed bottom-6 right-6 z-50 group"
+          >
+            <div className="relative">
+              <span className="absolute inset-0 rounded-full bg-green-500/30 blur-sm"></span>
+              <div className="w-14 h-14 rounded-full bg-green-600 text-white flex items-center justify-center shadow-xl ring-2 ring-white/60 transition-transform duration-200 group-hover:scale-105 group-active:scale-95 animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-7 h-7" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M20.52 3.48A11.86 11.86 0 0 0 12.02 0C5.4 0 .05 5.35.05 11.97c0 2.11.55 4.16 1.6 5.98L0 24l6.2-1.63a12 12 0 0 0 5.82 1.48h.01c6.62 0 11.97-5.35 11.97-11.97a11.9 11.9 0 0 0-3.48-8.4ZM12.03 21.8a9.75 9.75 0 0 1-4.98-1.36l-.36-.21-3.68.97.98-3.59-.23-.37A9.78 9.78 0 1 1 21.8 12c0 5.39-4.38 9.8-9.77 9.8Zm5.56-7.34c-.3-.16-1.77-.87-2.04-.97-.27-.1-.47-.15-.66.15-.19.29-.76.97-.93 1.16-.17.2-.34.22-.64.08-.3-.14-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.06-.38-.02-.53-.08-.15-.7-1.7-.95-2.33-.25-.62-.5-.53-.67-.54h-.57c-.2 0-.52.08-.8.38-.27.3-1.05 1.05-1.05 2.56s1.08 2.96 1.24 3.16c.15.2 2.13 3.22 5.16 4.52.72.31 1.26.48 1.69.62.71.23 1.35.2 1.86.13.57-.09 1.71-.69 1.95-1.36.24-.67.24-1.24.17-1.36-.07-.12-.27-.2-.56-.35Z"/>
+                </svg>
+              </div>
+            </div>
+          </a>
           </Router>
         </LanguageProvider>
       </AuthProvider>
