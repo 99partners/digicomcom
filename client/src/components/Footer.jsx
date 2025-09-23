@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { Mail, Linkedin, Instagram, Youtube, Twitter, MapPin } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import logo from "../assets/99digicom.png";
-import mapImage from "../assets/map.png"; // your image file
 import axios from "axios";
 import { API_CONFIG } from "../config/api.config";
 import { useLanguage } from "../context/LanguageContext";
@@ -244,23 +243,12 @@ const Footer = () => {
                   aria-hidden="true"
                 />
                 <a
-                  href="mailto:99partners.in@gmail.com"
+                  href="mailto:hello@99partners.in"
                   className="hover:text-white transition-colors"
-                  aria-label="Email us at 99partners.in@gmail.com"
+                  aria-label="Email us at hello@99partners.in"
                 >
-                  99partners.in@gmail.com
+                  hello@99partners.in
                 </a>
-              </div>
-
-              {/* ✅ Image moved to left side (default alignment) */}
-              <div className="mt-4">
-                <img
-                  src={mapImage}
-                  alt="Our global locations"
-                  className="rounded-md shadow-md max-w-md w-full h-auto"
-                  loading="lazy"
-                  decoding="async"
-                />
               </div>
             </div>
           </div>
