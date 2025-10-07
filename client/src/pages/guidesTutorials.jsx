@@ -113,8 +113,7 @@ const GuidesTutorials = () => {
         <meta name="description" content={t("guides.seo.description")} />
         <meta name="keywords" content={t("guides.seo.keywords")} />
         <link rel="canonical" href={window.location.href} />
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
+       
         <meta property="og:type" content="website" />
         <meta property="og:title" content={t("guides.seo.title")} />
         <meta property="og:description" content={t("guides.seo.description")} />

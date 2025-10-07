@@ -2,7 +2,7 @@
 
 # Allow crawling of all content
 User-agent: *
-Disallow: /
+allow: /
 
 # Sitemaps
 Sitemap: https://99digicom.com/sitemap.xml

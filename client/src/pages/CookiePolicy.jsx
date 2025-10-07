@@ -16,7 +16,6 @@ const CookiePolicy = () => {
         <title>Cookie Policy | 99Digicom</title>
         <meta name="description" content="Understand how 99Digicom uses cookies and how you can control them." />
         <link rel="canonical" href="https://99digicom.com/cookiepolicy" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Cookie Policy | 99Digicom" />
         <meta property="og:description" content="Understand how 99Digicom uses cookies and how you can control them." />

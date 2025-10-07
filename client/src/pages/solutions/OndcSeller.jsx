@@ -21,7 +21,6 @@ const OndcSeller = () => {
       <Helmet>
         <title>{t('ondcSeller.seo.title')}</title>
         <meta name="description" content={t('ondcSeller.seo.description')} />
-        <meta name="robots" content="noindex, nofollow" />
         <link rel="canonical" href="https://99digicom.com/solutions/ondc-seller" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={t('ondcSeller.seo.title')} />

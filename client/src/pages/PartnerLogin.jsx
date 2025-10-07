@@ -75,8 +75,7 @@ const PartnerLogin = () => {
         <title>Partner Login | 99Digicom</title>
         <meta name="description" content="Sign in or create your partner account to access the 99Digicom dashboard." />
         <link rel="canonical" href={window.location.href} />
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
+        
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Partner Login | 99Digicom" />
         <meta property="og:description" content="Sign in or create your partner account to access the 99Digicom dashboard." />

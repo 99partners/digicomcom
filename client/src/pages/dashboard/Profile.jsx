@@ -93,8 +93,7 @@ const Profile = () => {
                 <title>Dashboard Profile | 99Digicom</title>
                 <meta name="description" content="View your partner profile and contact information." />
                 <link rel="canonical" href={window.location.href} />
-                <meta name="robots" content="noindex, nofollow" />
-                <meta name="googlebot" content="noindex, nofollow" />
+                
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Dashboard Profile | 99Digicom" />
                 <meta property="og:description" content="View your partner profile and contact information." />

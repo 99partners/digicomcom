@@ -259,8 +259,7 @@ export default function AccountManagementServices() {
         canonicalUrl="https://99digicom.com/services/ams"
       />
       <Helmet>
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
+        
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
       </Helmet>
       <main className="min-h-screen bg-gradient-to-br from-green-50 to-white">

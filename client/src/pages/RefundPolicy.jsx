@@ -20,7 +20,6 @@ const RefundPolicy = () => {
         <title>Refund Policy | 99Digicom</title>
         <meta name="description" content="Read the 99Digicom Refund Policy regarding eligibility, process, and timelines for refunds." />
         <link rel="canonical" href="https://99digicom.com/refundpolicy" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Refund Policy | 99Digicom" />
         <meta property="og:description" content="Read the 99Digicom Refund Policy regarding eligibility, process, and timelines for refunds." />

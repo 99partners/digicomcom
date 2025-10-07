@@ -120,7 +120,6 @@ const Contact = () => {
         <title>Contact Us | 99Digicom</title>
         <meta name="description" content="Get in touch with 99Digicom for support and inquiries. Visit our offices or send us a message." />
         <link rel="canonical" href="https://99digicom.com/contact_us" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Contact Us | 99Digicom" />
         <meta property="og:description" content="Reach out to 99Digicom for support and inquiries." />

@@ -14,7 +14,6 @@ const PrivacyPolicy = () => {
         <title>Privacy Policy | 99Digicom</title>
         <meta name="description" content="Read the 99Digicom Privacy Policy to understand how we collect, use, and protect your information." />
         <link rel="canonical" href="https://99digicom.com/privacypolicy" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Privacy Policy | 99Digicom" />
         <meta property="og:description" content="How 99Digicom collects, uses, and protects your information." />

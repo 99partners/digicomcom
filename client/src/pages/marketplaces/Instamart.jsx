@@ -62,8 +62,7 @@ const Instamart = () => {
         <meta name="description" content={seo.description} />
         <meta name="keywords" content={seo.keywords} />
         <link rel="canonical" href="https://99digicom.com/partners/marketplaces/instamart" />
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
+       
         <meta property="og:type" content="website" />
         <meta property="og:title" content={seo.title} />
         <meta property="og:description" content={seo.description} />

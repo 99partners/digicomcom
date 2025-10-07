@@ -103,7 +103,6 @@ const Subscriptions = () => {
                 <title>Subscriptions | 99Digicom</title>
                 <meta name="description" content="View your subscription billing history and download invoices." />
                 <link rel="canonical" href="https://99digicom.com/dashboard/subscriptions" />
-                <meta name="robots" content="noindex, nofollow" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Subscriptions | 99Digicom" />
                 <meta property="og:description" content="View your subscription billing history and download invoices." />

@@ -290,8 +290,7 @@ export default function PlatformEnablement() {
         canonicalUrl="https://99digicom.com/services/launch"
       />
       <Helmet>
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
+        
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
       </Helmet>
 

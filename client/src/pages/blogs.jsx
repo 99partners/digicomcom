@@ -58,8 +58,7 @@ const Blogs = () => {
         <meta name="description" content="Explore expert insights, trends, and strategies for digital commerce success. Stay updated with the latest business growth tactics and industry developments." />
         <meta name="keywords" content="digital commerce, business growth, ecommerce trends, digital marketing insights" />
         <link rel="canonical" href={window.location.href} />
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
+       
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Digital Commerce Insights & Trends | 99DigiCom Blog" />
         <meta property="og:description" content="Explore expert insights, trends, and strategies for digital commerce success. Stay updated with the latest business growth tactics and industry developments." />

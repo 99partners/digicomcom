@@ -49,7 +49,6 @@ const MyApplications = () => {
         <title>My Applications | 99Digicom</title>
         <meta name="description" content="View the status and details of your service applications on 99Digicom." />
         <link rel="canonical" href="https://99digicom.com/dashboard/my-applications" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="My Applications | 99Digicom" />
         <meta property="og:description" content="View the status and details of your service applications on 99Digicom." />

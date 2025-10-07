@@ -83,8 +83,7 @@ const Faqs = () => {
         schema={faqSchema}
       />
       <Helmet>
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
+        
         <meta property="og:type" content="website" />
         <meta property="og:title" content={t('faq.seo.title')} />
         <meta property="og:description" content={t('faq.seo.description')} />

@@ -159,8 +159,7 @@ const Notifications = () => {
                 <title>Dashboard Notifications | 99Digicom</title>
                 <meta name="description" content="View your latest account and system notifications." />
                 <link rel="canonical" href={window.location.href} />
-                <meta name="robots" content="noindex, nofollow" />
-                <meta name="googlebot" content="noindex, nofollow" />
+               
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Dashboard Notifications | 99Digicom" />
                 <meta property="og:description" content="View your latest account and system notifications." />

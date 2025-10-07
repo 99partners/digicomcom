@@ -14,7 +14,6 @@ const TermsOfService = () => {
         <title>Terms of Service | 99Digicom</title>
         <meta name="description" content="Read the 99Digicom Terms of Service governing your use of our website and services." />
         <link rel="canonical" href="https://99digicom.com/termsofservice" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Terms of Service | 99Digicom" />
         <meta property="og:description" content="Read the 99Digicom Terms of Service governing your use of our website and services." />

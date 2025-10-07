@@ -260,7 +260,6 @@ const Home = () => {
         canonicalUrl="https://99digicom.com"
       />
       <Helmet>
-        <meta name="robots" content="noindex, nofollow" />
         <script type="application/ld+json">{JSON.stringify(organizationLd)}</script>
         <script type="application/ld+json">{JSON.stringify(webSiteLd)}</script>
       </Helmet>

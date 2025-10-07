@@ -237,8 +237,6 @@ export default function AdvertisingMarketing() {
         <meta name="keywords" content={t('advertisingMarketing.seo.keywords')} />
         <link rel="canonical" href="https://99digicom.com/services/advertising_marketing" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
         <meta property="og:type" content="service" />
         <meta property="og:title" content={t('advertisingMarketing.seo.title')} />
         <meta property="og:description" content={t('advertisingMarketing.seo.description')} />

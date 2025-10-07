@@ -100,7 +100,6 @@ const FAQ = () => {
                 <title>FAQ | 99Digicom</title>
                 <meta name="description" content="Frequently asked questions about 99Digicom services and processes." />
                 <link rel="canonical" href="https://99digicom.com/dashboard/faq" />
-                <meta name="robots" content="noindex, nofollow" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="FAQ | 99Digicom" />
                 <meta property="og:description" content="Frequently asked questions about 99Digicom services and processes." />

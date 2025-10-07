@@ -99,7 +99,6 @@ export default function ForProductPartners() {
         <meta name="description" content={t("whyPartner.seo.description")} />
         <meta name="keywords" content={t("whyPartner.seo.keywords")} />
         <link rel="canonical" href="https://99digicom.com/why-partners" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={t("whyPartner.seo.title")} />
         <meta property="og:description" content={t("whyPartner.seo.description")} />

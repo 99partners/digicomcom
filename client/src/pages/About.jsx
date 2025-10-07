@@ -64,7 +64,6 @@ const About = () => {
         canonicalUrl="https://99digicom.com/about"
       />
       <Helmet>
-        <meta name="robots" content="noindex, nofollow" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

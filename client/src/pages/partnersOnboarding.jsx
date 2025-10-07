@@ -139,7 +139,6 @@ export default function PartnerOnboarding() {
         <title>{t("partners.seo.title", "Partners Onboarding | 99Digicom")}</title>
         <meta name="description" content={t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces.")} />
         <link rel="canonical" href="https://99digicom.com/partners/partners_Onboarding" />
-        <meta name="robots" content="noindex, nofollow" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={t("partners.seo.title", "Partners Onboarding | 99Digicom")} />
         <meta property="og:description" content={t("partners.seo.description", "Onboard with 99Digicom and scale across marketplaces.")} />
