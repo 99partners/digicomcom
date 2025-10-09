@@ -113,10 +113,9 @@ const Header = () => {
               {currentLanguage === "en" && "Digicom"}
               {currentLanguage === "hi" && "डिजिकॉम"}
               {currentLanguage === "gu" && "ડિજિકોમ"}
-              {currentLanguage === "pa" && "ਡਿਜੀਕੋਮ"}
+              {/* {currentLanguage === "pa" && "ਡਿਜੀਕੋਮ"}
               {currentLanguage === "mr" && "डिजिकॉम"}
-              {currentLanguage === "bn" && "ডিজিকম"}
-              Digicom
+              {currentLanguage === "bn" && "ডিজিকম"} */}
             </span>
           </Link>
         </div>

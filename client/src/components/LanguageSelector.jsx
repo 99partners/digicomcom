@@ -27,9 +27,9 @@ const LanguageSelector = () => {
     { code: 'en', name: 'English' },
     { code: 'hi', name: 'हिंदी' },
     { code: 'gu', name: 'ગુજરાતી' },
-    { code: 'pa', name: 'ਪੰਜਾਬੀ' },
-    { code: 'mr', name: 'मराठी' },
-    { code: 'bn', name: 'বাংলা' }
+    // { code: 'pa', name: 'ਪੰਜਾਬੀ' },
+    // { code: 'mr', name: 'मराठी' },
+    // { code: 'bn', name: 'বাংলা' }
   ];
 
   const handleLanguageChange = (langCode) => {
